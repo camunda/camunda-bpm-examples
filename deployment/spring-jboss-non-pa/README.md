@@ -76,7 +76,9 @@ And we add an entry to the manifest so that the process engine classes are added
   2. Deploy it to JBoss AS 7 (downloaded it from here: http://www.camunda.org/download/)
   3. Watch out for this console log:
 
-    Hi there!
-    I am a spring bean and I am using a container managed process engine provided as JBoss Service for all applications to share.
-    The engine is named default.
-    There are currently 0 processes deployed on this engine.
+```bash
+Hi there!
+I am a spring bean and I am using a container managed process engine provided as JBoss Service for all applications to share.
+The engine is named default.
+There are currently 0 processes deployed on this engine.
+```
