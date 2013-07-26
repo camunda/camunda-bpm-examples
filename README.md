@@ -1,7 +1,7 @@
 Quickstarts
 ===========
 
-camunda BPM quickstarts is a collection of small, focused usage examples of camunda BPM intended to get you started quickly.
+camunda BPM quickstarts is a collection of small, focused usage examples for [camunda BPM platform](https://github.com/camunda/camunda-bpm-platform), intended to get you started quickly.
 
 If you need larger examples, check out the [camunda BPM examples collection](https://github.com/camunda/camunda-bpm-examples).
 
