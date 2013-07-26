@@ -1,0 +1,20 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/applicationContext.xml</param-value>
+  </context-param>
+
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <resource-ref>
+    <res-ref-name>processEngine/default</res-ref-name>   
+    <res-type>org.camunda.bpm.engine.ProcessEngine</res-type>
+    <mapped-name>java:global/camunda-bpm-platform/process-engine/default</mapped-name>    
+  </resource-ref>
+
+</web-app>
