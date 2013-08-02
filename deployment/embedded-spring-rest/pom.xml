@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.camunda.bpm.quickstart</groupId>
+  <artifactId>camunda-quickstart-embedded-spring-rest</artifactId>
+  <packaging>war</packaging>
+  <name>camunda BPM - Quickstarts - EMBEDDED - Spring REST</name>
+  <version>7.0.0-SNAPSHOT</version>
+  
+  <properties>
+    <spring.version>3.1.2.RELEASE</spring.version>
+  </properties>
+
+  <dependencies>
+  
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-spring</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-rest</artifactId>
+      <version>${project.version}</version>
+      <classifier>classes</classifier>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jaxrs</artifactId>
+      <version>3.0.2.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.3.171</version>
+    </dependency>
+
+  </dependencies>
+
+  <repositories>
+    <!-- spring maven repository -->
+    <repository>
+      <id>springsource-repo</id>
+      <name>SpringSource Repository</name>
+      <url>http://repo.springsource.org/release</url>
+    </repository>
+    <!-- camunda maven repository -->
+    <repository>
+      <id>camunda-bpm-nexus</id>
+      <name>camunda-bpm-nexus</name>
+      <url>https://app.camunda.com/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
+
+</project>
