@@ -1,80 +1,133 @@
-# Plain Spring Webapplication for JBoss AS 7
+# Spring configured embedded process engine and REST API 
 
-This example demonstrates how to deploy a plain webapplication which 
+This example demonstrates how to setup a webapplication, which
 
-    * does not include a @ProcessApplication class and does not provide any BPMN 2.0 processes
-    * starts a Spring Webapplication context
-    * binds a shared, container managed process engine as Spring Bean
+    * bundles the camunda-engine JAR library
+    * starts and configures a process engine in a Spring Applicaiton context
+    * bundles the camunda-engine-REST library
+    * exposes the process engine API via REST
+
+NOTE: this project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from camunda.org.
 
 ## Why is this example interesting?
 
-The JBoss AS 7 extensions from camunda allow you to manage Process Engines as JBoss Services. However, if your application does not 
-provide a @ProcessApplication class, JBoss AS 7 is not aware of the fact that your application uses the process engine. In that case 
-it can happen that:
-
-    * at deployment time, your application is deployed *before* the process engine is started, making the deployment of your app fail.
-    * when the process engine is stopped, your application is not stopped but will likely fail at some point because the process engine is not available anymore.
-
-This problem can be resolved by adding a declarative dependency between the process engine and some component in your application.
+This example demonstrates how to perform a standalone embedded setup with a webapplication which bundles both the 
+camunda engine and camunda engine REST jars. 
 
 ## Show me the important parts!
 
-We reference the process engine resource in `web.xml`:
+The process engine is configured in the Spring application context:
 
-    <resource-ref>
-      <res-ref-name>processEngine/default</res-ref-name>   
-      <res-type>org.camunda.bpm.engine.ProcessEngine</res-type>
-      <mapped-name>java:global/camunda-bpm-platform/process-engine/default</mapped-name>    
-    </resource-ref>
+    <bean id="processEngineConfiguration"
+      class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
+      <property name="processEngineName" value="default" />
+      <property name="dataSource" ref="dataSource" />
+      <property name="transactionManager" ref="transactionManager" />
+      <property name="databaseSchemaUpdate" value="true" />
+      <property name="jobExecutorActivate" value="false" />
+      <property name="deploymentResources" value="classpath*:*.bpmn" />
+    </bean>
 
-This creates a declarative dependency between the webapplication context and the process engine. Now JBoss AS 7 knows that we are using it.
-We can look it up using the local name `java:comp/env/processEngine/default` from anywhere in our application.
+    <bean id="processEngine" class="org.camunda.bpm.engine.spring.ProcessEngineFactoryBean">
+      <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+    </bean>
 
-In our case we want to reference it from a Spring application context:
+    <bean id="repositoryService" factory-bean="processEngine"
+      factory-method="getRepositoryService" />
+    <bean id="runtimeService" factory-bean="processEngine"
+      factory-method="getRuntimeService" />
+    <bean id="taskService" factory-bean="processEngine"
+      factory-method="getTaskService" />
+    <bean id="historyService" factory-bean="processEngine"
+      factory-method="getHistoryService" />
+    <bean id="managementService" factory-bean="processEngine"
+      factory-method="getManagementService" />
 
-    <beans xmlns="http://www.springframework.org/schema/beans"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:activiti="http://www.activiti.org/schema/spring/components"
-           xsi:schemaLocation="http://www.springframework.org/schema/beans
-                               http://www.springframework.org/schema/beans/spring-beans.xsd">
-     
-     
-        <!-- lookup the process engine from local JNDI -->
-        <bean name="processEngine" id="processEngine" class="org.springframework.jndi.JndiObjectFactoryBean">
-            <property name="jndiName" value="java:comp/env/processEngine/default" />
-        </bean>
-     
-        <!-- inject it into a bean -->
-        <bean class="org.camunda.bpm.example.spring.jboss.ProcessEngineClient">
-            <property name="processEngine" ref="processEngine" />
-        </bean>
-     
-    </beans>
+A custom JAX-RS Application class deploys the REST Endpoints:
 
-And we add an entry to the manifest so that the process engine classes are added to our classpath:
+    public class RestProcessEngineDeployment extends Application {
 
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>2.3</version>
-          <configuration>
-            <archive>
-              <manifestEntries>
-                <Dependencies>org.camunda.bpm.camunda-engine</Dependencies>
-              </manifestEntries>
-            </archive>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
+      @Override
+      public Set<Class<?>> getClasses() {
+        Set<Class<?>> classes = new HashSet<Class<?>>();
+        classes.add(ProcessEngineRestServiceImpl.class);
+      
+        classes.add(JacksonConfigurator.class);
+      
+        classes.add(JacksonJsonProvider.class);
+        classes.add(JsonMappingExceptionMapper.class);
+        classes.add(JsonParseExceptionMapper.class);
+      
+        classes.add(ProcessEngineExceptionHandler.class);
+        classes.add(RestExceptionHandler.class);
+      
+        return classes;
+      }
+
+    }
+
+Implement the REST Process Engine Provider SPI (provides the process engine to the REST application):
+
+    public class RestProcessEngineProvider implements ProcessEngineProvider {
+
+      public ProcessEngine getDefaultProcessEngine() {
+        return ProcessEngines.getDefaultProcessEngine();
+      }
+
+      public ProcessEngine getProcessEngine(String name) {
+        return ProcessEngines.getProcessEngine(name);
+      }
+
+      public Set<String> getProcessEngineNames() {
+        return ProcessEngines.getProcessEngines().keySet();
+      }
+
+    }
+
+Add a file named: 
+    src/main/resources/META-INF/services/org.camunda.bpm.engine.rest.spi.ProcessEngineProvider
+Which contains the name of the provider:
+    org.camunda.bpm.example.loanapproval.rest.RestProcessEngineProvider
+
+Reference all required libraries in pom.xml:
+  
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <version>${camunda.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-spring</artifactId>
+      <version>${camunda.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-rest</artifactId>
+      <version>${camunda.version}</version>
+      <classifier>classes</classifier>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jaxrs</artifactId>
+      <version>3.0.2.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
 
 ## How to use it?
 
     1. Build it with maven
-    2. Deploy it to JBoss AS 7 (downloaded it from here: http://www.camunda.org/download/)
-    3. Watch out for this console log:
+    2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from camunda.org!!
+    3. Access the REST Endpoint:
 
     Hi there!
     I am a spring bean and I am using a container managed process engine provided as JBoss Service for all applications to share.
