@@ -2,10 +2,10 @@
 
 This example demonstrates how to setup a webapplication, which
 
-    * bundles the camunda-engine JAR library
-    * starts and configures a process engine in a Spring Applicaiton context
-    * bundles the camunda-engine-REST library
-    * exposes the process engine API via REST
+* bundles the camunda-engine JAR library
+* starts and configures a process engine in a Spring Applicaiton context
+* bundles the camunda-engine-REST library
+* exposes the process engine API via REST
 
 NOTE: this project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from camunda.org.
 
@@ -125,11 +125,7 @@ Reference all required libraries in pom.xml:
 
 ## How to use it?
 
-    1. Build it with maven
-    2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from camunda.org!!
-    3. Access the REST Endpoint:
-
-    Hi there!
-    I am a spring bean and I am using a container managed process engine provided as JBoss Service for all applications to share.
-    The engine is named default.
-    There are currently 0 processes deployed on this engine.
+1. Build it with maven
+2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from camunda.org!!
+3. Access the REST Endpoint:
+[http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.0.0-SNAPSHOT/engine/default/process-definition](http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.0.0-SNAPSHOT/engine/default/process-definition)
