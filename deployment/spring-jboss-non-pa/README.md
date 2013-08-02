@@ -2,9 +2,9 @@
 
 This example demonstrates how to deploy a plain webapplication which 
 
-    * does not include a @ProcessApplication class and does not provide any BPMN 2.0 processes
-    * starts a Spring Webapplication context
-    * binds a shared, container managed process engine as Spring Bean
+  * does not include a @ProcessApplication class and does not provide any BPMN 2.0 processes
+  * starts a Spring Webapplication context
+  * binds a shared, container managed process engine as Spring Bean
 
 ## Why is this example interesting?
 
@@ -12,8 +12,8 @@ The JBoss AS 7 extensions from camunda allow you to manage Process Engines as JB
 provide a @ProcessApplication class, JBoss AS 7 is not aware of the fact that your application uses the process engine. In that case 
 it can happen that:
 
-    * at deployment time, your application is deployed *before* the process engine is started, making the deployment of your app fail.
-    * when the process engine is stopped, your application is not stopped but will likely fail at some point because the process engine is not available anymore.
+  * at deployment time, your application is deployed *before* the process engine is started, making the deployment of your app fail.
+  * when the process engine is stopped, your application is not stopped but will likely fail at some point because the process engine is not available anymore.
 
 This problem can be resolved by adding a declarative dependency between the process engine and some component in your application.
 
@@ -72,11 +72,13 @@ And we add an entry to the manifest so that the process engine classes are added
 
 ## How to use it?
 
-    1. Build it with maven
-    2. Deploy it to JBoss AS 7 (downloaded it from here: http://www.camunda.org/download/)
-    3. Watch out for this console log:
+  1. Build it with maven
+  2. Deploy it to JBoss AS 7 (downloaded it from here: http://www.camunda.org/download/)
+  3. Watch out for this console log:
 
-    Hi there!
-    I am a spring bean and I am using a container managed process engine provided as JBoss Service for all applications to share.
-    The engine is named default.
-    There are currently 0 processes deployed on this engine.
+```bash
+Hi there!
+I am a spring bean and I am using a container managed process engine provided as JBoss Service for all applications to share.
+The engine is named default.
+There are currently 0 processes deployed on this engine.
+```
