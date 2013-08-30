@@ -15,7 +15,12 @@ advantages, including a managed container shared process engine paired with the 
 ## Show me the important parts!
 
 We create a process application class which extends the ServletProcessApplication and annotate it with @ProcessApplication, so
-the deployer of the camunda bpm JBoss subsystem can pick it up and register the process application with the camunda bpm platform without any further actions.
+the deployer of the camunda bpm JBoss subsystem can pick it up and register the process application with the camunda bpm platform without any further actions:
+
+    @ProcessApplication
+    public class SpringServletProcessApplication extends ServletProcessApplication {
+      ...
+    }
 
 Through the ```META-INF/processes.xml```, we can define process archives and additional options, like creating new engines when deploying the process application:
 
