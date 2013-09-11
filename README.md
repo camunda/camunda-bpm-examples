@@ -17,4 +17,4 @@ If you need larger examples, check out the [camunda BPM examples collection](htt
 | ---------------------------------------------------------------------------|--------------------|--------------------|---------------------------|
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | * (Tomcat)         | Deployment         | Spring, REST, EMBEDDED    |
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7         | Deployment         | Spring, Jndi, WAR         |
-
+| [Spring Servlet Webapplication PA](deployment/spring-servlet-pa)           | * (JBoss AS 7)     | Deployment         | Spring, Servlet, WAR      |
