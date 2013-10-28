@@ -8,7 +8,7 @@ Body: Please complete: [LINK TO USERTASK FORM]
 
 ## Why should I care?
 
-Sometimes process participants don't want to wath their task list all day. In those cases, a push notification via email may be convenient.
+Sometimes process participants don't want to watch their task list all day. In those cases, a push notification via email may be convenient.
 
 ## Show me the important parts!
 
@@ -16,7 +16,7 @@ You don't want to see my important parts, but here's what's interesting for deve
 
 When the user task is assigned, an event listener is triggered: org.camunda.bpm.quickstart.TaskAssignmentListener
 
-This Listener will retrieve the email address of the user that has been assigned to the task and then send the email notification.
+This Listener will retrieve the email address of the user that has been assigned and then send the email notification.
 
 ## How to use it?
 
