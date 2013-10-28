@@ -27,4 +27,4 @@ This Listener will retrieve the email address of the user that has been assigned
 5. Start the Process "Task Assignment Email" from camunda Tasklist
 6. Wach your inbox!
 
-Alternatively to steps 3 to 5, you can also run the Test Case TaskAssignmentEmailTest (please set your email adress in the the test class before you execute it).
+Alternatively to steps 2 to 5, you can also run the Test Case TaskAssignmentEmailTest (please set your email adress in the the test class before you execute it).
