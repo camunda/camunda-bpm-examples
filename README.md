@@ -15,7 +15,10 @@ If you need larger examples, check out the [camunda BPM examples collection](htt
 
 | Name                                                                       | Container          | Category           | Keywords                  |
 | ---------------------------------------------------------------------------|--------------------|--------------------|---------------------------|
-| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                | Deployment         | Spring, REST, EMBEDDED    |
-| [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7         | Deployment         | Spring, Jndi, WAR         |
-| [Spring Servlet Webapplication PA](deployment/spring-servlet-pa)           | All                | Deployment         | Spring, Servlet, WAR      |
-| [Task Assignment Email](/usertask/camunda-quickstart-task-assignment-email)| All                | Usertask           | Email, Usertask           |
+| [Process Application - Spring Servlet](deployment/spring-servlet-pa)       | All                | Deployment         | Spring, Servlet, War      |
+| [Process Application - Ejb](deployment/ejb-pa)                             | All Ejb Containers | Deployment         | Ejb, War                  |
+| [Process Application - Servlet](deployment/servlet-pa)                     | All                | Deployment         | Servlet, War              |
+| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                | Deployment         | Spring, Rest, Embedded    |
+| [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7         | Deployment         | Spring, Jndi, War         |
+| [Task Assignment Email](/usertask/task-assignment-email)                   | All                | Usertask           | Email, Usertask           |
+| [Task Form Generated](/usertask/task-form-generated)                       | All                | Usertask           | Html, Form, Usertask      |

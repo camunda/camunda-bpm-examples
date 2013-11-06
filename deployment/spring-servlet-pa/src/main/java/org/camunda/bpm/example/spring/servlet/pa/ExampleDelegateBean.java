@@ -21,7 +21,6 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 public class ExampleDelegateBean implements JavaDelegate {
 
-  @Override
   public void execute(DelegateExecution delegateExecution) throws Exception {
     System.out.println(getClass().getName() + " is currently invoked.");
   }
