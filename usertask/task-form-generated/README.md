@@ -5,7 +5,7 @@ This Quickstart demonstrates how to use the [Generated Forms](http://docs.camund
 ## Show me the important parts!
 
 Both `startEvent` and the `userTask` have form metadata defined:
-
+```xml
 <bpmn2:startEvent id="StartEvent_1" name="Loan Request &#xD;&#xA;Received">
   <bpmn2:extensionElements>
     <camunda:formData>
@@ -23,14 +23,12 @@ Both `startEvent` and the `userTask` have form metadata defined:
           <camunda:constraint name="required" />
         </camunda:validation>
       </camunda:formField>
-      <camunda:formField id="netIncome" label="Net Income"
-        type="long">
+      <camunda:formField id="netIncome" label="Net Income" type="long">
         <camunda:validation>
           <camunda:constraint name="required" />
         </camunda:validation>
       </camunda:formField>
-      <camunda:formField id="loanAmmount" label="Loan Ammount"
-        type="long">
+      <camunda:formField id="loanAmmount" label="Loan Ammount" type="long">
         <camunda:validation>
           <camunda:constraint name="required" />
         </camunda:validation>
@@ -39,7 +37,7 @@ Both `startEvent` and the `userTask` have form metadata defined:
   </bpmn2:extensionElements>
   <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
 </bpmn2:startEvent>
-
+```
 From this form metadata, an HTML Taskform is generated and displayed in the Tasklist.
 
 ## How to use it?
