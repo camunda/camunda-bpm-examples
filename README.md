@@ -13,13 +13,13 @@ If you need larger examples, check out the [camunda BPM examples collection](htt
 
 ## List of quickstarts
 
-| Name                                                                       | Container          | Category           | Keywords                  |
-| ---------------------------------------------------------------------------|--------------------|--------------------|---------------------------|
-| [Task Assignment Email](/usertask/task-assignment-email)                   | All                | Usertask           | Email, Usertask           |
-| [Task Form Generated](/usertask/task-form-generated)                       | All                | Usertask           | Html, Form, Usertask      |
-|                                                                            |                    |                    |                           |
-| [Process Application - Ejb](deployment/ejb-pa)                             | All Ejb Containers | Deployment         | Ejb, War                  |
-| [Process Application - Spring Servlet](deployment/spring-servlet-pa)       | All                | Deployment         | Spring, Servlet, War      |
-| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                | Deployment         | Spring, Rest, Embedded    |
-| [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7         | Deployment         | Spring, Jndi, War         |
+| Name                                                                       | Container          | Category           | Keywords                  | Version |
+| ---------------------------------------------------------------------------|--------------------|--------------------|---------------------------|---------|
+| [Task Assignment Email](/usertask/task-assignment-email)                   | All                | Usertask           | Email, Usertask           | 7.0+    |
+| [Task Form Generated](/usertask/task-form-generated)                       | All                | Usertask           | Html, Form, Usertask      | 7.1+    |
+|                                                                            |                    |                    |                           |         |
+| [Process Application - Ejb](deployment/ejb-pa)                             | All Ejb Containers | Deployment         | Ejb, War                  | 7.0+    |
+| [Process Application - Spring Servlet](deployment/spring-servlet-pa)       | All                | Deployment         | Spring, Servlet, War      | 7.0+    |
+| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                | Deployment         | Spring, Rest, Embedded    | 7.0+    |
+| [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7         | Deployment         | Spring, Jndi, War         | 7.0+    |
 
