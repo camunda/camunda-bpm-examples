@@ -61,7 +61,7 @@ public class SynchronousServiceTask implements JavaDelegate {
 }
 ```
 
-### Reference the JavaDeleagte from BPMN 2.0
+### Reference the JavaDelegate from BPMN 2.0
 
 The Java Deleagte can be referenced using the `class` attribute form the process engine Namespace:
 
