@@ -74,13 +74,13 @@ The `SignallableActivityBehavior` provides two methods: `execute()` and `signal(
 
 ![Asynchronous Service Invocation Sequence][3]
 
-* The `execute(ActivityExecution)`-Method is invoked when the service task is entered. It is typically used for sending an asynchronous message to the actual service. When the method returns, the process engine will NOT continue execution. The `SignallableActivityBehavior` acts as a wait state.
+* The `execute(ActivityExecution)`-Method is invoked when the service task is entered. It is typically used for sending an asynchronous message to the actual service (Business Logic). When the method returns, the process engine will NOT continue execution. The `SignallableActivityBehavior` acts as a wait state.
 
 * The `signal(ActivityExecution, String, Object)`-method is invoked as the process engine is being triggered by the callback. The signal-Method is responsible for leaving the service task activity.
 
 The asynchronous nature of the invocation decouples the process engine from the service implementation. The process engine does not propagate any thread context to the service implementation. Most prominently, the service implementation is not invoked in the context of the process engine transaction. On the contrary, from the point of view of the process engine, the `SignallableActivityBehavior` is a wait state: after the `execute()`-Method returns, the process engine will stop execution, flush out the state of the execution to the database and wait for the callback to occur.
 
-If a failure occurs in the service implementation, the failure will not cause the process engine to roll back. The reason is that the service implementation is not directly invoked by the process engine and does not participate in the process engine transaction.
+If a failure occurs in the service implementation (Business Logic), the failure will not cause the process engine to roll back. The reason is that the service implementation is not directly invoked by the process engine and does not participate in the process engine transaction.
 
 ## How to use it?
 
