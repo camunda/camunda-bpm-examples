@@ -15,6 +15,9 @@ If you need larger examples, check out the [camunda BPM examples collection](htt
 
 | Name                                                                       | Container          | Category           | Keywords                  | Version |
 | ---------------------------------------------------------------------------|--------------------|--------------------|---------------------------|---------|
+| [Service Invocation Sync](/servicetask/service-invocation-synchronous)     | All                | Servicetask        | Java Delegate, Sync       | 7.0+    |
+| [Service Invocation Async](/servicetask/service-invocation-asynchronous)   | All                | Servicetask        | Signal, Async             | 7.0+    |
+|                                                                            |                    |                    |                           |         |
 | [Task Assignment Email](/usertask/task-assignment-email)                   | All                | Usertask           | Email, Usertask           | 7.0+    |
 | [Task Form Generated](/usertask/task-form-generated)                       | All                | Usertask           | Html, Form, Usertask      | 7.1+    |
 |                                                                            |                    |                    |                           |         |
