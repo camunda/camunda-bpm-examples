@@ -105,5 +105,5 @@ state is the usertask preceding the service task ("Wait State Before").
 3. Inspect the sources and
 
 [1]: docs/process-model.png
-[1]: docs/service-camunda-modeler.png
-[2]: docs/synchronous-service-invocation-sequence.png
+[2]: docs/service-camunda-modeler.png
+[3]: docs/synchronous-service-invocation-sequence.png
