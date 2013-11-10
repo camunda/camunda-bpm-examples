@@ -80,12 +80,12 @@ Using camunda Modeler, you can configure the service task using the properties p
 
 By default, the process engine always uses the client thread to do work. In this example, the unit test
 triggers the process engine using the `completeTask()` method. The process engine uses that very thread to
-advance execution from the user task to the service task and invoke the `execure()`-Method provided by the
+advance execution from the user task to the service task and invoke the `execute()`-Method provided by the
 `Java Delegate` implementation:
 
 ![Synchronous Service Invocation Sequence][3]
 
-This blocks the process engine from advancing in this process
+This blocks the process engine from advancing in the process
 instance until the call returns.
 
 The synchronous nature of the invocation allows to leverage Thread Context:
@@ -102,7 +102,7 @@ state is the usertask preceding the service task ("Wait State Before").
 
 1. Checkout the prokject with Git
 2. Import into your IDE
-3. Inspect the sources and
+3. Inspect the sources and run the unit test.
 
 [1]: docs/process-model.png
 [2]: docs/service-camunda-modeler.png
