@@ -18,7 +18,7 @@ public class BusinessLogic {
   
   public static BusinessLogic INSTANCE = new BusinessLogic();
     
-  public void processMessage(Message message, ProcessEngine processEngine) {    
+  public void invoke(Message message, ProcessEngine processEngine) {    
     
     // Process the message and send a callback.
     

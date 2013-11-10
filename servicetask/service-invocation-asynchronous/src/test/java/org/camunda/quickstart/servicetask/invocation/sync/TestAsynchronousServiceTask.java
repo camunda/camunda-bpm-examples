@@ -68,7 +68,7 @@ public class TestAsynchronousServiceTask {
 
     // Next, trigger the business logic. This will send the callback to the process engine.
     // When this method call returns, the process instance will be waiting in the next waitstate.
-    BusinessLogic.INSTANCE.processMessage(message, processEngine);
+    BusinessLogic.INSTANCE.invoke(message, processEngine);
     
     // the process instance is now waiting in the second wait state (user task):
     Task waitStateAfter = taskService.createTaskQuery()
@@ -119,7 +119,7 @@ public class TestAsynchronousServiceTask {
 
     // Next, trigger the business logic. In this case, this will throw an exception:
     try {
-      BusinessLogic.INSTANCE.processMessage(message, processEngine);
+      BusinessLogic.INSTANCE.invoke(message, processEngine);
       fail("exception expected!");
     } catch (Exception e) {
       assertTrue(e.getMessage().contains("Service invocation failure!"));

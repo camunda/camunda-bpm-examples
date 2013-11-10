@@ -53,6 +53,33 @@ public class AsynchronousServiceTask extends AbstractBpmnActivityBehavior {
 }
 ```
 
+The actual business logic is placed inside a different class and invoked by the message queue:
+
+``` java
+public class BusinessLogic {
+
+  public static final String PRICE_VAR_NAME = "price";
+  public static final float PRICE = 199.00f;
+
+  public void invoke(Message message, ProcessEngine processEngine) {
+
+    // Process the message and send a callback.
+
+    // Extract values from payload:
+    Map<String, Object> requestPayload = message.getPayload();
+    // the execution id is used as correlation identifier
+    String executionId = (String) requestPayload.get(AsynchronousServiceTask.EXECUTION_ID);
+
+    // Send the callback to the process engine. In this example we send
+    // a synchronous callback. We could also send an asynchronous callback
+    // using a message queue.
+    Map<String, Object> callbackPayload = Collections.<String,Object>singletonMap(PRICE_VAR_NAME, PRICE);
+    processEngine.getRuntimeService().signal(executionId, callbackPayload);
+
+  }
+}
+```
+
 ### Reference the Signallable Activity Behavior from BPMN 2.0
 
 The Java Deleagte can be referenced using the `class` attribute form the process engine Namespace:
