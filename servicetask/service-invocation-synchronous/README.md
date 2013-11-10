@@ -21,7 +21,7 @@ The process model is composed of three tasks:
 * Synchronous Service Task: the service task invoked by the process engine in a synchronous fashion.
 * Wait State After: in case of a successful invocation, the process instance will advance to here.
 
-### Create A Java Delegate Implementation
+### Create a Java Delegate Implementation
 
 Implement the `org.camunda.bpm.engine.delegate.JavaDelegate` interface:
 
