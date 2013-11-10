@@ -102,7 +102,7 @@ state is the usertask preceding the service task ("Wait State Before").
 
 ## How to use it?
 
-1. Checkout the prokject with Git
+1. Checkout the project with Git
 2. Import into your IDE
 3. Inspect the sources and run the unit test.
 
