@@ -30,8 +30,8 @@ This quickstart demonstrates the use of most of the supported form controls. See
 
 ### Input Text
 
-``` html
-<input form-field required type="text" name="firstname" id="inputFirstname" placeholder="John" ng-minlength="2" ng-maxlength="20">
+```html
+<input form-field required type="text" name="firstname" placeholder="John" ng-minlength="2" ng-maxlength="20">
 ```
 
 ### Input Number
