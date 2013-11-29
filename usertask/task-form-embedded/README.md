@@ -8,7 +8,7 @@ This Quickstart demonstrates how to use the [Embedded Forms](http://docs.camunda
 
 ## Where are embedded taskforms added?
 
-Embedded Forms can be added to the web resources of a web application. Since we use maven, they are added to the `src/main/webappp` folder of your project.
+Embedded Forms can be added to the web resources of a web application. Since we use maven, they are added to the [src/main/webapp][4] folder of your project.
 
 ## How are embedded taskforms referenced?
 
@@ -86,3 +86,4 @@ This quickstart demonstrates the use of most of the supported form controls. See
 [1]: docs/screenshot.png
 [2]: docs/screenshot-modeler.png
 [3]: src/main/webapp/start-form.html
+[4]: src/main/webapp
