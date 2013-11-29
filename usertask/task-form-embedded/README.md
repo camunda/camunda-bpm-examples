@@ -8,7 +8,7 @@ This Quickstart demonstrates how to use the [Embedded Forms](http://docs.camunda
 
 ## Where are embedded taskforms added?
 
-Embedded Forms can be added to the web resources of a web application. Since we use maven, they are added to the `src/main/webappp` folder of your project.
+Embedded Forms can be added to the web resources of a web application. Since we use maven, they are added to the [src/main/webapp][4] folder of your project.
 
 ## How are embedded taskforms referenced?
 
@@ -26,12 +26,12 @@ The attribute can also be set through the properties panel using camunda modeler
 
 ## Which form controls are used in this Quickstart?
 
-This quickstart demonstrates the use of the following form controls:
+This quickstart demonstrates the use of most of the supported form controls. See [start-form.html][3] for the complete example.
 
 ### Input Text
 
-``` html
-<input form-field required type="text" name="firstname" id="inputFirstname" placeholder="John" ng-minlength="2" ng-maxlength="20">
+```html
+<input form-field required type="text" name="firstname" placeholder="John" ng-minlength="2" ng-maxlength="20">
 ```
 
 ### Input Number
@@ -62,7 +62,7 @@ This quickstart demonstrates the use of the following form controls:
 </label>
 ```
 
-## Textarea
+### Textarea
 
 ```html
 <textarea form-field name="address" rows="4"> </textarea>
@@ -85,3 +85,5 @@ This quickstart demonstrates the use of the following form controls:
 
 [1]: docs/screenshot.png
 [2]: docs/screenshot-modeler.png
+[3]: src/main/webapp/start-form.html
+[4]: src/main/webapp
