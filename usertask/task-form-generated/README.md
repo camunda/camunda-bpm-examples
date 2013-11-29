@@ -4,7 +4,7 @@ This Quickstart demonstrates how to use the [Generated Forms](http://docs.camund
 
 ![Generated Forms Modeler Screenshot][2]
 
-Form this, the process engine can generate a HTML form which can be displayed in the tasklist:
+From this, the process engine can generate a HTML form which can be displayed in the tasklist:
 
 ![Generated Forms Screenshot][1]
 
@@ -54,10 +54,10 @@ From this form metadata, an HTML Taskform is generated and displayed in the Task
 
 ## How to use it?
 
-1. Checkout the prokject with Git
+1. Checkout the project with Git
 2. Build the project with maven
 3. Deploy the war file to a camunda BPM platform distribution
-4. Go the the Tasklist and start a process instance for the process named "Generated Forms Quickstart"
+4. Go to the Tasklist and start a process instance for the process named "Generated Forms Quickstart"
 
 [1]: docs/screenshot.png
 [2]: docs/screenshot-modeler.png
