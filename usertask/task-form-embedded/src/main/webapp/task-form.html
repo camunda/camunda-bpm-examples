@@ -1,0 +1,42 @@
+<h2>Request Summary</h2>
+
+<table>
+
+  <tr>
+    <td>Type of the loan:</td>
+    <td>{{formVariable('loanType')}}</td>
+  </tr>
+
+  <tr>
+    <td>Amount:</td>
+    <td>{{formVariable('loanAmount')}}</td>
+  </tr>
+
+  <tr>
+    <td>Runtime (Years):</td>
+    <td>{{formVariable('loanRuntime')}}</td>
+  </tr>
+
+  <tr>
+</table>
+
+<h2>Contact Data:</h2>
+
+<address>
+  <strong>
+    <span ng-if="formVariable('gender') == 'w'">Mrs.</span>
+    <span ng-if="formVariable('gender') == 'm'">Mr.</span>
+    {{formVariable('firstname')}} {{formVariable('lastname')}}
+  </strong><br>
+  {{formVariable('address')}}<br>
+  <a href="mailto:#">{{formVariable('email')}}</a>
+</address>
+
+<h2>Approval</h2>
+
+Do you approve this request?
+
+<!-- Gender -->
+<div class="control-group">
+  <input form-field type="boolean" name="Yes, I approve">
+</div>

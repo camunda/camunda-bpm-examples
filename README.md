@@ -18,6 +18,7 @@ If you need larger examples, check out the [camunda BPM examples collection](htt
 | [Service Invocation Sync](/servicetask/service-invocation-synchronous)     | All                | Servicetask        | Java Delegate, Sync       | 7.0+    |
 | [Service Invocation Async](/servicetask/service-invocation-asynchronous)   | All                | Servicetask        | Signal, Async             | 7.0+    |
 | [Task Assignment Email](/usertask/task-assignment-email)                   | All                | Usertask           | Email, Usertask           | 7.0+    |
+| [Task Form Embedded](/usertask/task-form-embedded)                         | All                | Usertask           | Html, Form, Usertask      | 7.1+    |
 | [Task Form Generated](/usertask/task-form-generated)                       | All                | Usertask           | Html, Form, Usertask      | 7.1+    |
 | [Process Application - Ejb](deployment/ejb-pa)                             | All Ejb Containers | Deployment         | Ejb, War                  | 7.0+    |
 | [Process Application - Spring Servlet](deployment/spring-servlet-pa)       | All                | Deployment         | Spring, Servlet, War      | 7.0+    |

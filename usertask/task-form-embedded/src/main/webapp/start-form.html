@@ -1,0 +1,141 @@
+<div class="row-fluid">
+
+  <div class="span6">
+    <h2>Loan Data</h2>
+
+    <!-- Loan Type -->
+    <div class="control-group">
+      <label class="control-label" for="selectLoanType">Type of the loan</label>
+      <div class="controls">
+
+        <!--select box -->
+        <select id="selectLoanType" form-field type="string" name="loanType" required ng-change="calculateLoan()">
+          <option value="mortage" checked>Mortage Loan (5%)</option>
+          <option value="cashAdvance">Cash Advance (10%)</option>
+        </select>
+
+      </div>
+
+      <!-- Custom validation message for select box -->
+      <p ng-if="variablesForm.loanType.$invalid" style="color: red">
+        Please select a loan type.
+      </p>
+    </div>
+
+    <!-- Loan Amount -->
+    <div class="control-group">
+      <label class="control-label" for="inputLoanAmount">Amount</label>
+      <div class="controls">
+        <input form-field required type="number" id="inputLoanAmount" name="loanAmount" min="1000" ng-change="calculateLoan()">
+      </div>
+    </div>
+
+    <!-- Runtime in Years -->
+    <div class="control-group">
+      <label class="control-label" for="inputLoanRuntime">Runtime (Years)</label>
+      <div class="controls">
+        <input form-field required type="number" id="inputLoanRuntime" name="loanRuntime" ng-change="calculateLoan()"
+        min="2" max="30">
+      </div>
+    </div>
+
+    <!-- calculate monthly payment -->
+    Projected monthly payment:
+    <p ng-if="monthlyPayment" class="alert alert-success">
+      {{monthlyPayment}}€ at {{interest}}% interest rate.
+    </p>
+
+    <p ng-if="!monthlyPayment" class="alert alert-error">
+      Invalid selection.
+    </p>
+
+    <!-- The following code demonstrates use of custom scripting.
+
+          The 'form-script' directive makes sure the the script is loaded and can bind to the angular $scope for the form.
+
+          Access to form fields is provided through $scope.variablesForm.
+       -->
+    <script form-script type="text/form-script">
+
+      $scope.calculateLoan = function() {
+
+        var form = $scope.variablesForm;
+
+        if(!form.loanType.$valid || !form.loanAmount.$valid || !form.loanRuntime.$valid) {
+          $scope.monthlyPayment = undefined;
+
+        } else {
+
+          var loanAmount = form.loanAmount.$modelValue;
+          var years = form.loanRuntime.$modelValue;
+          var loanType = form.loanType.$modelValue;
+          var interestRate = 0;
+
+          if(loanType == "mortage") {
+            interestRate = 0.05;
+          } else if(loanType == "cashAdvance") {
+            interestRate = 0.10;
+          }
+
+          $scope.interest = 100 * interestRate;
+
+          // calculate monthly payment using special formula provided by Bobby G
+          $scope.monthlyPayment = Math.round((loanAmount * ((Math.pow((1+interestRate),years)*interestRate) / (Math.pow((1+interestRate),years)-1))) * (1/12));
+
+        }
+      }
+
+    </script>
+
+  </div>
+
+  <div class="span6">
+    <h2>Contact Data</h2>
+
+    <!-- Gender -->
+    <div class="control-group">
+     <label class="radio inline">
+        <input form-field type="radio" name="gender" value="m">
+        Mr.
+      </label>
+      <label class="radio inline">
+        <input form-field type="radio" name="gender" value="w">
+        Mrs.
+      </label>
+    </div>
+
+    <!-- Firstname -->
+    <div class="control-group">
+      <label class="control-label" for="inputFirstname">Firstname</label>
+      <div class="controls">
+        <input form-field required type="text" name="firstname" id="inputFirstname" placeholder="John" ng-minlength="2" ng-maxlength="20">
+      </div>
+    </div>
+
+    <!-- Lastname -->
+    <div class="control-group">
+      <label class="control-label" for="inputLastname">Lastname</label>
+      <div class="controls">
+        <input form-field required type="text" name="lastname" id="inputLastname" placeholder="Doe"  ng-minlength="2" ng-maxlength="20">
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="control-group">
+      <label class="control-label" for="inputEmail">Email</label>
+      <div class="controls">
+        <input form-field required type="text" name="email" id="inputEmail" placeholder="john.doe@camunda.org" ng-minlength="2" ng-maxlength="20">
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="control-group">
+      <label class="control-label" for="inputAddress">Address</label>
+      <div class="controls">
+        <textarea form-field name="address" rows="4" id="inputAddress"> </textarea>
+      </div>
+    </div>
+
+  </div>
+
+</div>

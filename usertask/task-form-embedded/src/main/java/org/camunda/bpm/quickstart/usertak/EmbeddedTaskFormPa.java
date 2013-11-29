@@ -27,6 +27,6 @@ import org.camunda.bpm.application.impl.ServletProcessApplication;
  * 
  */
 @ProcessApplication
-public class GeneratedTaskFormPa extends ServletProcessApplication {
+public class EmbeddedTaskFormPa extends ServletProcessApplication {
 
 }
