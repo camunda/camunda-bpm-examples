@@ -2,7 +2,7 @@
 
 This Quickstart demonstrates how to use the [Embedded Forms](http://docs.camunda.org/latest/guides/user-guide/#embedded-task-forms) Feature. Embedded Forms are plain HTML5 documents which can be loaded from your app and rendered embedded inside the camunda Tasklist:
 
-
+![Embedded Forms Screenshot][1]
 
 # Overview
 
@@ -80,3 +80,5 @@ This quickstart demonstrates the use of the following form controls:
 2. Build the project with maven
 3. Deploy the war file to a camunda BPM platform distribution
 4. Go the the Tasklist and start a process instance for the process named "Embedded Forms Quickstart"
+
+[1]: docs/screenshot.png
