@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+  <f:metadata>
+    <f:event type="preRenderView" listener="#{camunda.taskForm.startProcessInstanceByKeyForm()}" />
+  </f:metadata>
+  <title>Submit Loan Request</title>
+</h:head>
+<h:body>
+  <h2>Start Process Instance</h2>
+  <h1>External Forms Quickstart</h1>
+  <hr />
+  <h1>Submit Loan Request</h1>
+  <h:form id="submitForm">
+    <h:panelGrid columns="2">  
+    	<p>
+   	    <label for="firstname">Firstname</label>
+        <h:inputText id="firstname" value="#{processVariables['firstname']}" required="true" />
+    	</p>
+    	<p>
+   	    <label for="lastname">Lastname</label>
+        <h:inputText id="lastname" value="#{processVariables['lastname']}" required="true" />
+    	</p> 
+    	<p>
+   	    <label for="netIncome">Net Income</label>
+        <h:inputText id="netIncome" value="#{processVariables['netIncome']}" converter="javax.faces.Integer" required="true" />      
+    	</p>  
+    	<p>
+   	    <label for="amount">Loan Amount</label>
+        <h:inputText id="amount" value="#{processVariables['amount']}" converter="javax.faces.Integer" required="true" />      
+    	</p>
+    </h:panelGrid>
+
+    <h:commandButton id="submit_button" value="Submit Request" action="#{camunda.taskForm.completeProcessInstanceForm()}" />
+  
+  	<h:messages style="color:red;margin:8px;" />
+  </h:form>
+</h:body>
+</html>
