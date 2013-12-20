@@ -1,10 +1,10 @@
 # External Task Forms
 
-This Quickstart demonstrates how to use the [External Forms](http://docs.camunda.org/latest/guides/user-guide/#tasklist-task-forms-external-task-forms) Feature. External Forms are JSF forms which can be loaded from your app and started via the camunda Tasklist:
+This Quickstart demonstrates how to use the [External Forms](http://docs.camunda.org/latest/guides/user-guide/#tasklist-task-forms-external-task-forms) Feature. External Forms are HTML forms which can be loaded from your app and started via the camunda Tasklist:
 
 ![External Forms Tasklist Screenshot][1]
 
-After the process start, the JSF Form is rendered in a new window.
+After the process start, the HTML form is rendered in a new window.
 
 ![External Forms Screenshot][2]
 
@@ -28,7 +28,7 @@ The attribute can also be set through the properties panel using camunda modeler
 
 ![External Forms Screenshot Modeler][3]
 
-For more information see [JSF Task Forms](http://docs.camunda.org/latest/real-life/how-to/#user-interface-jsf-task-forms) 
+For more detailed information to External Task Forms see [JSF Task Forms](http://docs.camunda.org/latest/real-life/how-to/#user-interface-jsf-task-forms)
 
 ## How to use it?
 
