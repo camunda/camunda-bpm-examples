@@ -1,20 +1,20 @@
 # External Task Forms
 
-This Quickstart demonstrates how to use the [External Forms](http://docs.camunda.org/latest/guides/user-guide/#tasklist-task-forms-external-task-forms) Feature. External Forms are HTML forms which can be loaded from your app and started via the camunda Tasklist:
+This Quickstart demonstrates how to use Java Server Faces (JSF) forms as [External Forms](http://docs.camunda.org/latest/guides/user-guide/#tasklist-task-forms-external-task-forms). External Forms can be loaded from your app and started via the camunda Tasklist:
 
 ![External Forms Tasklist Screenshot][1]
 
-After the process start, the HTML form is rendered in a new window.
+The JSF form is rendered in a new window.
 
 ![External Forms Screenshot][2]
 
 # Overview
 
-## Where are external taskforms added?
+## Where are external JSF taskforms added?
 
 External Forms can be added to the web resources of a web application. Since we use maven, they are added to the [src/main/webapp][4] folder of your project.
 
-## How are external taskforms referenced?
+## How are external JSF taskforms referenced?
 
 External Taskforms are referenced using the `camunda:taskKey` property of a BPMN `<startEvent>` or a BPMN `<userTask>`:
 
