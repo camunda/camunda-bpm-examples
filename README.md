@@ -20,6 +20,7 @@ If you need larger examples, check out the [camunda BPM examples collection](htt
 | [Task Assignment Email](/usertask/task-assignment-email)                   | All                | Usertask           | Email, Usertask           | 7.0+    |
 | [Task Form Embedded](/usertask/task-form-embedded)                         | All                | Usertask           | Html, Form, Usertask      | 7.1+    |
 | [Task Form Generated](/usertask/task-form-generated)                       | All                | Usertask           | Html, Form, Usertask      | 7.1+    |
+| [Task Form JSF](/usertask/task-form-external-jsf)                          | All                | Usertask           | JSF, Form, Usertask      | 7.1+    |
 | [Process Application - Ejb](deployment/ejb-pa)                             | All Ejb Containers | Deployment         | Ejb, War                  | 7.0+    |
 | [Process Application - Spring Servlet](deployment/spring-servlet-pa)       | All                | Deployment         | Spring, Servlet, War      | 7.0+    |
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                | Deployment         | Spring, Rest, Embedded    | 7.0+    |
