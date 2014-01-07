@@ -120,7 +120,7 @@ For more detailed information to External Task Forms see [JSF Task Forms](http:/
 
 1. Checkout the project with Git
 2. Build the project with maven
-3. Deploy the war file to a camunda BPM platform distribution
+3. Deploy the war file to a camunda BPM platform distribution (Use *JBoss or Glassfish distribution*).
 4. Go to the Tasklist and start a process instance for the process named "External Forms Quickstart"
 
 [1]: docs/screenshot-tasklist.png
