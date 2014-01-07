@@ -10,6 +10,100 @@ The JSF form is rendered in a new window.
 
 # Overview
 
+## Source code of a JSF taskform
+
+The following is the sourcecode of the JSF form used to start the process (the one in the screenshot displayed above):
+
+```html
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+  <f:metadata>  	
+    <!-- Start a new process instance. Process Definition Key is read internally from 
+         request parameters and cached in the CDI conversation scope.
+
+         NOTE: Syntax is different when working on user task forms, see file "approveLoanRequest.xhtml".
+    -->
+    <f:event type="preRenderView" listener="#{camunda.taskForm.startProcessInstanceByKeyForm()}" />    
+  </f:metadata>
+  <title>Submit Loan Request</title>
+</h:head>
+<h:body>
+  <h2>Start Process Instance</h2>
+  <h1>External Forms Quickstart</h1>
+  <hr />
+  <h1>Submit Loan Request</h1>
+  <h:form id="submitForm">
+    <h:panelGrid columns="2">  
+    	<p>
+   	    <label for="firstname">Firstname</label>
+   	    <!-- we can create process variables using the "processVariables" map -->
+        <h:inputText id="firstname" value="#{processVariables['firstname']}" required="true" />
+    	</p>
+    	<p>
+   	    <label for="lastname">Lastname</label>
+        <h:inputText id="lastname" value="#{processVariables['lastname']}" required="true" />
+    	</p> 
+    	<p>
+   	    <label for="netIncome">Net Income</label>
+        <h:inputText id="netIncome" value="#{processVariables['netIncome']}" converter="javax.faces.Integer" required="true" />      
+    	</p>  
+    	<p>
+   	    <label for="amount">Loan Amount</label>
+        <!-- use type converters to convert process variables to the correct type. -->
+        <h:inputText id="amount" value="#{processVariables['amount']}" converter="javax.faces.Integer" required="true" />      
+    	</p>
+    </h:panelGrid>
+
+    <!-- The button starts a new process instance. This ends the conversation and redirects us to the tasklist.
+    
+         NOTE: Syntax is different when working on user task forms, see file "approveLoanRequest.xhtml".
+    -->
+    <h:commandButton id="submit_button" value="Submit Request" action="#{camunda.taskForm.completeProcessInstanceForm()}" />
+  
+  	<h:messages style="color:red;margin:8px;" />
+  </h:form>
+</h:body>
+</html>
+```
+
+This example also provides a Task Form associated with a user task. In that case, the usage of the 'taskForm' bean is slightly different:
+
+```html
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+  <f:metadata>
+    <!-- Start working on a task. Task Id is read internally from request parameters and cached in the CDI conversation scope.
+
+         NOTE: Syntax is different when starting a process instance, see file "submitLoanRequest.xhtml".
+    -->
+    <f:event type="preRenderView" listener="#{camunda.taskForm.startTaskForm()}" />
+  </f:metadata>
+  <title>Approve Loan Request</title>
+</h:head>
+<h:body>
+
+  ... 
+
+    <!-- The button completes the current task. This ends the conversation and redirects us to the tasklist.
+    
+         NOTE: Syntax is different when starting a process instance, see file "submitLoanRequest.xhtml".
+    -->
+    <h:commandButton id="approve_button" value="Approve Request" action="#{camunda.taskForm.completeTask()}" />
+
+  </h:form>
+</h:body>
+</html>
+```
+
+
 ## Where are external JSF taskforms added?
 
 External Forms can be added to the web resources of a web application. Since we use maven, they are added to the [src/main/webapp][4] folder of your project.
