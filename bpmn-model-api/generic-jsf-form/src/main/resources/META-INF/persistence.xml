@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <!-- TODO: check if you really want to use the process engine datasource. Note that the following is written for JBoss AS 7 -->
+  <persistence-unit name="generic-jsf-form-PU" transaction-type="JTA">
+    <jta-data-source>java:jboss/datasources/ProcessEngine</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+    </properties>
+  </persistence-unit>
+
+</persistence>

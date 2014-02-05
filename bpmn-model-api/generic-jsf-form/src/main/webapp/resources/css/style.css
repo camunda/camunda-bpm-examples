@@ -1,0 +1,16 @@
+.quickstart-info {
+    margin: 30px 15px;
+}
+
+.quickstart-form {
+    margin: 10px 15px;
+    padding: 20px 20px;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.quickstarts-buttons input {
+    margin-right: 1em;
+}

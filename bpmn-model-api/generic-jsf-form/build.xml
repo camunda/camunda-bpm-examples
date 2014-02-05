@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="generic-jsf-form" default="deploy.jboss">
+
+	<property file="build.properties" />
+	<property file="${user.home}/.camunda/build.properties" />
+	<property name="target.dir" value="target" />
+
+	<condition property="mvn.executable" value="mvn.bat" else="mvn">
+		<os family="windows"/>
+	</condition>
+
+	<target name="package.mvn">
+		<exec executable="${mvn.executable}" dir="." failonerror="true">
+			<env key="MAVEN_OPTS" value="-Xmx1024m -Xms512m -DskipTests=true -Dmaven.test.skip=true" />
+			<arg line="clean package" />
+		</exec>
+	</target>
+
+	<target name="deploy.jboss" depends="package.mvn" description="Copies the process application to the deployment directory defined in '${basedir}/build.properties' or '${user.home}/.camunda/build.properties'">
+		<fail unless="deploy.jboss.dir" message="No deployment folder has been configured. Please copy the file '${basedir}/build.properties.example' to '${basedir}/build.properties' or '${user.home}/.camunda/build.properties' and change it according to your environment." />
+		<copy file="${target.dir}/${ant.project.name}.war" todir="${deploy.jboss.dir}" />
+	</target>
+
+	<target name="undeploy" description="Deletes the process application from the deployment directory defined in '${basedir}/build.properties' or '${user.home}/.camunda/build.properties'">
+		<delete file="${deploy.jboss.dir}/${ant.project.name}.war" />
+	</target>
+
+</project>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+  <h:head>
+    <f:metadata>
+      <f:viewParam id="taskId" name="taskId" />
+      <f:viewParam id="callbackUrl" name="callbackUrl" />
+      <f:event type="preRenderView"
+        listener="#{camunda.taskForm.startTask(taskId, callbackUrl)}" />
+    </f:metadata>
+
+    <h:outputStylesheet library="webjars/bootstrap/2.3.2/css" name="bootstrap.css"/>
+    <h:outputStylesheet library="css" name="style.css"  />
+    <!-- if you need it - it is right there:
+    <h:outputScript type="text/javascript" library="webjars/bootstrap/2.3.2/js" name="bootstrap.js" />
+    -->
+
+    <title>Task: #{task.name}</title>
+
+  </h:head>
+  <h:body>
+    <div class="container">
+      <div class="row quickstart-info">
+          <h1>BPMN model API JSF form example</h1>
+          <p>
+              This examples shows a generic JSF form which gathers informations from the actual BPMN process definition.
+          </p>
+          <p>
+              It displays the <code>name</code> attribute of the following exclusive gatway as form title.
+              The Buttons are generated from the outgoing sequence flow <code>conditions</code> of the exclusive
+              gateway. Which means an additional sequence flow would led to another button and so on.
+          </p>
+      </div>
+      <div class="row quickstart-form">
+        <h:form>
+          <fieldset class="quickstarts-buttons">
+            <legend>#{userTaskController.question} &lt;#{processVariables['ticket-title']}&gt;</legend>
+            <ui:repeat value="#{userTaskController.buttons}" var="context">
+                <h:commandButton action="#{userTaskController.completeTask(context['variableName'], context['variableValue'])}" value="#{context['conditionName']}" styleClass="btn btn-large btn-primary" />
+            </ui:repeat>
+          </fieldset>
+        </h:form>
+      </div>
+    </div>
+  </h:body>
+</html>

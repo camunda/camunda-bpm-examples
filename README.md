@@ -25,5 +25,6 @@ If you need larger examples, check out the [camunda BPM examples collection](htt
 | [Process Application - Spring Servlet](deployment/spring-servlet-pa)       | All                | Deployment         | Spring, Servlet, War      | 7.0+    |
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                | Deployment         | Spring, Rest, Embedded    | 7.0+    |
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7         | Deployment         | Spring, Jndi, War         | 7.0+    |
-| [Create invoice process](/bpmn-model-api/generate-invoice-process)         | All                | BPMN model API     | BPMN API, Fluent API      | 7.1+    |   
+| [Create invoice process](/bpmn-model-api/generate-invoice-process)         | All                | BPMN model API     | BPMN API, Fluent API      | 7.1+    |
+| [Generic JSF forms](/bpmn-model-api/generic-jsf-form)                      | All                | BPMN model API     | BPMN API, JSF, Form       | 7.1+    |
 
