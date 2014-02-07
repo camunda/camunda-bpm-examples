@@ -74,7 +74,7 @@ public class CreateInvoiceProcessTest {
         .className("org.camunda.bpm.example.invoice.service.ArchiveInvoiceService")
       .endEvent()
         .name("Invoice processed")
-      .parallel()
+      .moveToLastGateway()
       .condition("no", "${!approved}")
       .userTask()
         .name("Review Invoice")
@@ -86,7 +86,7 @@ public class CreateInvoiceProcessTest {
       .condition("no", "${!clarified}")
       .endEvent()
         .name("Invoice not processed")
-      .parallel()
+      .moveToLastGateway()
       .condition("yes", "${clarified}")
       .connectTo("approveInvoice")
       .done();

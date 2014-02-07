@@ -126,9 +126,9 @@ the pattern is the following:
 
 1. create a gateway (optionally set an ID)
 2. create the first execution path till another gateway or end event
-3. jump back to a gateway to create a parallel execution
- 1. jump back to the last unique gateway with the method `.parallel()`, or
- 2. jump to a specific gateway by id with the method `.parallel(gatewayId)`
+3. jump back to a gateway to create a new execution path
+ 1. jump back to the last unique gateway with the method `.moveToLastGateway()`, or
+ 2. jump to a specific gateway by id with the method `.moveToNode(gatewayId)`
 
 ```java
 BpmnModelInstance modelInstance = Bpmn.createProcess()
@@ -147,7 +147,7 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
     .className("org.camunda.bpm.example.invoice.service.ArchiveInvoiceService")
   .endEvent()
     .name("Invoice processed")
-  .parallel()
+  .moveToLastGateway()
   .condition("no", "${!approved}")
   .userTask()
     .name("Review Invoice")
@@ -178,7 +178,7 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .condition("no", "${!clarified}")
   .endEvent()
     .name("Invoice not processed")
-  .parallel()
+  .moveToLastGateway()
   .condition("yes", "${clarified}")
   .connectTo("approveInvoice")
   .done();
