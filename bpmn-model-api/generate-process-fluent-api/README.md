@@ -1,8 +1,8 @@
-# Create invoice process with BPMN model API
+# Create process with fluent BPMN model API
 
 This quickstart demonstrates how to create a process with the BPMN model API. We
 will learn how to create even complex BPMN processes with the fluent builder API of the
-BPMN model API. 
+BPMN model API.
 
 After this quickstart you will be able to create processes with the
 BPMN model API composed of the following elements:
