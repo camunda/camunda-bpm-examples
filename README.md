@@ -46,8 +46,8 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 
 | Name                                                                       | Keywords                  | Version |
 | ---------------------------------------------------------------------------|---------------------------|---------|
-| [Custom Task Simple](/modeler/custom-task-simple)                          | Plugin, Eclipse			 | 7.0+    |
-| [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse			 | 7.0+    |
+| [Custom Task Simple](/modeler/custom-task-simple)                          | Plugin, Eclipse			 | 2.3+    |
+| [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse			 | 2.3+    |
 
 
 ## Repository Details
