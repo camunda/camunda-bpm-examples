@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Modeler Tasks
+Bundle-SymbolicName: com.mycompany.modeler.tasks;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.mycompany.modeler.tasks.Activator
+Bundle-Vendor: MY COMPANY
+Require-Bundle: org.eclipse.emf,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.workbench,
+ org.eclipse.ui.views.properties.tabbed,
+ org.camunda.bpm.modeler;bundle-version="2.3.0",
+ org.eclipse.bpmn2,
+ org.eclipse.graphiti,
+ org.eclipse.graphiti.ui,
+ org.eclipse.ui.ide.application,
+ org.eclipse.platform
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

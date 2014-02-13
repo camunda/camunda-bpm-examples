@@ -1,0 +1,17 @@
+<div>
+  <h1>Process Instances per Definition</h1>
+  <table class="table table-bordered table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Instances</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-ng-repeat="count in processInstanceCounts">
+        <td>{{ count.key }}</td>
+        <td>{{ count.instanceCount }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

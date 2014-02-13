@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.camunda.bpm.modeler.plugin.customtask">
+		<provider class="org.camunda.bpm.modeler.plugin.customtask.sample.SampleTaskProvider">
+		</provider>
+	</extension>
+	<extension
+		 point="org.eclipse.graphiti.ui.imageProviders">
+		<!--
+		   kepler+ only support for adding custom images
+		-->
+		<imageProvider
+		    class="org.camunda.bpm.modeler.plugin.customtask.sample.Images"
+		    id="org.camunda.bpm.modeler.plugin.customtask.sample.imageProvider">
+		<diagramTypeProvider
+		   id="org.camunda.bpm.modeler.ui.diagram.Bpmn2DiagramTypeProvider">
+		 </diagramTypeProvider>
+		</imageProvider>
+	</extension>
+</plugin>
