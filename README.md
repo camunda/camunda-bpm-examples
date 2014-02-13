@@ -9,7 +9,7 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 * <a href="#cockpit-examples">Cockpit</a>
 * <a href="#camunda-modeler-examples">camunda Modeler (Eclipse)</a>
 
-## BPMN 2.0 & Process Implementation Examples
+### BPMN 2.0 & Process Implementation Examples
 
 | Name                                                                       | Container            | Keywords                  | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
@@ -20,7 +20,7 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 | [Task Form Generated](/usertask/task-form-generated)                       | All                  | Html, Form, Usertask      | 7.1+    |
 | [Task Form JSF](/usertask/task-form-external-jsf)                          | JavaEE Containers    | JSF, Form, Usertask       | 7.1+    |
 
-## Deployment & Project Setup Examples
+### Deployment & Project Setup Examples
 
 | Name                                                                       | Container            |  Keywords                 | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
@@ -29,20 +29,20 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                  | Spring, Rest, Embedded    | 7.0+    |
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7           | Spring, Jndi, War         | 7.0+    |
 
-## Bpmn 2.0 Model API Examples
+### Bpmn 2.0 Model API Examples
 
 | Name                                                                       | Container            | Keywords                  | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
 | [Generate BPMN process](/bpmn-model-api/generate-invoice-process)          | All                  | Fluent API                | 7.1+    |
 | [Generate JSF forms](/bpmn-model-api/generic-jsf-form)                     | JavaEE Containers    | JSF, Usertask             | 7.1+    |
 
-## Cockpit Examples
+### Cockpit Examples
 
 | Name                                                                       | Keywords                  | Version |
 | ---------------------------------------------------------------------------|---------------------------|---------|
 | [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin 					 | 7.0+    |
 
-## camunda Modeler Examples
+### camunda Modeler Examples
 
 | Name                                                                       | Keywords                  | Version |
 | ---------------------------------------------------------------------------|---------------------------|---------|
@@ -50,7 +50,7 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 | [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse			 | 2.3+    |
 
 
-## Repository Details
+### Contribute!
 
   * Web Site: http://www.camunda.org/
   * Getting Started: http://www.camunda.org/implement-getting-started.html
