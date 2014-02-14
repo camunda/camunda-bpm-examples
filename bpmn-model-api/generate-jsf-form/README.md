@@ -96,11 +96,10 @@ To gather the necessary information for the generic forms the camunda [BPMN mode
 
 To get the start event and user task name we need the XML representation of the current process. At the start process
 form we only have the processDefinitionKey. But with the `repositoryService` we can get the `processId` and the corresponding
-`processModel` as `InputStream`. With this `processModel` we can use the BPMN model API to get the start event of the process.
+`modelInstance`. With this `modelInstance` we can use the BPMN model API to get the start event of the process.
 
 ```java
-private StartEvent getStartEvent(InputStream processModel) {
-  BpmnModelInstance modelInstance = Bpmn.readModelFromStream(processModel);
+private StartEvent getStartEvent(BpmnModelInstance modelInstance) {
   ModelElementType startEventType = modelInstance.getModel().getType(StartEvent.class);
   return (StartEvent) modelInstance.getModelElementsByType(startEventType).iterator().next();
 }
@@ -109,8 +108,8 @@ private StartEvent getStartEvent(InputStream processModel) {
 The start event can we use to return its name
 
 ```java
-protected String getStartEventName(InputStream processModel) {
-  StartEvent startEvent = getStartEvent(processModel);
+protected String getStartEventName(BpmnModelInstance modelInstance) {
+  StartEvent startEvent = getStartEvent(modelInstance);
   return stripLineBreaks(startEvent.getName());
 }
 ```
@@ -118,23 +117,21 @@ protected String getStartEventName(InputStream processModel) {
 and to find the following user task and return its name.
 
 ```java
-protected String getUserTaskName(InputStream processModel) {
-  StartEvent startEvent = getStartEvent(processModel);
-  UserTask userTask = (UserTask) startEvent.getSucceedingNodes().singleResult();
-  return stripLineBreaks(userTask.getName());
+public String getUserTaskName(String processDefinitionKey) {
+  BpmnModelInstance modelInstance = getModelInstance(processDefinitionKey);
+  return getUserTaskName(modelInstance);
 }
 ```
 
 ### UserTaskController
 
 To get the information for the user task form we need the following exclusive gateway and the outgoing sequence flows.
-With the help of the `respositoryService` we can get again the current `processModel` as `InputStream`. Furthermore we
+With the help of the `respositoryService` we can get again the current `modelInstance`. Furthermore we
 can use the `taskForm` to get the id of the current task, which we use to find the task and the following gateway
 with the BPMN model API.
 
 ```java
-private ExclusiveGateway getExclusiveGateway(String taskId, InputStream processModel) {
-  BpmnModelInstance modelInstance = Bpmn.readModelFromStream(processModel);
+private ExclusiveGateway getExclusiveGateway(String taskId, BpmnModelInstance modelInstance) {
   UserTask userTask = (UserTask) modelInstance.getModelElementById(taskId);
   return (ExclusiveGateway) userTask.getSucceedingNodes().singleResult();
 }
@@ -143,8 +140,8 @@ private ExclusiveGateway getExclusiveGateway(String taskId, InputStream processM
 We now can return the name of the gateway
 
 ```java
-protected String getGatewayName(String taskId, InputStream processModel) {
-  ExclusiveGateway gateway = getExclusiveGateway(taskId, processModel);
+protected String getGatewayName(String taskId, BpmnModelInstance modelInstance) {
+  ExclusiveGateway gateway = getExclusiveGateway(taskId, modelInstance);
   return stripLineBreaks(gateway.getName());
 }
 ```
@@ -152,15 +149,10 @@ protected String getGatewayName(String taskId, InputStream processModel) {
 and analyze the outgoing sequence flows.
 
 ```java
-protected List<Map<String, String>> getButtons(String taskId, InputStream processModel) {
-  ExclusiveGateway gateway = getExclusiveGateway(taskId, processModel);
-
-  List<Map<String, String>> buttonValues = new ArrayList<Map<String, String>>();
-  for (SequenceFlow sequenceFlow : gateway.getOutgoing()) {
-    buttonValues.add(getConditionValues(sequenceFlow));
-  }
-
-  return buttonValues;
+public List<Map<String, String>> getButtons() {
+  String taskId = getTaskId();
+  BpmnModelInstance modelInstance = getModelInstance();
+  return getButtons(taskId, modelInstance);
 }
 ```
 

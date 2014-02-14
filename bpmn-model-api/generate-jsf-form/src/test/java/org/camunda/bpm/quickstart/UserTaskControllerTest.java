@@ -29,8 +29,8 @@ package org.camunda.bpm.quickstart;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineTestCase;
+import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -64,22 +64,22 @@ public class UserTaskControllerTest extends ProcessEngineTestCase {
   @Deployment(resources = "support.bpmn")
   public void testGatewayNameSupport() {
     String processId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    InputStream processModel = repositoryService.getProcessModel(processId);
+    BpmnModelInstance modelInstance = repositoryService.getBpmnModelInstance(processId);
 
     UserTaskController userTaskController = new UserTaskController();
 
-    String gatewayName = userTaskController.getGatewayName(TASK_ID, processModel);
+    String gatewayName = userTaskController.getGatewayName(TASK_ID, modelInstance);
     assertEquals(gatewayName, "How To Handle Support Ticket?");
   }
 
   @Deployment(resources = "support.bpmn")
   public void testButtonsSupport() {
     String processId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    InputStream processModel = repositoryService.getProcessModel(processId);
+    BpmnModelInstance modelInstance = repositoryService.getBpmnModelInstance(processId);
 
     UserTaskController userTaskController = new UserTaskController();
 
-    List<Map<String,String>> buttons = userTaskController.getButtons(TASK_ID, processModel);
+    List<Map<String,String>> buttons = userTaskController.getButtons(TASK_ID, modelInstance);
     assertEquals(buttons.size(), 3);
 
     Map<String, String> button = buttons.get(0);
@@ -101,22 +101,22 @@ public class UserTaskControllerTest extends ProcessEngineTestCase {
   @Deployment(resources = "feature.bpmn")
   public void testGatewayNameFeature() {
     String processId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    InputStream processModel = repositoryService.getProcessModel(processId);
+    BpmnModelInstance modelInstance = repositoryService.getBpmnModelInstance(processId);
 
     UserTaskController userTaskController = new UserTaskController();
 
-    String gatewayName = userTaskController.getGatewayName(TASK_ID, processModel);
+    String gatewayName = userTaskController.getGatewayName(TASK_ID, modelInstance);
     assertEquals(gatewayName, "Accept Feature Request?");
   }
 
   @Deployment(resources = "feature.bpmn")
   public void testButtonsFeature() {
     String processId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    InputStream processModel = repositoryService.getProcessModel(processId);
+    BpmnModelInstance modelInstance = repositoryService.getBpmnModelInstance(processId);
 
     UserTaskController userTaskController = new UserTaskController();
 
-    List<Map<String,String>> buttons = userTaskController.getButtons(TASK_ID, processModel);
+    List<Map<String,String>> buttons = userTaskController.getButtons(TASK_ID, modelInstance);
     assertEquals(buttons.size(), 2);
 
     Map<String, String> button = buttons.get(0);

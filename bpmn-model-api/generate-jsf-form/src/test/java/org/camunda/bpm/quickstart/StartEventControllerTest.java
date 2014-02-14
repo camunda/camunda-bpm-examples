@@ -29,6 +29,7 @@ package org.camunda.bpm.quickstart;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineTestCase;
+import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
 import java.io.InputStream;
 
@@ -40,43 +41,43 @@ public class StartEventControllerTest extends ProcessEngineTestCase {
   @Deployment(resources = "support.bpmn")
   public void testStartEventNameSupport() {
     String processId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    InputStream processModel = repositoryService.getProcessModel(processId);
+    BpmnModelInstance modelInstance = repositoryService.getBpmnModelInstance(processId);
 
     StartEventController startEventController = new StartEventController();
 
-    String startEventName = startEventController.getStartEventName(processModel);
+    String startEventName = startEventController.getStartEventName(modelInstance);
     assertEquals(startEventName, "Select Support Ticket");
   }
 
   @Deployment(resources = "support.bpmn")
   public void testUserTaskNameSupport() {
     String processId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    InputStream processModel = repositoryService.getProcessModel(processId);
+    BpmnModelInstance modelInstance = repositoryService.getBpmnModelInstance(processId);
 
     StartEventController startEventController = new StartEventController();
-    String userTaskName = startEventController.getUserTaskName(processModel);
+    String userTaskName = startEventController.getUserTaskName(modelInstance);
     assertEquals(userTaskName, "Handle Support Ticket");
   }
 
   @Deployment(resources = "feature.bpmn")
   public void testStartEventNameFeature() {
     String processId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    InputStream processModel = repositoryService.getProcessModel(processId);
+    BpmnModelInstance modelInstance = repositoryService.getBpmnModelInstance(processId);
 
     StartEventController startEventController = new StartEventController();
 
-    String startEventName = startEventController.getStartEventName(processModel);
+    String startEventName = startEventController.getStartEventName(modelInstance);
     assertEquals(startEventName, "Create Feature Request");
   }
 
   @Deployment(resources = "feature.bpmn")
   public void testUserTaskNameFeature() {
     String processId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    InputStream processModel = repositoryService.getProcessModel(processId);
+    BpmnModelInstance modelInstance = repositoryService.getBpmnModelInstance(processId);
 
     StartEventController startEventController = new StartEventController();
 
-    String userTaskName = startEventController.getUserTaskName(processModel);
+    String userTaskName = startEventController.getUserTaskName(modelInstance);
     assertEquals(userTaskName, "Handle Feature Request");
   }
 }

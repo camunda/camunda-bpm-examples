@@ -30,7 +30,6 @@ package org.camunda.bpm.quickstart;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.cdi.BusinessProcess;
 import org.camunda.bpm.engine.cdi.jsf.TaskForm;
-import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.ExclusiveGateway;
 import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
@@ -39,7 +38,6 @@ import org.camunda.bpm.model.bpmn.instance.UserTask;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,19 +70,19 @@ public class UserTaskController {
    */
   public String getQuestion() {
     String taskId = getTaskId();
-    InputStream processModel = getProcessModel();
-    return getGatewayName(taskId, processModel);
+    BpmnModelInstance modelInstance = getModelInstance();
+    return getGatewayName(taskId, modelInstance);
   }
 
   /**
    * Returns the name of the following exclusive gateway.
    *
    * @param taskId  the ID of the current task
-   * @param processModel  the process model as stream
+   * @param modelInstance  the BPMN model instance
    * @return the name attribute value of the following exclusive gateway
    */
-  protected String getGatewayName(String taskId, InputStream processModel) {
-    ExclusiveGateway gateway = getExclusiveGateway(taskId, processModel);
+  protected String getGatewayName(String taskId, BpmnModelInstance modelInstance) {
+    ExclusiveGateway gateway = getExclusiveGateway(taskId, modelInstance);
     return stripLineBreaks(gateway.getName());
   }
 
@@ -95,19 +93,19 @@ public class UserTaskController {
    */
   public List<Map<String, String>> getButtons() {
     String taskId = getTaskId();
-    InputStream processModel = getProcessModel();
-    return getButtons(taskId, processModel);
+    BpmnModelInstance modelInstance = getModelInstance();
+    return getButtons(taskId, modelInstance);
   }
 
   /**
    * Returns a list of values for each button to generate.
    *
    * @param taskId  the ID of the current task
-   * @param processModel  the process model as stream
+   * @param modelInstance the BPMN model instance
    * @return the list of button values
    */
-  protected List<Map<String, String>> getButtons(String taskId, InputStream processModel) {
-    ExclusiveGateway gateway = getExclusiveGateway(taskId, processModel);
+  protected List<Map<String, String>> getButtons(String taskId, BpmnModelInstance modelInstance) {
+    ExclusiveGateway gateway = getExclusiveGateway(taskId, modelInstance);
 
     List<Map<String, String>> buttonValues = new ArrayList<Map<String, String>>();
     for (SequenceFlow sequenceFlow : gateway.getOutgoing()) {
@@ -150,14 +148,15 @@ public class UserTaskController {
     taskForm.completeTask();
   }
 
+
   /**
-   * Gets the process model as stream.
+   * Gets the current BPMN model instance.
    *
-   * @return the stream of the process model
+   * @return the BPMN model instance
    */
-  private InputStream getProcessModel() {
+  private BpmnModelInstance getModelInstance() {
     String processDefinitionId = businessProcess.getTask().getProcessDefinitionId();
-    return repositoryService.getProcessModel(processDefinitionId);
+    return repositoryService.getBpmnModelInstance(processDefinitionId);
   }
 
   /**
@@ -173,11 +172,10 @@ public class UserTaskController {
    * Gets the succeeding exclusive gateway of the current task.
    *
    * @param taskId  the ID of the current task
-   * @param processModel  the process model as stream
+   * @param modelInstance  the BPMN model instance
    * @return the succeeding exclusive gateway element
    */
-  private ExclusiveGateway getExclusiveGateway(String taskId, InputStream processModel) {
-    BpmnModelInstance modelInstance = Bpmn.readModelFromStream(processModel);
+  private ExclusiveGateway getExclusiveGateway(String taskId, BpmnModelInstance modelInstance) {
     UserTask userTask = (UserTask) modelInstance.getModelElementById(taskId);
     return (ExclusiveGateway) userTask.getSucceedingNodes().singleResult();
   }

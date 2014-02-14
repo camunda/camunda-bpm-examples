@@ -2,6 +2,7 @@ package org.camunda.bpm.quickstart;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.model.bpmn.instance.*;
 
 import javax.inject.Named;
 import java.util.logging.Logger;
@@ -19,11 +20,13 @@ public class LoggerDelegate implements JavaDelegate {
     
     LOGGER.info("\n\n  ... LoggerDelegate invoked by "
             + "processDefinitionId=" + execution.getProcessDefinitionId()
-            + ", activtyId=" + execution.getCurrentActivityId()
-            + ", activtyName='" + execution.getCurrentActivityName().replaceAll("\n", " ") + "'"
+            + ", activityId=" + execution.getCurrentActivityId()
+            + ", activityName='" + execution.getCurrentActivityName().replaceAll("\n", " ") + "'"
             + ", processInstanceId=" + execution.getProcessInstanceId()
             + ", businessKey=" + execution.getProcessBusinessKey()
             + ", executionId=" + execution.getId()
+            + ", modelName=" + execution.getBpmnModelInstance().getModel().getModelName()
+            + ", elementId" + execution.getBpmnModelElementInstance().getId()
             + " \n\n");
     
   }
