@@ -34,9 +34,6 @@ import org.camunda.bpm.model.bpmn.GatewayDirection;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -51,35 +48,35 @@ public class CreateInvoiceProcessTest {
       .executable()
       .startEvent()
         .name("Invoice received")
-        .formKey("embedded:app:forms/start-form.html")
+        .camundaFormKey("embedded:app:forms/start-form.html")
       .userTask()
         .name("Assign Approver")
-        .formKey("embedded:app:forms/assign-approver.html")
-        .assignee("demo")
+        .camundaFormKey("embedded:app:forms/assign-approver.html")
+        .camundaAssignee("demo")
       .userTask()
         .id("approveInvoice")
         .name("Approve Invoice")
-        .formKey("embedded:app:forms/approve-invoice.html")
-        .assignee("${approver}")
+        .camundaFormKey("embedded:app:forms/approve-invoice.html")
+        .camundaAssignee("${approver}")
       .exclusiveGateway()
         .name("Invoice approved?")
         .gatewayDirection(GatewayDirection.Diverging)
       .condition("yes", "${approved}")
       .userTask()
         .name("Prepare Bank Transfer")
-        .formKey("embedded:app:forms/prepare-bank-transfer.html")
-        .candidateGroups("accounting")
+        .camundaFormKey("embedded:app:forms/prepare-bank-transfer.html")
+        .camundaCandidateGroups("accounting")
       .serviceTask()
         .name("Archive Invoice")
-        .className("org.camunda.bpm.example.invoice.service.ArchiveInvoiceService")
+        .camundaClass("org.camunda.bpm.example.invoice.service.ArchiveInvoiceService")
       .endEvent()
         .name("Invoice processed")
       .moveToLastGateway()
       .condition("no", "${!approved}")
       .userTask()
         .name("Review Invoice")
-        .formKey("embedded:app:forms/review-invoice.html" )
-        .assignee("demo")
+        .camundaFormKey("embedded:app:forms/review-invoice.html" )
+        .camundaAssignee("demo")
       .exclusiveGateway()
         .name("Review successful?")
         .gatewayDirection(GatewayDirection.Diverging)
