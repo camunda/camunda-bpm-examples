@@ -63,14 +63,14 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .executable()
   .startEvent()
     .name("Invoice received")
-    .formKey("embedded:app:forms/start-form.html")
+    .camundaFormKey("embedded:app:forms/start-form.html")
   .[...]
   .done();
 ```
 
 From now on we can create user, service or script tasks, and parallel or exclusive gateways to
-model the process we want to create. For every task we can set attributes like the ID, name, formKey,
-assignee, class, candidateUsers or candidateGroups.
+model the process we want to create. For every task we can set attributes like the ID, name, camunda:formKey,
+camunda:assignee, camunda:class, camunda:candidateUsers or camunda:candidateGroups.
 
 ```java
 BpmnModelInstance modelInstance = Bpmn.createProcess()
@@ -78,21 +78,21 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .[...]
   .userTask()
     .name("Assign Approver")
-    .formKey("embedded:app:forms/assign-approver.html")
-    .assignee("demo")
+    .camundaFormKey("embedded:app:forms/assign-approver.html")
+    .camundaAssignee("demo")
   .userTask()
     .id("approveInvoice")
     .name("Approve Invoice")
-    .formKey("embedded:app:forms/approve-invoice.html")
-    .assignee("${approver}")
+    .camundaFormKey("embedded:app:forms/approve-invoice.html")
+    .camundaAssignee("${approver}")
   .[...]
   .userTask()
     .name("Prepare Bank Transfer")
-    .formKey("embedded:app:forms/prepare-bank-transfer.html")
-    .candidateGroups("accounting")
+    .camundaFormKey("embedded:app:forms/prepare-bank-transfer.html")
+    .camundaCandidateGroups("accounting")
   .serviceTask()
     .name("Archive Invoice")
-    .className("org.camunda.bpm.example.invoice.service.ArchiveInvoiceService")
+    .camundaClass("org.camunda.bpm.example.invoice.service.ArchiveInvoiceService")
   .[...]
   .done();
 ```
@@ -107,16 +107,16 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .userTask()
     .id("approveInvoice")
     .name("Approve Invoice")
-    .formKey("embedded:app:forms/approve-invoice.html")
-    .assignee("${approver}")
+    .camundaFormKey("embedded:app:forms/approve-invoice.html")
+    .camundaAssignee("${approver}")
   .exclusiveGateway()
     .name("Invoice approved?")
     .gatewayDirection(GatewayDirection.Diverging)
   .condition("yes", "${approved}")
   .userTask()
     .name("Prepare Bank Transfer")
-    .formKey("embedded:app:forms/prepare-bank-transfer.html")
-    .candidateGroups("accounting")
+    .camundaFormKey("embedded:app:forms/prepare-bank-transfer.html")
+    .camundaCandidateGroups("accounting")
   .[...]
   .done();
 ```
@@ -140,19 +140,19 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .condition("yes", "${approved}")
   .userTask()
     .name("Prepare Bank Transfer")
-    .formKey("embedded:app:forms/prepare-bank-transfer.html")
-    .candidateGroups("accounting")
+    .camundaFormKey("embedded:app:forms/prepare-bank-transfer.html")
+    .camundaCandidateGroups("accounting")
   .serviceTask()
     .name("Archive Invoice")
-    .className("org.camunda.bpm.example.invoice.service.ArchiveInvoiceService")
+    .camundaClass("org.camunda.bpm.example.invoice.service.ArchiveInvoiceService")
   .endEvent()
     .name("Invoice processed")
   .moveToLastGateway()
   .condition("no", "${!approved}")
   .userTask()
     .name("Review Invoice")
-    .formKey("embedded:app:forms/review-invoice.html" )
-    .assignee("demo")
+    .camundaFormKey("embedded:app:forms/review-invoice.html" )
+    .camundaAssignee("demo")
   .[...]
   .done();
 ```
@@ -169,8 +169,8 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .userTask()
     .id("approveInvoice")
     .name("Approve Invoice")
-    .formKey("embedded:app:forms/approve-invoice.html")
-    .assignee("${approver}")
+    .camundaFormKey("embedded:app:forms/approve-invoice.html")
+    .camundaAssignee("${approver}")
   .[...]
   .exclusiveGateway()
     .name("Review successful?")
