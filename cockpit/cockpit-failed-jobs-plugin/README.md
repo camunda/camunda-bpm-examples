@@ -10,7 +10,7 @@ Jobs are used in the engine for various things such as timers, asynchronous cont
 
 What is the point?
 -----------------------------
-This is to showcase the great cockpit plugin engine and camunda's REST API.
+This plugin basically is to showcase the capabilities of cockpit plugin engine which allows to create dynamic views with fewest lines of code. The other point is to show how Camunda REST API actually works and how handy it is to create a new cockpit plugin using Camunda UI components which are built upon Angular directives.
 
 How to use it?
 -----------------------------
