@@ -5,6 +5,7 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 
 * <a href="#bpmn-20--process-implementation-examples">BPMN 2.0 & Process Implementation</a>
 * <a href="#deployment--project-setup-examples">Deployment & Project Setup</a>
+* <a href="#process-engine-plugin-examples">Process Engine Plugin</a>
 * <a href="#bpmn-20-model-api-examples">Bpmn 2.0 Model API</a>
 * <a href="#cockpit-examples">Cockpit</a>
 * <a href="#camunda-modeler-examples">camunda Modeler (Eclipse)</a>
@@ -30,6 +31,12 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 | [Process Application - Spring Servlet](deployment/spring-servlet-pa)       | All                  | Spring, Servlet, War      | 7.0+    |
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                  | Spring, Rest, Embedded    | 7.0+    |
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7           | Spring, Jndi, War         | 7.0+    |
+
+### Process Engine Plugin Examples
+
+| Name                                                                       | Container            |  Keywords                 | Version |
+| ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
+| [BPMN Parse Listener](process-engine-plugin/bpmn-parse-listener)           | Unit Test            | Process Engine Plugin, Bpmn Parse Listener | 7.0+    |
 
 ### Bpmn 2.0 Model API Examples
 
