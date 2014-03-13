@@ -3,6 +3,8 @@ Failed Jobs Plugin for camunda cockpit
 
 A cockpit plugin which shows a grid list of [Failed Jobs](http://docs.camunda.org/latest/guides/user-guide/#cockpit-failed-jobs) on start page of cockpit and has three columns: `Job ID`, `Process instance ID`, `Exception`.
 
+Built and tested against camunda BPM version `7.0.0-Final`.
+
 Related Concepts:
 -----------------------------
 This plugin is centered around [Failed Jobs](http://docs.camunda.org/latest/guides/user-guide/#cockpit-failed-jobs) concept and these are the other related concepts which could help us to understand it:
@@ -18,13 +20,9 @@ What's the point?
 -----------------------------
 This plugin basically is to showcase the capabilities of cockpit plugin engine which allows to create dynamic views with fewest lines of code. The other point is to show how Camunda REST API actually works and how handy it is to create a new cockpit plugin using Camunda UI components which are built upon Angular directives.
 
-How to register a Cockpit plugin in a view?
+How to register a Cockpit plugin?
 -----------------------------
 Each Cockpit plugin has an Angular Controller, a unique pseudo-URL like: `plugin://failed-jobs-plugin/static/app/dashboard.html` and some other attributes, which are used to register the plugin in a view, by a JavaScript Object called `ViewsProvider` and its `registerDefaultView` function, in the module Configuration.
-
-How to use it?
------------------------------
-Built and tested against camunda BPM version `7.0.0-Final`.
 
 Integrate into camunda webapp
 -----------------------------
