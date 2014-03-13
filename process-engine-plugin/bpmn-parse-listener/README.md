@@ -169,6 +169,6 @@ implementation. If the service task is completed, the process engine invoke the 
 3. Inspect the sources and run the unit test.
 4. Checkout the console if you can find: `value of service task extension property 'progress': " + propertyValue`
 
-[1]: src/main/resources/bpmnParseListener.png
+[1]: docs/bpmnParseListener.png
 [2]: docs/service-camunda-modeler.png
 [3]: src/test/java/org/camunda/bpm/example/test/BpmnParseListenerTest.java
