@@ -50,6 +50,7 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 | Name                                                                       | Keywords                  | Version |
 | ---------------------------------------------------------------------------|---------------------------|---------|
 | [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin 					 | 7.0+    |
+| [Failed Jobs Plugin](/cockpit/cockpit-failed-jobs-plugin)                  | Plugin 					 | 7.0+    |
 
 ### camunda Modeler Examples
 
