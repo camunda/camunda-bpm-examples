@@ -24,7 +24,7 @@ The following is the sourcecode of the JSF form used to start the process (the o
   <f:metadata>    
     <!-- Start a new process instance. Process Definition Key is read internally from request parameters and cached in the CDI conversation scope.
          NOTE: Syntax is different when working on user task forms, see file "approveLoanRequest.xhtml". -->
-    <f:event type="preRenderView" listener="#{camunda.taskForm.startProcessInstanceByKeyForm()}" />    
+    <f:event type="preRenderView" listener="#{camundaTaskForm.startProcessInstanceByKeyForm()}" />    
   </f:metadata>
   <title>Submit Loan Request</title>
 </h:head>
@@ -57,7 +57,7 @@ The following is the sourcecode of the JSF form used to start the process (the o
 
     <!-- The button starts a new process instance. This ends the conversation and redirects us to the tasklist.    
          NOTE: Syntax is different when working on user task forms, see file "approveLoanRequest.xhtml". -->
-    <h:commandButton id="submit_button" value="Submit Request" action="#{camunda.taskForm.completeProcessInstanceForm()}" />
+    <h:commandButton id="submit_button" value="Submit Request" action="#{camundaTaskForm.completeProcessInstanceForm()}" />
   
     <h:messages style="color:red;margin:8px;" />
   </h:form>
@@ -77,7 +77,7 @@ This example also provides a Task Form associated with a user task. In that case
   <f:metadata>
     <!-- Start working on a task. Task Id is read internally from request parameters and cached in the CDI conversation scope.
          NOTE: Syntax is different when starting a process instance, see file "submitLoanRequest.xhtml". -->
-    <f:event type="preRenderView" listener="#{camunda.taskForm.startTaskForm()}" />
+    <f:event type="preRenderView" listener="#{camundaTaskForm.startTaskForm()}" />
   </f:metadata>
   <title>Approve Loan Request</title>
 </h:head>
@@ -88,7 +88,7 @@ This example also provides a Task Form associated with a user task. In that case
 
     <!-- The button completes the current task. This ends the conversation and redirects us to the tasklist.    
          NOTE: Syntax is different when starting a process instance, see file "submitLoanRequest.xhtml". -->
-    <h:commandButton id="approve_button" value="Approve Request" action="#{camunda.taskForm.completeTask()}" />
+    <h:commandButton id="approve_button" value="Approve Request" action="#{camundaTaskForm.completeTask()}" />
 
   </h:form>
 </h:body>

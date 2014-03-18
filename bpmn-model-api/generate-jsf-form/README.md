@@ -52,7 +52,7 @@ So a generic start event form for booth processes could be (see [start-form.xhtm
     <div class="control-group">
       <div class="controls">
         <h:commandButton id="submit_button" type="submit" value="#{startEventController.getUserTaskName(processDefinitionKey)}"
-          action="#{camunda.taskForm.completeProcessInstanceForm()}" styleClass="btn btn-primary" />
+          action="#{camundaTaskForm.completeProcessInstanceForm()}" styleClass="btn btn-primary" />
       </div>
     </div>
   </h:form>

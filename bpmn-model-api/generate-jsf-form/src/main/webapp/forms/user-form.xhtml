@@ -9,7 +9,7 @@
       <f:viewParam id="taskId" name="taskId" />
       <f:viewParam id="callbackUrl" name="callbackUrl" />
       <f:event type="preRenderView"
-        listener="#{camunda.taskForm.startTask(taskId, callbackUrl)}" />
+        listener="#{camundaTaskForm.startTask(taskId, callbackUrl)}" />
     </f:metadata>
 
     <h:outputStylesheet library="webjars/bootstrap/2.3.2/css" name="bootstrap.css"/>

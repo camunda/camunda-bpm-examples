@@ -10,7 +10,7 @@
 
          NOTE: Syntax is different when starting a process instance, see file "submitLoanRequest.xhtml".
     -->
-    <f:event type="preRenderView" listener="#{camunda.taskForm.startTaskForm()}" />
+    <f:event type="preRenderView" listener="#{camundaTaskForm.startTaskForm()}" />
   </f:metadata>
   <title>Approve Loan Request</title>
 </h:head>
@@ -45,7 +45,7 @@
     
          NOTE: Syntax is different when starting a process instance, see file "submitLoanRequest.xhtml".
     -->
-    <h:commandButton id="approve_button" value="Approve Request" action="#{camunda.taskForm.completeTask()}" />
+    <h:commandButton id="approve_button" value="Approve Request" action="#{camundaTaskForm.completeTask()}" />
 
   	<h:messages style="color:red;margin:8px;" />
   </h:form>

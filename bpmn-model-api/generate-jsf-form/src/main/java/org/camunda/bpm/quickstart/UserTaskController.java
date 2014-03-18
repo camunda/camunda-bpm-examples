@@ -58,7 +58,7 @@ public class UserTaskController {
   BusinessProcess businessProcess;
 
   @Inject
-  @Named("camunda.taskForm")
+  @Named("camundaTaskForm")
   TaskForm taskForm;
 
   protected static Pattern EXPRESSION_PATTERN = Pattern.compile("[\\$#]\\{\\s*(\\w+)\\s*==\\s*'([^']+)'\\s*}");
