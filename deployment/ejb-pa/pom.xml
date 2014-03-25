@@ -5,11 +5,11 @@
   <artifactId>camunda-quickstart-ejb-pa</artifactId>
   <packaging>war</packaging>
   <name>camunda BPM - Quickstarts - Ejb Process Application</name>
-  <version>7.0.0-Final</version>
+  <version>7.1.0-SNAPSHOT</version>
 
   <properties>
     <version.arquillian>1.0.4.Final</version.arquillian>
-    <version.jboss-as>7.1.3.Final</version.jboss-as>
+    <version.jboss-as>7.2.0.Final</version.jboss-as>
   </properties>
 
   <dependencies>

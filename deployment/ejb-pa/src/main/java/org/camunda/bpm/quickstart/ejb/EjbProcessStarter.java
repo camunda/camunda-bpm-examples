@@ -12,8 +12,8 @@
  */
 package org.camunda.bpm.quickstart.ejb;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.DependsOn;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -32,7 +32,7 @@ public class EjbProcessStarter {
   @Inject
   private RuntimeService runtimeService;
 
-  @PostConstruct
+  @Schedule(hour="*", minute="*")
   public void startProcessInstance() {
 
     runtimeService.startProcessInstanceByKey("testResolveBean");
