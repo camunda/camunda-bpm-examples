@@ -41,7 +41,7 @@
     <bpmn2:endEvent id="EndEvent_1" name="Done">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:userTask id="UserTask_1" name="Approve Request">
+    <bpmn2:userTask id="UserTask_1" camunda:assignee="demo" name="Approve Request">
       <bpmn2:extensionElements>
         <camunda:formData>
           <camunda:formField id="firstname" label="Firstname" type="string">
@@ -69,7 +69,7 @@
               <camunda:constraint name="readonly"/>
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="approved" label="Approve?" type="boolean"/>       
+          <camunda:formField id="approved" label="Approve?" type="boolean"/>
         </camunda:formData>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
