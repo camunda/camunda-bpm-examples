@@ -8,7 +8,7 @@
   <name>Service Invocation - Asynchronous</name>
 
   <properties>
-    <version.camunda>7.0.0-Final</version.camunda>
+    <version.camunda>7.1.0-SNAPSHOT</version.camunda>
   </properties>
 
   <dependencies>

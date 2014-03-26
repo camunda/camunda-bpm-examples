@@ -1,6 +1,6 @@
 # Asynchronous Service Invocation
 
-This Quickstart demonstrates how to implement an asynchronous service invocation using a Signallable Activity Behavior.
+This Quickstart demonstrates how to implement an asynchronous service invocation using a Signalable Activity Behavior.
 We learn
 
 * How to implement the Signallable Activity Behavior Interface,
@@ -111,7 +111,7 @@ If a failure occurs in the service implementation (Business Logic), the failure 
 
 ## How to use it?
 
-1. Checkout the prokject with Git
+1. Checkout the project with Git
 2. Import into your IDE
 3. Inspect the sources and run the unit test.
 
