@@ -1,6 +1,6 @@
 # Asynchronous Service Invocation
 
-This Quickstart demonstrates how to implement an asynchronous service invocation using a Signalable Activity Behavior.
+This Quickstart demonstrates how to implement an asynchronous service invocation using a Signallable Activity Behavior.
 We learn
 
 * How to implement the Signallable Activity Behavior Interface,
