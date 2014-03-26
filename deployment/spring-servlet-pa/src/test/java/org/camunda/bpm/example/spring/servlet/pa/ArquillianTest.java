@@ -115,7 +115,7 @@ public class ArquillianTest {
     // process instance was started from ProcessApplication @PostDeploy method
     Assert.assertEquals(0, runtimeService.createProcessInstanceQuery().processDefinitionKey("testResolveBean").count());
     // and process is already ended
-    Assert.assertEquals(1, historyService.createHistoricProcessInstanceQuery().processDefinitionKey("testResolveBean").count());
+    Assert.assertNotSame(0, historyService.createHistoricProcessInstanceQuery().processDefinitionKey("testResolveBean").count());
   }
 
   @Test
@@ -128,7 +128,7 @@ public class ArquillianTest {
     Assert.assertEquals(0, runtimeService.createProcessInstanceQuery().processDefinitionKey("testResolveBeanFromJobExecutor").count());
 
     ProcessDefinition testResolveBeanFromJobExecutorPD = repositoryService.createProcessDefinitionQuery().processDefinitionKey("testResolveBeanFromJobExecutor").singleResult();
-    Assert.assertEquals(1, historyService.createHistoricProcessInstanceQuery().processDefinitionId(testResolveBeanFromJobExecutorPD.getId()).count());
+    Assert.assertNotSame(0, historyService.createHistoricProcessInstanceQuery().processDefinitionId(testResolveBeanFromJobExecutorPD.getId()).count());
   }
 
   public void waitForJobExecutorToProcessAllJobs(long maxMillisToWait) {
