@@ -30,7 +30,7 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 | [Process Application - Servlet](deployment/servlet-pa)                     | All                  | War, Servlet              | 7.1+    |
 | [Process Application - Ejb](deployment/ejb-pa)                             | JavaEE Containers    | Ejb, War                  | 7.0+    |
 | [Process Application - Spring Servlet](deployment/spring-servlet-pa)       | All                  | Spring, Servlet, War      | 7.0+    |
-| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | All                  | Spring, Rest, Embedded    | 7.0+    |
+| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | vanilla Apache Tomcat| Spring, Rest, Embedded    | 7.0+    |
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7           | Spring, Jndi, War         | 7.0+    |
 
 
