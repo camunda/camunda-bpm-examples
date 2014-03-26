@@ -7,7 +7,7 @@
   <description>an example project that shows how to parse custom attributes with a bpmn parse listener plugin</description>
 
   <properties>
-    <version.camunda>7.1.0-alpha3</version.camunda>
+    <version.camunda>7.1.0-SNAPSHOT</version.camunda>
   </properties>
 
   <dependencies>
