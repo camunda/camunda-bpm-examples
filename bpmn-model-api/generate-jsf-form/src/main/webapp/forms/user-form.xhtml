@@ -4,14 +4,14 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core">
 
+<f:view>
+  <f:metadata>
+    <f:viewParam id="taskId" name="taskId" />
+    <f:viewParam id="callbackUrl" name="callbackUrl" />
+    <f:event type="preRenderView"
+      listener="#{camundaTaskForm.startTask(taskId, callbackUrl)}" />
+  </f:metadata>
   <h:head>
-    <f:metadata>
-      <f:viewParam id="taskId" name="taskId" />
-      <f:viewParam id="callbackUrl" name="callbackUrl" />
-      <f:event type="preRenderView"
-        listener="#{camundaTaskForm.startTask(taskId, callbackUrl)}" />
-    </f:metadata>
-
     <h:outputStylesheet library="webjars/bootstrap/2.3.2/css" name="bootstrap.css"/>
     <h:outputStylesheet library="css" name="style.css"  />
     <!-- if you need it - it is right there:
@@ -19,7 +19,6 @@
     -->
 
     <title>Task: #{task.name}</title>
-
   </h:head>
   <h:body>
     <div class="container">
@@ -46,4 +45,5 @@
       </div>
     </div>
   </h:body>
+</f:view>
 </html>
