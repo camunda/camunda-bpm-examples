@@ -27,37 +27,38 @@
 
 package org.camunda.bpm.quickstart;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.camunda.bpm.engine.task.TaskQuery;
+import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.example.invoice.service.ArchiveInvoiceService;
 import org.camunda.bpm.model.bpmn.Bpmn;
-import org.camunda.bpm.model.bpmn.BpmnModelException;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.GatewayDirection;
+import org.junit.Rule;
 import org.junit.Test;
-
-import java.io.File;
-import java.net.URL;
 
 /**
  * @author Sebastian Menski
  */
 public class CreateInvoiceProcessTest {
 
+  @Rule
+  public ProcessEngineRule processEngine = new ProcessEngineRule();
+
   @Test
   public void testCreateInvoiceProcess() throws Exception {
-    BpmnModelInstance modelInstance = Bpmn.createProcess()
+    BpmnModelInstance modelInstance = Bpmn.createExecutableProcess("invoice")
       .name("BPMN API Invoice Process")
-      .executable()
       .startEvent()
         .name("Invoice received")
-        .camundaFormKey("embedded:app:forms/start-form.html")
       .userTask()
         .name("Assign Approver")
-        .camundaFormKey("embedded:app:forms/assign-approver.html")
         .camundaAssignee("demo")
       .userTask()
         .id("approveInvoice")
         .name("Approve Invoice")
-        .camundaFormKey("embedded:app:forms/approve-invoice.html")
-        .camundaAssignee("${approver}")
       .exclusiveGateway()
         .name("Invoice approved?")
         .gatewayDirection(GatewayDirection.Diverging)
@@ -75,7 +76,6 @@ public class CreateInvoiceProcessTest {
       .condition("no", "${!approved}")
       .userTask()
         .name("Review Invoice")
-        .camundaFormKey("embedded:app:forms/review-invoice.html" )
         .camundaAssignee("demo")
       .exclusiveGateway()
         .name("Review successful?")
@@ -88,13 +88,39 @@ public class CreateInvoiceProcessTest {
       .connectTo("approveInvoice")
       .done();
 
-    URL resourceUri = getClass().getClassLoader().getResource("invoice.bpmn");
-    if (resourceUri != null) {
-      File resourceFile = new File(resourceUri.toURI());
-      Bpmn.writeModelToFile(resourceFile, modelInstance);
-    }
-    else {
-      throw new BpmnModelException("Unable to get path for invoice.bpmn");
-    }
+      // deploy process model
+      processEngine.getRepositoryService().createDeployment().addModelInstance("invoice.bpmn", modelInstance).deploy();
+
+      // start process model
+      processEngine.getRuntimeService().startProcessInstanceByKey("invoice");
+
+      TaskQuery taskQuery = processEngine.getTaskService().createTaskQuery();
+      // check and complete task "Assign Approver"
+      org.junit.Assert.assertEquals(1, taskQuery.count());
+      processEngine.getTaskService().complete(taskQuery.singleResult().getId());
+
+      // check and complete task "Approve Invoice"
+      Map<String, Object> variables = new HashMap<String, Object>();
+      variables.put("approved", true);
+
+      org.junit.Assert.assertEquals(1, taskQuery.count());
+      processEngine.getTaskService().complete(taskQuery.singleResult().getId(), variables);
+
+      // check and complete task "Prepare Bank Transfer"
+      org.junit.Assert.assertEquals(1, taskQuery.count());
+      processEngine.getTaskService().complete(taskQuery.singleResult().getId());
+
+      // check if Delegate was executed
+      org.junit.Assert.assertEquals(true, ArchiveInvoiceService.wasExecuted);
+
+      // check if process instance is ended
+      org.junit.Assert.assertEquals(0, processEngine.getRuntimeService().createProcessInstanceQuery().count());
+
+      /**
+       * to see the BPMN 2.0 process model XML on the console log
+       * copy the following code line at the end of the test case
+       *
+       * Bpmn.writeModelToStream(System.out, modelInstance);
+       */
   }
 }
