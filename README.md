@@ -44,8 +44,8 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 
 | Name                                                                       | Container            | Keywords                  | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
-| [Generate BPMN process](/bpmn-model-api/generate-process-fluent-api)          | All                  | Fluent API                | 7.1+    |
-| [Generate JSF forms](/bpmn-model-api/generate-jsf-form)                     | JavaEE Containers    | JSF, Usertask             | 7.1+    |
+| [Generate BPMN process](/bpmn-model-api/generate-process-fluent-api)       | Unit Test            | Fluent API                | 7.1+    |
+| [Generate JSF forms](/bpmn-model-api/generate-jsf-form)                    | JavaEE Containers    | JSF, Usertask             | 7.1+    |
 
 ### Cockpit Examples
 
