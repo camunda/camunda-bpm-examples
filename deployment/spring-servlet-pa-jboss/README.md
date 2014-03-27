@@ -6,8 +6,6 @@ This example demonstrates how to deploy a spring powered webapplication which
   * starts a Spring Webapplication context
   * uses a shared container managed process engine and Spring Beans as expression and delegate expression in the processes
 
-It uses our bundled JBoss AS 7 distribution but can be deployed on any Servlet 3.0 compatible container, e.g. Tomcat 7 too.
-
 ## Why is this example interesting?
 
 This example shows how to combine a @ProcessApplication class, a processes.xml and a spring applicationContext into a fully fledged process application with all it's
