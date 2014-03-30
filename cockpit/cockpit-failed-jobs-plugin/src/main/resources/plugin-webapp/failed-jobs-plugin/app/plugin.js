@@ -1,16 +1,13 @@
 ngDefine('cockpit.plugin.failed-jobs-plugin', function(module) {
 
   var DashboardController = function($scope, $http, Uri) {
-    
-    $scope.livePath = function(instanceId) {
-      return Uri.appUri("app://#/process-instance/" + instanceId + "/live");
-    };
 
     $scope.jobRestUrl = Uri.appUri("engine://engine/default/job");
     $scope.totalPages = 0;
     $scope.pageNumber = 1;
     $scope.failedJobsCount = 0;
 
+    $scope.loadingCount = true;
     $scope.loading = true;
     $scope.failedJobs = [];
 
@@ -20,7 +17,7 @@ ngDefine('cockpit.plugin.failed-jobs-plugin', function(module) {
       withException : true
     };
 
-    var loadPage = function() {
+    var loadPage = function loadPage() {
       $scope.loading = true;
       $scope.filterCriteria.firstResult = ($scope.pageNumber - 1) * 10;
       $http.get($scope.jobRestUrl, {
@@ -32,21 +29,37 @@ ngDefine('cockpit.plugin.failed-jobs-plugin', function(module) {
     };
 
     $scope.$watch('pageNumber', function(newValue, oldValue) {
-      if (newValue == oldValue)
+      if (newValue == oldValue) {
         return;
+      }
       loadPage();
     });
 
-    $http.get($scope.jobRestUrl + "/count", {
-      params : {
-        withException : true
-      }
-    }).success(function(data) {
-      var pg = parseInt(($scope.failedJobsCount = data.count) / 10);
-      $scope.totalPages = (data.count % 10) ? (pg + 1) : pg;
-    });
+    ($scope.loadCount = function loadCount() {
+      $scope.loadingCount = true;
+      $http.get($scope.jobRestUrl + "/count", {
+        params : {
+          withException : true
+        }
+      }).success(function(data) {
+        $scope.loadingCount = false;
 
-    loadPage();
+        if ($scope.failedJobsCount == data.count) {
+          return;
+        }
+
+        $scope.failedJobsCount = data.count;
+        var pg = parseInt(data.count / 10);
+        $scope.totalPages = (data.count % 10) ? (pg + 1) : pg;
+        
+        if(!data.count){
+          $scope.failedJobs = [];
+        }
+        else if($scope.failedJobs.length == 0){
+          loadPage();
+        }
+      });
+    })();
   };
 
   DashboardController.$inject = [ "$scope", "$http", "Uri" ];
