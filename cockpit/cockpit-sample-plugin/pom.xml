@@ -10,7 +10,7 @@
   <name>cockpit-sample-plugin</name>
   
   <properties>
-	  <camunda.version>7.1.0-SNAPSHOT</camunda.version>
+	  <camunda.version>7.1.0-Final</camunda.version>
   </properties>
 
   <dependencies>

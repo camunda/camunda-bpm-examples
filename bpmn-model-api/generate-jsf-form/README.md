@@ -8,8 +8,9 @@ The forms should be used in two different process of similar type.
 
 Note: Please note that currently the BPMN model API is only available throug GitHub. Which means
 that you have to checkout the git repository of the [camunda-bpmn-model][5] project. After this run
-`mvn clean install` inside the repository to install the maven artifact locally. Whitout the
+`mvn clean install` inside the repository to install the maven artifact locally. Without the
 artifact you are not able to compile this quickstart.
+This project doesn't work on prepackaged Websphere distribution!
 
 ## Example processes
 

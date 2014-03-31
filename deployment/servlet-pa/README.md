@@ -3,9 +3,6 @@ Simple Servlet Process Application Example
 
 This example demonstrates how to deploy a simple servlet process application.
 
-Built and tested against camunda BPM version `7.1.0-SNAPSHOT`.
-
-
 How to use it
 -----------------------------
 

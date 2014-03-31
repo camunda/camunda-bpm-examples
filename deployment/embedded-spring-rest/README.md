@@ -128,4 +128,4 @@ Reference all required libraries in pom.xml:
 1. Build it with maven
 2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from camunda.org!!
 3. Access the REST Endpoint:
-[http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.0.0-SNAPSHOT/engine/default/process-definition](http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.0.0-SNAPSHOT/engine/default/process-definition)
+[http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.1.0-Final/engine/default/process-definition](http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.1.0-Final/engine/default/process-definition)

@@ -8,6 +8,8 @@ The JSF form is rendered in a new window.
 
 ![External Forms Screenshot][2]
 
+Note: This project doesn't work on prepackaged Websphere distribution!
+
 # Overview
 
 ## Source code of a JSF taskform

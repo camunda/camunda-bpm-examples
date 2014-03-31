@@ -2,9 +2,6 @@
 
 A cockpit plugin which shows a grid list of [Failed Jobs](http://docs.camunda.org/latest/guides/user-guide/#cockpit-failed-jobs) on start page of cockpit and has three columns: `Job ID`, `Process instance ID`, `Exception`.
 
-Built and tested against camunda BPM version `7.0.0-Final`.
-
-
 ## Related Concepts
 
 This plugin is centered around [Failed Jobs](http://docs.camunda.org/latest/guides/user-guide/#cockpit-failed-jobs) concept and these are the other related concepts which could help us to understand it:

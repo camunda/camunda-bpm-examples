@@ -13,9 +13,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <camunda.version>7.1.0-SNAPSHOT</camunda.version>
+    <camunda.version>7.1.0-Final</camunda.version>
     <arquillian.version>1.1.2.Final</arquillian.version>
-    <jboss.version>7.1.3.Final</jboss.version>
+    <jboss.version>7.2.0.Final</jboss.version>
   </properties>
 
   <dependencyManagement>
