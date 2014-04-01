@@ -10,7 +10,6 @@ Note: Please note that currently the BPMN model API is only available throug Git
 that you have to checkout the git repository of the [camunda-bpmn-model][5] project. After this run
 `mvn clean install` inside the repository to install the maven artifact locally. Without the
 artifact you are not able to compile this quickstart.
-This project doesn't work on prepackaged Websphere distribution!
 
 ## Example processes
 
