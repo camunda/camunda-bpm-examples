@@ -1,7 +1,7 @@
 <div>
   <h1>
-    Cockpit Failed Jobs(<img ng-show="loadingCount"
-      src="/camunda/assets/img/ajax-loader.gif" /><a
+    Cockpit Failed Jobs(<span ng-show="loadingCount"><i class="icon-loading"></i>
+      </span><a
         help-text="Click to reload the failed jobs count" help=""
         ng-click="loadCount()"
         ng-hide="loadingCount">{{failedJobsCount}}</a>)
