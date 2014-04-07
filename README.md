@@ -10,6 +10,14 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 * <a href="#cockpit-examples">Cockpit</a>
 * <a href="#camunda-modeler-examples">camunda Modeler (Eclipse)</a>
 
+### Getting Started with camunda BPM
+
+| Name                                                                                                   | Container          |
+| -------------------------------------------------------------------------------------------------------|--------------------|
+| [Simple Process Applications](http://camunda.org/get-started/developing-process-applications.html)     | All                |
+| [camunda BPM and the Spring Framework](http://camunda.org/get-started/spring-framework.html)           | Tomcat             |
+| [Process Applications with JavaEE 6](http://camunda.org/get-started/java-ee.html)                      | JavaEE Containers  |
+
 ### BPMN 2.0 & Process Implementation Examples
 
 | Name                                                                       | Container            | Keywords                  | Version |
@@ -51,15 +59,15 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 
 | Name                                                                       | Keywords                  | Version |
 | ---------------------------------------------------------------------------|---------------------------|---------|
-| [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin 					 | 7.0+    |
-| [Failed Jobs Plugin](/cockpit/cockpit-failed-jobs-plugin)                  | Plugin 					 | 7.0+    |
+| [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin                    | 7.0+    |
+| [Failed Jobs Plugin](/cockpit/cockpit-failed-jobs-plugin)                  | Plugin                    | 7.0+    |
 
 ### camunda Modeler Examples
 
 | Name                                                                       | Keywords                  | Version |
 | ---------------------------------------------------------------------------|---------------------------|---------|
-| [Custom Task Simple](/modeler/custom-task-simple)                          | Plugin, Eclipse			 | 2.3+    |
-| [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse			 | 2.3+    |
+| [Custom Task Simple](/modeler/custom-task-simple)                          | Plugin, Eclipse           | 2.3+    |
+| [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse           | 2.3+    |
 
 
 ### Contribute!
