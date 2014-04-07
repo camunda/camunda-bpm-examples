@@ -3,12 +3,13 @@ camunda BPM examples
 
 camunda BPM examples is a collection of focused usage examples for [camunda BPM platform](https://github.com/camunda/camunda-bpm-platform), intended to get you started quickly:
 
-* <a href="#bpmn-20--process-implementation-examples">BPMN 2.0 & Process Implementation</a>
-* <a href="#deployment--project-setup-examples">Deployment & Project Setup</a>
-* <a href="#process-engine-plugin-examples">Process Engine Plugin</a>
-* <a href="#bpmn-20-model-api-examples">Bpmn 2.0 Model API</a>
-* <a href="#cockpit-examples">Cockpit</a>
-* <a href="#camunda-modeler-examples">camunda Modeler (Eclipse)</a>
+* [Getting Started with camunda BPM](#getting-started-with-camunda-bpm)
+* [BPMN 2.0 & Process Implementation](#bpmn-20--process-implementation-examples)
+* [Deployment & Project Setup](#deployment--project-setup-examples)
+* [Process Engine Plugin](#process-engine-plugin-examples)
+* [Bpmn 2.0 Model API](#bpmn-20-model-api-examples)
+* [Cockpit](#cockpit-examples)
+* [camunda Modeler (Eclipse)](#camunda-modeler-examples)
 
 ### Getting Started with camunda BPM
 
