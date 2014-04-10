@@ -3,10 +3,10 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core">
- 
+
 <f:view>
   <f:metadata>
-    <!-- Start working on a task. Task Id is read internally from 
+    <!-- Start working on a task. Task Id is read internally from
          request parameters and cached in the CDI conversation scope.
 
          NOTE: Syntax is different when starting a process instance, see file "submitLoanRequest.xhtml".
@@ -23,33 +23,33 @@
     <h1>Approve Loan Request</h1>
     <h:form id="approveForm">
       <h:panelGrid columns="2">
-      	<p>
-     	    <label for="firstname">Firstname</label>
+        <p>
+          <label for="firstname">Firstname</label>
           <!-- read/write process variables using the processVariables map. -->
           <h:inputText id="firstname" value="#{processVariables['firstname']}" required="true" />
-      	</p>
-      	<p>
-     	    <label for="lastname">Lastname</label>
+        </p>
+        <p>
+          <label for="lastname">Lastname</label>
           <h:inputText id="lastname" value="#{processVariables['lastname']}" required="true" />
-      	</p>
-      	<p>
-     	    <label for="netIncome">Net Income</label>
+        </p>
+        <p>
+          <label for="netIncome">Net Income</label>
           <h:inputText id="netIncome" value="#{processVariables['netIncome']}" converter="javax.faces.Integer" required="true" />
-      	</p>
-      	<p>
-     	    <label for="amount">Loan Amount</label>
+        </p>
+        <p>
+          <label for="amount">Loan Amount</label>
           <!-- use type converters to convert process variables to the correct type. -->
           <h:inputText id="amount" value="#{processVariables['amount']}" converter="javax.faces.Integer" required="true" />
-      	</p>
+        </p>
       </h:panelGrid>
-  
+
       <!-- The button completes the current task. This ends the conversation and redirects us to the tasklist.
-      
+
            NOTE: Syntax is different when starting a process instance, see file "submitLoanRequest.xhtml".
       -->
       <h:commandButton id="approve_button" value="Approve Request" action="#{camundaTaskForm.completeTask()}" />
-  
-    	<h:messages style="color:red;margin:8px;" />
+
+      <h:messages style="color:red;margin:8px;" />
     </h:form>
   </h:body>
 </f:view>

@@ -6,7 +6,7 @@
 
 <f:view>
   <f:metadata>
-    <!-- Start a new process instance. Process Definition Key is read internally from 
+    <!-- Start a new process instance. Process Definition Key is read internally from
          request parameters and cached in the CDI conversation scope.
 
          NOTE: Syntax is different when working on user task forms, see file "approveLoanRequest.xhtml".
@@ -22,34 +22,34 @@
     <hr />
     <h1>Submit Loan Request</h1>
     <h:form id="submitForm">
-      <h:panelGrid columns="2">  
-      	<p>
-     	    <label for="firstname">Firstname</label>
+      <h:panelGrid columns="2">
+        <p>
+          <label for="firstname">Firstname</label>
           <!-- create process variables using the processVariables map. -->
           <h:inputText id="firstname" value="#{processVariables['firstname']}" required="true" />
-      	</p>
-      	<p>
-     	    <label for="lastname">Lastname</label>
+        </p>
+        <p>
+          <label for="lastname">Lastname</label>
           <h:inputText id="lastname" value="#{processVariables['lastname']}" required="true" />
-      	</p> 
-      	<p>
-     	    <label for="netIncome">Net Income</label>
-          <h:inputText id="netIncome" value="#{processVariables['netIncome']}" converter="javax.faces.Integer" required="true" />      
-      	</p>  
-      	<p>
-     	    <label for="amount">Loan Amount</label>
+        </p>
+        <p>
+          <label for="netIncome">Net Income</label>
+          <h:inputText id="netIncome" value="#{processVariables['netIncome']}" converter="javax.faces.Integer" required="true" />
+        </p>
+        <p>
+          <label for="amount">Loan Amount</label>
           <!-- use type converters to convert process variables to the correct type. -->
-          <h:inputText id="amount" value="#{processVariables['amount']}" converter="javax.faces.Integer" required="true" />      
-      	</p>
+          <h:inputText id="amount" value="#{processVariables['amount']}" converter="javax.faces.Integer" required="true" />
+        </p>
       </h:panelGrid>
-      
+
       <!-- The button starts a new process instance. This ends the conversation and redirects us to the tasklist.
-      
+
            NOTE: Syntax is different when working on user task forms, see file "approveLoanRequest.xhtml".
       -->
       <h:commandButton id="submit_button" value="Submit Request" action="#{camundaTaskForm.completeProcessInstanceForm()}" />
-    
-    	<h:messages style="color:red;margin:8px;" />
+
+      <h:messages style="color:red;margin:8px;" />
     </h:form>
   </h:body>
 </f:view>
