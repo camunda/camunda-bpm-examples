@@ -2,7 +2,7 @@ ngDefine('cockpit.plugin.sample-plugin', function(module) {
 
   var DashboardController = function($scope, $http, Uri) {
 
-    $http.get(Uri.appUri("plugin://sample-plugin/default/process-instance"))
+    $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
       .success(function(data) {
         $scope.processInstanceCounts = data;
       });
