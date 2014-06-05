@@ -39,6 +39,7 @@ public class TaskAssignmentListener implements TaskListener {
         if (recipient != null && !recipient.isEmpty()) {
 
           Email email = new SimpleEmail();
+          email.setCharset("utf-8");
           email.setHostName(HOST);
           email.setAuthentication(USER, PWD);
 
