@@ -36,7 +36,7 @@ public class ServiceTaskSoapTest {
     RuntimeService runtimeService = processEngineRule.getRuntimeService();
     TaskService taskService = processEngineRule.getTaskService();
 
-    runtimeService.startProcessInstanceByKey("wheatherForecast");
+    runtimeService.startProcessInstanceByKey("weatherForecast");
 
     Task task = taskService.createTaskQuery().singleResult();
     Assert.assertNotNull(task);
