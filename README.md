@@ -23,12 +23,13 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 
 | Name                                                                       | Container            | Keywords                  | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
-| [Service Invocation Synchronous](/servicetask/service-invocation-synchronous)     | Unit Test            | Java Delegate, Sync       | 7.0+    |
-| [Service Invocation Asynchronous](/servicetask/service-invocation-asynchronous)   | Unit Test            | Signal, Async             | 7.0+    |
-| [User Task Assignment Email](/usertask/task-assignment-email) *                 | All                  | Email, Usertask           | 7.0+    |
-| [User Task Form Embedded](/usertask/task-form-embedded) *                       | All                  | Html, Form, Usertask      | 7.1+    |
-| [User Task Form Generated](/usertask/task-form-generated) *                     | All                  | Html, Form, Usertask      | 7.1+    |
-| [User Task Form JSF](/usertask/task-form-external-jsf) *                        | JavaEE Containers    | JSF, Form, Usertask       | 7.1+    |
+| [Service Task Soap Http](/servicetask/soap-service)                        | Unit Test            | Soap Scripting, classless | 7.2+    |
+| [Service Invocation Synchronous](/servicetask/service-invocation-synchronous)     | Unit Test     | Java Delegate, Sync       | 7.0+    |
+| [Service Invocation Asynchronous](/servicetask/service-invocation-asynchronous)   | Unit Test     | Signal, Async             | 7.0+    |
+| [User Task Assignment Email](/usertask/task-assignment-email) *            | All                  | Email, Usertask           | 7.0+    |
+| [User Task Form Embedded](/usertask/task-form-embedded) *                  | All                  | Html, Form, Usertask      | 7.1+    |
+| [User Task Form Generated](/usertask/task-form-generated) *                | All                  | Html, Form, Usertask      | 7.1+    |
+| [User Task Form JSF](/usertask/task-form-external-jsf) *                   | JavaEE Containers    | JSF, Form, Usertask       | 7.1+    |
 
 (*) _complete demo applications_.
 

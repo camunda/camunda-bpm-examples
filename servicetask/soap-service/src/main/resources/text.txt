@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-16"?>
+<CurrentWeather>
+  <Location>Berlin-Tegel, Germany (EDDT) 52-34N 013-19E 37M</Location>
+  <Time>Jun 11, 2014 - 08:50 AM EDT / 2014.06.11 1250 UTC</Time>
+  <Wind> from the NW (310 degrees) at 6 MPH (5 KT):0</Wind>
+  <Visibility> greater than 7 mile(s):0</Visibility>
+  <SkyConditions> mostly cloudy</SkyConditions>
+  <Temperature> 68 F (20 C)</Temperature>
+  <DewPoint> 64 F (18 C)</DewPoint>
+  <RelativeHumidity> 88%</RelativeHumidity>
+  <Pressure> 30.18 in. Hg (1022 hPa)</Pressure>
+  <Status>Success</Status>
+</CurrentWeather>
