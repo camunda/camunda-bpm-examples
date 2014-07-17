@@ -8,7 +8,7 @@
   <name>Service Invocation - Soap</name>
 
   <properties>
-    <version.camunda>7.2.0-alpha2</version.camunda>
+    <version.camunda>7.2.0-alpha3</version.camunda>
   </properties>
 
   <dependencies>
@@ -31,6 +31,12 @@
       <artifactId>h2</artifactId>
       <version>1.3.171</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.template-engines</groupId>
+      <artifactId>camunda-template-engines-freemarker</artifactId>
+      <version>1.0.0</version>
     </dependency>
 
   </dependencies>

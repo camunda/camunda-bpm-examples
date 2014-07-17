@@ -15,19 +15,7 @@
             <camunda:inputParameter name="endpointUrl">http://www.webservicex.net/globalweather.asmx</camunda:inputParameter>
 
             <camunda:inputParameter name="soapEnvelope">
-              <![CDATA[
-                <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://www.webserviceX.NET">
-                 <soap:Header/>
-                 <soap:Body>
-                    <web:GetWeather>
-                       <!--Optional:-->
-                       <web:CityName>Berlin</web:CityName>
-                       <!--Optional:-->
-                       <web:CountryName>Germany</web:CountryName>
-                    </web:GetWeather>
-                 </soap:Body>
-              </soap:Envelope>
-              ]]>
+              <camunda:script scriptFormat="freemarker" resource="soapEnvelope.ftl" />
             </camunda:inputParameter>
 
             <camunda:inputParameter name="headers">
@@ -38,12 +26,12 @@
 
             <camunda:outputParameter name="forecast">
               <![CDATA[
-              ${ S(response)
-                   .childElement("Body")
-                   .childElement("http://www.webserviceX.NET", "GetWeatherResponse")
-                   .childElement("GetWeatherResult")
-                   .unwrap()
-                   .getTextContent() }
+                ${S(response)
+                    .childElement("Body")
+                    .childElement("http://www.webserviceX.NET", "GetWeatherResponse")
+                    .childElement("GetWeatherResult")
+                    .unwrap()
+                    .getTextContent()}
               ]]>
             </camunda:outputParameter>
 
@@ -52,25 +40,7 @@
 
         <camunda:inputOutput>
           <camunda:outputParameter name="temperature">
-            <camunda:script scriptFormat="Javascript">
-              <![CDATA[
-
-                // this script parses the temperature from the response
-
-                // remove prolog which cannot be parsed: '<?xml version="1.0" encoding="utf-16"?>'
-                var rawForecast = execution.getVariable('forecast');
-                var forecast = rawForecast.substring(rawForecast.indexOf("\n"));
-
-                var parsedTemperature = S(forecast).childElement("Temperature").unwrap().getTextContent();
-
-                // temerature looks like this: <Temperature> 68 F (20 C)</Temperature>
-                var regex = /\((\d+) C\)/;
-
-                // return only the temperature in C:
-                regex.exec(parsedTemperature)[1];
-
-              ]]>
-            </camunda:script>
+            <camunda:script scriptFormat="Javascript" resource="parseTemperature.js" />
           </camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn2:extensionElements>

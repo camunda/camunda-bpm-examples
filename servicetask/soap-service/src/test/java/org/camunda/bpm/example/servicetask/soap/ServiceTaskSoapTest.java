@@ -12,6 +12,9 @@
  */
 package org.camunda.bpm.example.servicetask.soap;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
@@ -32,11 +35,14 @@ public class ServiceTaskSoapTest {
   @Test
   @Deployment(resources={"invokeSoapService.bpmn"})
   public void shouldInvokeService() {
+    Map<String, Object> variables = new HashMap<String, Object>();
+    variables.put("city", "Berlin");
+    variables.put("country", "Germany");
 
     RuntimeService runtimeService = processEngineRule.getRuntimeService();
     TaskService taskService = processEngineRule.getTaskService();
 
-    runtimeService.startProcessInstanceByKey("weatherForecast");
+    runtimeService.startProcessInstanceByKey("weatherForecast", variables);
 
     Task task = taskService.createTaskQuery().singleResult();
     Assert.assertNotNull(task);
