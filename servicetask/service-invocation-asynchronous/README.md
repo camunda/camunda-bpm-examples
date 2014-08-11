@@ -1,6 +1,6 @@
 # Asynchronous Service Invocation
 
-This Quickstart demonstrates how to implement an asynchronous service invocation using a Signallable Activity Behavior.
+This quickstart demonstrates how to implement an asynchronous service invocation using a Signallable Activity Behavior.
 We learn
 
 * How to implement the Signallable Activity Behavior Interface,
@@ -8,8 +8,8 @@ We learn
 
 After having looked through the code, you will understand the behavior of an asynchronous service invocation in case of
 
-* a successful invocation
-* a service failure.
+* Successful invocation
+* A service failure.
 
 ## Show me the important parts!
 
@@ -17,9 +17,9 @@ The process model is composed of three tasks:
 
 ![Process Model][1]
 
-* Wait State Before: initially the process instance is waiting here.
+* Wait State Before: initially, the process instance is waiting here.
 * Asynchronous Service Task: the service task invoked by the process engine in an asynchronous fashion.
-* Wait State After: in case of a successful invocation, the process instance will advance to here.
+* Wait State After: in case of successful invocation, the process instance will advance to here.
 
 ### Create a Signallable Activity Behavior Implementation
 
@@ -82,7 +82,7 @@ public class BusinessLogic {
 
 ### Reference the Signallable Activity Behavior from BPMN 2.0
 
-The Java Deleagte can be referenced using the `class` attribute form the process engine Namespace:
+The Java Deleagte can be referenced using the `class` attribute from the process engine Namespace:
 
 ``` xml
 <bpmn2:serviceTask id="serviceTaskActivity"
@@ -90,9 +90,9 @@ The Java Deleagte can be referenced using the `class` attribute form the process
   name="Asynchronous Service Task">
 ```
 
-Using camunda Modeler, you can configure the service task using the properties panel:
+Using the camunda Modeler, you can configure the service task using the properties panel:
 
-![Configure Signallable Activity Behavior using camunda Modeler][2]
+![Configure Signallable Activity Behavior using the camunda Modeler][2]
 
 
 ## Invocation Semantics
@@ -101,18 +101,18 @@ The `SignallableActivityBehavior` provides two methods: `execute()` and `signal(
 
 ![Asynchronous Service Invocation Sequence][3]
 
-* The `execute(ActivityExecution)`-Method is invoked when the service task is entered. It is typically used for sending an asynchronous message to the actual service (Business Logic). When the method returns, the process engine will NOT continue execution. The `SignallableActivityBehavior` acts as a wait state.
+* The `execute(ActivityExecution)` method is invoked when the service task is entered. It is typically used for sending an asynchronous message to the actual service (Business Logic). When the method returns, the process engine will NOT continue execution. The `SignallableActivityBehavior` acts as a wait state.
 
-* The `signal(ActivityExecution, String, Object)`-method is invoked as the process engine is being triggered by the callback. The signal-Method is responsible for leaving the service task activity.
+* The `signal(ActivityExecution, String, Object)` method is invoked as the process engine is being triggered by the callback. The signal method is responsible for leaving the service task activity.
 
-The asynchronous nature of the invocation decouples the process engine from the service implementation. The process engine does not propagate any thread context to the service implementation. Most prominently, the service implementation is not invoked in the context of the process engine transaction. On the contrary, from the point of view of the process engine, the `SignallableActivityBehavior` is a wait state: after the `execute()`-Method returns, the process engine will stop execution, flush out the state of the execution to the database and wait for the callback to occur.
+The asynchronous nature of the invocation decouples the process engine from the service implementation. The process engine does not propagate any thread context to the service implementation. Most prominently, the service implementation is not invoked in the context of the process engine transaction. On the contrary, from the point of view of the process engine, the `SignallableActivityBehavior` is a wait state: after the `execute()` method returns, the process engine will stop execution, flush the state of the execution to the database and wait for the callback to occur.
 
-If a failure occurs in the service implementation (Business Logic), the failure will not cause the process engine to roll back. The reason is that the service implementation is not directly invoked by the process engine and does not participate in the process engine transaction.
+If a failure occurs in the service implementation (Business Logic), the failure will not cause the process engine to roll back. The reason being that the service implementation is not directly invoked by the process engine and does not participate in the process engine transaction.
 
 ## How to use it?
 
 1. Checkout the project with Git
-2. Import into your IDE
+2. Import the project into your IDE
 3. Inspect the sources and run the unit test.
 
 [1]: docs/process-model.png

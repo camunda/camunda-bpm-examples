@@ -1,20 +1,20 @@
 # Spring Servlet Process Application (using JBoss AS 7)
 
-This example demonstrates how to deploy a spring powered webapplication which
+This example demonstrates how to deploy a spring powered web application which
 
-  * includes a @ProcessApplication class and some BPMN 2.0 processes
-  * starts a Spring Webapplication context
-  * uses a shared container managed process engine and Spring Beans as expression and delegate expression in the processes
+  * Includes a @ProcessApplication class and some BPMN 2.0 processes
+  * Starts a Spring Web application context
+  * Uses a shared container managed process engine and Spring Beans as expression and delegate expression in the processes
 
 ## Why is this example interesting?
 
-This example shows how to combine a @ProcessApplication class, a processes.xml and a spring applicationContext into a fully fledged process application with all it's
+This example shows how to combine a @ProcessApplication class, a processes.xml and a spring applicationContext into a fully fledged process application with all its
 advantages, including a managed container shared process engine paired with the power of spring beans inside your processes.
 
 ## Show me the important parts!
 
 We create a process application class which extends the ServletProcessApplication and annotate it with @ProcessApplication, so
-the camunda bpm platform can pick it up and register the process application without any further actions:
+the camunda BPM platform can pick it up and register the process application without any further action:
 
     @ProcessApplication
     public class SpringServletProcessApplication extends ServletProcessApplication {
@@ -38,7 +38,7 @@ Through the ```META-INF/processes.xml```, we can define process archives and add
 
     </process-application>
 
-Additionally you have to package the camunda-engine-spring module as a maven compile time dependency like:
+Additionally, you have to package the camunda-engine-spring module as a maven compile time dependency like:
 
     <dependency>
       <groupId>org.camunda.bpm</groupId>
@@ -49,7 +49,7 @@ Additionally you have to package the camunda-engine-spring module as a maven com
 
 ## How to use it?
 
-  1. Build it with maven, it will download the camunda bpm JBoss AS7 distribution and execute the included Arquillian test.
+  1. Build it with maven, it will download the camunda BPM JBoss AS 7 distribution and execute the included Arquillian test.
   2. Watch out for this console log:
 
 ```bash

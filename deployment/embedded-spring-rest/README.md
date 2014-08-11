@@ -1,18 +1,18 @@
 # Spring configured embedded process engine and REST API 
 
-This example demonstrates how to setup a webapplication, which
+This example demonstrates how to set up a web application, which
 
-* bundles the camunda-engine JAR library
-* starts and configures a process engine in a Spring Applicaiton context
-* bundles the camunda-engine-REST library
-* exposes the process engine API via REST
+* Bundles the camunda-engine JAR library
+* Starts and configures a process engine in a Spring Application context
+* Bundles the camunda-engine-REST library
+* Exposes the process engine API via REST
 
-NOTE: this project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from camunda.org.
+NOTE: This project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from http://camunda.org.
 
 ## Why is this example interesting?
 
 This example demonstrates how to perform a standalone embedded setup with a webapplication which bundles both the 
-camunda engine and camunda engine REST jars. 
+camunda engine and camunda engine REST JARs. 
 
 ## Show me the important parts!
 
@@ -85,12 +85,12 @@ Implement the REST Process Engine Provider SPI (provides the process engine to t
     }
 
 Add a file named: 
-    src/main/resources/META-INF/services/org.camunda.bpm.engine.rest.spi.ProcessEngineProvider
-Which contains the name of the provider:
-    org.camunda.bpm.example.loanapproval.rest.RestProcessEngineProvider
+    `src/main/resources/META-INF/services/org.camunda.bpm.engine.rest.spi.ProcessEngineProvider`
+which contains the name of the provider:
+    `org.camunda.bpm.example.loanapproval.rest.RestProcessEngineProvider`
 
 Reference all required libraries in pom.xml:
-  
+
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>
@@ -122,10 +122,12 @@ Reference all required libraries in pom.xml:
       <version>${spring.version}</version>
     </dependency>
 
-
 ## How to use it?
 
 1. Build it with maven
-2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from camunda.org!!
+2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from http://camunda.org!!
 3. Access the REST Endpoint:
-[http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.1.0-Final/engine/default/process-definition](http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.1.0-Final/engine/default/process-definition)
+[http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.1.0-Final/engine/default/process-definition][1]
+
+
+[1]: http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.1.0-Final/engine/default/process-definition

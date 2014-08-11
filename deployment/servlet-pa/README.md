@@ -7,8 +7,8 @@ How to use it
 -----------------------------
 
 1. Checkout the project with Git
-2. Import into your IDE
+2. Import the project into your IDE
 3. Build it with maven
-4. Deploy it to a camunda-bpm-platform distro at one's own choice
-6. Checkout the console if you can find: 'Service Task 'Example ServiceTask' is invoked!'
+4. Deploy it to a camunda-bpm-platform distro at your own choice
+6. Check the console if you can find: 'Service Task 'Example ServiceTask' is invoked!'
 

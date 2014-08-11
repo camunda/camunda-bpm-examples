@@ -1,7 +1,7 @@
 Creating Custom Tasks for camunda Modeler
 =========================================
 
-This example demonstrates how to develop a custom plugin for camunda modeler.
+This example demonstrates how to develop a custom plugin for the camunda Modeler.
 
 ### Tutorial
 

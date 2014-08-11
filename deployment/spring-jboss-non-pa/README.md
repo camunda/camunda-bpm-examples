@@ -1,21 +1,21 @@
-# Plain Spring Webapplication for JBoss AS 7
+# Plain Spring Web application for JBoss AS 7
 
-This example demonstrates how to deploy a plain webapplication which 
+This example demonstrates how to deploy a plain web application which 
 
-  * does not include a @ProcessApplication class and does not provide any BPMN 2.0 processes
-  * starts a Spring Webapplication context
-  * binds a shared, container managed process engine as Spring Bean
+  * Does not include a @ProcessApplication class and does not provide any BPMN 2.0 processes
+  * Starts a Spring Webapplication context
+  * Binds a shared, container managed process engine as Spring Bean
 
 ## Why is this example interesting?
 
 The JBoss AS 7 extensions from camunda allow you to manage Process Engines as JBoss Services. However, if your application does not 
-provide a @ProcessApplication class, JBoss AS 7 is not aware of the fact that your application uses the process engine. In that case 
-it can happen that:
+provide a @ProcessApplication class, JBoss AS 7 is not aware of the fact that your application uses the process engine. In that case, 
+the following scenarious can occur:
 
-  * at deployment time, your application is deployed *before* the process engine is started, making the deployment of your app fail.
-  * when the process engine is stopped, your application is not stopped but will likely fail at some point because the process engine is not available anymore.
+  * At deployment, your application is deployed *before* the process engine is started, causing the deployment of your application to fail.
+  * When the process engine is stopped, your application is not stopped but will likely fail at some point because the process engine is not available anymore.
 
-This problem can be resolved by adding a declarative dependency between the process engine and some component in your application.
+This problem can be resolved by adding a declarative dependency between the process engine and a component in your application.
 
 ## Show me the important parts!
 
@@ -27,10 +27,10 @@ We reference the process engine resource in `web.xml`:
       <mapped-name>java:global/camunda-bpm-platform/process-engine/default</mapped-name>    
     </resource-ref>
 
-This creates a declarative dependency between the webapplication context and the process engine. Now JBoss AS 7 knows that we are using it.
+This creates a declarative dependency between the web application context and the process engine. Now JBoss AS 7 knows that we are using it.
 We can look it up using the local name `java:comp/env/processEngine/default` from anywhere in our application.
 
-In our case we want to reference it from a Spring application context:
+In our case, we want to reference it from a Spring application context:
 
     <beans xmlns="http://www.springframework.org/schema/beans"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -51,7 +51,7 @@ In our case we want to reference it from a Spring application context:
      
     </beans>
 
-And we add an entry to the manifest so that the process engine classes are added to our classpath:
+We also add an entry to the manifest so that the process engine classes are added to our classpath:
 
     <build>
       <plugins>
@@ -73,7 +73,7 @@ And we add an entry to the manifest so that the process engine classes are added
 ## How to use it?
 
   1. Build it with maven
-  2. Deploy it to JBoss AS 7 (downloaded it from here: http://www.camunda.org/download/)
+  2. Deploy it to JBoss AS 7 (downloaded it from [here][1])
   3. Watch out for this console log:
 
 ```bash
@@ -82,3 +82,5 @@ I am a spring bean and I am using a container managed process engine provided as
 The engine is named default.
 There are currently 0 processes deployed on this engine.
 ```
+
+[1]: http://www.camunda.org/download/

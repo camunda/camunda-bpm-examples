@@ -1,6 +1,6 @@
 # Synchronous Service Invocation
 
-This Quickstart demonstrates how to implement a synchronous service invocation using a Java Delegate.
+This quickstart demonstrates how to implement a synchronous service invocation using a Java Delegate.
 We learn
 
 * How to implement the Java Delegate Interface,
@@ -8,8 +8,8 @@ We learn
 
 After having looked through the code, you will understand the behavior of a synchronous service invocation in case of
 
-* a successful invocation
-* an invocation failure.
+* Successful invocation
+* An invocation failure.
 
 ## Show me the important parts!
 
@@ -17,9 +17,9 @@ The process model is composed of three tasks:
 
 ![Process Model][1]
 
-* Wait State Before: initially the process instance is waiting here.
-* Synchronous Service Task: the service task invoked by the process engine in a synchronous fashion.
-* Wait State After: in case of a successful invocation, the process instance will advance to here.
+* Wait State Before: initially the process instance is waiting here
+* Synchronous Service Task: the service task invoked by the process engine in a synchronous fashion
+* Wait State After: in case of successful invocation, the process instance will advance to here
 
 ### Create a Java Delegate Implementation
 
@@ -63,7 +63,7 @@ public class SynchronousServiceTask implements JavaDelegate {
 
 ### Reference the JavaDelegate from BPMN 2.0
 
-The Java Deleagte can be referenced using the `class` attribute form the process engine Namespace:
+The Java Deleagte can be referenced using the `class` attribute from the process engine Namespace:
 
 ``` xml
 <bpmn2:serviceTask id="ServiceTask_1"
@@ -71,9 +71,9 @@ The Java Deleagte can be referenced using the `class` attribute form the process
   name="Synchronous Service Task">
 ```
 
-Using camunda Modeler, you can configure the service task using the properties panel:
+Using the camunda Modeler, you can configure the service task using the properties panel:
 
-![Configure Java Deleagte using camunda Modeler][2]
+![Configure Java Delegate using the camunda Modeler][2]
 
 
 ## How does it work?
@@ -82,7 +82,7 @@ If you are impatient, just have a look at the [unit test][4].
 
 By default, the process engine uses the client thread to do work. In this example, the unit test
 triggers the process engine using the `completeTask()` method. The process engine uses that very thread to
-advance execution from the user task to the service task and invoke the `execute()`-Method provided by the
+advance execution from the user task to the service task and invoke the `execute()` method provided by the
 `Java Delegate` implementation:
 
 ![Synchronous Service Invocation Sequence][3]
@@ -90,11 +90,11 @@ advance execution from the user task to the service task and invoke the `execute
 This blocks the process engine from advancing in the process
 instance until the call returns.
 
-The synchronous nature of the invocation allows to leverage Thread Context:
-the `JavaDelegate` implementation may participate in the same Transaction
-as the process engine, Security Context is propagated and so forth.
+The synchronous nature of the invocation allows leveraging of the Thread Context:
+the `JavaDelegate` implementation may participate in the same transaction
+as the process engine, Security Context is propagated and so on.
 
-The synchronous nature of the invocation also allows for a very simple failure
+The synchronous nature of the invocation also allows very simple failure
 handling strategy: if this delegate implementation throws an exception, it will be
 caught by the blocked thread and handled using a transaction rollback: the process
 engine will roll back to the last persistent state. In this example the last persistent
@@ -103,7 +103,7 @@ state is the usertask preceding the service task ("Wait State Before").
 ## How to use it?
 
 1. Checkout the project with Git
-2. Import into your IDE
+2. Import the project into your IDE
 3. Inspect the sources and run the unit test.
 
 [1]: docs/process-model.png

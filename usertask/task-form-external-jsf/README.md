@@ -1,6 +1,6 @@
 # External Task Forms
 
-This Quickstart demonstrates how to use Java Server Faces (JSF) forms as [External Forms](http://docs.camunda.org/latest/guides/user-guide/#tasklist-task-forms-external-task-forms). External Forms can be loaded from your app and started via the camunda Tasklist:
+This quickstart demonstrates how to use Java Server Faces (JSF) forms as [External Forms][5]. External Forms can be loaded from your app and started via the camunda Tasklist:
 
 ![External Forms Tasklist Screenshot][1]
 
@@ -104,7 +104,7 @@ This example also provides a Task Form associated with a user task. In that case
 
 ## Where are external JSF taskforms added?
 
-External Forms can be added to the web resources of a web application. Since we use maven, they are added to the [src/main/webapp][4] folder of your project.
+External Forms can be added to the web resources of a web application. As we use maven, they are added to the [src/main/webapp][4] folder of your project.
 
 ## How are external JSF taskforms referenced?
 
@@ -116,11 +116,11 @@ External Taskforms are referenced using the `camunda:taskKey` property of a BPMN
 </startEvent>
 ```
 
-The attribute can also be set through the properties panel using camunda modeler:
+The attribute can also be set through the properties panel using the camunda Modeler:
 
 ![External Forms Screenshot Modeler][3]
 
-For more detailed information to External Task Forms see [JSF Task Forms](http://docs.camunda.org/latest/real-life/how-to/#user-interface-jsf-task-forms)
+For more detailed information about External Task Forms, see [JSF Task Forms][6]
 
 ## How to use it?
 
@@ -133,3 +133,5 @@ For more detailed information to External Task Forms see [JSF Task Forms](http:/
 [2]: docs/screenshot.png
 [3]: docs/screenshot-modeler.png
 [4]: src/main/webapp
+[5]: http://docs.camunda.org/latest/guides/user-guide/#tasklist-task-forms-external-task-forms
+[6]: http://docs.camunda.org/latest/real-life/how-to/#user-interface-jsf-task-forms

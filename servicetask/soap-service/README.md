@@ -1,9 +1,9 @@
-# Soap Service Task
+# SOAP Service Task
 
-> Note: this example is based on new functionality in camunda BPM 7.2 and as such, subject to
+> Note: this example is based on new functionality in camunda BPM 7.2 and, as such, is subject to
 > change.
 
-This quickstart demonstrates how to use the built-in soap http connector for invoking SOAP services
+This quickstart demonstrates how to use the built-in SOAP HTTP connector for invoking SOAP services
 in camunda BPM. The example is *classless*, relying entirely on scripting and expression language.
 
 The example includes a BPMN 2.0 process which invokes a weather forecast service, parses the result
@@ -13,7 +13,7 @@ and takes a decision based on the result:
 
 # Overview
 
-Still work in progress, read the [bpmn source code][3] and the [unit test][2].
+Still a work in progress, read the [bpmn source code][3] and the [unit test][2].
 
 ## How to use it?
 

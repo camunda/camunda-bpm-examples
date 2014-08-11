@@ -1,6 +1,6 @@
 # Embedded Task Forms
 
-This Quickstart demonstrates how to use the [Embedded Forms](http://docs.camunda.org/latest/guides/user-guide/#embedded-task-forms) Feature. Embedded Forms are plain HTML5 documents which can be loaded from your app and rendered embedded inside the camunda Tasklist:
+This quickstart demonstrates how to use the [Embedded Forms][5] feature. Embedded Forms are plain HTML5 documents which can be loaded from your app and rendered embedded inside the camunda Tasklist:
 
 ![Embedded Forms Screenshot][1]
 
@@ -8,7 +8,7 @@ This Quickstart demonstrates how to use the [Embedded Forms](http://docs.camunda
 
 ## Where are embedded taskforms added?
 
-Embedded Forms can be added to the web resources of a web application. Since we use maven, they are added to the [src/main/webapp][4] folder of your project.
+Embedded Forms can be added to the web resources of a web application. As we use maven, they are added to the [src/main/webapp][4] folder of your project.
 
 ## How are embedded taskforms referenced?
 
@@ -20,11 +20,11 @@ Embedded Taskforms are referenced using the `camunda:taskKey` property of a BPMN
 </startEvent>
 ```
 
-The attribute can also be set through the properties panel using camunda modeler:
+The attribute can also be set through the properties panel using the camunda Modeler:
 
 ![Embedded Forms Screenshot Modeler][2]
 
-## Which form controls are used in this Quickstart?
+## Which form controls are used in this quickstart?
 
 This quickstart demonstrates the use of most of the supported form controls. See [start-form.html][3] for the complete example.
 
@@ -87,3 +87,4 @@ This quickstart demonstrates the use of most of the supported form controls. See
 [2]: docs/screenshot-modeler.png
 [3]: src/main/webapp/start-form.html
 [4]: src/main/webapp
+[5]: http://docs.camunda.org/latest/guides/user-guide/#embedded-task-forms

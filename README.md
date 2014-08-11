@@ -1,7 +1,7 @@
 camunda BPM examples
 ====================
 
-camunda BPM examples is a collection of focused usage examples for [camunda BPM platform](https://github.com/camunda/camunda-bpm-platform), intended to get you started quickly:
+camunda BPM examples is a collection of focused usage examples for the [camunda BPM platform](https://github.com/camunda/camunda-bpm-platform), intended to get you started quickly:
 
 * [Getting Started with camunda BPM](#getting-started-with-camunda-bpm)
 * [BPMN 2.0 & Process Implementation](#bpmn-20--process-implementation-examples)
@@ -23,8 +23,8 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 
 | Name                                                                       | Container            | Keywords                  | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
-| [Service Task Soap Http](/servicetask/soap-service)                        | Unit Test            | Soap Scripting, classless | 7.2+    |
-| [Service Task Rest Http](/servicetask/rest-service)                        | Unit Test            | Rest Scripting, classless | 7.2+    |
+| [Service Task REST HTTP](/servicetask/rest-service)                        | Unit Test            | Rest Scripting, classless | 7.2+    |
+| [Service Task SOAP HTTP](/servicetask/soap-service)                        | Unit Test            | Soap Scripting, classless | 7.2+    |
 | [Service Invocation Synchronous](/servicetask/service-invocation-synchronous)     | Unit Test     | Java Delegate, Sync       | 7.0+    |
 | [Service Invocation Asynchronous](/servicetask/service-invocation-asynchronous)   | Unit Test     | Signal, Async             | 7.0+    |
 | [User Task Assignment Email](/usertask/task-assignment-email) *            | All                  | Email, Usertask           | 7.0+    |
@@ -39,7 +39,7 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 | Name                                                                       | Container            |  Keywords                 | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
 | [Process Application - Servlet](deployment/servlet-pa)                     | All                  | War, Servlet              | 7.1+    |
-| [Process Application - Ejb](deployment/ejb-pa)                             | JavaEE Containers    | Ejb, War                  | 7.0+    |
+| [Process Application - EJB](deployment/ejb-pa)                             | JavaEE Containers    | Ejb, War                  | 7.0+    |
 | [Process Application - Spring Servlet](deployment/spring-servlet-pa-jboss) | JBoss AS 7           | Spring, Servlet, War      | 7.0+    |
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | vanilla Apache Tomcat | Spring, Rest, Embedded    | 7.0+    |
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7           | Spring, Jndi, War         | 7.0+    |
@@ -75,8 +75,8 @@ camunda BPM examples is a collection of focused usage examples for [camunda BPM 
 
 ### Contribute!
 
-  * Web Site: http://www.camunda.org/
-  * Getting Started: http://www.camunda.org/implement-getting-started.html
+  * Website: http://www.camunda.org/
+  * Getting Started: http://docs.camunda.org/latest/guides/getting-started-guides/
   * Issue Tracker: https://app.camunda.com/jira
-  * Contribution Guildelines: http://www.camunda.org/community/contribute.html
+  * Contribution Guidelines: http://www.camunda.org/community/contribute.html
   * License: Apache License, Version 2.0  http://www.apache.org/licenses/LICENSE-2.0

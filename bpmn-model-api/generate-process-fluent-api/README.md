@@ -1,24 +1,24 @@
 # Create process with fluent BPMN model API
 
 This quickstart demonstrates how to create a process with the BPMN model API. We
-will learn how to create even complex BPMN processes with the fluent builder API of the
+will even learn how to create complex BPMN processes with the fluent builder API of the
 BPMN model API.
 
-After this quickstart you will be able to create processes with the
-BPMN model API composed of the following elements:
+After this quickstart, you will be able to create processes with the
+BPMN model API, composed of the following elements:
 
-* start event
-* end event
-* parallel gateway
-* exclusive gateway
-* service task
-* user task
-* script task
+* Start event
+* End event
+* Parallel gateway
+* Exclusive gateway
+* Service task
+* User task
+* Script task
 
-Note: Please note that currently the BPMN model API is only available throug GitHub. Which means
-that you have to checkout the git repository of the [camunda-bpmn-model][5] project. After this run
-`mvn clean install` inside the repository to install the maven artifact locally. Without the
-artifact you are not able to compile this quickstart.
+Note: Please note that currently the BPMN model API is only available through GitHub, which means
+that you have to checkout the git repository of the [camunda-bpmn-model][5] project. After doing that, 
+run `mvn clean install` inside the repository to install the maven artifact locally. Without the
+artifact, you are not able to compile this quickstart.
 
 ## Invoice example process
 
@@ -32,7 +32,7 @@ We aim to file it again with the executable process definition of the depicted i
 The code to create the process by the BPMN model API is show as the JUnit test [CreateInvoiceProcessTest][4].
 
 The entry point for the fluent builder API is the `Bpmn.createProcess()` method. To finish the
-building process we can at any time call the `.done()` method which will return the
+building process we can call the `.done()` method at any time, which will return the
 created model instance containing the process.
 
 ```java
@@ -41,7 +41,7 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .done();
 ```
 
-After this we can set attributes of the process to create. For example we can set the name
+After that, we can set attributes of the process to create. For example, we can set the name
 of the process.
 
 ```java
@@ -51,7 +51,7 @@ BpmnModelInstance modelInstance = Bpmn.createExecutableProcess("invoice")
   .done();
 ```
 
-The next step is to create a start event and set attributes of it. In this example we set
+The next step is to create a start event and set its attributes. In this example we set
 a name.
 
 ```java
@@ -64,7 +64,7 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .done();
 ```
 
-From now on we can create user, service or script tasks, and parallel or exclusive gateways to
+From now on we can create user, service or script tasks and parallel or exclusive gateways to
 model the process we want to create. For every task we can set attributes like the ID, name, camunda:formKey,
 camunda:assignee, camunda:class, camunda:candidateUsers or camunda:candidateGroups.
 
@@ -110,14 +110,14 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .done();
 ```
 
-If we add a gateway we usually want to create parallel execution paths. To create this
+If we add a gateway, we usually want to create parallel execution paths. To create this,
 the pattern is the following:
 
-1. create a gateway (optionally set an ID)
-2. create the first execution path till another gateway or end event
-3. jump back to a gateway to create a new execution path
- 1. jump back to the last unique gateway with the method `.moveToLastGateway()`, or
- 2. jump to a specific gateway by id with the method `.moveToNode(gatewayId)`
+1. Create a gateway (optionally set an ID)
+2. Create the first execution path till another gateway or end event
+3. Jump back to a gateway to create a new execution path
+ 1. Jump back to the last unique gateway with the method `.moveToLastGateway()`, or
+ 2. Jump to a specific gateway by ID with the method `.moveToNode(gatewayId)`
 
 ```java
 BpmnModelInstance modelInstance = Bpmn.createProcess()
@@ -144,10 +144,10 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
   .done();
 ```
 
-While we create parallel and diverging execution paths it is a common use case to
-connect a execution path to an already existing element. Like a parallel
-gateway (join) or a previous element in the process (loop). Therefor the `.connectTo(id)`
-method exists.
+When we create parallel and diverging execution paths it is a common use case to
+connect an execution path to a pre-existing element such as a parallel
+gateway (join) or a previous element in the process (loop). For that, the 
+`.connectTo(id)` method exists.
 
 ```java
 BpmnModelInstance modelInstance = Bpmn.createProcess()
@@ -173,12 +173,12 @@ BpmnModelInstance modelInstance = Bpmn.createProcess()
 ## How to use it?
 
 1. Checkout the project with Git
-2. Import into your IDE
+2. Import the project into your IDE
 3. Inspect the sources and run the unit test
-4. Checkout if the JUnit test is green
+4. Check if the JUnit test is green
 
-Note: Please note thus the process is generated by our code there are no DI information contained. If you want to see the 
-process model xml, go to the end of the JUnit test [CreateInvoiceProcessTest][4] and copy the following code line into the test case.
+Note: Please note that since the process is generated by our code, no DI information is contained. If you want to see the 
+process model XML, go to the end of the JUnit test [CreateInvoiceProcessTest][4] and copy the following line of code into the test case.
 
 ```java
 Bpmn.writeModelToStream(System.out, modelInstance);
