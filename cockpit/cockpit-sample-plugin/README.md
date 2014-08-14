@@ -1,15 +1,15 @@
-Sample Plugin for camunda Cockpit
+Sample Plugin for Camunda Cockpit
 =================================
 
-This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [camunda BPM](http://docs.camunda.org).
+This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda BPM](http://docs.camunda.org).
 
-Built and tested against camunda BPM version `7.1.0-SNAPSHOT`.
+Built and tested against Camunda BPM version `7.1.0-SNAPSHOT`.
 
 
-Integrate into camunda webapp
+Integrate into Camunda webapp
 -----------------------------
 
-Add the plugin as a dependency to the Cockpit `pom.xml` and rebuild the camunda web application.
+Add the plugin as a dependency to the Cockpit `pom.xml` and rebuild the Camunda web application.
 
     <dependencies>
       ...
@@ -30,6 +30,7 @@ Read [How to develop a Cockpit plugin][1].
 License
 -------
 
-Use under terms of MIT license.
+Use under terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
 
 [1]: http://docs.camunda.org/latest/real-life/how-to/#cockpit-how-to-develop-a-cockpit-plugin

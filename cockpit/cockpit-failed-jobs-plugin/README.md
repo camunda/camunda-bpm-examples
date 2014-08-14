@@ -15,7 +15,7 @@ This plugin is centered around the [Failed Jobs][1] concept and these are the ot
 
 ## What's the point?
 
-This plugin basically is a showcase of the capabilities of the Cockpit plugin engine which allows creation of dynamic views with a minimum amount of lines of code. The other point is to show how the camunda REST API actually works and how handy it is to create a new Cockpit plugin using camunda UI components which are built upon Angular directives.
+This plugin basically is a showcase of the capabilities of the Cockpit plugin engine which allows creation of dynamic views with a minimum amount of lines of code. The other point is to show how the Camunda REST API actually works and how handy it is to create a new Cockpit plugin using Camunda UI components which are built upon Angular directives.
 
 
 ## How to register a Cockpit plugin?
@@ -23,9 +23,9 @@ This plugin basically is a showcase of the capabilities of the Cockpit plugin en
 Each Cockpit plugin has an Angular Controller, a unique pseudo-URL, such as: `plugin://failed-jobs-plugin/static/app/dashboard.html` and some other attributes, which are used to register the plugin in a view by a JavaScript Object called `ViewsProvider` and its `registerDefaultView` function in the module configuration.
 
 
-## Integrate into camunda webapp
+## Integrate into Camunda webapp
 
-Add the plugin as a dependency to the Cockpit `pom.xml` and rebuild the camunda web application.
+Add the plugin as a dependency to the Cockpit `pom.xml` and rebuild the Camunda web application.
 
 ```xml
 <dependencies>
@@ -39,7 +39,7 @@ Add the plugin as a dependency to the Cockpit `pom.xml` and rebuild the camunda 
 
 ## License
 
-Use under terms of MIT license.
+Use under terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 
 [1]: http://docs.camunda.org/latest/guides/user-guide/#cockpit-failed-jobs
