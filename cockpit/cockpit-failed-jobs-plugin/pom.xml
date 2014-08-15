@@ -5,7 +5,7 @@
   <artifactId>cockpit-failed-jobs-plugin</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>camunda Cockpit Plugin: Failed Jobs</name>
+  <name>Camunda Cockpit Plugin: Failed Jobs</name>
   <description>A Cockpit plugin which shows a grid list of Failed Jobs on the start page of Cockpit and has three columns: Job ID, Process instance ID and Exception.</description>
 
   <properties>
