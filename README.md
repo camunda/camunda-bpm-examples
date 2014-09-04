@@ -10,6 +10,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 * [Bpmn 2.0 Model API](#bpmn-20-model-api-examples)
 * [Cockpit](#cockpit-examples)
 * [camunda Modeler (Eclipse)](#camunda-modeler-examples)
+* [CMMN](#cmmn-examples)
 
 ### Getting Started with camunda BPM
 
@@ -72,6 +73,11 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | [Custom Task Simple](/modeler/custom-task-simple)                          | Plugin, Eclipse           | 2.3+    |
 | [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse           | 2.3+    |
 
+### CMMN Examples
+
+| Name                                                                       |
+| ---------------------------------------------------------------------------|
+| [Case Manager UI](https://github.com/camunda/camunda-casemanager-ui) (External) |
 
 ### Contribute!
 
