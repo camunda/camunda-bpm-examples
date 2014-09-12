@@ -21,54 +21,60 @@ This problem can be resolved by adding a declarative dependency between the proc
 
 We reference the process engine resource in `web.xml`:
 
-    <resource-ref>
-      <res-ref-name>processEngine/default</res-ref-name>   
-      <res-type>org.camunda.bpm.engine.ProcessEngine</res-type>
-      <mapped-name>java:global/camunda-bpm-platform/process-engine/default</mapped-name>    
-    </resource-ref>
+```xml
+<resource-ref>
+  <res-ref-name>processEngine/default</res-ref-name>   
+  <res-type>org.camunda.bpm.engine.ProcessEngine</res-type>
+  <mapped-name>java:global/camunda-bpm-platform/process-engine/default</mapped-name>    
+</resource-ref>
+```
 
 This creates a declarative dependency between the web application context and the process engine. Now JBoss AS 7 knows that we are using it.
 We can look it up using the local name `java:comp/env/processEngine/default` from anywhere in our application.
 
 In our case, we want to reference it from a Spring application context:
 
-    <beans xmlns="http://www.springframework.org/schema/beans"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:activiti="http://www.activiti.org/schema/spring/components"
-           xsi:schemaLocation="http://www.springframework.org/schema/beans
-                               http://www.springframework.org/schema/beans/spring-beans.xsd">
-     
-     
-        <!-- lookup the process engine from local JNDI -->
-        <bean name="processEngine" id="processEngine" class="org.springframework.jndi.JndiObjectFactoryBean">
-            <property name="jndiName" value="java:comp/env/processEngine/default" />
-        </bean>
-     
-        <!-- inject it into a bean -->
-        <bean class="org.camunda.bpm.example.spring.jboss.ProcessEngineClient">
-            <property name="processEngine" ref="processEngine" />
-        </bean>
-     
-    </beans>
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:activiti="http://www.activiti.org/schema/spring/components"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+ 
+ 
+    <!-- lookup the process engine from local JNDI -->
+    <bean name="processEngine" id="processEngine" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/processEngine/default" />
+    </bean>
+ 
+    <!-- inject it into a bean -->
+    <bean class="org.camunda.bpm.example.spring.jboss.ProcessEngineClient">
+        <property name="processEngine" ref="processEngine" />
+    </bean>
+ 
+</beans>
+```
 
 We also add an entry to the manifest so that the process engine classes are added to our classpath:
 
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>2.3</version>
-          <configuration>
-            <archive>
-              <manifestEntries>
-                <Dependencies>org.camunda.bpm.camunda-engine</Dependencies>
-              </manifestEntries>
-            </archive>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-war-plugin</artifactId>
+      <version>2.3</version>
+      <configuration>
+        <archive>
+          <manifestEntries>
+            <Dependencies>org.camunda.bpm.camunda-engine</Dependencies>
+          </manifestEntries>
+        </archive>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
 
 ## How to use it?
 
