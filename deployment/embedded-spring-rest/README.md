@@ -7,7 +7,7 @@ This example demonstrates how to set up a web application, which
 * Bundles the camunda-engine-REST library
 * Exposes the process engine API via REST
 
-NOTE: This project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from http://camunda.org.
+> **Note:** This project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from http://camunda.org.
 
 ## Why is this example interesting?
 
