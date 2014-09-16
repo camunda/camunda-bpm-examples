@@ -32,6 +32,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | [User Task Form Embedded](/usertask/task-form-embedded) *                  | All                  | Html, Form, Usertask      | 7.1+    |
 | [User Task Form Generated](/usertask/task-form-generated) *                | All                  | Html, Form, Usertask      | 7.1+    |
 | [User Task Form JSF](/usertask/task-form-external-jsf) *                   | JavaEE Containers    | JSF, Form, Usertask       | 7.1+    |
+| [Script Task XSLT](/scripttask/xslt-scripttask)                            | Unit Test            | XSLT Scripttask       | 7.2+, EE only    |
 
 (*) _complete demo applications_.
 

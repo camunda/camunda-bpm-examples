@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+  <user>
+      <name>Stefan</name>
+      <familyname>Hentschel</familyname>
+      <birthday>18.11.1988</birthday>
+  </user>
+  <user>
+      <name>Kermit</name>
+      <familyname>Frog</familyname>
+      <birthday>in 1955</birthday>
+  </user>
+</users>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customers>
+  <customer>
+    <firstName>Stefan</firstName>
+    <lastName>Hentschel</lastName>
+    <dateOfBirth>18.11.1988</dateOfBirth>
+  </customer>
+  <customer>
+    <firstName>Kermit</firstName>
+    <lastName>Frog</lastName>
+    <dateOfBirth>in 1955</dateOfBirth>
+  </customer>
+</customers>
