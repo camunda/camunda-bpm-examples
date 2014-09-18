@@ -1,6 +1,9 @@
+
 # Cockpit Failed Jobs Plugin
 
 A Cockpit plugin which shows a grid list of [Failed Jobs][1] on the start page of Cockpit and has three columns: `Job ID`, `Process instance ID` and `Exception`.
+
+![Screenshot](screenshot.png)
 
 ## Related Concepts
 
