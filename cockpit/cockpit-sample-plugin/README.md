@@ -5,6 +5,7 @@ This is a simple plugin that showcases the plugin system of Cockpit, the process
 
 Built and tested against Camunda BPM version `7.1.0-SNAPSHOT`.
 
+![Screenshot](screenshot.png)
 
 Integrate into Camunda webapp
 -----------------------------
