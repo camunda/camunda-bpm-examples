@@ -14,8 +14,6 @@ into an transformed xml output:
 
 # Overview
 
-Still a work in progress, read the following files:
-
 - [bpmn source code][2]
 - [xslt stylesheet][3]
 - [input data][4]
