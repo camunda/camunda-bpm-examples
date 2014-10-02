@@ -16,9 +16,9 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 
 | Name                                                                                                   | Container          |
 | -------------------------------------------------------------------------------------------------------|--------------------|
-| [Simple Process Applications](http://camunda.org/get-started/developing-process-applications.html)     | All                |
-| [camunda BPM and the Spring Framework](http://camunda.org/get-started/spring-framework.html)           | Tomcat             |
-| [Process Applications with JavaEE 6](http://camunda.org/get-started/java-ee.html)                      | JavaEE Containers  |
+| [Simple Process Applications](http://docs.camunda.org/latest/guides/getting-started-guides/developing-process-applications/)     | All                |
+| [camunda BPM and the Spring Framework](http://docs.camunda.org/latest/guides/getting-started-guides/spring-framework/)           | Tomcat             |
+| [Process Applications with JavaEE 6](http://docs.camunda.org/latest/guides/getting-started-guides/java-ee/)                      | JavaEE Containers  |
 
 ### BPMN 2.0 & Process Implementation Examples
 
