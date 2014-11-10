@@ -1,5 +1,7 @@
 # Asynchronous Service Invocation
 
+> *Note:*: this example demonstrates an advanced usage pattern of the process engine. The same behavior can also be achieved using a send task and a receive task.
+
 This quickstart demonstrates how to implement an asynchronous service invocation using a Signallable Activity Behavior.
 We learn
 
