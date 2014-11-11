@@ -8,18 +8,18 @@
       <bpmn2:extensionElements>
 
         <camunda:connector>
-          <camunda:connectorId>rest-http-connector</camunda:connectorId>
+          <camunda:connectorId>http-connector</camunda:connectorId>
           <camunda:inputOutput>
 
-            <camunda:inputParameter name="requestUrl">
+            <camunda:inputParameter name="url">
               http://feiertage.jarmedia.de/api/?jahr=2014&amp;nur_land=BE
             </camunda:inputParameter>
 
-            <camunda:inputParameter name="requestType">
+            <camunda:inputParameter name="method">
               GET
             </camunda:inputParameter>
 
-            <camunda:inputParameter name="requestHeaders">
+            <camunda:inputParameter name="headers">
               <map>
                 <entry key="Content-Type">
                   application/json;charset=UTF-8

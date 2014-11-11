@@ -12,9 +12,9 @@
           <camunda:connectorId>soap-http-connector</camunda:connectorId>
           <camunda:inputOutput>
 
-            <camunda:inputParameter name="endpointUrl">http://www.webservicex.net/globalweather.asmx</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://www.webservicex.net/globalweather.asmx</camunda:inputParameter>
 
-            <camunda:inputParameter name="soapEnvelope">
+            <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="freemarker" resource="soapEnvelope.ftl" />
             </camunda:inputParameter>
 
