@@ -33,14 +33,26 @@
     </dependency>
     
     <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-connect</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
       <groupId>org.camunda.connect</groupId>
-      <artifactId>camunda-connect-all</artifactId>
+      <artifactId>camunda-connect-http-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-spin</artifactId>
       <scope>provided</scope>
     </dependency>
     
     <dependency>
       <groupId>org.camunda.spin</groupId>
-      <artifactId>camunda-spin-all</artifactId>
+      <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
       <scope>provided</scope>
     </dependency>
 

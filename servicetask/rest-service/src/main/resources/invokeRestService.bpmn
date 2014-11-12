@@ -21,8 +21,8 @@
 
             <camunda:inputParameter name="headers">
               <map>
-                <entry key="Content-Type">
-                  application/json;charset=UTF-8
+                <entry key="Accept">
+                  application/json
                 </entry>
               </map>
             </camunda:inputParameter>
