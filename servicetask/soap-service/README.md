@@ -75,8 +75,8 @@ Next, the process engine plugins provided by Spin and Connect are registered wit
     <!-- activates the camunda Connect process engine plugins -->
     <property name="processEnginePlugins">
       <list>
-        <bean class="org.camunda.connect.plugin.ConnectProcessEnginePlugin" />
-        <bean class="org.camunda.spin.plugin.SpinProcessEnginePlugin" />
+        <bean class="org.camunda.connect.plugin.impl.ConnectProcessEnginePlugin" />
+        <bean class="org.camunda.spin.plugin.impl.SpinProcessEnginePlugin" />
       </list>
     </property>
 

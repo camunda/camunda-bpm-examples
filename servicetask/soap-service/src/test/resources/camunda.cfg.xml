@@ -30,8 +30,8 @@
     <!-- activates the camunda Connect and Spin process engine plugins -->
     <property name="processEnginePlugins">
       <list>
-        <bean class="org.camunda.connect.plugin.ConnectProcessEnginePlugin" />
-        <bean class="org.camunda.spin.plugin.SpinProcessEnginePlugin" />
+        <bean class="org.camunda.connect.plugin.impl.ConnectProcessEnginePlugin" />
+        <bean class="org.camunda.spin.plugin.impl.SpinProcessEnginePlugin" />
       </list>
     </property>	
   </bean>
