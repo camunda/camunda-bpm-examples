@@ -15,7 +15,7 @@ The example includes a BPMN 2.0 process which invokes a holiday service, parses 
 
 ## How it works
 
-The important part of this example is the service task *Get Holiday*. It uses the HTTP connector provided by camunda Connect and processes the returned JSON using camunda Spin. For reference, have a look at the complete [BPMN XML][3].
+The important part of this example is the service task *Get holiday*. It uses the HTTP connector provided by camunda Connect and processes the returned JSON using camunda Spin. For reference, have a look at the complete [BPMN XML][3].
 
 ### Configuring Connect and Spin
 
@@ -40,25 +40,21 @@ Since Connect and Spin are optional extensions to the camunda platform, they hav
   <dependency>
     <groupId>org.camunda.bpm</groupId>
     <artifactId>camunda-engine-plugin-connect</artifactId>
-    <scope>provided</scope>
   </dependency>
 
   <dependency>
     <groupId>org.camunda.connect</groupId>
     <artifactId>camunda-connect-http-client</artifactId>
-    <scope>provided</scope>
   </dependency>
 
   <dependency>
     <groupId>org.camunda.bpm</groupId>
     <artifactId>camunda-engine-plugin-spin</artifactId>
-    <scope>provided</scope>
   </dependency>
 
   <dependency>
     <groupId>org.camunda.spin</groupId>
     <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
-    <scope>provided</scope>
   </dependency>
   ...
 </dependencies>
@@ -92,7 +88,7 @@ This ensures that connectors can be used with service tasks and that the Spin fu
 
 ### Using a Connector Service Task for REST requests
 
-The task *Get Holiday* makes use of Connect's HTTP connector. It does the following things:
+The task *Get holiday* makes use of Connect's HTTP connector. It does the following things:
 
 1. Invoke a REST web service using the HTTP connector provided by camunda Connect.
 2. Extract a property indicating whether a day is a holiday from the service's JSON response using Javascript and camunda Spin. This variable is used on the follow-up exclusive gateway.
@@ -149,4 +145,5 @@ The *outputParameter* element maps the response obtained by the connector to a v
 [2]: src/test/java/org/camunda/bpm/example/servicetask/rest/ServiceTaskRestTest.java
 [3]: src/main/resources/invokeRestService.bpmn
 [4]: src/main/resources/parseHoliday.js
+[5]: src/test/resources/camunda.cfg.xml
 

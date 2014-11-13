@@ -30,8 +30,7 @@
                     .childElement("Body")
                     .childElement("http://www.webserviceX.NET", "GetWeatherResponse")
                     .childElement("GetWeatherResult")
-                    .unwrap()
-                    .getTextContent()}
+                    .textContent()}
               ]]>
             </camunda:outputParameter>
 

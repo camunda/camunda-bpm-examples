@@ -40,25 +40,21 @@ Since Connect and Spin are optional extensions to the camunda platform, they hav
   <dependency>
     <groupId>org.camunda.bpm</groupId>
     <artifactId>camunda-engine-plugin-connect</artifactId>
-    <scope>provided</scope>
   </dependency>
 
   <dependency>
     <groupId>org.camunda.connect</groupId>
     <artifactId>camunda-connect-soap-http-client</artifactId>
-    <scope>provided</scope>
   </dependency>
 
   <dependency>
     <groupId>org.camunda.bpm</groupId>
     <artifactId>camunda-engine-plugin-spin</artifactId>
-    <scope>provided</scope>
   </dependency>
 
   <dependency>
     <groupId>org.camunda.spin</groupId>
     <artifactId>camunda-spin-dataformat-xml-dom</artifactId>
-    <scope>provided</scope>
   </dependency>
   ...
 </dependencies>
@@ -142,8 +138,7 @@ The task uses two extension elements. The first is the `camunda:connector` eleme
             .childElement("Body")
             .childElement("http://www.webserviceX.NET", "GetWeatherResponse")
             .childElement("GetWeatherResult")
-            .unwrap()
-            .getTextContent()}
+            .textContent()}
       ]]>
     </camunda:outputParameter>
 
