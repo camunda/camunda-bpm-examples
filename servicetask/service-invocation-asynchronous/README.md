@@ -1,6 +1,6 @@
 # Asynchronous Service Invocation
 
-> **Note:** this example demonstrates an advanced usage pattern of the process engine based on internal (non-public) API. Similar behavior can be achieved using a send task and a receive task.
+> **Warning:** this example demonstrates an advanced usage pattern of the process engine based on internal (non-public) API. Similar behavior can be achieved using a send task and a receive task. The latter option is recommended in most usecases.
 
 This quickstart demonstrates how to implement an asynchronous service invocation using a Signallable Activity Behavior.
 We learn
