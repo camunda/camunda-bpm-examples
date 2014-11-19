@@ -3,7 +3,7 @@
   <groupId>org.camunda.bpm.quickstart</groupId>
   <artifactId>camunda-quickstart-create-invoice-process</artifactId>
   <packaging>war</packaging>
-  <name>Task Assignment Email</name>
+  <name>Create Invoice Process</name>
 
   <parent>
     <groupId>org.camunda.bpm</groupId>
