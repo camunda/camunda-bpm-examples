@@ -1,42 +1,66 @@
-<h2>Request Summary</h2>
+<form role="form" name="form">
+  <script cam-script type="text/form-script">
+    camForm.on('form-loaded', function() {
+      camForm.variableManager.fetchVariable('loanType');
+      camForm.variableManager.fetchVariable('loanAmount');
+      camForm.variableManager.fetchVariable('loanRuntime');
+      camForm.variableManager.fetchVariable('gender');
+      camForm.variableManager.fetchVariable('firstname');
+      camForm.variableManager.fetchVariable('lastname');
+      camForm.variableManager.fetchVariable('address');
+      camForm.variableManager.fetchVariable('email');
+    });
+    camForm.on('variables-restored', function() {
+      $scope.loanType = camForm.variableManager.variableValue('loanType');
+      $scope.loanAmount = camForm.variableManager.variableValue('loanAmount');
+      $scope.loanRuntime = camForm.variableManager.variableValue('loanRuntime');
+      $scope.gender = camForm.variableManager.variableValue('gender');
+      $scope.firstname = camForm.variableManager.variableValue('firstname');
+      $scope.lastname = camForm.variableManager.variableValue('lastname');
+      $scope.address = camForm.variableManager.variableValue('address');
+      $scope.email = camForm.variableManager.variableValue('email');
+      console.log("setting variables to scope");
+    });
+  </script>
+  <h2>Request Summary</h2>
 
-<table>
+  <table>
 
-  <tr>
-    <td>Type of the loan:</td>
-    <td>{{formVariable('loanType')}}</td>
-  </tr>
+    <tr>
+      <td>Type of the loan:</td>
+      <td>{{ loanType }}</td>
+    </tr>
 
-  <tr>
-    <td>Amount:</td>
-    <td>{{formVariable('loanAmount')}}</td>
-  </tr>
+    <tr>
+      <td>Amount:</td>
+      <td>{{loanAmount}}</td>
+    </tr>
 
-  <tr>
-    <td>Runtime (Years):</td>
-    <td>{{formVariable('loanRuntime')}}</td>
-  </tr>
+    <tr>
+      <td>Runtime (Years):</td>
+      <td>{{loanRuntime}}</td>
+    </tr>
 
-  <tr>
-</table>
+    <tr>
+  </table>
 
-<h2>Contact Data:</h2>
+  <h2>Contact Data:</h2>
 
-<address>
-  <strong>
-    <span ng-if="formVariable('gender') == 'w'">Mrs.</span>
-    <span ng-if="formVariable('gender') == 'm'">Mr.</span>
-    {{formVariable('firstname')}} {{formVariable('lastname')}}
-  </strong><br>
-  {{formVariable('address')}}<br>
-  <a href="mailto:#">{{formVariable('email')}}</a>
-</address>
+  <address>
+    <strong>
+      <span ng-if="gender == 'f'">Mrs.</span>
+      <span ng-if="gender == 'm'">Mr.</span>
+      {{firstname}} {{lastname}}
+    </strong><br>
+    {{address}}<br>
+    <a href="mailto:#">{{email}}</a>
+  </address>
 
-<h2>Approval</h2>
+  <h2>Approval</h2>
 
-Do you approve this request?
+  Do you approve this request?
 
-<!-- Gender -->
-<div class="control-group">
-  <input form-field type="boolean" name="Yes, I approve">
-</div>
+  <div class="form-group">
+    <input type="checkbox" cam-variable-name="approved" cam-variable-type="Boolean" />
+  </div>
+</form>

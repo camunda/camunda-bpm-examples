@@ -31,47 +31,47 @@ This quickstart demonstrates the use of most of the supported form controls. See
 ### Input Text
 
 ```html
-<input form-field required type="text" name="firstname" placeholder="John" ng-minlength="2" ng-maxlength="20">
+<input required
+       type="text"
+       cam-variable-name="firstname"
+       cam-variable-type="String"
+       placeholder="John"
+       ng-minlength="2"
+       ng-maxlength="20" />
 ```
 
 ### Input Number
 
 ```html
-<input form-field type="number" name="loanAmount" required min="1000">
+<input required
+       type="number"
+       cam-variable-name="loanAmount"
+       cam-variable-type="Double"
+       min="1000" />
 ```
 
 ### Select Box
 
 ```html
-<select form-field type="string" name="loanType" required>
+<select required cam-variable-name="loanType" cam-variable-type="String">
   <option value="mortage" checked>Mortage Loan (5%)</option>
   <option value="cashAdvance">Cash Advance (10%)</option>
 </select>
-```
 
-### Radio Button
-
-```html
-<label class="radio inline">
-  <input form-field type="radio" name="gender" value="m">
-  Mr.
-</label>
-<label class="radio inline">
-  <input form-field type="radio" name="gender" value="w">
-  Mrs.
-</label>
 ```
 
 ### Textarea
 
 ```html
-<textarea form-field name="address" rows="4"> </textarea>
+<textarea cam-variable-name="address"
+          cam-variable-type="String"
+          rows="4"></textarea>
 ```
 
 ### Custom Javascript
 
 ```html
-<script form-script type="text/form-script">
+<script cam-script type="text/form-script">
 ...
 </script>
 ```
@@ -87,4 +87,4 @@ This quickstart demonstrates the use of most of the supported form controls. See
 [2]: docs/screenshot-modeler.png
 [3]: src/main/webapp/start-form.html
 [4]: src/main/webapp
-[5]: http://docs.camunda.org/latest/guides/user-guide/#embedded-task-forms
+[5]: http://docs.camunda.org/latest/guides/user-guide/#task-forms-embedded-task-forms

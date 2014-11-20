@@ -1,19 +1,26 @@
-<div class="row-fluid">
+<h3>Embedded Forms Quickstart</h3>
+<form role="form"
+      name="variablesForm">
 
-  <div class="span6">
+<div class="row">
+
+  <div class="col-xs-6">
     <h2>Loan Data</h2>
 
     <!-- Loan Type -->
-    <div class="control-group">
-      <label class="control-label" for="selectLoanType">Type of the loan</label>
+    <div class="form-group">
+      <label for="selectLoanType">Type of the loan</label>
       <div class="controls">
-
         <!--select box -->
-        <select id="selectLoanType" form-field type="string" name="loanType" required ng-change="calculateLoan()">
+        <select required
+           class="form-control"
+           name="loanType"
+           cam-variable-name="loanType"
+           cam-variable-type="String"
+           ng-change="calculateLoan()">
           <option value="mortage" checked>Mortage Loan (5%)</option>
           <option value="cashAdvance">Cash Advance (10%)</option>
         </select>
-
       </div>
 
       <!-- Custom validation message for select box -->
@@ -23,19 +30,32 @@
     </div>
 
     <!-- Loan Amount -->
-    <div class="control-group">
-      <label class="control-label" for="inputLoanAmount">Amount</label>
+    <div class="form-group">
+      <label for="inputLoanAmount">Amount</label>
       <div class="controls">
-        <input form-field required type="number" id="inputLoanAmount" name="loanAmount" min="1000" ng-change="calculateLoan()">
+        <input required
+          class="form-control"
+          cam-variable-type="Double"
+          cam-variable-name="loanAmount"
+          min="1000"
+          ng-change="calculateLoan()"
+          name="loanAmount"
+          type="number" />
       </div>
     </div>
 
     <!-- Runtime in Years -->
-    <div class="control-group">
-      <label class="control-label" for="inputLoanRuntime">Runtime (Years)</label>
+    <div class="form-group">
+      <label for="inputLoanRuntime">Runtime (Years)</label>
       <div class="controls">
-        <input form-field required type="number" id="inputLoanRuntime" name="loanRuntime" ng-change="calculateLoan()"
-        min="2" max="30">
+        <input required
+          class="form-control"
+          cam-variable-type="Double"
+          cam-variable-name="loanRuntime"
+          min="2" max="30"
+          ng-change="calculateLoan()"
+          name="loanRuntime"
+          type="number" />
       </div>
     </div>
 
@@ -45,20 +65,18 @@
       {{monthlyPayment}}€ at {{interest}}% interest rate.
     </p>
 
-    <p ng-if="!monthlyPayment" class="alert alert-error">
+    <p ng-if="!monthlyPayment" class="alert alert-danger">
       Invalid selection.
     </p>
 
     <!-- The following code demonstrates use of custom scripting.
 
-          The 'form-script' directive makes sure the the script is loaded and can bind to the angular $scope for the form.
+          The 'cam-script' directive makes sure the the script is loaded and can bind to the angular $scope for the form.
 
           Access to form fields is provided through $scope.variablesForm.
        -->
-    <script form-script type="text/form-script">
-
+    <script cam-script type="text/form-script">
       $scope.calculateLoan = function() {
-
         var form = $scope.variablesForm;
 
         if(!form.loanType.$valid || !form.loanAmount.$valid || !form.loanRuntime.$valid) {
@@ -89,53 +107,83 @@
 
   </div>
 
-  <div class="span6">
+  <div class="col-xs-6">
     <h2>Contact Data</h2>
 
     <!-- Gender -->
-    <div class="control-group">
-     <label class="radio inline">
-        <input form-field type="radio" name="gender" value="m">
-        Mr.
-      </label>
-      <label class="radio inline">
-        <input form-field type="radio" name="gender" value="w">
-        Mrs.
-      </label>
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <div class="controls">
+
+        <!--select box -->
+        <select class="form-control"
+           cam-variable-name="gender"
+           cam-variable-type="String"
+           ng-change="calculateLoan()">
+          <option value="m" checked>Mr.</option>
+          <option value="f">Mrs.</option>
+        </select>
+
+    </div>
     </div>
 
     <!-- Firstname -->
-    <div class="control-group">
-      <label class="control-label" for="inputFirstname">Firstname</label>
+    <div class="form-group">
+      <label for="inputFirstname">Firstname</label>
       <div class="controls">
-        <input form-field required type="text" name="firstname" id="inputFirstname" placeholder="John" ng-minlength="2" ng-maxlength="20">
+        <input class="form-control"
+               required
+               type="text"
+               cam-variable-name="firstname"
+               cam-variable-type="String"
+               placeholder="John"
+               ng-minlength="2"
+               ng-maxlength="20" />
       </div>
     </div>
 
     <!-- Lastname -->
-    <div class="control-group">
-      <label class="control-label" for="inputLastname">Lastname</label>
+    <div class="form-group">
+      <label for="inputLastname">Lastname</label>
       <div class="controls">
-        <input form-field required type="text" name="lastname" id="inputLastname" placeholder="Doe"  ng-minlength="2" ng-maxlength="20">
+        <input class="form-control"
+               required
+               type="text"
+               cam-variable-name="lastname"
+               cam-variable-type="String"
+               placeholder="Doe"
+               ng-minlength="2"
+               ng-maxlength="20" />
       </div>
     </div>
 
     <!-- Email -->
-    <div class="control-group">
-      <label class="control-label" for="inputEmail">Email</label>
+    <div class="form-group">
+      <label for="inputEmail">Email</label>
       <div class="controls">
-        <input form-field required type="text" name="email" id="inputEmail" placeholder="john.doe@camunda.org" ng-minlength="2" ng-maxlength="20">
+        <input class="form-control"
+               required
+               type="text"
+               cam-variable-name="email"
+               cam-variable-type="String"
+               placeholder="john.doe@camunda.org"
+               ng-minlength="2"
+               ng-maxlength="20" />
       </div>
     </div>
 
     <!-- Address -->
-    <div class="control-group">
-      <label class="control-label" for="inputAddress">Address</label>
+    <div class="form-group">
+      <label for="inputAddress">Address</label>
       <div class="controls">
-        <textarea form-field name="address" rows="4" id="inputAddress"> </textarea>
+        <textarea class="form-control"
+                  cam-variable-name="address"
+                  cam-variable-type="String"
+                  rows="4"></textarea>
       </div>
     </div>
 
   </div>
 
 </div>
+</form>
