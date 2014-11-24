@@ -9,7 +9,7 @@ var $formContainer = $('.column.right');
 
 var camClient = new CamSDK.Client({
   mock: false,
-  apiUri: '/camunda/api/engine'
+  apiUri: '/engine-rest'
 });
 
 var taskService = new camClient.resource('task');
@@ -36,7 +36,7 @@ function showTasks(results) {
   $.each(results._embedded.task, function (t, task) {
     items = items.concat([
       '<li data-task-id="', task.id, '">',
-      '<h4>', task.id, '</h4>',
+      '<h4>', task.name || task.id, '</h4>',
       task.description ? '<div class="description">' : '',
       task.description,
       task.description ? '</div>' : '',

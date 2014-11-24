@@ -21,12 +21,12 @@ Note: you can find the complete code of this example in the `scripts.js` file.
 
 ### Client
 
-The form SDK utilize an instance of the CamSDK.Client to communicate with the engine (over the [REST API](docs.camunda.org/latest/api-references/rest/)):
+The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](docs.camunda.org/latest/api-references/rest/)):
 
 ```js
 var camClient = new CamSDK.Client({
   mock: false,
-  apiUri: '/camunda/api/engine'
+  apiUri: '/engine-rest'
 });
 
 var taskService = new camClient.resource('task');
@@ -70,18 +70,18 @@ new CamSDK.Form({
   containerElement: $formContainer,
 
   // you can pass a callback to continue logic execution when the form is ready
-  // the callback, should have a `error, camFormInstance` signatire
+  // the callback, should have a `error, camFormInstance` signature
   done: callback
 });
 ```
 
 ### Submitting the form
 
-Submitting the for is straightforward, the instance of CamSDK.Form have a `submit` method who takes a single callback.
+Submitting the form is straightforward, the instance of CamSDK.Form have a `submit` method who takes a single callback.
 
 ```js
 camFormInstance.submit(function (err) {
-    // do something with the (or, hopefully, the lack of) error
+  // do something with the (or, hopefully, the lack of) error
 });
 ```
 

@@ -24,6 +24,14 @@ body {
   height: 100%;
 }
 
+a,
+a:link,
+a:hover,
+a:visited,
+a:focus {
+  color: #B4F083;
+}
+
 #tasks > li {
   cursor: pointer;
   margin-bottom: 4em;
