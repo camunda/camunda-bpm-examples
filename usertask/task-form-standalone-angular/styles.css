@@ -1,0 +1,87 @@
+
+/*
+  Examples do not require to be ugly
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #212121;
+  color: #a0a0a0;
+  font-family: monospace;
+
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+a,
+a:link,
+a:hover,
+a:visited,
+a:focus {
+  color: #B4F083;
+}
+
+#tasks > li {
+  cursor: pointer;
+  margin-bottom: 4em;
+}
+
+.layout {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+.layout > .column {
+  width: 50%;
+  overflow: auto;
+  position: absolute;
+  height: 100%;
+  padding: 1em;
+}
+.layout > .right {
+  right: 0;
+}
+
+
+.control-group {
+  overflow: hidden;
+  padding: 1em 0;
+  margin-bottom: 1em;
+}
+
+.control-label,
+.controls {
+  float: left;
+}
+
+.control-label,
+.controls input{
+  vertical-align: middle;
+  line-height: 2em;
+}
+
+.control-label {
+  text-align: right;
+  width: 33%;
+  padding: 0 1em 0 0;
+}
+.controls {
+  width: 66%;
+  padding: 0 0 0 1em;
+}
+
+.controls input[type="text"]{
+  width: 100%;
+}
