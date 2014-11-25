@@ -22,7 +22,7 @@ Note: you can find the complete code of this example in the `scripts.js` file.
 
 ### Client
 
-The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](docs.camunda.org/latest/api-references/rest/)):
+The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](http://docs.camunda.org/latest/api-references/rest/)):
 
 ```js
 var camClient = new CamSDK.Client({
