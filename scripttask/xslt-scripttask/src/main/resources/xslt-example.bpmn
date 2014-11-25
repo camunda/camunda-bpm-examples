@@ -3,7 +3,9 @@
   <bpmn2:process id="xslt-example" name="XSLT Example" isExecutable="true">
     <bpmn2:startEvent id="StartEvent_1" name="give input">
       <bpmn2:extensionElements>
-        <camunda:executionListener class="org.camunda.bpm.example.xsltexample.PrepareInput" event="end"/>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy" resource="org/camunda/bpm/example/xsltexample/readXmlFile.groovy" />
+        </camunda:executionListener>
       </bpmn2:extensionElements>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
     </bpmn2:startEvent>
@@ -19,7 +21,9 @@
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="ScriptTask_1"/>
     <bpmn2:endEvent id="EndEvent_1" name="show output">
       <bpmn2:extensionElements>
-        <camunda:executionListener class="org.camunda.bpm.example.xsltexample.PrepareOutput" event="start"/>
+        <camunda:executionListener event="start">
+          <camunda:script scriptFormat="groovy" resource="org/camunda/bpm/example/xsltexample/printResult.groovy" />
+        </camunda:executionListener>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
     </bpmn2:endEvent>
