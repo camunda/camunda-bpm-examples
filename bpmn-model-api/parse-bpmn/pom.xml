@@ -10,7 +10,7 @@
   <name>Parse BPMN by model API</name>
 
   <properties>
-    <version.camunda>7.2.0-alpha5</version.camunda>
+    <version.camunda>7.2.0-SNAPSHOT</version.camunda>
   </properties>
 
   <dependencies>

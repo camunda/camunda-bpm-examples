@@ -13,7 +13,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <camunda.version>7.1.0-Final</camunda.version>
+    <camunda.version>7.2.0-SNAPSHOT</camunda.version>
     <arquillian.version>1.1.2.Final</arquillian.version>
     <jboss.version>7.2.0.Final</jboss.version>
   </properties>
@@ -27,6 +27,13 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+      <dependency>
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-bom</artifactId>
+        <version>${camunda.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -35,26 +42,22 @@
       <!-- process engine, needs to be provided -->
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>
-      <version>${camunda.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <!-- client for Java EE application server integration, included in WAR as an alternative to write your own ProcessApplication class -->
       <groupId>org.camunda.bpm.javaee</groupId>
       <artifactId>camunda-ejb-client</artifactId>
-      <version>${camunda.version}</version>
     </dependency>
     <dependency>
       <!-- CDI integration, needs to be included in WAR, otherwise CDI can not work correctly -->
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-cdi</artifactId>
-      <version>${camunda.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.camunda.bpm.model</groupId>
       <artifactId>camunda-bpmn-model</artifactId>
-      <version>${camunda.version}</version>
     </dependency>
 
     <dependency>
