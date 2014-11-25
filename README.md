@@ -79,6 +79,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 |-----------------------------------------------------------|-------------|-----------------------------|---------|
 | [SDK JS forms](/sdk-js/browser-forms) *                   | Browser     | HTML, task, form, SDK       | 7.2+    |
 | [SDK JS forms AngularJS](/sdk-js/browser-forms-angular) * | Browser     | HTML, task, form, AngularJS | 7.2+    |
+| [SDK JS node.js](/sdk-js/nodejs) *                        | node.js     | CLI, deployment | 7.3+    |
 
 ### camunda Modeler Examples
 

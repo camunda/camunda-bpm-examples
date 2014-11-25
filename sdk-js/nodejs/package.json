@@ -1,0 +1,10 @@
+{
+  "name": "camunda-sdk-js-example-node",
+  "private": "true",
+  "dependencies": {
+    "camunda-bpm-sdk-js": "git://github.com/camunda/camunda-bpm-sdk-js",
+    "cli-table": "^0.3.1",
+    "image-to-ascii": "^0.1.1",
+    "inquirer": "^0.8.0"
+  }
+}
