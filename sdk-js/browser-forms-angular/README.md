@@ -96,4 +96,4 @@ camFormInstance.submit(function (err) {
 1. Clone the respository
 2. Copy this folder to the `server/apache-tomcat-X.X.XX/webapps` directory of a [camunda BPM platform distribution](http://camunda.org/download/)
 3. Start the platform
-4. Go to http://localhost:8080/task-form-standalone-angular and play around
+4. Go to http://localhost:8080/browser-forms-angular and play around
