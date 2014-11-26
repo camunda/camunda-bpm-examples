@@ -21,7 +21,7 @@
               <camunda:constraint name="required"/>
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="loanAmmount" label="Loan Ammount" type="long">
+          <camunda:formField id="loanAmount" label="Loan Amount" type="long">
             <camunda:validation>
               <camunda:constraint name="required"/>
             </camunda:validation>
@@ -59,7 +59,7 @@
               <camunda:constraint name="readonly"/>
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="loanAmmount" label="Loan Ammount" type="long">
+          <camunda:formField id="loanAmount" label="Loan Amount" type="long">
             <camunda:validation>
               <camunda:constraint name="readonly"/>
             </camunda:validation>
