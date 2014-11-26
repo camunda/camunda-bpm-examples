@@ -53,7 +53,8 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 
 | Name                                                                       | Container            |  Keywords                 | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
-| [BPMN Parse Listener](process-engine-plugin/bpmn-parse-listener)           | Unit Test            | Process Engine Plugin, Bpmn Parse Listener | 7.0+    |
+| [BPMN Parse Listener](process-engine-plugin/bpmn-parse-listener)           | Unit Test            | Process Engine Plugin, Bpmn Parse Listener  | 7.0+    |
+| [Custom History Level](process-engine-plugin/custom-history-level)         | Unit Test            | Process Engine Plugin, Custom History Level | 7.2+    |
 
 ### Bpmn 2.0 Model API Examples
 
