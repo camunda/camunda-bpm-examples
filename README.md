@@ -1,6 +1,8 @@
 camunda BPM examples
 ====================
 
+> Looking for the "invoice" example contained in the distribution?  You can find it here: https://github.com/camunda/camunda-bpm-platform/tree/master/examples/invoice
+
 camunda BPM examples is a collection of focused usage examples for the [camunda BPM platform](https://github.com/camunda/camunda-bpm-platform), intended to get you started quickly:
 
 * [Getting Started with camunda BPM](#getting-started-with-camunda-bpm)
