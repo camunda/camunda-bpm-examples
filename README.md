@@ -70,6 +70,13 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin                    | 7.0+    |
 | [Failed Jobs Plugin](/cockpit/cockpit-failed-jobs-plugin)                  | Plugin                    | 7.0+    |
 
+### SDK-JS Examples
+
+| Name                                                      | Environment | Keywords                    | Version |
+|-----------------------------------------------------------|-------------|-----------------------------|---------|
+| [SDK JS forms](/sdk-js/browser-forms) *                   | Browser     | HTML, task, form, SDK       | 7.2+    |
+| [SDK JS forms AngularJS](/sdk-js/browser-forms-angular) * | Browser     | HTML, task, form, AngularJS | 7.2+    |
+
 ### camunda Modeler Examples
 
 | Name                                                                       | Keywords                  | Version |
