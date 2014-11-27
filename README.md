@@ -34,10 +34,10 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | [User Task Form Embedded](/usertask/task-form-embedded) *                  | All                  | Html, Form, Usertask      | 7.1+    |
 | [User Task Form Generated](/usertask/task-form-generated) *                | All                  | Html, Form, Usertask      | 7.1+    |
 | [User Task Form JSF](/usertask/task-form-external-jsf) *                   | JavaEE Containers    | JSF, Form, Usertask       | 7.1+    |
-| [Script Task XSLT](/scripttask/xslt-scripttask)                            | Unit Test            | XSLT Scripttask       | 7.2+, EE only    |
-| [Message Start Event](/startevent/message-start)                           | Unit Test            | Message Start Event       | 7.0+    |
+| [Script Task XSLT](/scripttask/xslt-scripttask)                            | Unit Test            | XSLT Scripttask           | 7.2+, EE only    |
+| [Start Event - Message](/startevent/message-start)                         | Unit Test            | Message Start Event       | 7.0+    |
 
-(*) _complete demo applications_.
+(\*) _complete demo applications_.
 
 ### Deployment & Project Setup Examples
 
@@ -46,16 +46,17 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | [Process Application - Servlet](deployment/servlet-pa)                     | All                  | War, Servlet              | 7.1+    |
 | [Process Application - EJB](deployment/ejb-pa)                             | JavaEE Containers    | Ejb, War                  | 7.0+    |
 | [Process Application - Spring Servlet](deployment/spring-servlet-pa-jboss) | JBoss AS 7           | Spring, Servlet, War      | 7.0+    |
-| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | vanilla Apache Tomcat | Spring, Rest, Embedded    | 7.0+    |
+| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | vanilla Apache Tomcat | Spring, Rest, Embedded   | 7.0+    |
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7           | Spring, Jndi, War         | 7.0+    |
 
 
 ### Process Engine Plugin Examples
 
-| Name                                                                       | Container            |  Keywords                 | Version |
-| ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
+| Name                                                                       | Container            |  Keywords                                   | Version |
+| ---------------------------------------------------------------------------|----------------------|---------------------------------------------|---------|
 | [BPMN Parse Listener](process-engine-plugin/bpmn-parse-listener)           | Unit Test            | Process Engine Plugin, Bpmn Parse Listener  | 7.0+    |
 | [Custom History Level](process-engine-plugin/custom-history-level)         | Unit Test            | Process Engine Plugin, Custom History Level | 7.2+    |
+| [Command Interceptor - Blocking](process-engine-plugin/command-interceptor-blocking) | Unit Test  | Maintenance, Interceptor, Configuration     | 7.0+    |
 
 ### Bpmn 2.0 Model API Examples
 
