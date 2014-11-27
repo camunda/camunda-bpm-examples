@@ -15,4 +15,4 @@ The other process definition contains a service task that sends a message. This 
 
 [1]: src/main/resources/message_start_process.png
 [2]: src/main/resources/instantiating_process.png
-[3]: org/camunda/bpm/example/event/message/MessageStartEventTest.java
+[3]: src/test/java/org/camunda/bpm/example/event/message/MessageStartEventTest.java
