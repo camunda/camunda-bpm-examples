@@ -1,6 +1,6 @@
 # Standalone usage of JS SDK
 
-This example attempt to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-sdk-js) to work with user task forms.
+This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-sdk-js) to work with user task forms.
 
 ![SDK JS standalone usage](screenshot.png)
 
