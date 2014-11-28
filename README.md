@@ -94,6 +94,13 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | ---------------------------------------------------------------------------|
 | [Case Manager UI](https://github.com/camunda/camunda-casemanager-ui) (External) |
 
+### Cycle Examples
+
+| Name                                                                       | Version |
+| ---------------------------------------------------------------------------|---------|
+| [Connector Example](cycle/camunda-cycle-connector-example)                 | 3.1+    |
+
+
 ### Contribute!
 
   * Website: http://www.camunda.org/
