@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_B0ppIPFYEeOlke_H2tkzCA" exporter="camunda modeler" exporterVersion="2.6.0" targetNamespace="http://activiti.org/bpmn">
   <bpmn2:process id="holiday" name="Get Holiday" isExecutable="true">
-    <bpmn2:startEvent id="StartEvent_1">
+    <bpmn2:startEvent id="StartEvent_1" name="start with date">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:serviceTask id="ServiceTask_1" name="Get holiday">
+    <bpmn2:serviceTask id="ServiceTask_1" name="Check if date is holiday">
       <bpmn2:extensionElements>
+        <camunda:connector><![CDATA[
+          ]]><camunda:connectorId>http-connector</camunda:connectorId><![CDATA[
+          ]]><camunda:inputOutput><![CDATA[
 
-        <camunda:connector>
-          <camunda:connectorId>http-connector</camunda:connectorId>
-          <camunda:inputOutput>
+            ]]><camunda:inputParameter name="url"><![CDATA[
+              http://feiertage.jarmedia.de/api/?jahr=2014&nur_land=BE
+            ]]></camunda:inputParameter><![CDATA[
 
-            <camunda:inputParameter name="url">
-              http://feiertage.jarmedia.de/api/?jahr=2014&amp;nur_land=BE
-            </camunda:inputParameter>
-
-            <camunda:inputParameter name="method">
+            ]]><camunda:inputParameter name="method"><![CDATA[
               GET
-            </camunda:inputParameter>
+            ]]></camunda:inputParameter><![CDATA[
 
-            <camunda:inputParameter name="headers">
-              <map>
-                <entry key="Accept">
+            ]]><camunda:inputParameter name="headers"><![CDATA[
+              ]]><map><![CDATA[
+                ]]><entry key="Accept"><![CDATA[
                   application/json
-                </entry>
-              </map>
-            </camunda:inputParameter>
+                ]]></entry><![CDATA[
+              ]]></map><![CDATA[
+            ]]></camunda:inputParameter><![CDATA[
 
-            <camunda:outputParameter name="isHoliday">
-              <camunda:script scriptFormat="Javascript" resource="parseHoliday.js" />
-            </camunda:outputParameter>
-          </camunda:inputOutput>
-        </camunda:connector>
-
+            ]]><camunda:outputParameter name="isHoliday"><![CDATA[
+              ]]><camunda:script scriptFormat="Javascript" resource="parseHoliday.js"/><![CDATA[
+            ]]></camunda:outputParameter><![CDATA[
+          ]]></camunda:inputOutput><![CDATA[
+        ]]></camunda:connector>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
@@ -44,14 +42,14 @@
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="ServiceTask_1" targetRef="ExclusiveGateway_1"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_3" name="holiday" sourceRef="ExclusiveGateway_1" targetRef="UserTask_1">
+    <bpmn2:sequenceFlow id="SequenceFlow_3" name="is holiday" sourceRef="ExclusiveGateway_1" targetRef="UserTask_1">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${isHoliday}</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:userTask id="UserTask_1" name="Pack for holiday">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_4" name="no holiday" sourceRef="ExclusiveGateway_1" targetRef="UserTask_2">
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="is no holiday" sourceRef="ExclusiveGateway_1" targetRef="UserTask_2">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${!isHoliday}</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:userTask id="UserTask_2" name="Pack for work">
@@ -97,7 +95,7 @@
         <di:waypoint xsi:type="dc:Point" x="321.0" y="52.0"/>
         <di:waypoint xsi:type="dc:Point" x="396.0" y="52.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="318.0" y="101.0"/>
+          <dc:Bounds height="25.0" width="75.0" x="336.0" y="103.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_UserTask_7" bpmnElement="UserTask_2">
@@ -108,7 +106,7 @@
         <di:waypoint xsi:type="dc:Point" x="321.0" y="256.0"/>
         <di:waypoint xsi:type="dc:Point" x="396.0" y="256.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="25.0" width="81.0" x="296.0" y="264.0"/>
+          <dc:Bounds height="25.0" width="98.0" x="338.0" y="174.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_EndEvent_4" bpmnElement="EndEvent_1">
