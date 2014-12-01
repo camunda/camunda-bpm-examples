@@ -32,6 +32,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | [Service Invocation Asynchronous](/servicetask/service-invocation-asynchronous)   | Unit Test     | Signal, Async             | 7.0+    |
 | [User Task Assignment Email](/usertask/task-assignment-email) *            | All                  | Email, Usertask           | 7.0+    |
 | [User Task Form Embedded](/usertask/task-form-embedded) *                  | All                  | Html, Form, Usertask      | 7.1+    |
+| [User Task Form Embedded - Serialized Java Object](/usertask/task-form-embedded-serialized-java-object) *                  | All                  | Html, Form, Usertask      | 7.2+    |
 | [User Task Form Generated](/usertask/task-form-generated) *                | All                  | Html, Form, Usertask      | 7.1+    |
 | [User Task Form JSF](/usertask/task-form-external-jsf) *                   | JavaEE Containers    | JSF, Form, Usertask       | 7.1+    |
 | [Script Task XSLT](/scripttask/xslt-scripttask)                            | Unit Test            | XSLT Scripttask           | 7.2+, EE only    |

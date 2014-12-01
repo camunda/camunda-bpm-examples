@@ -1,0 +1,53 @@
+<form name="manualRating" role="form">
+
+  <script cam-script type="text/form-script">
+
+    camForm.on('form-loaded', function() {
+      // fetch the variable named 'customerData'
+      camForm.variableManager.fetchVariable('customerData');
+    });
+
+    camForm.on('variables-fetched', function() {
+      // after the variables are fetched, bind the value of customerData to a angular
+      // scope value such that the form can work on it
+      $scope.customerData = camForm.variableManager.variable('customerData').value;
+    });
+
+    camForm.on('submit', function() {
+      // remove '$$hashKey' properties from address objects
+      angular.forEach($scope.customerData.addresses, function(addr) {
+        delete addr.$$hashKey;
+      });
+    });
+
+  </script>
+
+  <p class="lead">Please provide a rating for the following customer</p>
+
+  <div ng-repeat="addr in customerData.addresses">
+    <address>
+      <strong>{{customerData.firstname}} {{customerData.lastName}}</strong><br>
+      {{addr.street}}<br>
+      {{addr.zipCode}} {{addr.city}}<br>
+      {{addr.country}}
+    </address>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="rating">Rating</label>
+    <div class="controls">
+      <input id="rating"
+             name="rating"
+             class="form-control"
+             type="text"
+             required
+             cam-variable-type="Float"
+             ng-model="customerData.rating">
+    </div>
+
+    <span ng-show="manualRating.rating.$error.camVariableType">Input must be a 'Float'.</span>
+
+  </div>
+
+  <br>
+</form>
