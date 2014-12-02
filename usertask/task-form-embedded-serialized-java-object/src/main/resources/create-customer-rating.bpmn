@@ -19,11 +19,11 @@
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="ExclusiveGateway_1" targetRef="UserTask_1">
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="No" sourceRef="ExclusiveGateway_1" targetRef="UserTask_1">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${not ratingCreated}</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="UserTask_1" targetRef="ExclusiveGateway_2"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="ExclusiveGateway_1" targetRef="ExclusiveGateway_2">
+    <bpmn2:sequenceFlow id="SequenceFlow_6" name="Yes" sourceRef="ExclusiveGateway_1" targetRef="ExclusiveGateway_2">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${ ratingCreated }</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_2">
@@ -70,6 +70,9 @@
         <di:waypoint xsi:type="dc:Point" x="365.0" y="263.0"/>
         <di:waypoint xsi:type="dc:Point" x="365.0" y="338.0"/>
         <di:waypoint xsi:type="dc:Point" x="440.0" y="338.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="22.0" width="23.0" x="330.0" y="269.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_ExclusiveGateway_3" bpmnElement="ExclusiveGateway_2" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="576.0" y="212.0"/>
@@ -92,7 +95,7 @@
         <di:waypoint xsi:type="dc:Point" x="483.0" y="237.0"/>
         <di:waypoint xsi:type="dc:Point" x="576.0" y="237.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="480.0" y="237.0"/>
+          <dc:Bounds height="22.0" width="29.0" x="400.0" y="212.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_ServiceTask_3" bpmnElement="ServiceTask_2">
