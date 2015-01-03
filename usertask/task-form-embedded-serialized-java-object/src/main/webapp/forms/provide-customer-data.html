@@ -1,0 +1,134 @@
+<form name="customerForm" role="form">
+
+  <script cam-script type="text/form-script">
+
+    // angular form works on scope object
+    var customerData = $scope.customerData = {
+      addresses : []
+    };
+
+    // scope function which adds a new address
+    $scope.addAddress = function() {
+      customerData.addresses.push({});
+    };
+
+    /**
+     * cam form lifecycle hooks
+    */
+
+    camForm.on('form-loaded', function() {
+
+      // declare variable 'customerData' incuding metadata for serialization
+      camForm.variableManager.createVariable({
+        name: 'customerData',
+        type: 'Object',
+        value: customerData,
+        valueInfo: {
+          // indicate that object is serialized as json
+          serializationDataFormat: 'application/json',
+          // provide classname of java object
+          objectTypeName: 'org.camunda.bpm.example.usertask.embedded.serialized.model.CustomerData'
+        }
+      });
+
+    });
+
+    camForm.on('submit', function() {
+      // remove '$$hashKey' properties from address objects
+      angular.forEach(customerData.addresses, function(addr) {
+        delete addr.$$hashKey;
+      });
+    });
+
+  </script>
+
+  <h3>Customer Data</h3>
+
+  <div class="control-group">
+    <label class="control-label" for="firstname">Firstname</label>
+    <div class="controls">
+      <input id="firstname"
+             class="form-control"
+             type="text"
+             required 
+             ng-model="customerData.firstname">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="firstname">Lastname</label>
+    <div class="controls">
+      <input id="lastname"
+             class="form-control"
+             type="text"
+             required
+             ng-model="customerData.lastname">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="vip">Is VIP Customer</label>
+    <div class="controls">
+      <input id="vip"
+             class="form-control"
+             type="checkbox"
+             ng-model="customerData.vip">
+    </div>
+  </div>
+
+  <div>
+      <h3>Addresses</h3>
+      <a href
+         ng-click="addAddress()"
+         class="btn btn-default">Add</a>
+
+    <div ng-repeat="addr in customerData.addresses">
+      <hr>
+      <div class="control-group">
+        <label class="control-label" for="street">Street</label>
+        <div class="controls">
+          <input id="street"
+                 class="form-control"
+                 type="text"
+                 required
+                 ng-model="addr.street">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="zip">Zip</label>
+        <div class="controls">
+          <input id="zip"
+                 class="form-control"
+                 type="text"
+                 required
+                 ng-model="addr.zipCode">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="city">City</label>
+        <div class="controls">
+          <input id="city"
+                 class="form-control"
+                 type="text"
+                 required
+                 ng-model="addr.city">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="country">Country</label>
+        <div class="controls">
+          <select id="country"
+                 class="form-control"
+                 required
+                 ng-model="addr.country">
+            <option>Germany</option>
+            <option>France</option>
+            <option>Italy</option>
+            <option>Luxembourg</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>
