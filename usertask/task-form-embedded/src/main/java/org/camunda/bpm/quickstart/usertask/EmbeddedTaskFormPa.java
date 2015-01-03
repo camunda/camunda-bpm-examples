@@ -1,4 +1,4 @@
-package org.camunda.bpm.quickstart.usertak;
+package org.camunda.bpm.quickstart.usertask;
 
 import javax.servlet.ServletContextListener;
 
