@@ -13,6 +13,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 * [Cockpit](#cockpit-examples)
 * [camunda Modeler (Eclipse)](#camunda-modeler-examples)
 * [CMMN](#cmmn-examples)
+* [Multi-Tenancy](#multi-tenancy-examples)
 
 ### Getting Started with camunda BPM
 
@@ -100,6 +101,12 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | Name                                                                       | Version |
 | ---------------------------------------------------------------------------|---------|
 | [Connector Example](cycle/camunda-cycle-connector-example)                 | 3.1+    |
+
+### Multi-Tenancy Examples
+
+| Name                                                                             | Container | Keywords      | Version |
+| ---------------------------------------------------------------------------------------------|---------------|---------|
+| [Multi-Tenancy with Database Schema Isolation](multi-tenancy/schema-isolation)   | JBoss AS 7| Multi-Tenancy | 7.2+    |
 
 
 ### Contribute!
