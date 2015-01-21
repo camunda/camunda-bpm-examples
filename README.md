@@ -105,7 +105,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 ### Multi-Tenancy Examples
 
 | Name                                                                             | Container | Keywords      | Version |
-| ---------------------------------------------------------------------------------------------|---------------|---------|
+| ---------------------------------------------------------------------------------|-----------|---------------|---------|
 | [Multi-Tenancy with Database Schema Isolation](multi-tenancy/schema-isolation)   | JBoss AS 7| Multi-Tenancy | 7.2+    |
 
 
