@@ -6,33 +6,43 @@
   <artifactId>camunda-quickstart-embedded-spring-rest</artifactId>
   <packaging>war</packaging>
   <name>camunda BPM - Quickstarts - EMBEDDED - Spring REST</name>
-  <version>7.1.0-Final</version>
-  
+  <version>7.2.0</version>
+
   <properties>
     <spring.version>3.1.2.RELEASE</spring.version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-bom</artifactId>
+        <version>7.2.0</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
-  
+
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>
-      <version>${project.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-spring</artifactId>
-      <version>${project.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-rest</artifactId>
-      <version>${project.version}</version>
+      <version>7.2.0</version>
       <classifier>classes</classifier>
     </dependency>
-    
+
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jaxrs</artifactId>
@@ -44,7 +54,7 @@
       <artifactId>spring-web</artifactId>
       <version>${spring.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
