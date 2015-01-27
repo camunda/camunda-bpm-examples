@@ -75,6 +75,13 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin                    | 7.0+    |
 | [Failed Jobs Plugin](/cockpit/cockpit-failed-jobs-plugin)                  | Plugin                    | 7.0+    |
 
+### Tasklist Examples
+
+| Name                                                                       | Keywords                  | Version |
+| ---------------------------------------------------------------------------|---------------------------|---------|
+| [Create Standalone Task - client side](https://github.com/camunda/camunda-bpm-webapp/tree/master/webapp/src/main/resources-plugin/standaloneTask/app)                    | Plugin                    | 7.3+    |
+| [Create Standalone Task - server side](https://github.com/camunda/camunda-bpm-webapp/tree/master/webapp/src/main/java/org/camunda/bpm/tasklist/impl/plugin/standalonetask)                  | Plugin                    | 7.3+    |
+
 ### SDK-JS Examples
 
 | Name                                                      | Environment | Keywords                    | Version |
