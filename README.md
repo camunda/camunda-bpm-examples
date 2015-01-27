@@ -11,6 +11,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 * [Process Engine Plugin](#process-engine-plugin-examples)
 * [Bpmn 2.0 Model API](#bpmn-20-model-api-examples)
 * [Cockpit](#cockpit-examples)
+* [Tasklist](#tasklist-examples)
 * [camunda Modeler (Eclipse)](#camunda-modeler-examples)
 * [CMMN](#cmmn-examples)
 * [Multi-Tenancy](#multi-tenancy-examples)
