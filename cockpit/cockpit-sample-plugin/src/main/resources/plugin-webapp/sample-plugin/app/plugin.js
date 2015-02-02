@@ -1,17 +1,14 @@
-ngDefine('cockpit.plugin.sample-plugin', function(module) {
+define(['angular'], function(angular) {
 
-  var DashboardController = function($scope, $http, Uri) {
+  var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
 
     $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
       .success(function(data) {
         $scope.processInstanceCounts = data;
       });
-  };
+  }];
 
-  DashboardController.$inject = ["$scope", "$http", "Uri"];
-
-
-  var Configuration = function Configuration(ViewsProvider) {
+  var Configuration = ['ViewsProvider', function(ViewsProvider) {
 
     ViewsProvider.registerDefaultView('cockpit.dashboard', {
       id: 'process-definitions',
@@ -22,11 +19,11 @@ ngDefine('cockpit.plugin.sample-plugin', function(module) {
       // make sure we have a higher priority than the default plugin
       priority: 12
     });
-  };
+  }];
 
-  Configuration.$inject = ['ViewsProvider'];
+  var ngModule = angular.module('cockpit.plugin.sample-plugin', []);
 
-  module.config(Configuration);
+  ngModule.config(Configuration);
 
-  return module;
+  return ngModule;
 });

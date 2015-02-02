@@ -1,6 +1,6 @@
-ngDefine('cockpit.plugin.failed-jobs-plugin', function(module) {
+define(['angular'], function(angular) {
 
-  var DashboardController = function($scope, $http, Uri) {
+  var DashboardController = ['$scope', '$http', 'Uri', function($scope, $http, Uri) {
 
     $scope.jobRestUrl = Uri.appUri("engine://engine/default/job");
     $scope.totalPages = 0;
@@ -51,7 +51,7 @@ ngDefine('cockpit.plugin.failed-jobs-plugin', function(module) {
         $scope.failedJobsCount = data.count;
         var pg = parseInt(data.count / 10);
         $scope.totalPages = (data.count % 10) ? (pg + 1) : pg;
-        
+
         if(!data.count){
           $scope.failedJobs = [];
         }
@@ -60,11 +60,9 @@ ngDefine('cockpit.plugin.failed-jobs-plugin', function(module) {
         }
       });
     })();
-  };
+  }];
 
-  DashboardController.$inject = [ "$scope", "$http", "Uri" ];
-
-  var Configuration = function Configuration(ViewsProvider) {
+  var Configuration = ['ViewsProvider', function(ViewsProvider) {
 
     ViewsProvider.registerDefaultView('cockpit.dashboard', {
       id : 'failed-jobs',
@@ -73,11 +71,11 @@ ngDefine('cockpit.plugin.failed-jobs-plugin', function(module) {
       controller : DashboardController,
       priority : 15
     });
-  };
+  }];
 
-  Configuration.$inject = [ 'ViewsProvider' ];
+  var ngModule = angular.module('cockpit.plugin.failed-jobs-plugin', []);
 
-  module.config(Configuration);
+  ngModule.config(Configuration);
 
-  return module;
+  return ngModule;
 });
