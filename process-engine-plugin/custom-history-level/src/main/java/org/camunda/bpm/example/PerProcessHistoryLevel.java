@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.camunda.bpm.engine.ProcessEngineException;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.impl.context.Context;
+import org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager;
 import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.camunda.bpm.engine.impl.history.event.HistoryEventType;
 import org.camunda.bpm.engine.impl.history.event.HistoryEventTypes;
@@ -65,9 +68,6 @@ public class PerProcessHistoryLevel implements HistoryLevel {
     if (entity == null) {
       return true;
     }
-    else if (historyEventType == HistoryEventTypes.PROCESS_INSTANCE_START) {
-      setDelegateHistoryLevel((ExecutionEntity) entity);
-    }
 
     return isDelegateHistoryLevelEventProduced(historyEventType, entity);
   }
@@ -97,9 +97,23 @@ public class PerProcessHistoryLevel implements HistoryLevel {
     return null;
   }
 
+  protected HistoryLevel getDelegateHistoryLevel(String processInstanceId) {
+    HistoryLevel delegateHistoryLevel = delegateHistoryLevelPerProcess.get(processInstanceId);
+
+    if (delegateHistoryLevel == null) {
+      DbEntityManager dbEntityManager = Context.getCommandContext().getDbEntityManager();
+      ExecutionEntity processInstance = dbEntityManager.selectById(ExecutionEntity.class, processInstanceId);
+      setDelegateHistoryLevel(processInstance);
+      delegateHistoryLevel = delegateHistoryLevelPerProcess.get(processInstanceId);
+    }
+
+    return delegateHistoryLevel;
+  }
+
   protected boolean isDelegateHistoryLevelEventProduced(HistoryEventType historyEventType, Object entity) {
     String processInstanceId = getProcessInstanceId(entity);
-    HistoryLevel delegateHistoryLevel = delegateHistoryLevelPerProcess.get(processInstanceId);
+    HistoryLevel delegateHistoryLevel = getDelegateHistoryLevel(processInstanceId);
+
     return delegateHistoryLevel != null && delegateHistoryLevel.isHistoryEventProduced(historyEventType, entity);
   }
 
