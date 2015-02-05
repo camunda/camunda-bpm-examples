@@ -1,0 +1,51 @@
+<form role="form" class="form-horizontal">
+
+  <script cam-script type="text/form-script">
+
+    $scope.genders = [ 'female', 'male' ];
+
+    var customer = $scope.customer = {};
+
+    camForm.on('form-loaded', function() {
+
+      // declare a 'json' variable 'customer' 
+      camForm.variableManager.createVariable({
+        name: 'customer',
+        type: 'json',
+        value: customer
+      });
+    });
+
+  </script>
+
+  <div class="control-group">
+    <label class="control-label" for="firstName">First Name</label>
+    <div class="controls">
+      <input id="firstName" class="form-control" type="text" ng-model="customer.firstName" required />
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="lastName">Last Name</label>
+    <div class="controls">
+      <input id="lastName" class="form-control" type="text" ng-model="customer.lastName" required />
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="gender">Gender</label>
+    <div class="controls">
+      <select id="gender" ng-model="customer.gender" ng-options="gender as gender for gender in genders">
+      </select>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="age">Age</label>
+    <div class="controls">
+      <input id="age" class="form-control" type="number" ng-model="customer.age" />
+    </div>
+  </div>
+
+</form>
+

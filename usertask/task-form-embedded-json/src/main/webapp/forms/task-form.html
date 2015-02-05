@@ -1,0 +1,49 @@
+<form role="form" class="form-horizontal">
+
+  <script cam-script type="text/form-script">
+
+    $scope.genders = [ 'female', 'male' ];
+
+    camForm.on('form-loaded', function() {
+      // tell the form SDK to fetch the variable named 'customer'
+      camForm.variableManager.fetchVariable('customer');
+    });
+
+    camForm.on('variables-fetched', function() {
+      // work with the variable (bind it to the current AngularJS $scope)
+      $scope.customer = camForm.variableManager.variableValue('customer');
+    });
+
+  </script>
+
+  <div class="control-group">
+    <label class="control-label" for="firstName">First Name</label>
+    <div class="controls">
+      <input id="firstName" class="form-control" type="text" ng-model="customer.firstName" required />
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="lastName">Last Name</label>
+    <div class="controls">
+      <input id="lastName" class="form-control" type="text" ng-model="customer.lastName" required />
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="gender">Gender</label>
+    <div class="controls">
+      <select id="gender" ng-model="customer.gender" ng-options="gender as gender for gender in genders">
+      </select>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="age">Age</label>
+    <div class="controls">
+      <input id="age" class="form-control" type="number" ng-model="customer.age" />
+    </div>
+  </div>
+
+</form>
+

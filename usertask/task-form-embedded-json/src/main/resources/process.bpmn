@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:signavio="http://www.signavio.com" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sid-0b0aaa25-3baf-4875-9d7a-0907d599a9ef" exporter="Signavio Process Editor, http://www.signavio.com" exporterVersion="5.4.1" targetNamespace="http://www.omg.org/spec/BPMN/20100524/MODEL">
+  <process id="customerDataProcess" name="Customer Data Process" isExecutable="true">
+    <startEvent id="StartEvent_1" camunda:formKey="embedded:app:forms/start-form.html">
+      <outgoing>SequenceFlow_1</outgoing>
+    </startEvent>
+    <sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
+    <userTask id="UserTask_1" camunda:formKey="embedded:app:forms/task-form.html" name="Approve" camunda:assignee="demo">
+      <incoming>SequenceFlow_1</incoming>
+      <outgoing>SequenceFlow_2</outgoing>
+    </userTask>
+    <sequenceFlow id="SequenceFlow_2" name="" sourceRef="UserTask_1" targetRef="EndEvent_1"/>
+    <endEvent id="EndEvent_1">
+      <incoming>SequenceFlow_2</incoming>
+    </endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="_BPMNDiagram_3">
+    <bpmndi:BPMNPlane id="_BPMNPlane_3" bpmnElement="customerDataProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_4" bpmnElement="StartEvent_1">
+        <omgdc:Bounds height="36.0" width="36.0" x="204.0" y="192.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="222.0" y="233.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_UserTask_2" bpmnElement="UserTask_1">
+        <omgdc:Bounds height="80.0" width="100.0" x="300.0" y="170.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="_BPMNShape_StartEvent_4" targetElement="_BPMNShape_UserTask_2">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="240.0" y="210.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="300.0" y="210.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="6.0" width="6.0" x="262.0" y="210.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_2" bpmnElement="EndEvent_1">
+        <omgdc:Bounds height="36.0" width="36.0" x="456.0" y="192.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="474.0" y="233.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_UserTask_2" targetElement="_BPMNShape_EndEvent_2">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="400.0" y="210.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="456.0" y="210.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="6.0" width="6.0" x="422.0" y="210.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
