@@ -4,12 +4,17 @@ This example attempts to illustrate the way to implement (or use) the [JS SDK](h
 
 ![SDK JS standalone usage with AngularJS](screenshot.png)
 
+Supported browsers are:
+- Firefox
+- Google Chrome
+- Internet Explorer 9+
+
 ## Setup
 
 As you can see in the `index.html` of this folder, you will need a DOM library (jQuery in this example) and the Javascript SDK to start.
 
 ```html
-  <script src="./jquery-2.1.1.min.js"
+  <script src="./jquery-1.11.2.js"
           type="text/javascript"></script>
 
   <script src="./angular-1.2.16.min.js"
