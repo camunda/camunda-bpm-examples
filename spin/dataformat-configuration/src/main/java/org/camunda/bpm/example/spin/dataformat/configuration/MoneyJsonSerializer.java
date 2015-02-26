@@ -20,8 +20,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 /**
- * @author Thorben Lindhauer
+ * Jackson-specific class for serialization of {@link Money} objects.
  *
+ * @author Thorben Lindhauer
  */
 public class MoneyJsonSerializer extends StdSerializer<Money> {
 

@@ -20,8 +20,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
 /**
- * @author Thorben Lindhauer
+ * Jackson-specific class for deserialization of {@link Money} objects.
  *
+ * @author Thorben Lindhauer
  */
 public class MoneyJsonDeserializer extends JsonDeserializer<Money> {
 

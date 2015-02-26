@@ -1,11 +1,3 @@
-package org.camunda.bpm.example.spin.dataformat.configuration;
-
-import org.camunda.spin.impl.json.jackson.format.JacksonJsonDataFormat;
-import org.camunda.spin.spi.DataFormatConfigurator;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +11,19 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  * limitations under the License.
  */
 
+package org.camunda.bpm.example.spin.dataformat.configuration;
+
+import org.camunda.spin.impl.json.jackson.format.JacksonJsonDataFormat;
+import org.camunda.spin.spi.DataFormatConfigurator;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
 /**
+ * This class is looked up by the Spin runtime when the data formats are initialized.
+ * It is handed all detected instances of {@link JacksonJsonDataFormat} (if they exist)
+ * and can apply configuration.
+ *
  * @author Thorben Lindhauer
  *
  */

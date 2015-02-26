@@ -30,11 +30,12 @@ public class JacksonConfiguratorTest {
 
   @Test
   @Deployment(resources={"testProcess.bpmn"})
-  public void shouldPackForHoliday() {
+  public void shouldSerializeJsonCorrectly() {
     RuntimeService runtimeService = processEngineRule.getRuntimeService();
 
     Car car = new Car();
     car.setPrice(new Money(1000));
+    // request that car is serialized as JSON when stored
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testProcess",
         Variables.createVariables().putValueTyped("car",
             Variables
@@ -42,11 +43,13 @@ public class JacksonConfiguratorTest {
               .serializationDataFormat(DataFormats.JSON_DATAFORMAT_NAME)
               .create()));
 
+    // access the serialized JSON value
     SerializableValue serializedCarValue =
         runtimeService.getVariableTyped(processInstance.getId(), "car");
     String carJson = serializedCarValue.getValueSerialized();
     Assert.assertEquals("{\"price\":1000}", carJson);
 
+    // assert that the script task was able to extract the price property from the JSON object
     Number price = (Number) runtimeService.getVariable(processInstance.getId(), "price");
     Assert.assertEquals(1000, price);
   }

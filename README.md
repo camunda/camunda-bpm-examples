@@ -116,6 +116,12 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | ---------------------------------------------------------------------------------|-----------|---------------|---------|
 | [Multi-Tenancy with Database Schema Isolation](multi-tenancy/schema-isolation)   | JBoss AS 7| Multi-Tenancy | 7.2+    |
 
+### Spin Examples
+
+| Name                                                                                       | Container | Keywords                | Version |
+| -------------------------------------------------------------------------------------------|-----------|-------------------------|---------|
+| [Data Format Configuration to Customize JSON serialization](spin/dataformat-configuration) | Unit Test | Spin, Process Variables | 7.2+    |
+
 
 ### Contribute!
 
