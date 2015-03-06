@@ -11,6 +11,9 @@
     <spring.version>3.1.2.RELEASE</spring.version>
     <version.arquillian>1.0.4.Final</version.arquillian>
     <version.jboss-as>7.2.0.Final</version.jboss-as>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
@@ -53,6 +56,14 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>camunda-bpm-nexus</id>
+      <name>camunda-bpm-nexus</name>
+      <url>https://app.camunda.com/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
 
   <profiles>
     <profile>

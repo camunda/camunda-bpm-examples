@@ -5,6 +5,12 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Camunda Command Interceptor Example</name>
 
+  <properties>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>

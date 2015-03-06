@@ -6,10 +6,15 @@
   <packaging>war</packaging>
   <name>camunda BPM - Tutorial - Tenant-Aware Process Application</name>
   <version>0.0.1-SNAPSHOT</version>
+
   <properties>
     <version.arquillian>1.0.4.Final</version.arquillian>
     <version.jboss-as>7.2.0.Final</version.jboss-as>
     <version.camunda>7.2.0</version.camunda>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
   
   <dependencyManagement>
@@ -58,17 +63,5 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-  
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.3</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+
 </project>
