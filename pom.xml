@@ -26,7 +26,6 @@
     <module>process-engine-plugin/command-interceptor-blocking</module>
     <module>scripttask/xslt-scripttask</module>
     <module>servicetask/service-invocation-asynchronous</module>
-    <module>servicetask/service-invocation-asynchronous-message</module>
     <module>servicetask/service-invocation-synchronous</module>
     <module>servicetask/rest-service</module>
     <module>servicetask/soap-service</module>
