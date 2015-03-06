@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.    apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.camunda.bpm.example</groupId>
+  <artifactId>camunda-bpm-examples-reactor</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version>
+
+  <modules>
+    <module>bpmn-model-api/generate-process-fluent-api</module>
+    <module>bpmn-model-api/generate-jsf-form</module>
+    <module>bpmn-model-api/parse-bpmn</module>
+    <module>cockpit/cockpit-sample-plugin</module>
+    <module>cockpit/cockpit-failed-jobs-plugin</module>
+    <module>cycle/camunda-cycle-connector-example</module>
+    <module>deployment/spring-servlet-pa-jboss</module>
+    <module>deployment/servlet-pa</module>
+    <module>deployment/spring-jboss-non-pa</module>
+    <module>deployment/embedded-spring-rest</module>
+    <module>deployment/ejb-pa</module>
+<!--     <module>modeler/custom-task-simple</module> -->
+<!--     <module>modeler/custom-task-advanced</module> -->
+    <module>multi-tenancy/schema-isolation</module>
+    <module>process-engine-plugin/custom-history-level</module>
+    <module>process-engine-plugin/bpmn-parse-listener</module>
+    <module>process-engine-plugin/command-interceptor-blocking</module>
+    <module>scripttask/xslt-scripttask</module>
+    <module>servicetask/service-invocation-asynchronous</module>
+    <module>servicetask/service-invocation-synchronous</module>
+    <module>servicetask/rest-service</module>
+    <module>servicetask/soap-service</module>
+    <module>spin/dataformat-configuration</module>
+    <module>startevent/message-start</module>
+    <module>usertask/task-form-embedded</module>
+    <module>usertask/task-form-embedded-serialized-java-object</module>
+    <module>usertask/task-form-generated</module>
+    <module>usertask/task-assignment-email</module>
+    <module>usertask/task-form-embedded-json</module>
+    <module>usertask/task-form-external-jsf</module>
+  </modules>
+
+</project>
