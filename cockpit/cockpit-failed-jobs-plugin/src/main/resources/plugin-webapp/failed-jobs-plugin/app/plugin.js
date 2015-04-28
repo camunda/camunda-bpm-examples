@@ -2,7 +2,7 @@ define(['angular'], function(angular) {
 
   var DashboardController = ['$scope', '$http', 'Uri', function($scope, $http, Uri) {
 
-    $scope.jobRestUrl = Uri.appUri("engine://engine/default/job");
+    $scope.jobRestUrl = Uri.appUri("engine://engine/:engine/job");
     $scope.totalPages = 0;
     $scope.pageNumber = 1;
     $scope.failedJobsCount = 0;
