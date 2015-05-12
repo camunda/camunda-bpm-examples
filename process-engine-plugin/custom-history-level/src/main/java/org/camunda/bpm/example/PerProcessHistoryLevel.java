@@ -19,12 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.camunda.bpm.engine.ProcessEngineException;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager;
 import org.camunda.bpm.engine.impl.history.HistoryLevel;
+import org.camunda.bpm.engine.impl.history.event.HistoryEvent;
 import org.camunda.bpm.engine.impl.history.event.HistoryEventType;
-import org.camunda.bpm.engine.impl.history.event.HistoryEventTypes;
 import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.runtime.VariableInstance;
 import org.camunda.bpm.model.bpmn.instance.ExtensionElements;
@@ -123,6 +122,9 @@ public class PerProcessHistoryLevel implements HistoryLevel {
     }
     else if (entity instanceof VariableInstance) {
       return ((VariableInstance) entity).getProcessInstanceId();
+    }
+    else if (entity instanceof HistoryEvent){
+      return ((HistoryEvent) entity).getProcessInstanceId();
     }
     else {
       throw new ProcessEngineException("Unable to find process instance id for class " + entity.getClass().getName());
