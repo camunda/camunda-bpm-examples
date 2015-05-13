@@ -10,7 +10,7 @@
   <properties>
     <version.arquillian>1.0.4.Final</version.arquillian>
     <version.jboss-as>7.2.0.Final</version.jboss-as>
-    <version.camunda>7.2.0</version.camunda>
+    <version.camunda>7.3.0</version.camunda>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
