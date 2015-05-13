@@ -15,11 +15,6 @@ BPMN model API, composed of the following elements:
 * User task
 * Script task
 
-Note: Please note that currently the BPMN model API is only available through GitHub, which means
-that you have to checkout the git repository of the [camunda-bpmn-model][5] project. After doing that,
-run `mvn clean install` inside the repository to install the maven artifact locally. Without the
-artifact, you are not able to compile this quickstart.
-
 ## Invoice example process
 
 The process we want to create is the invoice process from the [camunda-bpm-platform/examples][1].

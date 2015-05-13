@@ -23,7 +23,7 @@ This plugin basically is a showcase of the capabilities of the Cockpit plugin en
 
 ## How to register a Cockpit plugin?
 
-Each Cockpit plugin has an Angular Controller, a unique pseudo-URL, such as: `plugin://failed-jobs-plugin/static/app/dashboard.html` and some other attributes, which are used to register the plugin in a view by a JavaScript Object called `ViewsProvider` and its `registerDefaultView` function in the module configuration.
+Each Cockpit plugin has an Angular Controller, a unique pseudo-URL, such as: `plugin://failed-jobs-plugin/static/app/failed-jobs-table.html` and some other attributes, which are used to register the plugin in a view by a JavaScript Object called `ViewsProvider` and its `registerDefaultView` function in the module configuration.
 
 
 ## Integrate into Camunda webapp

@@ -6,11 +6,6 @@ forms based on the underlying process XML.
 We aim to generate two generic JSF forms for a start event and a user task.
 The forms should be used in two different processes of similar types.
 
-Note: Please note that currently the BPMN model API is only available through GitHub, which means
-that you have to checkout the git repository of the [camunda-bpmn-model][5] project. After doing that, 
-run `mvn clean install` inside the repository to install the maven artifact locally. Without the
-artifact, you are not able to compile this quickstart.
-
 ## Example processes
 
 The support process example demonstrates a simple decision process where a user decides how to
