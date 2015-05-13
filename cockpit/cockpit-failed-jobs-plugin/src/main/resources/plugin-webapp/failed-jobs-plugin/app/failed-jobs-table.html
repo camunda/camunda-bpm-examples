@@ -1,0 +1,75 @@
+<h1>
+  Cockpit Failed Jobs
+</h1>
+
+<table class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Job Id</th>
+      <th>Process instance Id</th>
+      <th>Exception</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="job in failedJobs">
+
+      <td>
+        <span tooltip="Process Name: {{job.processDefinitionKey}}" tooltip-placement="right">
+          {{ job.id }}
+        </span>
+
+        &nbsp;
+        
+        <a href="#/process-definition/{{job.processDefinitionId}}"
+           tooltip="Click to see process definition" tooltip-placement="right">
+           <strong>&gt;&gt;</strong>
+        </a>
+      </td>
+
+      <td>
+        <a href="#/process-instance/{{job.processInstanceId}}"
+           tooltip="Click to see process instance" tooltip-placement="right">
+           {{ job.processInstanceId }}
+        </a>
+      </td>
+
+      <td>
+        <a target="_blank"
+          href="{{jobRestUrl}}/{{ job.id }}/stacktrace"
+          tooltip="Click to see the exception stacktrace" tooltip-placement="left">
+            <span ng-show="job.exceptionMessage">
+              {{ job.exceptionMessage }}
+            </span>
+            <span ng-hide="job.exceptionMessage">
+              <i>Message is null.</i>
+            </span>
+        </a>
+      </td>
+    </tr>
+
+    <tr ng-if="!failedJobs">
+      <td colspan="3">
+        <i class="icon-loading"></i> loading failed jobs...
+      </td>
+    </tr>
+
+    <tr ng-if="failedJobs && !failedJobs.length">
+      <td colspan="3">
+        No failed jobs
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<pagination ng-if="pages.total > pages.size"
+            class="pagination-sm"
+
+            page="pages.current"
+            ng-model="pages.current"
+
+            total-items="pages.total"
+            items-per-page="pages.size"
+
+            max-size="7"
+            boundary-links="true"></pagination>

@@ -1,65 +1,46 @@
 define(['angular'], function(angular) {
 
-  var DashboardController = ['$scope', '$http', 'Uri', function($scope, $http, Uri) {
+  var FailedJobsController = [
+           '$scope', '$http', 'Uri',
+  function( $scope,   $http,   Uri) {
 
-    $scope.jobRestUrl = Uri.appUri("engine://engine/:engine/job");
-    $scope.totalPages = 0;
-    $scope.pageNumber = 1;
-    $scope.failedJobsCount = 0;
+    var DEFAULT_PAGES = { size: 10, total: 0, current: 1 };
 
-    $scope.loadingCount = true;
-    $scope.loading = true;
-    $scope.failedJobs = [];
+    var pages = $scope.pages = angular.copy(DEFAULT_PAGES);
 
-    $scope.filterCriteria = {
-      firstResult : 0,
-      maxResults : 10,
+    var queryParams = {
       withException : true
     };
 
-    var loadPage = function loadPage() {
-      $scope.loading = true;
-      $scope.filterCriteria.firstResult = ($scope.pageNumber - 1) * 10;
-      $http.get($scope.jobRestUrl, {
-        params : $scope.filterCriteria
-      }).success(function(data) {
-        $scope.loading = false;
-        $scope.failedJobs = data;
-      });
-    };
-
-    $scope.$watch('pageNumber', function(newValue, oldValue) {
-      if (newValue == oldValue) {
-        return;
-      }
-      loadPage();
+    $scope.$watch('pages.current', function(newValue, oldValue) {
+      updateView();
     });
 
-    ($scope.loadCount = function loadCount() {
-      $scope.loadingCount = true;
-      $http.get($scope.jobRestUrl + "/count", {
-        params : {
-          withException : true
-        }
+    function updateView () {
+      var page = pages.current,
+          count = pages.size,
+          firstResult = (page - 1) * count;
+
+      var pagingParams = {
+        firstResult: firstResult,
+        maxResults: count
+      };
+
+      $http.get(Uri.appUri('engine://engine/:engine/job/count'), {
+        params : queryParams
       }).success(function(data) {
-        $scope.loadingCount = false;
-
-        if ($scope.failedJobsCount == data.count) {
-          return;
-        }
-
-        $scope.failedJobsCount = data.count;
-        var pg = parseInt(data.count / 10);
-        $scope.totalPages = (data.count % 10) ? (pg + 1) : pg;
-
-        if(!data.count){
-          $scope.failedJobs = [];
-        }
-        else if($scope.failedJobs.length == 0){
-          loadPage();
-        }
+        pages.total = data.count;
       });
-    })();
+
+      var params = angular.extend({}, pagingParams, queryParams);
+
+      $http.get(Uri.appUri('engine://engine/:engine/job'), {
+        params : params
+      }).success(function(data) {
+        $scope.failedJobs = data;
+      });
+    }
+
   }];
 
   var Configuration = ['ViewsProvider', function(ViewsProvider) {
@@ -67,8 +48,8 @@ define(['angular'], function(angular) {
     ViewsProvider.registerDefaultView('cockpit.dashboard', {
       id : 'failed-jobs',
       label : 'Failed Jobs',
-      url : 'plugin://failed-jobs-plugin/static/app/dashboard.html',
-      controller : DashboardController,
+      url: 'plugin://failed-jobs-plugin/static/app/failed-jobs-table.html',
+      controller : FailedJobsController,
       priority : 15
     });
   }];
