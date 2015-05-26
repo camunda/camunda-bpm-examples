@@ -4,6 +4,8 @@ define(['angular'], function(angular) {
            '$scope', '$http', 'Uri',
   function( $scope,   $http,   Uri) {
 
+    $scope.jobRestUrl = Uri.appUri("engine://engine/:engine/job");
+
     var DEFAULT_PAGES = { size: 10, total: 0, current: 1 };
 
     var pages = $scope.pages = angular.copy(DEFAULT_PAGES);
