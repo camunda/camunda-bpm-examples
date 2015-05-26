@@ -6,21 +6,10 @@
 \*************/
 var inquirer = require('inquirer');
 var Table = require('cli-table');
-var ImageToAscii = require ('image-to-ascii');
 var fs = require('fs');
 var path = require('path');
 
 var deployDir;
-
-var camLogo = new ImageToAscii({
-  colored: true,
-  reverse: true,
-  multiplyWidth: 1,
-  resize: {
-    height: '14',
-    width:  '30'
-  }
-});
 
 function notEmpty(input) {
   return !!input;
@@ -397,10 +386,4 @@ function home(splash) {
   });
 }
 
-
-
-
-camLogo.convert(__dirname + '/camunda-logo-square.png', function(err, converted) {
-  converted += '\nImportant note: Some actions might fail because they need authentication.';
-  home(converted);
-});
+home('Important note: Some actions might fail because they need authentication.');
