@@ -63,7 +63,7 @@ function readFiles(dirPath, filenames) {
         });
       });
     };
-  };
+  });
 }
 
 
@@ -111,7 +111,7 @@ function deployProcesses(options) {
       }
     ], function (answers) {
       // collect the content of the choosed files to be then uploaded
-      CamSDK.utils.series(readFiles(options.dirPath, answers.files)), function (err, files) {
+      CamSDK.utils.series(readFiles(options.dirPath, answers.files), function (err, files) {
         thr(err);
 
         console.info(Object.keys(files).length + ' files will be deployed');
