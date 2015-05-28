@@ -1,6 +1,6 @@
-# Serialized json in Embedded Forms
+# Json  Variables in Embedded Forms
 
-This example demonstrates how to work with serialized json in embedded forms.
+This example demonstrates how to work with json variables in embedded forms.
 
 ## Creating a Json Variable in a Start Form
 
