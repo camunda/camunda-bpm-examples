@@ -48,6 +48,11 @@
       <groupId>org.camunda.bpm.extension</groupId>
       <artifactId>camunda-spring-boot-starter</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+
   </dependencies>
 
 </project>
