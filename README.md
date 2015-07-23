@@ -69,6 +69,12 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | [Generate JSF forms](/bpmn-model-api/generate-jsf-form)                    | JavaEE Containers    | JSF, Usertask             | 7.1+    |
 | [Parse BPMN model](/bpmn-model-api/parse-bpmn)                             | Unit Test            | BPMN                      | 7.1+    |
 
+### Cmmn 1.0 Model API Examples
+
+| Name                                                                                              | Container            | Keywords                  | Version |
+| --------------------------------------------------------------------------------------------------|----------------------|---------------------------|---------|
+| [Strongly-typed Access to Custom Extension Elements](/cmmn-model-api/typed-custom-elements)       | Unit Test            | CMMN, TransformListener   | 7.2+    |
+
 ### Cockpit Examples
 
 | Name                                                                       | Keywords                  | Version |
