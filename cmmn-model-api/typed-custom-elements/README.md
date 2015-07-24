@@ -1,8 +1,8 @@
 # Accessing custom CMMN extension elements in a strongly-typed way
 
-This example demonstrates how to use the [camunda CMMN model API][cmmn-model] to register a CMMN transform listener that works with custom extension elements via a strongly-typed API. The concepts described here apply to the [BPMN model API][bpmn-model] in a similar manner.
+This example demonstrates how to use the [camunda CMMN model API][cmmn-model] to register a CMMN transform listener that works with custom extension elements via a strongly-typed API. The concepts described here apply to the [BPMN model API][bpmn-model] and [DMN model API][dmn-model] in a similar manner.
 
-Given a CMMN 1.0 XML file:
+Given a [CMMN 1.0 XML file][cmmn-xml]:
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
@@ -66,6 +66,7 @@ A CMMN transform listener is the CMMN equivalent to a BPMN parse listener. That 
 In [KPITransformListener][kpi-transform-listener], access to the custom model elements is implemented.
 
 [bpmn-model]: https://github.com/camunda/camunda-bpmn-model
+[dmn-model]: https://github.com/camunda/camunda-dmn-model
 [xml-model]: https://github.com/camunda/camunda-xml-model
 [cmmn-model]: https://github.com/camunda/camunda-cmmn-model
 [test-case]: src/test/java/org/camunda/bpm/example/modelapi/TransformListenerCustomElementsTest.java
@@ -76,3 +77,4 @@ In [KPITransformListener][kpi-transform-listener], access to the custom model el
 [kpi-element]: src/main/java/org/camunda/bpm/example/modelapi/KPIElement.java
 [kpi-element-impl]: src/main/java/org/camunda/bpm/example/modelapi/KPIElementImpl.java
 [custom-cmmn]: src/main/java/org/camunda/bpm/example/modelapi/CustomCmmn.java
+[cmmn-xml]: src/test/resources/case.cmmn

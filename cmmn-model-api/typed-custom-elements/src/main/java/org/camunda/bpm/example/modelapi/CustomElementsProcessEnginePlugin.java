@@ -12,7 +12,7 @@
  */
 package org.camunda.bpm.example.modelapi;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
@@ -33,7 +33,7 @@ public class CustomElementsProcessEnginePlugin implements ProcessEnginePlugin {
 
     // register transform listener
     processEngineConfiguration.setCustomPostCmmnTransformListeners(
-        Arrays.<CmmnTransformListener>asList(new KPITransformListener()));
+      Collections.<CmmnTransformListener>singletonList(new KPITransformListener()));
   }
 
   public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {

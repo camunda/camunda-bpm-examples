@@ -15,6 +15,7 @@ package org.camunda.bpm.example.modelapi;
 
 import java.util.List;
 
+import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class TransformListenerCustomElementsTest {
   @Test
   public void findElementById() {
     // when the case is deployed
-    org.camunda.bpm.engine.repository.Deployment deployment = processEngineRule
+    Deployment deployment = processEngineRule
       .getRepositoryService()
       .createDeployment()
       .addClasspathResource("case.cmmn")
