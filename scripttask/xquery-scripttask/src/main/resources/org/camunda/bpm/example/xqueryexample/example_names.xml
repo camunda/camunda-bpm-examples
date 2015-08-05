@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<names xmlns="http://my.namespace/v1">
+  <person>
+    <id>1</id>
+   	<firstName>Thomas</firstName>
+   	<lastName>Skjolberg</lastName>
+  </person>
+  <person>
+    <id>2</id>
+   	<firstName>Kermit</firstName>
+   	<lastName>Frog</lastName>
+  </person>
+</names>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skills xmlns="http://my.namespace/v1">
+  <person>
+    <id>2</id>
+    <skill>Talk</skill>
+   	<skill>Smile</skill>
+  </person>
+  <person>
+    <id>1</id>
+    <skill>Program</skill>
+    <skill>Cook</skill>
+  </person>
+</skills>
