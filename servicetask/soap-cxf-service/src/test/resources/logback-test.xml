@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+			</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+	</appender>
+    
+	<logger name="com.camunda.bpm.example.spring" additivity="false">
+	    <level value="DEBUG" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+ 
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="consoleAppender" />
+	</root>
+	
+	  <!-- For java.util.logging bridging; important for Camunda! -->
+	  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+	    <resetJUL>true</resetJUL>
+	  </contextListener>
+	  
+</configuration>

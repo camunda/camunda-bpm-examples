@@ -29,6 +29,7 @@
     <module>servicetask/service-invocation-synchronous</module>
     <module>servicetask/rest-service</module>
     <module>servicetask/soap-service</module>
+    <module>servicetask/soap-cxf-service</module>
     <module>spin/dataformat-configuration</module>
     <module>startevent/message-start</module>
     <module>usertask/task-form-embedded</module>

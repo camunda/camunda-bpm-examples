@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://soap.spring.example.bpm.camunda.com/v1"
+	xmlns:tns="http://soap.spring.example.bpm.camunda.com/v1" elementFormDefault="qualified">
+
+	<annotation>
+		<documentation>Example of web service</documentation>
+	</annotation>
+
+	<element name="getAccountsRequest">
+		<complexType>
+			<sequence>
+				<element name="customerNumber" type="string">
+                    <annotation>
+                        <documentation>
+                            Bank customer identifier
+                        </documentation>
+                    </annotation>				
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="getAccountsResponse">
+		<complexType>
+			<sequence>
+				<element name="account" type="string" minOccurs="0" maxOccurs="unbounded">
+                    <annotation>
+                        <documentation>
+                            Bank accounts number for customer 
+                        </documentation>
+                    </annotation>				
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+
+    <element name="bankException" >
+        <complexType>
+            <sequence>
+                <element name="code" type="string"/>
+                <element name="message" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+
+	<element name="bankRequestHeader">
+		<complexType>
+			<sequence>
+				<element name="singleSignonToken" type="string">
+                    <annotation>
+                        <documentation>
+                            Session identifier 
+                        </documentation>
+                    </annotation>				
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+
+</schema>
