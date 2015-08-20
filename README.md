@@ -29,7 +29,8 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | Name                                                                       | Container            | Keywords                  | Version |
 | ---------------------------------------------------------------------------|----------------------|---------------------------|---------|
 | [Service Task REST HTTP](/servicetask/rest-service)                        | Unit Test            | Rest Scripting, classless | 7.2+    |
-| [Service Task SOAP HTTP](/servicetask/soap-service)                        | Unit Test            | Soap Scripting, classless | 7.2+    |
+| [Service Task SOAP HTTP](/servicetask/soap-service)                        | Unit Test            | SOAP Scripting, classless | 7.2+    |
+| [Service Task SOAP CXF HTTP](/servicetask/soap-cxf-service)                | Unit Test            | SOAP, CXF, Spring, Spin   | 7.3+    |
 | [Service Invocation Synchronous](/servicetask/service-invocation-synchronous)     | Unit Test     | Java Delegate, Sync       | 7.0+    |
 | [Service Invocation Asynchronous](/servicetask/service-invocation-asynchronous)   | Unit Test     | Signal, Async             | 7.0+    |
 | [User Task Assignment Email](/usertask/task-assignment-email) *            | All                  | Email, Usertask           | 7.0+    |
