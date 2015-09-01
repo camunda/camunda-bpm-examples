@@ -55,13 +55,13 @@
 
   </dependencies>
 
-  <!-- this is only for jdk 1.6. you can remove this when using java version 
+  <!-- this is only for jdk 1.6. you can remove this when using java version
     later than 1.6 -->
   <profiles>
     <profile>
       <id>java6</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <jdk>1.6</jdk>
       </activation>
       <dependencies>
         <dependency>
