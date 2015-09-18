@@ -32,9 +32,11 @@ public class CamundaBpmRestIT {
   public void processDefinitionTest() {
     ResponseEntity<ProcessDefinitionDto[]> entity = new TestRestTemplate("user",
       password).getForEntity(
-      "http://localhost:{port}/engine/{engineName}/process-definition",
+      "http://localhost:{port}/rest/engine/{engineName}/process-definition",
       ProcessDefinitionDto[].class, port, "default");
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals("Sample", entity.getBody()[0].getKey());
   }
+
+
 }
