@@ -1,6 +1,6 @@
 package org.camunda.bpm.spring.boot.starter.example.web;
 
-import org.camunda.bpm.spring.boot.starter.CamundaBpmRestConfiguration;
+import org.camunda.bpm.spring.boot.starter.rest.CamundaJerseyResourceConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,7 +15,7 @@ public class Application {
 
   @Bean
   public ResourceConfig jerseyConfig() {
-    return new CamundaBpmRestConfiguration.CamundaJerseyConfig();
+    return new CamundaJerseyResourceConfig();
   }
 
 }
