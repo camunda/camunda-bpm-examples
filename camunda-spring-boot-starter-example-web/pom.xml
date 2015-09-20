@@ -2,17 +2,30 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>camunda-bpm-spring-boot-starter-example-web</artifactId>
-
   <parent>
     <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-spring-boot-starter-example-root</artifactId>
     <version>1.1.0-SNAPSHOT</version>
   </parent>
 
+  <artifactId>camunda-bpm-spring-boot-starter-example-web</artifactId>
+
   <properties>
     <start-class>org.camunda.bpm.spring.boot.starter.example.web.Application</start-class>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -27,7 +40,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -38,75 +50,35 @@
       <artifactId>spring-boot-starter-remote-shell</artifactId>
     </dependency>
 
-
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
-  <!-- this is only for jdk 1.6. you can remove this when using java version 
-    later than 1.6 -->
-  <profiles>
-    <profile>
-      <id>java6</id>
-      <activation>
-        <jdk>1.6</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.jboss.spec.javax.transaction</groupId>
-          <artifactId>jboss-transaction-api_1.2_spec</artifactId>
-          <version>1.0.0.Final</version>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.jersey.core</groupId>
-          <artifactId>jersey-server</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.jersey.containers</groupId>
-          <artifactId>jersey-container-servlet-core</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.jersey.containers</groupId>
-          <artifactId>jersey-container-servlet</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.jersey.ext</groupId>
-          <artifactId>jersey-bean-validation</artifactId>
-          <scope>provided</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>javax.el</groupId>
-              <artifactId>javax.el-api</artifactId>
-            </exclusion>
-            <exclusion>
-              <groupId>org.glassfish.web</groupId>
-              <artifactId>javax.el</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.jersey.ext</groupId>
-          <artifactId>jersey-spring3</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.jersey.media</groupId>
-          <artifactId>jersey-media-json-jackson</artifactId>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.fasterxml.jackson.jaxrs</groupId>
-          <artifactId>jackson-jaxrs-json-provider</artifactId>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>${start-class}</mainClass>
+          <layout>ZIP</layout>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
