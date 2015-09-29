@@ -108,7 +108,7 @@ External Forms can be added to the web resources of a web application. As we use
 
 ## How are external JSF taskforms referenced?
 
-External Taskforms are referenced using the `camunda:taskKey` property of a BPMN `<startEvent>` or a BPMN `<userTask>`:
+External Taskforms are referenced using the `camunda:formKey` property of a BPMN `<startEvent>` or a BPMN `<userTask>`:
 
 ```xml
 <startEvent id="startEvent" camunda:formKey="app:submitLoanRequest.jsf" name="Loan Request Received">
