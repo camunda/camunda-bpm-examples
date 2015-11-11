@@ -6,7 +6,7 @@ This example demonstrates how use a SOAP webservice-client generated using CXF i
 
 ![Example Process][png]
 
-The example includes a BPMN 2.0 process with a single, simple service task, invoking two Spring services. 
+The example BPMN 2.0 process looks up a list of account numbers using a customer number at a remote SOAP service. This is done using a single service task and two chained Spring service classes. 
 
 All marshall/unmarshalling is handled transparently by the engine.
 
@@ -24,58 +24,37 @@ The webservice bindings are generated using the maven plugin `cxf-codegen-plugin
 
 The webservice context is loaded from [beans.xml][beans], including two services:
  * `BankCustomerService` - camunda-specific wrapper
- * `BankCustomerClientService` - webservice client wrapper
+ * `BankCustomerClientService` - webservice client wrapper 
+ 
+The BPMN 2.0 process is started with two variables: 
+ * `secret` - String value, and
+ * `customerNumber` - the customer number to look up.
 
-The BPMN 2.0 process is first started with two variables: 
- * `singleSignonToken` - String value, and
- * `request` - a JAXB object corresponding to:
+As the service task executes, it invokes `getAccounts(..)` on the `BankCustomerService` Spring service. The Spring service constructs two objects - the SOAP `GetAccountsRequest` body and `BankRequestHeader` header. 
 
-```xml
-<getAccountsRequest xmlns="http://soap.spring.example.bpm.camunda.com/v1">
-  <customerNumber>123456789</customerNumber>
-</getAccountsRequest>
-```
+The call is then forwarded to `getAccounts(..)` on the `BankCustomerClientService` service, which holds the actual webservice client port. In our first unit test, the mock webservice responds with a `GetAccountsResponse`, which is returned to the service task as a JAXB object and stored as `accounts` in the process.
 
-As the service task executes, it invokes `getAccounts(..)` on the `BankCustomerService` service:
-
-```java
-public GetAccountsResponse getAccounts(GetAccountsRequest request, DelegateExecution execution) throws Exception {
-	BankRequestHeader requestHeader = getSecurityHeader(execution);
-    
-    // camunda-specific logic, i.e. extract security context from process
-	BankRequestHeader requestHeader = new BankRequestHeader();
-	requestHeader.setSingleSignonToken(execution.getVariable("singleSignonToken").toString());
-	
-	return service.getAccounts(request, requestHeader);
-}
-```
-
-The call is then forwarded to `getAccounts(..)` on the `BankCustomerClientService` service
+## Error handling (SOAP Faults)
+The `BankCustomerService` service translates webservice faults business errors, i.e.. 
 
 ```java
-private BankCustomerServicePortType port;
-	
-public GetAccountsResponse getAccounts(GetAccountsRequest parameters, BankRequestHeader bankHeader)  throws Exception {
-	return port.getAccounts(parameters, bankHeader);
-}
+// exception caught
+throw new BpmnError("serviceException");
 ```
-
-which holds the actual webservice client port. The mock webservice responds with
-
-```xml
-<getAccountsResponse xmlns="http://soap.spring.example.bpm.camunda.com/v1">
-  <account>1234</account>
-  <account>5678</account>
-</getAccountsResponse>
-```
-which is returned to the service task as a JAXB object.
+In our second unit test, the mock webservice responds with a Fault, triggering the above code. The process proceeds to the 'end unsuccessful' end node - never storing any `GetAccountsResponse` object. 
 
 ## Tweaking the example
-The above automagic relies on having the XML and the correct XML object type set. This might not always be the case. Possible ways of tweaking the example would be
+### Webservice clients
+In this example, the domain objects are the same as the webservice objects. This reduces the `BankCustomerClientService` to a simple wrapper. These webservice clients should however be written as reusable, user-friendly modules, and so it is natural to put domain-to-webservice object converters, security-related functionality, guards and so on into such a service. 
 
- - construct JAXB object using a groovy script in the service task input/output mappings
- - handle Strings in wrapper service, unmarshall using `JAXBContext`
- 
+### Fault vs business errors vs retry
+In a proper implementation, you would like to make the distinction between different kinds of faults, some from which you can recover, and others from which you cannot. The built-in retry-mechanism should be allowed to kick in for certain problems like transient loss of connection and so. Whether or not running out of retries is a business error, is up to the nature of the process.
+
+### JAXB objects
+The example implementation relies on having the default serialization type set to XML when storing the `GetAccountsResponse` object. If not so, the JAXB object must be wrapped so that it still is stored as XML in the database. Camunda will automagically marshall/unmarshall your generated JAXB objects.
+
+An alternative implementation could be to call the `BankCustomerClientService` directly - for example by constructing the `GetAccountsRequest` JAXB object using a groovy script in the service task input/output mappings.
+
 # How to use it?
 
 1. Checkout the project with Git
@@ -87,7 +66,6 @@ The above automagic relies on having the XML and the correct XML object type set
 [xsd]: src/main/resources/wsdl/BankCustomerService.xsd
 [beans]: src/main/resources/spring/beans.xml
 [engine]: src/main/resources/spring/engine.xml
-[engine-test]: src/test/resources/spring/engine-test.xml
 [unit tests]: src/test/java/com/camunda/bpm/example/spring/soap/BankCustomerProcessTest.java
 [service]: src/main/java/com/camunda/bpm/example/spring/soap/BankCustomerService.java
 [clientService]: src/main/java/com/camunda/bpm/example/spring/soap/BankCustomerClientService.java
