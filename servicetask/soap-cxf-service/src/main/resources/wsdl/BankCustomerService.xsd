@@ -47,10 +47,10 @@
 	<element name="bankRequestHeader">
 		<complexType>
 			<sequence>
-				<element name="singleSignonToken" type="string">
+				<element name="secret" type="string">
                     <annotation>
                         <documentation>
-                            Session identifier 
+                            Secret token 
                         </documentation>
                     </annotation>				
 				</element>

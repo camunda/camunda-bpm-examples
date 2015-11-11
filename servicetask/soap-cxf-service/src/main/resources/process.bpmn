@@ -5,15 +5,24 @@
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
     </bpmn2:startEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="getAccounts"/>
-    <bpmn2:endEvent id="end" name="End">
-      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
-    </bpmn2:endEvent>
-    <bpmn2:serviceTask id="getAccounts" camunda:expression="${bankCustomerService.getAccounts(request, execution)}" camunda:resultVariable="response" camunda:asyncAfter="true" camunda:asyncBefore="true" name="Get Accounts">
+    <bpmn2:serviceTask id="getAccounts" camunda:expression="${bankCustomerService.getAccounts(execution)}" camunda:resultVariable="accounts" camunda:asyncAfter="true" camunda:asyncBefore="true" name="Get Accounts">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
     </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="getAccounts" targetRef="end"/>
+    <bpmn2:boundaryEvent id="BoundaryEvent_1" name="SOAP Fault" attachedToRef="getAccounts">
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+      <bpmn2:errorEventDefinition id="ErrorEventDefinition_1"/>
+    </bpmn2:boundaryEvent>
+    <bpmn2:endEvent id="end" name="End successful">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="getAccounts" targetRef="end"/>
+    <bpmn2:endEvent id="EndEvent_1" name="End unsuccessful">
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="BoundaryEvent_1" targetRef="EndEvent_1"/>
   </bpmn2:process>
+  <bpmn2:error id="Error_1" errorCode="serviceException"/>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
@@ -33,17 +42,31 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_EndEvent_2" bpmnElement="end">
-        <dc:Bounds height="36.0" width="36.0" x="537.0" y="348.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="552.0" y="348.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="0.0" width="0.0" x="555.0" y="389.0"/>
+          <dc:Bounds height="21.0" width="29.0" x="556.0" y="389.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_ServiceTask_2" targetElement="_BPMNShape_EndEvent_2">
-        <di:waypoint xsi:type="dc:Point" x="460.0" y="366.0"/>
-        <di:waypoint xsi:type="dc:Point" x="537.0" y="366.0"/>
+      <bpmndi:BPMNShape id="_BPMNShape_BoundaryEvent_2" bpmnElement="BoundaryEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="389.0" y="388.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="516.0" y="366.0"/>
+          <dc:Bounds height="21.0" width="76.0" x="324.0" y="432.0"/>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_3" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="552.0" y="460.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="570.0" y="501.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="_BPMNShape_ServiceTask_2" targetElement="_BPMNShape_EndEvent_2">
+        <di:waypoint xsi:type="dc:Point" x="460.0" y="366.0"/>
+        <di:waypoint xsi:type="dc:Point" x="552.0" y="366.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="_BPMNShape_BoundaryEvent_2" targetElement="_BPMNShape_EndEvent_3">
+        <di:waypoint xsi:type="dc:Point" x="407.0" y="424.0"/>
+        <di:waypoint xsi:type="dc:Point" x="407.0" y="478.0"/>
+        <di:waypoint xsi:type="dc:Point" x="552.0" y="478.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
