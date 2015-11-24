@@ -48,6 +48,14 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- redirect slf4j logging to jdk logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>1.7.12</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <repositories>
