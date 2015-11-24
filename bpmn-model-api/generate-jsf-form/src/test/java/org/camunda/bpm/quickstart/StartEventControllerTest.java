@@ -31,8 +31,6 @@ import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineTestCase;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
-import java.io.InputStream;
-
 /**
  * @author Sebastian Menski
  */

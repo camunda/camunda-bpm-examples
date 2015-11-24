@@ -8,7 +8,7 @@
   <name>Loan Approval Example</name>
 
   <properties>
-    <camunda.version>7.3.0</camunda.version>
+    <camunda.version>7.4.0</camunda.version>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

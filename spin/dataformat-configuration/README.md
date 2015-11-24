@@ -95,7 +95,7 @@ In the [test case](src/test/java/org/camunda/bpm/example/spin/dataformat/configu
 
 For this to work, it is crucial that the Spin runtime is able to lookup the `DataFormatConfigurator` implementation. That means, the artifact containing the data format configurator and the corresponding `META-INF/services` file must be on Spin's classpath.
 
-You can find the Spin documentation on configuring data formats [here](http://docs.camunda.org/latest/api-references/spin/#extending-spin-configuring-data-formats).
+You can find the Spin documentation on configuring data formats [here](https://docs.camunda.org/manual/reference/spin/extending-spin/#configuring-data-formats).
 
 ## How it works on an application server with shared engine
 
@@ -103,7 +103,7 @@ This example demonstrates the configuration functionality via a unit test.
 
 In order to configure data formats on an application server and a shared engine scenario, do the following:
 
-* Make sure to use the [camunda-spin-core](http://docs.camunda.org/latest/guides/user-guide/#camunda-spin-core) dependencies in your application server, not  [camunda-spin-dataformat-all](http://docs.camunda.org/latest/guides/user-guide/#camunda-spin-dataformat-all)
+* Make sure to use the [camunda-spin-core](https://docs.camunda.org/manual/user-guide/data-formats/configuring-spin-integration/#camunda-spin-core) dependencies in your application server, not  [camunda-spin-dataformat-all](https://docs.camunda.org/manual/user-guide/data-formats/configuring-spin-integration/#camunda-spin-dataformat-all)
 * Implement a configurator as in this example
 * Build the Maven project; the result is a jar file that contains the configurator and the declaration file under `META-INF/services`
 * Ensure that the jar file is available on the classpath of the `camunda-spin-core` artifact

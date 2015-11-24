@@ -15,17 +15,19 @@
  */
 package org.camunda.bpm.example.spring.servlet.pa;
 
+import java.io.File;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.camunda.bpm.BpmPlatform;
 import org.camunda.bpm.ProcessEngineService;
-import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.HistoryService;
-import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.impl.ProcessEngineImpl;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
@@ -44,24 +46,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 @RunWith(Arquillian.class)
 public class ArquillianTest {
 
   private ProcessEngineService processEngineService;
   private ProcessEngine processEngine;
   private ProcessEngineConfigurationImpl processEngineConfiguration;
-  private FormService formService;
   private HistoryService historyService;
-  private IdentityService identityService;
   private ManagementService managementService;
   private RepositoryService repositoryService;
   private RuntimeService runtimeService;
-  private TaskService taskService;
 
   @Before
   public void setupBeforeTest() {
@@ -69,13 +63,10 @@ public class ArquillianTest {
     processEngine = processEngineService.getDefaultProcessEngine();
     processEngineConfiguration = ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration();
     processEngineConfiguration.getJobExecutor().shutdown(); // make sure the job executor is down
-    formService = processEngine.getFormService();
     historyService = processEngine.getHistoryService();
-    identityService = processEngine.getIdentityService();
     managementService = processEngine.getManagementService();
     repositoryService = processEngine.getRepositoryService();
     runtimeService = processEngine.getRuntimeService();
-    taskService = processEngine.getTaskService();
   }
 
   @Deployment

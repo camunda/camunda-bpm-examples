@@ -1,7 +1,6 @@
 package com.camunda.bpm.example.spring.soap;
 
 import javax.jws.WebService;
-import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Endpoint;

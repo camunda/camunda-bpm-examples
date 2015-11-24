@@ -1,6 +1,6 @@
 package org.camunda.bpm.example.test;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.List;

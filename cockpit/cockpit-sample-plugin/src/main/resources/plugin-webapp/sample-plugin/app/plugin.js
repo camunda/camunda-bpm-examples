@@ -14,6 +14,7 @@ define(['angular'], function(angular) {
       id: 'process-definitions',
       label: 'Deployed Processes',
       url: 'plugin://sample-plugin/static/app/dashboard.html',
+      dashboardMenuLabel: 'Sample',
       controller: DashboardController,
 
       // make sure we have a higher priority than the default plugin

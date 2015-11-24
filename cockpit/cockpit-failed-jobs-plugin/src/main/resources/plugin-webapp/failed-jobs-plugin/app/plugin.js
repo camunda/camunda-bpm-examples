@@ -51,6 +51,7 @@ define(['angular'], function(angular) {
       id : 'failed-jobs',
       label : 'Failed Jobs',
       url: 'plugin://failed-jobs-plugin/static/app/failed-jobs-table.html',
+      dashboardMenuLabel: 'Failed Jobs',
       controller : FailedJobsController,
       priority : 15
     });

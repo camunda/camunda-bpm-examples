@@ -1,11 +1,11 @@
 package org.camunda.bpm.quickstart;
 
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.camunda.bpm.model.bpmn.instance.*;
+import java.util.logging.Logger;
 
 import javax.inject.Named;
-import java.util.logging.Logger;
+
+import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 /**
  * This is an empty service implementation illustrating how to use a plain Java 

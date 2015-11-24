@@ -87,4 +87,4 @@ This quickstart demonstrates the use of most of the supported form controls. See
 [2]: docs/screenshot-modeler.png
 [3]: src/main/webapp/start-form.html
 [4]: src/main/webapp
-[5]: http://docs.camunda.org/latest/guides/user-guide/#task-forms-embedded-task-forms
+[5]: https://docs.camunda.org/manual/user-guide/task-forms/#embedded-task-forms

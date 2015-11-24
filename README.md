@@ -22,9 +22,9 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 
 | Name                                                                                                   | Container          |
 | -------------------------------------------------------------------------------------------------------|--------------------|
-| [Simple Process Applications](http://docs.camunda.org/latest/guides/getting-started-guides/developing-process-applications/)     | All                |
-| [camunda BPM and the Spring Framework](http://docs.camunda.org/latest/guides/getting-started-guides/spring-framework/)           | Tomcat             |
-| [Process Applications with JavaEE 6](http://docs.camunda.org/latest/guides/getting-started-guides/java-ee/)                      | JavaEE Containers  |
+| [Simple Process Applications](https://docs.camunda.org/get-started/bpmn20/)                            | All                |
+| [camunda BPM and the Spring Framework](https://docs.camunda.org/get-started/spring/)                   | Tomcat             |
+| [Process Applications with JavaEE 6](https://docs.camunda.org/get-started/javaee6/)                    | JavaEE Containers  |
 
 ### BPMN 2.0 & Process Implementation Examples
 
@@ -141,7 +141,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 ### Contribute!
 
   * Website: http://www.camunda.org/
-  * Getting Started: http://docs.camunda.org/latest/guides/getting-started-guides/
+  * Getting Started: https://docs.camunda.org/get-started/
   * Issue Tracker: https://app.camunda.com/jira
   * Contribution Guidelines: http://www.camunda.org/community/contribute.html
   * License: Apache License, Version 2.0  http://www.apache.org/licenses/LICENSE-2.0

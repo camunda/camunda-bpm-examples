@@ -14,7 +14,7 @@
       <dependency>
         <groupId>org.camunda.bpm.dmn</groupId>
         <artifactId>camunda-engine-dmn-bom</artifactId>
-        <version>7.4.0-alpha3</version>
+        <version>7.4.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

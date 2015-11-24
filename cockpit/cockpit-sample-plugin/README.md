@@ -3,7 +3,7 @@ Sample Plugin for Camunda Cockpit
 
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda BPM](http://docs.camunda.org).
 
-Built and tested against Camunda BPM version `7.3.0`.
+Built and tested against Camunda BPM version `7.4.0`.
 
 ![Screenshot](screenshot.png)
 
@@ -34,4 +34,4 @@ License
 Use under terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 
-[1]: http://docs.camunda.org/latest/real-life/how-to/#cockpit-how-to-develop-a-cockpit-plugin
+[1]: https://docs.camunda.org/manual/examples/tutorials/develop-cockpit-plugin/

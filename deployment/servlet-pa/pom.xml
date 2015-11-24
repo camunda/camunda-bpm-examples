@@ -4,7 +4,7 @@
   <artifactId>camunda-quickstart-servlet-pa</artifactId>
   <packaging>war</packaging>
   <name>camunda BPM - Quickstarts - Servlet Process Application</name>
-  <version>7.3.0</version>
+  <version>7.4.0</version>
   
   <properties>
     <version.arquillian>1.0.4.Final</version.arquillian>
