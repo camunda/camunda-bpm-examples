@@ -15,6 +15,8 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 * [camunda Modeler (Eclipse)](#camunda-modeler-examples)
 * [CMMN](#cmmn-examples)
 * [Multi-Tenancy](#multi-tenancy-examples)
+* [Spin](#spin-examples)
+* [DMN](#dmn-examples)
 
 ### Getting Started with camunda BPM
 
@@ -128,6 +130,12 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 | Name                                                                                       | Container | Keywords                | Version |
 | -------------------------------------------------------------------------------------------|-----------|-------------------------|---------|
 | [Data Format Configuration to Customize JSON serialization](spin/dataformat-configuration) | Unit Test | Spin, Process Variables | 7.2+    |
+
+### DMN Examples
+
+| Name                                                                                       | Container | Keywords                | Version |
+| -------------------------------------------------------------------------------------------|-----------|-------------------------|---------|
+| [Embed Decision Engine - Dish Decision Maker](decision-engine/dish-decision-maker) | Jar | DMN, Embed | 7.4+    |
 
 
 ### Contribute!
