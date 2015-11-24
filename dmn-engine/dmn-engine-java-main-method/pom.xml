@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.camunda.bpm.example</groupId>
-  <artifactId>camunda-example-dish-decision-maker</artifactId>
+  <artifactId>camunda-example-decision-engine-java-main</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -49,7 +49,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>org.camunda.bpm.example.DishDecisionMaker</mainClass>
+          <mainClass>org.camunda.bpm.example.DishDecider</mainClass>
           <arguments>
             <argument>Winter</argument>
             <argument>4</argument>
@@ -85,10 +85,10 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>org.camunda.bpm.example.DishDecisionMaker</mainClass>
+              <mainClass>org.camunda.bpm.example.DishDecider</mainClass>
             </manifest>
           </archive>
-          <finalName>DishDecisionMaker</finalName>
+          <finalName>DishDecider</finalName>
         </configuration>
       </plugin>
 

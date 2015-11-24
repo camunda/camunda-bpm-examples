@@ -24,7 +24,6 @@ import org.camunda.bpm.dmn.engine.test.DmnEngineRule;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -38,7 +37,7 @@ public class DishDecisionTest {
 
   @Before
   public void parseDecision() {
-    InputStream inputStream = getClass().getResourceAsStream("dish-decision.dmn11.xml");
+    InputStream inputStream = DishDecisionTest.class.getResourceAsStream("dish-decision.dmn11.xml");
     dmnEngine = dmnEngineRule.getDmnEngine();
     decision = dmnEngine.parseDecision("decision", inputStream);
   }

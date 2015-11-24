@@ -135,7 +135,7 @@ camunda BPM examples is a collection of focused usage examples for the [camunda 
 
 | Name                                                                                       | Container | Keywords                | Version |
 | -------------------------------------------------------------------------------------------|-----------|-------------------------|---------|
-| [Embed Decision Engine - Dish Decision Maker](decision-engine/dish-decision-maker) | Jar | DMN, Embed | 7.4+    |
+| [Embed Decision Engine - Dish Decision Maker](dmn-engine/dmn-engine-java-main-method) | Jar | DMN, Embed | 7.4+    |
 
 
 ### Contribute!
