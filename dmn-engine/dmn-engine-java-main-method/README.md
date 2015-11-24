@@ -56,7 +56,7 @@ Include some slf4j backend. The simplest option is to not add a backend at all b
 
 ### Bootstrap the DMN Engine in a Main Method
 
-The Java Class [DishDecisionMaker.java] has a main method which bootstraps the DMN Engine using the
+The Java Class [DishDecider.java] has a main method which bootstraps the DMN Engine using the
 default configuration:
 
 ```java
@@ -94,7 +94,7 @@ In order to execute it, it needs to be passed to the `evaluateDecisionTable` met
 DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
 ```
 
-The File [DishDecisionMaker.java] contains the complete source code including variable handling and parsing
+The File [DishDecider.java] contains the complete source code including variable handling and parsing
 of the command line arguments.
 
 ### Writing Tests with JUnit
@@ -201,6 +201,6 @@ Dish Decision:
 [Dish Decision]: src/main/resources/org/camunda/bpm/example/dish-decision.png
 [dish-decision-dmn11.xml]: src/main/resources/org/camunda/bpm/example/dish-decision.dmn11.xml
 [Camunda DMN online modeler]: https://camunda.org/dmn/demo/
-[DishDecisionMaker.java]: src/main/java/org/camunda/bpm/example/DishDecisionMaker.java
+[DishDecider.java]: src/main/java/org/camunda/bpm/example/DishDecider.java
 [User Guide]: https://docs.camunda.org/manual/latest/user-guide/dmn-engine/testing/
 [DishDecisionTest.java]: src/test/java/org/camunda/bpm/example/DishDecisionTest.java
