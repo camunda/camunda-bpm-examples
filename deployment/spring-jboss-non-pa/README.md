@@ -1,6 +1,6 @@
 # Plain Spring Web application for JBoss AS 7
 
-This example demonstrates how to deploy a plain web application which 
+This example demonstrates how to deploy a plain web application which
 
   * Does not include a @ProcessApplication class and does not provide any BPMN 2.0 processes
   * Starts a Spring Webapplication context
@@ -8,8 +8,8 @@ This example demonstrates how to deploy a plain web application which
 
 ## Why is this example interesting?
 
-The JBoss AS 7 extensions from camunda allow you to manage Process Engines as JBoss Services. However, if your application does not 
-provide a @ProcessApplication class, JBoss AS 7 is not aware of the fact that your application uses the process engine. In that case, 
+The JBoss AS 7 extensions from camunda allow you to manage Process Engines as JBoss Services. However, if your application does not
+provide a @ProcessApplication class, JBoss AS 7 is not aware of the fact that your application uses the process engine. In that case,
 the following scenarious can occur:
 
   * At deployment, your application is deployed *before* the process engine is started, causing the deployment of your application to fail.
@@ -23,9 +23,9 @@ We reference the process engine resource in `web.xml`:
 
 ```xml
 <resource-ref>
-  <res-ref-name>processEngine/default</res-ref-name>   
+  <res-ref-name>processEngine/default</res-ref-name>
   <res-type>org.camunda.bpm.engine.ProcessEngine</res-type>
-  <mapped-name>java:global/camunda-bpm-platform/process-engine/default</mapped-name>    
+  <mapped-name>java:global/camunda-bpm-platform/process-engine/default</mapped-name>
 </resource-ref>
 ```
 
@@ -37,21 +37,20 @@ In our case, we want to reference it from a Spring application context:
 ```xml
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:activiti="http://www.activiti.org/schema/spring/components"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
- 
- 
+
+
     <!-- lookup the process engine from local JNDI -->
     <bean name="processEngine" id="processEngine" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="java:comp/env/processEngine/default" />
     </bean>
- 
+
     <!-- inject it into a bean -->
     <bean class="org.camunda.bpm.example.spring.jboss.ProcessEngineClient">
         <property name="processEngine" ref="processEngine" />
     </bean>
- 
+
 </beans>
 ```
 

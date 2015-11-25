@@ -19,7 +19,7 @@
 
     <camunda.plugin.screenshot>screenshot.png</camunda.plugin.screenshot>
     <!-- <camunda.plugin.screenshot.1>screenshot2.png</camunda.plugin.screenshot.1> -->
-    <camunda.plugin.testedOnVersion>7.3.0</camunda.plugin.testedOnVersion>
+    <camunda.plugin.testedOnVersion>7.4.0</camunda.plugin.testedOnVersion>
     <!-- <camunda.plugin.exampleProcessApplicationUrl></camunda.plugin.exampleProcessApplicationUrl> -->
     <camunda.plugin.language>EN</camunda.plugin.language>
 

@@ -1,6 +1,5 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:activiti="http://www.activiti.org/schema/spring/components"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
@@ -9,5 +8,5 @@
 
   <!-- Spring bean to be invoked through the ApplicationContextElResolver -->
   <bean id="exampleDelegateBean" class="org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean" />
- 
+
 </beans>

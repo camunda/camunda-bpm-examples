@@ -2,7 +2,7 @@
 
 This example demonstrates how to use the [camunda CMMN model API][cmmn-model] to register a CMMN transform listener that works with custom extension elements via a strongly-typed API. The concepts described here apply to the [BPMN model API][bpmn-model] and [DMN model API][dmn-model] in a similar manner.
 
-Given a [CMMN 1.0 XML file][cmmn-xml]:
+Given a [CMMN 1.1 XML file][cmmn-xml]:
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
