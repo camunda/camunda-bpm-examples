@@ -163,7 +163,7 @@ To run it you can either use maven:
 mvn compile exec:java
 ```
 
-This will compile the compile the project and will execute it with the arguments
+This will compile the project and execute it with the arguments
 `Winter` for the current season and `4` for the number of expected guests.
 
 This should produce an output which contains:
