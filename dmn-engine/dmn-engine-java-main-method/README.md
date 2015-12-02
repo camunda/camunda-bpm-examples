@@ -12,7 +12,7 @@ The example uses a decision table from the [DMN tutorial] to decided which dish 
 ![Dish Decision]
 
 You can find the corresponding DMN XML file [dish-decision.dmn11.xml] in the
-resources. To modify it you can use the [Camunda DMN online modeler].
+resources. To modify it you can use the [Camunda Modeler].
 
 ## Code Walkthrough
 
@@ -200,7 +200,7 @@ Dish Decision:
 [DMN tutorial]: https://camunda.org/dmn/tutorial/
 [Dish Decision]: src/main/resources/org/camunda/bpm/example/dish-decision.png
 [dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/dish-decision.dmn11.xml
-[Camunda DMN online modeler]: https://camunda.org/dmn/demo/
+[Camunda Modeler]: https://camunda.org/dmn/tool/
 [DishDecider.java]: src/main/java/org/camunda/bpm/example/DishDecider.java
 [User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
 [DishDecisionTest.java]: src/test/java/org/camunda/bpm/example/DishDecisionTest.java
