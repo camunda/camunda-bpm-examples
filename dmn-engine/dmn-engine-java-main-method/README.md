@@ -77,7 +77,7 @@ public class DishDecider {
 
 ### Parsing and Executing the Decision Table
 
-Once the DMN Engine is bootstrapped, it can be used to fist parse a decision loaded from the classpath:
+Once the DMN Engine is bootstrapped, it can be used to first parse a decision loaded from the classpath:
 
 ```java
 InputStream inputStream = DishDecider.class.getResourceAsStream("dish-decision.dmn11.xml");
