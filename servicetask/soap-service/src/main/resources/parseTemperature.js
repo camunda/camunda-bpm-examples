@@ -7,7 +7,7 @@ var forecast = rawForecast.substring(rawForecast.indexOf("\n"));
 var parsedTemperature = S(forecast).childElement("Temperature").textContent();
 
 // temperature looks like this: <Temperature> 68 F (20 C)</Temperature>
-var regex = /\((\d+) C\)/;
+var regex = /\((-?\d+) C\)/;
 
 // return only the temperature in C:
 regex.exec(parsedTemperature)[1];
