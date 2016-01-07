@@ -20,11 +20,11 @@
             </camunda:inputParameter>
 
             <camunda:inputParameter name="headers">
-              <map>
-                <entry key="Accept">
+              <camunda:map>
+                <camunda:entry key="Accept">
                   application/json
-                </entry>
-              </map>
+                </camunda:entry>
+              </camunda:map>
             </camunda:inputParameter>
 
             <camunda:outputParameter name="isHoliday">

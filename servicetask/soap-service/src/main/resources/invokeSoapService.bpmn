@@ -19,9 +19,9 @@
             </camunda:inputParameter>
 
             <camunda:inputParameter name="headers">
-              <map>
-                <entry key="Content-Type">application/soap+xml;charset=UTF-8;action="http://www.webserviceX.NET/GetWeather"</entry>
-              </map>
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/soap+xml;charset=UTF-8;action="http://www.webserviceX.NET/GetWeather"</camunda:entry>
+              </camunda:map>
             </camunda:inputParameter>
 
             <camunda:outputParameter name="forecast">
