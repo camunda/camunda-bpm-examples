@@ -138,9 +138,9 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 ### Spin Examples
 
-| Name                                                                                       | Container | Keywords                |
-| -------------------------------------------------------------------------------------------|-----------|-------------------------|
-| [Data Format Configuration to Customize JSON serialization](spin/dataformat-configuration) | Unit Test | Spin, Process Variables |
+| Name                                                                                       | Container                                  | Keywords                |
+| -------------------------------------------------------------------------------------------|--------------------------------------------|-------------------------|
+| [Data Format Configuration to Customize JSON serialization](spin/dataformat-configuration) | Unit Test / Glassfish, WebLogic, Websphere | Spin, Process Variables |
 
 ### DMN Examples
 

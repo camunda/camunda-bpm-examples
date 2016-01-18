@@ -46,12 +46,14 @@ The script task *Extract price* expects a `Car` JSON object in the format of `{"
 
 # Overview
 
-## How to run it
+## Standalone Unit Test
+
+### How to run it
 
 1. Checkout the project with Git
 2. Read and run the [unit test](src/test/java/org/camunda/bpm/example/spin/dataformat/configuration/JacksonConfiguratorTest.java)
 
-## How it works
+### How it works
 
 When a data format is accessed for the very first time, Spin performs a look up of all data formats on the classpath. After having instantiated the data formats, Spin detects so-called data format configurators and calls these with the detected format instances. Users may provide custom configurators to be able to influence the way a data format serializes and deserializes objects, which is what this example shows.
 
@@ -93,20 +95,79 @@ execution.setVariable("price", price);
 
 In the [test case](src/test/java/org/camunda/bpm/example/spin/dataformat/configuration/JacksonConfiguratorTest.java), we assert that the *price* property was successfully populated.
 
-For this to work, it is crucial that the Spin runtime is able to lookup the `DataFormatConfigurator` implementation. That means, the artifact containing the data format configurator and the corresponding `META-INF/services` file must be on Spin's classpath.
+For this to work, it is crucial that the Spin runtime is able to lookup the `DataFormatConfigurator` implementation. That means, the artifact containing the data format configurator and the corresponding `META-INF/services` file must be on Spin's classpath. For process applications (see below), it is sufficient to have the configurator on the process application's classpath.
 
 You can find the Spin documentation on configuring data formats [here](https://docs.camunda.org/manual/reference/spin/extending-spin/#configuring-data-formats).
 
-## How it works on an application server with shared engine
+### On an Application Server (Shared Engine)
 
-This example demonstrates the configuration functionality via a unit test.
+The example code is built to run on Glassfish, WebLogic and WebSphere. It can be adapted to run on Tomcat and JBoss/Wildfly. Read the section on the unit test scenario first because the same configuration code is used here. In addition, this adds a servlet that exposes and endpoint to start a process instance with a `Car` variable. The `ProcessApplicationContext` API is used to ensure that the process variable is serialized using the Spin data format as configured in the process application.
 
-In order to configure data formats on an application server and a shared engine scenario, do the following:
+### How to run it
 
-* Make sure to use the [camunda-spin-core](https://docs.camunda.org/manual/user-guide/data-formats/configuring-spin-integration/#camunda-spin-core) dependencies in your application server, not  [camunda-spin-dataformat-all](https://docs.camunda.org/manual/user-guide/data-formats/configuring-spin-integration/#camunda-spin-dataformat-all)
-* Implement a configurator as in this example
-* Build the Maven project; the result is a jar file that contains the configurator and the declaration file under `META-INF/services`
-* Ensure that the jar file is available on the classpath of the `camunda-spin-core` artifact
+1. Checkout the project with Git
+2. Build the project by executing `mvn clean install` in the root folder
+3. Deploy the resulting `war` file to the application server
+4. Perform a HTTP GET request to the url `http://localhost:8080/dataformat-example/start-process` either with a REST client or simply in the address bar of your browser
+5. Go to Cockpit and verify that the process variable named `car` was serialized correctly
 
-*Known limitation*:
-The configuration artifact can not be deployed as part of a process application if Spin itself is not part of it. That means, dependencies of the configuration artifact can also not be part of the process application.
+### How it works
+
+The CDI bean [ProcessInstanceStarterBean](src/main/java/org/camunda/bpm/example/spin/dataformat/servlet/ProcessInstanceStarterBean.java) has a method that starts a process instance with a serialized `Car` value.
+
+```java
+@ApplicationScoped
+public class ProcessInstanceStarterBean {
+
+  @InProcessApplicationContext
+  public ProcessInstance startProcess(Car car) {
+    ProcessEngine processEngine = BpmPlatform.getDefaultProcessEngine();
+
+    RuntimeService runtimeService = processEngine.getRuntimeService();
+
+    return runtimeService.startProcessInstanceByKey("testProcess",
+        Variables.createVariables().putValueTyped("car",
+            Variables
+              .objectValue(car)
+              .serializationDataFormat(DataFormats.JSON_DATAFORMAT_NAME)
+              .create()));
+
+  }
+}
+```
+
+As the process engine is not able to guess by itself which JSON data format to use for serializing the variable, we have to tell it that we want to use the format defined in the process application. This is solved here by defining a custom CDI annotation `@InProcessApplicationContext`. A custom CDI interceptor [ProcessApplicationContextInterceptor](src/main/java/org/camunda/bpm/example/spin/dataformat/servlet/ProcessApplicationContextInterceptor.java) is notified whenever this annotation is present. This interceptor determines the context process application and declares it using the utility class [ProcessApplicationContext](http://stage.docs.camunda.org/javadoc/camunda-bpm-platform/7.5-SNAPSHOT/org/camunda/bpm/application/ProcessApplicationContext.html):
+
+```java
+@InProcessApplicationContext
+@Interceptor
+public class ProcessApplicationContextInterceptor {
+
+  @Inject
+  protected ProcessApplicationInterface processApplication;
+
+  @AroundInvoke
+  public Object performContextSwitch(InvocationContext invocationContext) throws Exception {
+
+    try {
+      ProcessApplicationContext.setCurrentProcessApplication(processApplication.getName());
+      return invocationContext.proceed();
+    } finally {
+      ProcessApplicationContext.clear();
+    }
+  }
+
+  public ProcessApplicationInterface getProcessApplication() {
+    return processApplication;
+  }
+
+  public void setProcessApplication(ProcessApplicationInterface processApplication) {
+    this.processApplication = processApplication;
+  }
+
+}
+```
+
+`ProcessApplicationContext#setCurrentProcessApplication` tells the process engine to access process-application-specific resources such as Spin data formats when engine API is used within the annotated method. The engine can then successfully use the data format configured in the process application.
+
+Note that using CDI is not required for this feature to work. The lowest common denominator is the utility class `ProcessApplicationContext`. It can be used in any context to declare process application context before invoking engine API.
