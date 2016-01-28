@@ -21,6 +21,8 @@
 <!--     <module>modeler/custom-task-simple</module> -->
 <!--     <module>modeler/custom-task-advanced</module> -->
     <module>multi-tenancy/schema-isolation</module>
+    <module>multi-tenancy/tenant-identifier-embedded</module>
+    <module>multi-tenancy/tenant-identifier-shared</module>
     <module>process-engine-plugin/custom-history-level</module>
     <module>process-engine-plugin/bpmn-parse-listener</module>
     <module>process-engine-plugin/command-interceptor-blocking</module>

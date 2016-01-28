@@ -2,20 +2,25 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.camunda.bpm.tutorial</groupId>
-  <artifactId>camunda-tutorial-multi-tenancy-schema-isolation</artifactId>
-  <packaging>war</packaging>
-  <name>camunda BPM - Tutorial - Tenant-Aware Process Application</name>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>camunda-tutorial-multi-tenancy-tenant-identifier-embedded</artifactId>
+  <name>camunda BPM - Tutorial - Multi Tenancy - Tenant Identifier - Embedded</name>
+  <version>7.5.0-SNAPSHOT</version>
 
   <properties>
-    <version.arquillian>1.0.4.Final</version.arquillian>
-    <version.jboss-as>7.2.0.Final</version.jboss-as>
-    <version.camunda>7.4.0</version.camunda>
+    <!-- TODO: switch version when it is released -->
+    <version.camunda>7.5.0-SNAPSHOT</version.camunda>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>camunda-bpm-nexus</id>
+      <name>camunda-bpm-nexus</name>
+      <url>https://app.camunda.com/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
   
   <dependencyManagement>
     <dependencies>
@@ -37,30 +42,24 @@
     </dependency>
     
     <dependency>
-      <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-cdi</artifactId>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
     </dependency>
-    
+
     <dependency>
-      <groupId>org.camunda.bpm.javaee</groupId>
-      <artifactId>camunda-ejb-client</artifactId>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.3.171</version>
+      <scope>test</scope>
     </dependency>
-    
+
     <dependency>
-      <!-- Java EE 6 Specification -->
-      <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-web-6.0</artifactId>
-      <version>3.0.1.Final</version>
-      <type>pom</type>
-      <scope>provided</scope>
-    </dependency>
-    
-    <!-- Resteasy 2.3.5-Final is an implicit module dependency on JBoss 7.2.0-Final -->
-    <dependency>
-      <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-jaxrs</artifactId>
-      <version>2.3.5.Final</version>
-      <scope>provided</scope>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.10.19</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
