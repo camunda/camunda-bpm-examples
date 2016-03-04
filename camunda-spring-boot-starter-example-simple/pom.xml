@@ -10,7 +10,7 @@
   <artifactId>camunda-bpm-spring-boot-starter-example-simple</artifactId>
 
   <properties>
-    <start-class>org.camunda.bpm.spring.boot.starter.example.simple.Application</start-class>
+    <start-class>org.camunda.bpm.spring.boot.starter.example.simple.SimpleApplication</start-class>
   </properties>
 
   <dependencyManagement>
@@ -31,6 +31,11 @@
       <groupId>org.camunda.bpm.extension</groupId>
       <artifactId>camunda-bpm-spring-boot-starter</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>findbugs</artifactId>
+      <version>3.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>

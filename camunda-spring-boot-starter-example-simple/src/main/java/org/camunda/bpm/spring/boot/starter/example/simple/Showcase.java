@@ -14,10 +14,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nonnull;
+
 @Component
 public class Showcase implements ApplicationContextAware {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Showcase.class);
+  private final Logger logger = LoggerFactory.getLogger(Showcase.class);
 
   @Autowired
   private RuntimeService runtimeService;
@@ -30,23 +32,28 @@ public class Showcase implements ApplicationContextAware {
   protected boolean finished = false;
 
   public void show() {
-    ProcessInstance processInstance = runtimeService
-      .startProcessInstanceByKey("Sample");
-    LOGGER.info("started {}", processInstance);
-    Task task = taskService.createTaskQuery()
-      .processInstanceId(processInstance.getId()).singleResult();
-    runtimeService.signal(task.getExecutionId());
-    LOGGER.info("signaled {}", task);
+    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("Sample");
+    logger.info("started instance: {}", processInstance);
+    Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+
+    taskService.complete(task.getId());
+
+    logger.info("completed task: {}", task);
     waitForProcessFinished(processInstance);
   }
 
   private void waitForProcessFinished(ProcessInstance processInstance) {
-    while (runtimeService.createProcessInstanceQuery()
-      .processInstanceId(processInstance.getId()).singleResult() != null) {
+    while (findProcessInstance(processInstance) != null) {
+      final ProcessInstance p = findProcessInstance(processInstance);
+
+      logger.info("waiting at: {}", runtimeService.getActivityInstance(p.getId()).getActivityName());
+
+      logger.info("active: {}", !findProcessInstance(processInstance).isEnded());
       try {
+        logger.info("waiting for processInstance {} to complete", processInstance);
         Thread.sleep(500);
       } catch (InterruptedException e) {
-        LOGGER.error("", e);
+        logger.error("", e);
       }
     }
     finished = true;
@@ -59,9 +66,17 @@ public class Showcase implements ApplicationContextAware {
     });
   }
 
+  @Nonnull
+  private ProcessInstance findProcessInstance(ProcessInstance processInstance) {
+    return runtimeService.createProcessInstanceQuery()
+      .active()
+      .processInstanceId(processInstance.getId())
+      .singleResult();
+  }
+
   @Override
-  public void setApplicationContext(ApplicationContext applicationContext)
-    throws BeansException {
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     this.context = applicationContext;
   }
+
 }
