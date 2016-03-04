@@ -1,0 +1,18 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="processEngineConfiguration" class="org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
+    
+    <!-- set the custom tenant id provider -->
+    <property name="tenantIdProvider" ref="tenantIdProvider" />
+    
+  </bean>
+ 
+  <!-- provides the tenant id of process instances --> 
+  <bean id="tenantIdProvider" class="org.camunda.bpm.tutorial.multitenancy.CustomTenantIdProvider" />
+  
+  <!-- provides the tenant id of the called process definition (in the call activity) -->
+  <bean id="calledElementTenantIdProvider" class="org.camunda.bpm.tutorial.multitenancy.CalledElementTenantIdProvider" />
+
+</beans>
