@@ -43,10 +43,11 @@ public class CustomTenantIdProvider implements TenantIdProvider {
 }
 ```
 
-Set the custom `TenantIdProvider` on the `ProcessEngineConfiguration`.
+Now, set the custom `TenantIdProvider` on the `ProcessEngineConfiguration`.
 
 ```xml
-<bean id="processEngineConfiguration" class="org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
+<bean id="processEngineConfiguration" 
+  class="org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
     
   <!-- set the custom tenant id provider -->
   <property name="tenantIdProvider" ref="tenantIdProvider" />
@@ -56,6 +57,8 @@ Set the custom `TenantIdProvider` on the `ProcessEngineConfiguration`.
 <!-- provides the tenant id of process instances --> 
 <bean id="tenantIdProvider" class="org.camunda.bpm.tutorial.multitenancy.CustomTenantIdProvider" />
 ```
+
+That's it!
 
 To verify the behavior you have to 
 * deploy the process definitions without a tenant id
@@ -76,7 +79,10 @@ identityService.setAuthenticatedUserId("john");
 runtimeService.startProcessInstanceByKey("mainProcess");
 
 // check that the process instance got the tenant id from the custom tenant id provider
-ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processDefinitionKey("mainProcess").singleResult();
+ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+  .processDefinitionKey("mainProcess")
+  .singleResult();
+
 assertThat(processInstance.getTenantId(), is("tenant1"));
 ```
 
@@ -88,7 +94,7 @@ In this example, one tenant (tenant 2) should have a different sub-process:
 
 ![Tenant Specific Sub Process](docs/tenantSpecificSubProcess.png)
 
-The sub-process has the same process definition key like the default one. It is deployed for the specific tenant.
+The sub-process has the same process definition key like the default one and is deployed for the specific tenant.
 
 In order to use the tenant specific sub-process, the tenant id of the called element has to be set on the call activity using the `camunda:calledElementTenantId` attribute.
 
@@ -100,7 +106,7 @@ In order to use the tenant specific sub-process, the tenant id of the called ele
 </bpmn:callActivity>
 ```
 
-In the example, a bean is invoked to resolve the tenant id. It checks if a process definition is deployed for the tenant and returns their id. Otherwise, it returns `null` to use the default definition.
+Here, a bean is invoked to resolve the tenant id. It checks if a process definition is deployed for the tenant and returns their id. Otherwise, it returns `null` to use the default definition.
 
 ```java
 public class CalledElementTenantIdProvider {
@@ -161,7 +167,10 @@ identityService.setAuthenticatedUserId("mary");
 runtimeService.startProcessInstanceByKey("mainProcess");
 
 // check that the process instance has the tenant id 'tenant2'
-ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processDefinitionKey("mainProcess").singleResult();
+ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+  .processDefinitionKey("mainProcess")
+  .singleResult();
+
 assertThat(processInstance.getTenantId(), is("tenant2"));
 
 // and started the tenant-specific sub-process which overrides the default one
