@@ -137,6 +137,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Multi-Tenancy with Database Schema Isolation](multi-tenancy/schema-isolation)   | JBoss AS 7 | Multi-Tenancy |
 | [Multi-Tenancy with Tenant Identifiers for Embedded Process Engine](multi-tenancy/tenant-identifier-embedded) | Unit Test | Multi-Tenancy |
 | [Multi-Tenancy with Tenant Identifiers for Shared Process Engine](multi-tenancy/tenant-identifier-shared) | All | Multi-Tenancy |
+| [Multi-Tenancy with Tenant Identifiers with Shared Process Definitions](multi-tenancy/tenant-identifier-shared-definitions) | Unit Test | Multi-Tenancy |
 
 ### Spin Examples
 
