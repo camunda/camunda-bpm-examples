@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class SayHelloDelegate implements JavaDelegate {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SayHelloDelegate.class);
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Override
   public void execute(DelegateExecution execution) throws Exception {
-    LOGGER.info("hello {}", execution);
+    logger.info("executed sayHelloDelegate: {}", execution);
   }
 
 }
