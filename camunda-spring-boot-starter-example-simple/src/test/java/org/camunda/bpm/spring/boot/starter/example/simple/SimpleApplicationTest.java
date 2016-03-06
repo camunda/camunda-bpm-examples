@@ -21,7 +21,6 @@ public class SimpleApplicationTest {
 
   @Autowired
   private SimpleApplication application;
-  private boolean contextClosed;
 
   @Test
   public void would_fail_if_process_not_completed_after_5_seconds() throws InterruptedException {
