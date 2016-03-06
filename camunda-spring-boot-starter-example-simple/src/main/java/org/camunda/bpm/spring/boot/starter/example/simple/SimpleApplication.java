@@ -9,6 +9,8 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -17,6 +19,8 @@ import java.sql.SQLException;
 @SpringBootApplication
 @EnableScheduling
 public class SimpleApplication {
+
+  boolean contextClosed;
 
   public static void main(final String... args) throws Exception {
     SpringApplication.run(SimpleApplication.class, args);
@@ -33,9 +37,14 @@ public class SimpleApplication {
   @Autowired
   private Showcase showcase;
 
+  @EventListener
+  public void contextClosed(ContextClosedEvent event) {
+    logger.info("context closed!");
+    contextClosed = true;
+  }
 
-  @Scheduled(fixedDelay = 500L)
-  public void waitForProcessFinished() {
+  @Scheduled(fixedDelay = 1500L)
+  public void exitApplicationWhenProcessIsFinished() {
     String processInstanceId = showcase.getProcessInstanceId();
 
     if (processInstanceId == null) {

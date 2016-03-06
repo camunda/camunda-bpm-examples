@@ -23,15 +23,9 @@ public class SimpleApplicationTest {
   private SimpleApplication application;
   private boolean contextClosed;
 
-  @EventListener
-  public void contextClosed(ContextClosedEvent event) {
-    contextClosed = true;
-  }
-
-
   @Test
   public void would_fail_if_process_not_completed_after_5_seconds() throws InterruptedException {
-    while (!contextClosed && !application.isProcessInstanceFinished()) {
+    while (!application.contextClosed && !application.isProcessInstanceFinished()) {
       Thread.sleep(500L);
     }
   }
