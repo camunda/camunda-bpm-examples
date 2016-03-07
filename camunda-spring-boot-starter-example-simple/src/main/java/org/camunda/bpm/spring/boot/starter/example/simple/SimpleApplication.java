@@ -14,8 +14,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.sql.SQLException;
-
 @SpringBootApplication
 @EnableScheduling
 public class SimpleApplication {
