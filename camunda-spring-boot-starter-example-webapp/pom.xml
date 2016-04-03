@@ -8,7 +8,7 @@
   <artifactId>camunda-bpm-spring-boot-starter-example-webapp</artifactId>
 
   <properties>
-    <start-class>org.camunda.bpm.spring.boot.starter.example.webapp.Application</start-class>
+    <start-class>org.camunda.bpm.spring.boot.starter.example.webapp.WebappExampleApplication</start-class>
   </properties>
 
   <dependencyManagement>
