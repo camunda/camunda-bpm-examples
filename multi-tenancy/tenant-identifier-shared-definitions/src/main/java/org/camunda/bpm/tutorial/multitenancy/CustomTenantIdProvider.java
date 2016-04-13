@@ -14,6 +14,8 @@ package org.camunda.bpm.tutorial.multitenancy;
 
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.impl.cfg.multitenancy.TenantIdProvider;
+import org.camunda.bpm.engine.impl.cfg.multitenancy.TenantIdProviderCaseInstanceContext;
+import org.camunda.bpm.engine.impl.cfg.multitenancy.TenantIdProviderHistoricDecisionInstanceContext;
 import org.camunda.bpm.engine.impl.cfg.multitenancy.TenantIdProviderProcessInstanceContext;
 import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.identity.Authentication;
@@ -37,6 +39,16 @@ public class CustomTenantIdProvider implements TenantIdProvider {
     } else {
       throw new IllegalStateException("no authenticated user");
     }
+  }
+
+  @Override
+  public String provideTenantIdForCaseInstance(TenantIdProviderCaseInstanceContext ctx) {
+    return null;
+  }
+
+  @Override
+  public String provideTenantIdForHistoricDecisionInstance(TenantIdProviderHistoricDecisionInstanceContext ctx) {
+    return null;
   }
 
 }
