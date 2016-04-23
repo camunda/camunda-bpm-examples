@@ -16,7 +16,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class})
+@SpringApplicationConfiguration(classes = {RestApplication.class})
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
 @DirtiesContext
@@ -30,8 +30,7 @@ public class CamundaBpmRestIT {
 
   @Test
   public void processDefinitionTest() {
-    ResponseEntity<ProcessDefinitionDto[]> entity = new TestRestTemplate("user",
-      password).getForEntity(
+    ResponseEntity<ProcessDefinitionDto[]> entity = new TestRestTemplate("user", password).getForEntity(
       "http://localhost:{port}/rest/engine/{engineName}/process-definition",
       ProcessDefinitionDto[].class, port, "default");
     assertEquals(HttpStatus.OK, entity.getStatusCode());

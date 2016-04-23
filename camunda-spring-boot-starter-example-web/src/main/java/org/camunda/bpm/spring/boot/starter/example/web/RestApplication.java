@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class Application {
+public class RestApplication {
 
-  public static void main(String args[]) throws Exception {
-    SpringApplication.run(Application.class, args);
+  public static void main(final String... args) throws Exception {
+    SpringApplication.run(RestApplication.class, args);
   }
 
   @Bean

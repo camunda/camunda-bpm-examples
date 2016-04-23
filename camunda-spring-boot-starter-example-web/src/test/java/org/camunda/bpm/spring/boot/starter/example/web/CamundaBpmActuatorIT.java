@@ -16,7 +16,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class})
+@SpringApplicationConfiguration(classes = {RestApplication.class})
 @WebAppConfiguration
 @IntegrationTest({"server.port=0", "management.security.enabled:false"})
 @DirtiesContext
