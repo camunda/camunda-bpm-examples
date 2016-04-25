@@ -1,7 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.example.dmn.rest;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.impl.util.json.JSONArray;
@@ -36,22 +34,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 @IntegrationTest({"server.port=0"})
 @DirtiesContext
 public class DmnRestApplicationTest {
-
-  @JsonIgnoreProperties(ignoreUnknown = true)
-  public static class Result {
-    public String type;
-    public String value;
-  }
-
-  @JsonIgnoreProperties(ignoreUnknown = true)
-  public static class Check {
-    public Result result;
-    public Result reason;
-  }
-
-
-
-
 
   private static final String CHECK_ORDER = "checkOrder";
 
