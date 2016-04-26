@@ -1,14 +1,20 @@
 package org.camunda.bpm.spring.boot.starter.example.simple;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
+import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.SpringBootProcessApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,7 +22,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 @SpringBootApplication
 @EnableScheduling
-public class SimpleApplication {
+public class SimpleApplication implements CommandLineRunner {
 
   boolean contextClosed;
 
@@ -33,7 +39,18 @@ public class SimpleApplication {
   private ConfigurableApplicationContext context;
 
   @Autowired
+  private CamundaBpmProperties camundaBpmProperties;
+
+  @Autowired
   private Showcase showcase;
+
+  @Autowired
+  private SpringBootProcessApplication springBootProcessApplication;
+
+  @Bean
+  public SpringBootProcessApplication processApplication() {
+    return new SpringBootProcessApplication();
+  }
 
   @EventListener
   public void contextClosed(ContextClosedEvent event) {
@@ -74,4 +91,8 @@ public class SimpleApplication {
 
   }
 
+  @Override
+  public void run(String... strings) throws Exception {
+    logger.error(ToStringBuilder.reflectionToString(camundaBpmProperties.getApplication(), ToStringStyle.MULTI_LINE_STYLE));
+  }
 }

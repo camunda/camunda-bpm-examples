@@ -1,0 +1,3 @@
+camunda:
+  bpm:
+    auto-deployment-enabled: false

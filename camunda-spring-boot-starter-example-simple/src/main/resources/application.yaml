@@ -1,0 +1,9 @@
+camunda.bpm:
+  application:
+     isDeleteUponUndeploy: false
+     isScanForProcessDefinitions: false
+     isDeployChangedOnly: true
+     isResumePreviousVersions: true
+     resumePreviousBy: a value
+
+#camunda.bpm.auto-deployment-enabled: false
