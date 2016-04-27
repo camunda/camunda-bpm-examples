@@ -1,4 +1,4 @@
-package org.camunda.bpm.spring.boot.starter.example.simple;
+package org.camunda.bpm.spring.boot.starter.example.cloud.simple;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;

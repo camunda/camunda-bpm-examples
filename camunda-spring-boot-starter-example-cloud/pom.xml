@@ -11,7 +11,7 @@
   <artifactId>camunda-bpm-spring-boot-starter-example-cloud</artifactId>
 
   <properties>
-    <start-class>org.camunda.bpm.spring.boot.starter.example.simple.SimpleApplication</start-class>
+    <start-class>org.camunda.bpm.spring.boot.starter.example.cloud.simple.SimpleApplication</start-class>
   </properties>
 
   <dependencyManagement>
@@ -52,6 +52,10 @@
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>findbugs</artifactId>
       <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.netflix.hystrix</groupId>
+      <artifactId>hystrix-javanica</artifactId>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>

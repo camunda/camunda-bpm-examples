@@ -1,5 +1,6 @@
-package org.camunda.bpm.spring.boot.starter.example.simple;
+package org.camunda.bpm.spring.boot.starter.example.cloud.simple;
 
+import com.netflix.hystrix.contrib.javanica.aop.aspectj.HystrixCommandAspect;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.slf4j.Logger;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,12 +19,18 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableHystrix
 public class SimpleApplication {
 
   boolean contextClosed;
 
   public static void main(final String... args) throws Exception {
     SpringApplication.run(SimpleApplication.class, args);
+  }
+
+  @Bean
+  public HystrixCommandAspect hystrixAspect() {
+    return new HystrixCommandAspect();
   }
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
