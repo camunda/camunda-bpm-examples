@@ -45,7 +45,7 @@
     </dependency>
     <dependency>
       <groupId>org.camunda.bpm.extension</groupId>
-      <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+      <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
