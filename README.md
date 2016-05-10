@@ -23,7 +23,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [Bpmn 2.0 Model API](#bpmn-20-model-api-examples)
 * [Cockpit](#cockpit-examples)
 * [Tasklist](#tasklist-examples)
-* [camunda Modeler (Eclipse)](#camunda-modeler-examples)
+* [Modeling](#modeling-examples)
 * [CMMN](#cmmn-examples)
 * [Multi-Tenancy](#multi-tenancy-examples)
 * [Spin](#spin-examples)
@@ -111,12 +111,23 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [SDK JS forms AngularJS](/sdk-js/browser-forms-angular) * | Browser     | HTML, task, form, AngularJS |
 | [SDK JS node.js](/sdk-js/nodejs) *                        | node.js     | CLI, deployment             |
 
-### Camunda Modeler Eclipse Plugin Examples
+
+### Modeling Examples
+
+#### Camunda Modeler Examples
 
 | Name                                                                       | Keywords                  | Version |
 | ---------------------------------------------------------------------------|---------------------------|---------|
-| [Custom Task Simple](/modeler/custom-task-simple)                          | Plugin, Eclipse           | 2.3+    |
-| [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse           | 2.3+    |
+| [Element Templates](/modeling/modeler/element-templates)                          | Camunda Modeler, Custom Task           | 1.0.0+    |
+
+
+#### Camunda Eclipse Plug-in Examples
+
+| Name                                                                       | Keywords                  | Version |
+| ---------------------------------------------------------------------------|---------------------------|---------|
+| [Custom Task Simple](/modeling/eclipse-plug-in/custom-task-simple)                          | Plugin, Eclipse           | 2.3+    |
+| [Custom Task Advanced](/modeling/eclipse-plug-in/custom-task-advanced)                      | Plugin, Eclipse           | 2.3+    |
+
 
 ### CMMN Examples
 
