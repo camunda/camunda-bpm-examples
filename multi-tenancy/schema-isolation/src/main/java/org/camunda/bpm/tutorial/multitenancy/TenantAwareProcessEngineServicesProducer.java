@@ -12,6 +12,7 @@
  */
 package org.camunda.bpm.tutorial.multitenancy;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.Specializes;
@@ -19,6 +20,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.camunda.bpm.BpmPlatform;
+import org.camunda.bpm.engine.AuthorizationService;
+import org.camunda.bpm.engine.CaseService;
+import org.camunda.bpm.engine.DecisionService;
+import org.camunda.bpm.engine.ExternalTaskService;
+import org.camunda.bpm.engine.FilterService;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.IdentityService;
@@ -29,6 +35,8 @@ import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.cdi.impl.ProcessEngineServicesProducer;
+import org.camunda.bpm.engine.impl.context.Context;
+import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 
 /**
  * @author Thorben Lindhauer
@@ -45,13 +53,24 @@ public class TenantAwareProcessEngineServicesProducer extends ProcessEngineServi
   @Produces
   @RequestScoped
   public ProcessEngine processEngine() {
-    String processEngineName = tenant.getId();
-    if (processEngineName != null) {
-      ProcessEngine processEngine = BpmPlatform.getProcessEngineService().getProcessEngine(processEngineName);
+    CommandContext commandContext = Context.getCommandContext();
+
+    if (commandContext == null) {
+      return getProcessEngineByTenantId(tenant.getId());
+
+    } else {
+      // used within the process engine (e.g. by the job executor)
+      return commandContext.getProcessEngineConfiguration().getProcessEngine();
+    }
+  }
+
+  protected ProcessEngine getProcessEngineByTenantId(String tenantId) {
+    if (tenantId != null) {
+      ProcessEngine processEngine = BpmPlatform.getProcessEngineService().getProcessEngine(tenantId);
       if (processEngine != null) {
         return processEngine;
       } else {
-        throw new ProcessEngineException("No process engine found for tenant id '" + processEngineName + "'.");
+        throw new ProcessEngineException("No process engine found for tenant id '" + tenantId + "'.");
       }
     } else {
       throw new ProcessEngineException("No tenant id specified. A process engine can only be retrieved based on a tenant.");
@@ -113,4 +132,45 @@ public class TenantAwareProcessEngineServicesProducer extends ProcessEngineServi
   public ManagementService managementService() {
     return processEngine().getManagementService();
   }
+
+  @Override
+  @Produces
+  @Named
+  @ApplicationScoped
+  public AuthorizationService authorizationService() {
+    return processEngine().getAuthorizationService();
+  }
+
+  @Override
+  @Produces
+  @Named
+  @ApplicationScoped
+  public FilterService filterService() {
+    return processEngine().getFilterService();
+  }
+
+  @Override
+  @Produces
+  @Named
+  @ApplicationScoped
+  public ExternalTaskService externalTaskService() {
+    return processEngine().getExternalTaskService();
+  }
+
+  @Override
+  @Produces
+  @Named
+  @ApplicationScoped
+  public CaseService caseService() {
+    return processEngine().getCaseService();
+  }
+
+  @Override
+  @Produces
+  @Named
+  @ApplicationScoped
+  public DecisionService decisionService() {
+    return processEngine().getDecisionService();
+  }
+
 }
