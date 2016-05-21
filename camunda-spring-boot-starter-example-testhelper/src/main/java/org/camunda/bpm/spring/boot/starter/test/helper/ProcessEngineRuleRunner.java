@@ -1,4 +1,4 @@
-package org.camunda.bpm.spring.boot.starter.example.simple;
+package org.camunda.bpm.spring.boot.starter.test.helper;
 
 import java.util.ArrayList;
 import java.util.Collection;

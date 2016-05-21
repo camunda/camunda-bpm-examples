@@ -10,7 +10,7 @@ import static org.camunda.bpm.extension.mockito.DelegateExpressions.autoMock;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.spring.boot.starter.example.simple.AbstractProcessEngineRuleTest;
+import org.camunda.bpm.spring.boot.starter.test.helper.AbstractProcessEngineRuleTest;
 import org.junit.Test;
 
 /**

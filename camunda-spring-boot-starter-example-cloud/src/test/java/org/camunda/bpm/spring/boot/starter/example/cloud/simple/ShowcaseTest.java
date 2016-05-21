@@ -12,7 +12,7 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.spring.boot.starter.example.simple.AbstractProcessEngineRuleTest;
+import org.camunda.bpm.spring.boot.starter.test.helper.AbstractProcessEngineRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.event.ContextRefreshedEvent;
