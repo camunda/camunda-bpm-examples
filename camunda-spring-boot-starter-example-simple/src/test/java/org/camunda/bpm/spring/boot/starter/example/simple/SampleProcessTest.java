@@ -8,40 +8,15 @@ import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.runtimeS
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.task;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.autoMock;
 
-import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.engine.test.mock.MockExpressionManager;
-import org.junit.AfterClass;
-import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * Ensure the sample.bpmn Process is working correctly.
  */
 @Deployment(resources = "bpmn/sample.bpmn")
-public class SampleProcessTest {
-
-  private static final ProcessEngineConfiguration processEngineConfiguration = new StandaloneInMemProcessEngineConfiguration() {
-    {
-      jobExecutorActivate = false;
-      expressionManager = new MockExpressionManager();
-      databaseSchemaUpdate = DB_SCHEMA_UPDATE_CREATE_DROP;
-    }
-  };
-
-  private static final ProcessEngine PROCESS_ENGINE_NEEDS_CLOSE = processEngineConfiguration.buildProcessEngine();
-
-  @Rule
-  public final ProcessEngineRule processEngine = new ProcessEngineRule(PROCESS_ENGINE_NEEDS_CLOSE);
-
-  @AfterClass
-  public static void shutdown() {
-    PROCESS_ENGINE_NEEDS_CLOSE.close();
-  }
+public class SampleProcessTest extends AbstractProcessEngineRuleTest {
 
   @Test
   public void start_and_finish_process() {
