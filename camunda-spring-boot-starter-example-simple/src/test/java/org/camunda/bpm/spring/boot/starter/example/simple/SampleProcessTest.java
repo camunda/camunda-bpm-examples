@@ -1,15 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.example.simple;
 
-import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.engine.test.mock.MockExpressionManager;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.complete;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.execute;
@@ -18,14 +8,24 @@ import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.runtimeS
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.task;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.autoMock;
 
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.ProcessEngineConfiguration;
+import org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.test.Deployment;
+import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.engine.test.mock.MockExpressionManager;
+import org.junit.AfterClass;
+import org.junit.Rule;
+import org.junit.Test;
+
 /**
  * Ensure the sample.bpmn Process is working correctly.
  */
-@Ignore("failing on jenkins due to non empty database. Cannot reproduce locally. Ignore til fix (test of example)")
 @Deployment(resources = "bpmn/sample.bpmn")
 public class SampleProcessTest {
 
-  private final ProcessEngineConfiguration processEngineConfiguration = new StandaloneInMemProcessEngineConfiguration() {
+  private static final ProcessEngineConfiguration processEngineConfiguration = new StandaloneInMemProcessEngineConfiguration() {
     {
       jobExecutorActivate = false;
       expressionManager = new MockExpressionManager();
@@ -33,9 +33,15 @@ public class SampleProcessTest {
     }
   };
 
-  @Rule
-  public final ProcessEngineRule processEngine = new ProcessEngineRule(processEngineConfiguration.buildProcessEngine());
+  private static final ProcessEngine PROCESS_ENGINE_NEEDS_CLOSE = processEngineConfiguration.buildProcessEngine();
 
+  @Rule
+  public final ProcessEngineRule processEngine = new ProcessEngineRule(PROCESS_ENGINE_NEEDS_CLOSE);
+
+  @AfterClass
+  public static void shutdown() {
+    PROCESS_ENGINE_NEEDS_CLOSE.close();
+  }
 
   @Test
   public void start_and_finish_process() {
