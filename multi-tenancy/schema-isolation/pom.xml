@@ -8,10 +8,10 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-   <camunda.version>7.4.0</camunda.version>
+    <camunda.version>7.4.0</camunda.version>
     <arquillian.version>1.1.2.Final</arquillian.version>
     <jboss.version>7.2.1.Final</jboss.version>
-     <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -27,13 +27,6 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <groupId>org.camunda.bpm.dmn</groupId>
-        <artifactId>camunda-engine-dmn-bom</artifactId>
-        <version>${camunda.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
         <!-- Needed for ArquillianTest -->
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
@@ -45,31 +38,28 @@
   </dependencyManagement>
   
   <dependencies>
+    
+    <!-- process engine, needs to be provided -->
     <dependency>
-      <!-- process engine, needs to be provided -->
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>
       <scope>provided</scope>
     </dependency>
+    
+    <!-- client for Java EE application server integration, included in WAR as an alternative to write your own ProcessApplication class -->
     <dependency>
-      <!-- decision engine -->
-      <groupId>org.camunda.bpm.dmn</groupId>
-      <artifactId>camunda-engine-dmn</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <!-- client for Java EE application server integration, included in WAR as an alternative to write your own ProcessApplication class -->
       <groupId>org.camunda.bpm.javaee</groupId>
       <artifactId>camunda-ejb-client</artifactId>
     </dependency>
+    
+    <!-- CDI integration, needs to be included in WAR, otherwise CDI can not work correctly -->
     <dependency>
-      <!-- CDI integration, needs to be included in WAR, otherwise CDI can not work correctly -->
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-cdi</artifactId>
     </dependency>    
     
+    <!-- Java EE 6 Specification -->
     <dependency>
-      <!-- Java EE 6 Specification -->
       <groupId>org.jboss.spec</groupId>
       <artifactId>jboss-javaee-web-6.0</artifactId>
       <version>3.0.1.Final</version>
@@ -85,73 +75,60 @@
       <scope>provided</scope>
     </dependency>
     
+    <!-- Needed for Tests -->
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+      <version>4.11</version>
+    </dependency>
+    
     <!-- Required to use Connectors in unit tests -->
     <dependency>
       <groupId>org.camunda.connect</groupId>
       <artifactId>camunda-connect-connectors-all</artifactId>
-      <scope>provided</scope>
+      <scope>test</scope>
     </dependency>
-     <!-- Required to use Spin in unit tests -->
+    
+    <!-- Required to use Spin in unit tests -->
     <dependency>
       <groupId>org.camunda.spin</groupId>
       <artifactId>camunda-spin-dataformat-all</artifactId>
-       <scope>provided</scope>
+       <scope>test</scope>
     </dependency>
     
+    <!-- Needed for ArquillianTest -->
+      
     <dependency>
-      <!-- Needed for ArquillianTest -->
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <!-- Needed for ArquillianTest -->
       <groupId>org.jboss.arquillian.protocol</groupId>
       <artifactId>arquillian-protocol-servlet</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <!-- Needed for ArquillianTest -->
       <groupId>org.jboss.shrinkwrap.resolver</groupId>
       <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
       <scope>test</scope>
     </dependency>
     
+    <!-- Logging -->
+    
     <dependency>
       <groupId>org.slf4j</groupId>
-      <!-- apache commons logging => slf4j -->
       <artifactId>jcl-over-slf4j</artifactId>
       <version>1.7.7</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <!--  java util logging => slf4j -->
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
       <version>1.7.7</version>
-      <scope>test</scope>
-    </dependency>
-    
-   <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-      <version>4.11</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>1.3.168</version>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-      <!-- AssertJ Testing Library -->
-      <groupId>org.camunda.bpm.extension</groupId>
-      <artifactId>camunda-bpm-assert</artifactId>
-      <version>1.2</version>
       <scope>test</scope>
     </dependency>
     
@@ -159,48 +136,14 @@
 
   <profiles>
     <profile>
-      <id>default</id>
-      
-      <dependencies>
-        <dependency>
-          <!-- Needed for ArquillianTest -->
-          <!-- Requires a running WildFly with Camunda BPM
-               change to other artifact for embedded start or different server -->
-          <!-- Included here for convenience when running the test in Eclipse -->
-          <groupId>org.wildfly.arquillian</groupId>
-          <artifactId>wildfly-arquillian-container-remote</artifactId>
-          <version>1.0.1.Final</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.17</version>
-            <configuration>
-              <excludes>
-                <!-- Exclusion for Arquillian test cases to avoid dependency on infrastructure
-                     for Maven build. Feel free to adjust to your testing requirements. -->
-                <exclude>**/Arquillian*.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>arq-jbossas-remote</id>
+      <id>jbossas-remote</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <dependencies>
         <dependency>
           <!-- Needed for ArquillianTest -->
-          <!-- Requires a running JBoss AS7 with Camunda BPM
-               change to other artifact for embedded start or different server -->
+          <!-- Requires a running JBoss AS7 with Camunda BPM -->
           <groupId>org.jboss.as</groupId>
           <artifactId>jboss-as-arquillian-container-remote</artifactId>
           <version>7.2.0.FINAL</version>
@@ -210,7 +153,7 @@
     </profile>
 
     <profile>
-      <id>arq-wildfly-remote</id>
+      <id>wildfly-remote</id>
       <dependencies>
         <dependency>
           <!-- Needed for ArquillianTest -->
