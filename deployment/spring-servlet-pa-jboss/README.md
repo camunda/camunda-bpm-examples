@@ -43,7 +43,7 @@ Additionally, you have to package the camunda-engine-spring module as a maven co
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-spring</artifactId>
-      <version>7.0.0-Final</version>
+      <version>${camunda.version}</version>
       <scope>compile</scope>
     </dependency>
 
