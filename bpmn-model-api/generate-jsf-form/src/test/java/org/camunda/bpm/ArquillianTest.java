@@ -19,8 +19,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 public class ArquillianTest {
-  
-  private static final String PROCESS_DEFINITION_KEY = "generic-jsf-form";
+
+  private static final String PROCESS_DEFINITION_KEY = "Process_Feature";
 
   @Deployment
   public static WebArchive createDeployment() {
@@ -63,10 +63,10 @@ public class ArquillianTest {
   @Test
   public void testProcessExecution() throws Exception {
     cleanUpRunningProcessInstances();
-    
+
     ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey(PROCESS_DEFINITION_KEY);
 
-    assertEquals(1, processEngine.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).finished().count());
+    assertEquals(1, processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstance.getId()).count());
   }
 
   /**
@@ -78,5 +78,5 @@ public class ArquillianTest {
     for (ProcessInstance processInstance : runningInstances) {
       processEngine.getRuntimeService().deleteProcessInstance(processInstance.getId(), "deleted to have a clean environment for Arquillian");
     }
-  }  
+  }
 }
