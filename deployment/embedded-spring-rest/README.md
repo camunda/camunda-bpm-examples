@@ -1,4 +1,4 @@
-# Spring configured embedded process engine and REST API 
+# Spring configured embedded process engine and REST API
 
 This example demonstrates how to set up a web application, which
 
@@ -11,8 +11,8 @@ This example demonstrates how to set up a web application, which
 
 ## Why is this example interesting?
 
-This example demonstrates how to perform a standalone embedded setup with a webapplication which bundles both the 
-camunda engine and camunda engine REST JARs. 
+This example demonstrates how to perform a standalone embedded setup with a webapplication which bundles both the
+camunda engine and camunda engine REST JARs.
 
 ## Show me the important parts!
 
@@ -53,10 +53,10 @@ public class RestProcessEngineDeployment extends Application {
   @Override
   public Set<Class<?>> getClasses() {
     Set<Class<?>> classes = new HashSet<Class<?>>();
-    
+
     classes.addAll(CamundaRestResources.getResourceClasses());
     classes.addAll(CamundaRestResources.getConfigurationClasses());
-  
+
     return classes;
   }
 
@@ -83,7 +83,7 @@ public class RestProcessEngineProvider implements ProcessEngineProvider {
 }
 ```
 
-Add a file named: 
+Add a file named:
     `src/main/resources/META-INF/services/org.camunda.bpm.engine.rest.spi.ProcessEngineProvider`
 which contains the name of the provider:
     `org.camunda.bpm.example.loanapproval.rest.RestProcessEngineProvider`
@@ -128,7 +128,7 @@ Reference all required libraries in pom.xml:
 1. Build it with maven
 2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from http://camunda.org!!
 3. Access the REST Endpoint:
-[http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.4.0/engine/default/process-definition][1]
+[http://localhost:8080/camunda-quickstart-embedded-spring-rest-1.0-SNAPSHOT/engine/default/process-definition][1]
 
 
-[1]: http://localhost:8080/camunda-quickstart-embedded-spring-rest-7.4.0/engine/default/process-definition
+[1]: http://localhost:8080/camunda-quickstart-embedded-spring-rest-1.0-SNAPSHOT/engine/default/process-definition
