@@ -101,8 +101,8 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 | Name                                                                       | Keywords                  |
 | ---------------------------------------------------------------------------|---------------------------|
-| [Create Standalone Task - client side](https://github.com/camunda/camunda-bpm-webapp/tree/master/webapp/src/main/resources-plugin/standaloneTask/app)                    | Plugin                    |
-| [Create Standalone Task - server side](https://github.com/camunda/camunda-bpm-webapp/tree/master/webapp/src/main/java/org/camunda/bpm/tasklist/impl/plugin/standalonetask)                  | Plugin                    |
+| [Create Standalone Task - client side](https://github.com/camunda/camunda-bpm-webapp/tree/master/ui/tasklist/plugins/standaloneTask/app)| Plugin                    |
+| [Create Standalone Task - server side](https://github.com/camunda/camunda-bpm-webapp/blob/master/src/main/java/org/camunda/bpm/tasklist/impl/plugin)| Plugin                    |
 
 ### SDK-JS Examples
 
