@@ -16,9 +16,7 @@ import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.ProcessApplication;
 import org.camunda.bpm.application.impl.ServletProcessApplication;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.repository.ProcessDefinition;
 
 @ProcessApplication(name="Multi-Tenancy App")
 public class MultiTenancyProcessApplication extends ServletProcessApplication {
@@ -26,21 +24,19 @@ public class MultiTenancyProcessApplication extends ServletProcessApplication {
   @PostDeploy
   public void startProcessInstances(ProcessEngine processEngine) {
 
-    RepositoryService repositoryService = processEngine.getRepositoryService();
     RuntimeService runtimeService = processEngine.getRuntimeService();
 
-    // get the process definition from 'tenant1'
-    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().tenantIdIn("tenant1").singleResult();
-    if(processDefinition == null) {
-      throw new RuntimeException("no process definition for 'tenant1' found");
-    }
+    // start a process instance for 'tenant1'
+    runtimeService
+      .createProcessInstanceByKey("example-process")
+      .processDefinitionTenantId("tenant1")
+      .execute();
 
-    // and start a process instance by id
-    runtimeService.startProcessInstanceById(processDefinition.getId());
-
-    // next, start a process instance of the process definition from 'tenant2' using the key
-    // - note that this would fail if there is another deployed process definition from another tenant with the same key
-    runtimeService.startProcessInstanceByKey("tenant2-process");
+    // next, start a process instance for 'tenant2'
+    runtimeService
+      .createProcessInstanceByKey("example-process")
+      .processDefinitionTenantId("tenant2")
+      .execute();
   }
 
 }

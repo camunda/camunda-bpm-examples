@@ -21,7 +21,6 @@ import static org.mockito.Mockito.verify;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.repository.Deployment;
-import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.junit.After;
@@ -68,21 +67,23 @@ public class TenantIdentifierTest {
     // check that two process definitions are deployed
     assertThat(repositoryService.createProcessDefinitionQuery().count(), is(2L));
 
-    // get the process definition from 'tenant1'
-    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().tenantIdIn("tenant1").singleResult();
-    assertThat(processDefinition, is(notNullValue()));
-
-    // and start a process instance by id
-    runtimeService.startProcessInstanceById(processDefinition.getId());
+    // start a process instance for 'tenant1'
+    runtimeService
+      .createProcessInstanceByKey("process")
+      .processDefinitionTenantId("tenant1")
+      .execute();
 
     // check that the process instance have the same tenant-id
     ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().singleResult();
     assertThat(processInstance, is(notNullValue()));
     assertThat(processInstance.getTenantId(), is("tenant1"));
 
-    // next, start a process instance of the process definition from 'tenant2' using the key
-    // - note that this would fail if the process definition from 'tenant1' has the same key
-    runtimeService.startProcessInstanceByKey("tenant2-process");
+    // next, start a process instance for 'tenant2'
+    runtimeService
+      .createProcessInstanceByKey("process")
+      .processDefinitionTenantId("tenant2")
+      .execute();
+
     // check the tenant-id of the process instance
     processInstance = runtimeService.createProcessInstanceQuery().tenantIdIn("tenant2").singleResult();
     assertThat(processInstance, is(notNullValue()));
@@ -99,7 +100,8 @@ public class TenantIdentifierTest {
       .deploy();
 
     // start a process instance by key
-    runtimeService.startProcessInstanceByKey("tenant1-process");
+    // - note that this would fail if the process definition is also deployed for 'tenant2'
+    runtimeService.startProcessInstanceByKey("process");
 
     // check that the service was invoked for 'tenant1'
     verify(mockService).invoke("tenant1");

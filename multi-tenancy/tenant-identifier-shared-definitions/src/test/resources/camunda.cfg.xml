@@ -7,9 +7,6 @@
     <!-- set the custom tenant id provider -->
     <property name="tenantIdProvider" ref="tenantIdProvider" />
     
-    <!-- disable tenant check till it is CAM-5754 is implemented -->
-    <property name="tenantCheckEnabled" value="false" />
-    
   </bean>
  
   <!-- provides the tenant id of process instances --> 

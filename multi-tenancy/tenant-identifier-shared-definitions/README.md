@@ -19,24 +19,46 @@ Please refer to the [User Guide](http://docs.camunda.org/manual/develop/user-gui
 
 ### Provide Tenant Ids for Instances of Shared Process Definitions
 
-Implement the SPI `TenantIdProvider`. In this example, the tenant id is resolved based on the current authenticated user and a given mapping of users and tenants.
+Implement the SPI `TenantIdProvider`. In this example, the tenant-id is resolved based on the current authenticated tenant.
 
 ```java
 public class CustomTenantIdProvider implements TenantIdProvider {
 
-  protected TenantIdMapping tenantIdMapping = new TenantIdMapping();
-
   @Override
   public String provideTenantIdForProcessInstance(TenantIdProviderProcessInstanceContext ctx) {
+    return getTenantIdOfAuthenticatedUser();
+  }
+
+  @Override
+  public String provideTenantIdForCaseInstance(TenantIdProviderCaseInstanceContext ctx) {
+    return getTenantIdOfAuthenticatedUser();
+  }
+
+  @Override
+  public String provideTenantIdForHistoricDecisionInstance(TenantIdProviderHistoricDecisionInstanceContext ctx) {
+    return getTenantIdOfAuthenticatedUser();
+  }
+
+  protected String getTenantIdOfAuthenticatedUser() {
 
     IdentityService identityService = Context.getProcessEngineConfiguration().getIdentityService();
     Authentication currentAuthentication = identityService.getCurrentAuthentication();
 
     if (currentAuthentication != null) {
-      return tenantIdMapping.getTenantIdForUser(currentAuthentication.getUserId());
+
+      List<String> tenantIds = currentAuthentication.getTenantIds();
+      if (tenantIds.size() == 1) {
+        return tenantIds.get(0);
+
+      } else if (tenantIds.isEmpty()) {
+        throw new IllegalStateException("no authenticated tenant");
+
+      } else {
+        throw new IllegalStateException("more than one authenticated tenant");
+      }
 
     } else {
-      throw new IllegalStateException("no authenticated user");
+      throw new IllegalStateException("no authentication");
     }
   }
 
@@ -62,7 +84,7 @@ That's it!
 
 To verify the behavior you have to 
 * deploy the process definitions without a tenant id
-* set the authenticated user (which belongs to a tenant - see the given mapping)
+* set the authenticated tenant
 * create an instance of a shared process definition
 
 ```java
@@ -73,8 +95,8 @@ repositoryService
   .addClasspathResource("processes/default/subProcess.bpmn")
   .deploy();
 
-// login as 'john' (tenant id = 'tenant1') and start a process instance
-identityService.setAuthenticatedUserId("john");
+// set the authenticated tenant and start a process instance
+identityService.setAuthentication("john", null, Collections.singletonList("tenant1"));
 
 runtimeService.startProcessInstanceByKey("mainProcess");
 
@@ -142,7 +164,7 @@ public class CalledElementTenantIdProvider {
 To verify the behavior you have to 
 * deploy the default process definitions without a tenant id
 * deploy the sub-process definition for tenant ('tenant2')
-* set the authenticated user (which belongs to a tenant - see the given mapping)
+* set the authenticated tenant
 * create an instance of a shared process definition
 * and checks if it calls the default or the tenant specific sub-process
 
@@ -161,8 +183,8 @@ repositoryService
   .addClasspathResource("processes/tenant2/subProcess.bpmn")
   .deploy();
 
-// login as 'mary' (tenant id = 'tenant2') and start a new process instance
-identityService.setAuthenticatedUserId("mary");
+// set the authenticated tenant and start a process instance
+identityService.setAuthentication("mary", null, Collections.singletonList("tenant2"));
 
 runtimeService.startProcessInstanceByKey("mainProcess");
 

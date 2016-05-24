@@ -15,6 +15,8 @@ package org.camunda.bpm.tutorial.multitenancy;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Collections;
+
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
@@ -55,8 +57,8 @@ public class MultiTenancySharedProcessDefinitionTest {
       .addClasspathResource("processes/default/subProcess.bpmn")
       .deploy();
 
-    // login as 'john' (tenant id = 'tenant1') and start a process instance
-    identityService.setAuthenticatedUserId("john");
+    // set the authenticated tenant and start a process instance
+    identityService.setAuthentication("john", null, Collections.singletonList("tenant1"));
 
     runtimeService.startProcessInstanceByKey("mainProcess");
 
@@ -85,8 +87,8 @@ public class MultiTenancySharedProcessDefinitionTest {
       .addClasspathResource("processes/tenant2/subProcess.bpmn")
       .deploy();
 
-    // login as 'mary' (tenant id = 'tenant2') and start a new process instance
-    identityService.setAuthenticatedUserId("mary");
+    // set the authenticated tenant and start a process instance
+    identityService.setAuthentication("mary", null, Collections.singletonList("tenant2"));
 
     runtimeService.startProcessInstanceByKey("mainProcess");
 

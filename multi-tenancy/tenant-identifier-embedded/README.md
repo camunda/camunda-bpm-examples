@@ -21,10 +21,10 @@ Using the `RepositoryService` to create a deployment for a specific tenant.
 ``` java
 // deploy process definition for 'tenant1'
 repositoryService
-      .createDeployment()
-      .tenantId("tenant1")
-      .addClasspathResource("processes/tenant1/tenant1_process.bpmn")
-      .deploy();
+  .createDeployment()
+  .tenantId("tenant1")
+  .addClasspathResource("processes/tenant1/tenant1_process.bpmn")
+  .deploy();
 ```
 
 ### Start a Process Instance from a Tenant Specific Process Definition
@@ -32,20 +32,10 @@ repositoryService
 Using the `RuntimeService` to start a process instance of a process definition which is deployed for a specific tenant.
 
 ``` java
-// get the process definition from 'tenant1'
-ProcessDefinition processDefinition = repositoryService
-  .createProcessDefinitionQuery()
-  .tenantIdIn("tenant1")
-  .singleResult();
-
-// start a process instance by id
-runtimeService.startProcessInstanceById(processDefinition.getId());
-```
-
-If no other tenant has a process definition with this key then you can also start the process instance by key.
-
-``` java
-runtimeService.startProcessInstanceByKey("tenant1-process");
+runtimeService
+  .createProcessInstanceByKey("process")
+  .processDefinitionTenantId("tenant1")
+  .execute();
 ```
 
 After starting a process instance, you can find it by their tenant-id which is inherit from the process definition.

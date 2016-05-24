@@ -12,6 +12,8 @@
  */
 package org.camunda.bpm.tutorial.multitenancy;
 
+import java.util.List;
+
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.impl.cfg.multitenancy.TenantIdProvider;
 import org.camunda.bpm.engine.impl.cfg.multitenancy.TenantIdProviderCaseInstanceContext;
@@ -21,34 +23,46 @@ import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.identity.Authentication;
 
 /**
- * Provides the tenant id based on the current authenticated user.
+ * Provides the tenant-id based on the current authenticated tenant.
  */
 public class CustomTenantIdProvider implements TenantIdProvider {
 
-  protected TenantIdMapping tenantIdMapping = new TenantIdMapping();
-
   @Override
   public String provideTenantIdForProcessInstance(TenantIdProviderProcessInstanceContext ctx) {
+    return getTenantIdOfAuthenticatedUser();
+  }
+
+  @Override
+  public String provideTenantIdForCaseInstance(TenantIdProviderCaseInstanceContext ctx) {
+    return getTenantIdOfAuthenticatedUser();
+  }
+
+  @Override
+  public String provideTenantIdForHistoricDecisionInstance(TenantIdProviderHistoricDecisionInstanceContext ctx) {
+    return getTenantIdOfAuthenticatedUser();
+  }
+
+  protected String getTenantIdOfAuthenticatedUser() {
 
     IdentityService identityService = Context.getProcessEngineConfiguration().getIdentityService();
     Authentication currentAuthentication = identityService.getCurrentAuthentication();
 
     if (currentAuthentication != null) {
-      return tenantIdMapping.getTenantIdForUser(currentAuthentication.getUserId());
+
+      List<String> tenantIds = currentAuthentication.getTenantIds();
+      if (tenantIds.size() == 1) {
+        return tenantIds.get(0);
+
+      } else if (tenantIds.isEmpty()) {
+        throw new IllegalStateException("no authenticated tenant");
+
+      } else {
+        throw new IllegalStateException("more than one authenticated tenant");
+      }
 
     } else {
-      throw new IllegalStateException("no authenticated user");
+      throw new IllegalStateException("no authentication");
     }
-  }
-
-  @Override
-  public String provideTenantIdForCaseInstance(TenantIdProviderCaseInstanceContext ctx) {
-    return null;
-  }
-
-  @Override
-  public String provideTenantIdForHistoricDecisionInstance(TenantIdProviderHistoricDecisionInstanceContext ctx) {
-    return null;
   }
 
 }

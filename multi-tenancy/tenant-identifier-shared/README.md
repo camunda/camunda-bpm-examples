@@ -4,7 +4,8 @@ This example demonstrates how to use multi-tenancy for a shared process engine. 
 
 * How to deploy a process definition with a tenant-id,
 * How to start a process instance from a process definition with a tenant-id,
-* How to implement a service task which uses the tenant-id from the process instance
+* How to implement a service task which uses the tenant-id from the process instance,
+* How to use multi-tenancy with Camunda Web Applications
 
 The example process for the tenants looks like:
 
@@ -60,17 +61,17 @@ public class MultiTenancyProcessApplication extends ServletProcessApplication {
     RepositoryService repositoryService = processEngine.getRepositoryService();
     RuntimeService runtimeService = processEngine.getRuntimeService();
 
-    // get the process definition from 'tenant1'
-    ProcessDefinition processDefinition = repositoryService
-      .createProcessDefinitionQuery()
-      .tenantIdIn("tenant1")
-      .singleResult();
-    // and start a process instance by id
-    runtimeService.startProcessInstanceById(processDefinition.getId());
+    // start a process instance for 'tenant1'
+    runtimeService
+      .createProcessInstanceByKey("example-process")
+      .processDefinitionTenantId("tenant1")
+      .execute();
 
-    // next, start a process instance of the process definition from 'tenant2' using the key
-    // - note that this would fail if there is another deployed process definition from another tenant with the same key
-    runtimeService.startProcessInstanceByKey("tenant2-process");
+    // next, start a process instance for 'tenant2'
+    runtimeService
+      .createProcessInstanceByKey("example-process")
+      .processDefinitionTenantId("tenant2")
+      .execute();
   }
 }
 ```
@@ -101,3 +102,15 @@ public class TenantAwareServiceTask implements JavaDelegate {
 5. Check the console or the log file if you can find: 
 `TenantAwareServiceTask.execute invoked for tenant with id: tenant1` and
 `TenantAwareServiceTask.execute invoked for tenant with id: tenant2`
+
+### Check the Result in Camunda Web Applications
+
+1. Open your browser and go to `http://localhost:8080/camunda/app/cockpit`
+2. Log in with `demo` / `demo` as member of group `camunda-admin`
+3. Check that you see two deployed process definitions with key `example-process` - one for each tenant
+4. Switch to Admin and create a new user
+5. Go to tenant section and create a new tenant with id `tenant1`
+6. Select the user and add him to the tenant `tenant1`
+7. Make sure that the user has the permissions to read process definitions and access Cockpit Web Application
+8. Switch to Cockpit and log in with the new user
+9. Check that the user see only one deployed process definition with key `example-process`

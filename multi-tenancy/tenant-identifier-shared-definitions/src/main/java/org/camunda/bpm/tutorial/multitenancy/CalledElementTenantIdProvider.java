@@ -18,7 +18,7 @@ import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.model.bpmn.instance.CallActivity;
 
 /**
- * Provides the tenant id of a called process definition. Can be used if shared
+ * Provides the tenant-id of a called process definition. Can be used if shared
  * process definitions can be overridden by tenant specific ones.
  */
 public class CalledElementTenantIdProvider {
@@ -33,8 +33,12 @@ public class CalledElementTenantIdProvider {
     String processDefinitionKey = callActivity.getCalledElement();
 
     // and check if a process definition is deployed for the tenant
-    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey(processDefinitionKey).tenantIdIn(tenantId)
-        .latestVersion().singleResult();
+    ProcessDefinition processDefinition = repositoryService
+        .createProcessDefinitionQuery()
+        .processDefinitionKey(processDefinitionKey)
+        .tenantIdIn(tenantId)
+        .latestVersion()
+        .singleResult();
 
     if (processDefinition != null) {
       // use tenant-specific process definition
