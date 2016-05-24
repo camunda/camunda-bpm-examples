@@ -106,7 +106,7 @@ public class ParseBpmnTest {
     assertThat(serviceTask.getName()).isEqualTo("Service Task");
     // you can also access camunda extension attributes
     assertThat(serviceTask.getCamundaExpression()).isEqualTo("${execution.setVariable('foo', 'bar')}");
-    assertThat(serviceTask.isCamundaAsync()).isTrue();
+    assertThat(serviceTask.isCamundaAsyncBefore()).isTrue();
     assertThat(serviceTask.isCamundaExclusive()).isFalse();
 
     UserTask userTaskA = modelInstance.getModelElementById("userTaskA");
