@@ -59,7 +59,7 @@ The class [CustomCmmn][custom-cmmn] represents an extended CMMN model palette. I
 
 ### Implementing a CMMN transform listener
 
-A CMMN transform listener is the CMMN equivalent to a BPMN parse listener. That means, a listener can be registered that receives a notification for every parsed CMMN model element when a CMMN case is deployed to the process engine. The class [KPITransformListener][kpi-transform-listener] implements the interface [org.camunda.bpm.engine.impl.cmmn.transformer.CmmnTransformListener][cmmn-transform-listener]. The process engine plugin [CustomElementsProcessEnginePlugin][process-engine-plugin] registers the the transform listener with the process engine. The plugin itself is declared in the process engine configuration, here [camunda.cfg.xml][camunda-cfg-xml].
+A CMMN transform listener is the CMMN equivalent to a BPMN parse listener. That means, a listener can be registered that receives a notification for every parsed CMMN model element when a CMMN case is deployed to the process engine. The class [KPITransformListener][kpi-transform-listener] implements the interface [org.camunda.bpm.engine.impl.cmmn.transformer.CmmnTransformListener][cmmn-transform-listener]. The process engine plugin [CustomElementsProcessEnginePlugin][process-engine-plugin] registers the transform listener with the process engine. The plugin itself is declared in the process engine configuration, here [camunda.cfg.xml][camunda-cfg-xml].
 
 ### Accessing Custom Typed Elements from a CMMN model instance
 
