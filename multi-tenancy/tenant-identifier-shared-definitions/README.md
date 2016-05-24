@@ -26,20 +26,20 @@ public class CustomTenantIdProvider implements TenantIdProvider {
 
   @Override
   public String provideTenantIdForProcessInstance(TenantIdProviderProcessInstanceContext ctx) {
-    return getTenantIdOfAuthenticatedUser();
+    return getTenantIdOfCurrentAuthentication();
   }
 
   @Override
   public String provideTenantIdForCaseInstance(TenantIdProviderCaseInstanceContext ctx) {
-    return getTenantIdOfAuthenticatedUser();
+    return getTenantIdOfCurrentAuthentication();
   }
 
   @Override
   public String provideTenantIdForHistoricDecisionInstance(TenantIdProviderHistoricDecisionInstanceContext ctx) {
-    return getTenantIdOfAuthenticatedUser();
+    return getTenantIdOfCurrentAuthentication();
   }
 
-  protected String getTenantIdOfAuthenticatedUser() {
+  protected String getTenantIdOfCurrentAuthentication() {
 
     IdentityService identityService = Context.getProcessEngineConfiguration().getIdentityService();
     Authentication currentAuthentication = identityService.getCurrentAuthentication();
