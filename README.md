@@ -50,6 +50,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [User Task Assignment Email](/usertask/task-assignment-email) *            | All                  | Email, Usertask           |
 | [User Task Form Embedded](/usertask/task-form-embedded) *                  | All                  | Html, Form, Usertask      |
 | [User Task Form Embedded - Serialized Java Object](/usertask/task-form-embedded-serialized-java-object) *                  | All                  | Html, Form, Usertask      |
+| [User Task Form Embedded - JSON](/usertask/task-form-embedded-json) *      | All                  | Html, Form, Usertask      |
 | [User Task Form Generated](/usertask/task-form-generated) *                | All                  | Html, Form, Usertask      |
 | [User Task Form JSF](/usertask/task-form-external-jsf) *                   | JavaEE Containers    | JSF, Form, Usertask       |
 | [Script Task XSLT](/scripttask/xslt-scripttask)                            | Unit Test            | XSLT Scripttask           |
