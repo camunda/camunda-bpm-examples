@@ -45,7 +45,7 @@ public class ProcessIntegrationTest {
     File[] libs = Maven.resolver()
       .offline(false)
       .loadPomFromFile("pom.xml")
-      .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
+      .importCompileAndRuntimeDependencies().resolve().withoutTransitivity().asFile();
 
     return ShrinkWrap
       .create(WebArchive.class, "multi-tenancy-tutorial.war")

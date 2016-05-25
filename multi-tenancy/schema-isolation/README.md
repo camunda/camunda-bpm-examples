@@ -15,4 +15,3 @@ Follow the steps to run the test:
 * start the server using the script `camunda-bpm-jboss-{version}/start-camunda.bat`
 * go to project directory and run the test with the Maven command `mvn test` 
 
-In order to run the test with [Camunda BPM Wildlfy distribution](https://camunda.org/download/), you have to execute the Maven command `mvn test -P wildfly-remote`.
