@@ -1,5 +1,3 @@
-> Note: This Example is not working at the moment. The called SOAP service *Get Weather Forecast* returns *<string>Data Not Found</string>*
-
 # SOAP Service Task
 
 This quickstart demonstrates how to use the built-in SOAP HTTP connector for invoking SOAP services in camunda BPM. The example is *classless*, relying entirely on scripting and expression language. It makes use of the camunda Connect and the camunda Spin extensions.
