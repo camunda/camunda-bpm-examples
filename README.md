@@ -8,6 +8,7 @@ Camunda BPM examples is a collection of focused usage examples for the [camunda 
 | Camunda Version  | Link                                                                | Checkout command      |
 | -----------------|---------------------------------------------------------------------|-----------------------|
 | Latest           | [Master branch](https://github.com/camunda/camunda-bpm-examples)    | `git checkout master` |
+| 7.5              | [7.5 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.5) | `git checkout 7.5`    |
 | 7.4              | [7.4 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.4) | `git checkout 7.4`    |
 | 7.3              | [7.3 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.3) | `git checkout 7.3`    |
 | 7.2              | [7.2 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.2) | `git checkout 7.2`    |
