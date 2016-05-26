@@ -30,6 +30,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [Multi-Tenancy](#multi-tenancy-examples)
 * [Spin](#spin-examples)
 * [DMN](#dmn-examples)
+* [Process Instance Migration](#process-instance-migration-examples)
 
 ### Getting Started with camunda BPM
 
@@ -154,6 +155,14 @@ If you clone this repository, use the checkout commands to access the sources fo
 | Name                                                                                       | Container | Keywords                |
 | -------------------------------------------------------------------------------------------|-----------|-------------------------|
 | [Embed Decision Engine - Dish Decision Maker](dmn-engine/dmn-engine-java-main-method)      | Jar       | DMN, Embed              |
+
+
+### Process Instance Migration Examples
+
+| Name                                                                                         | Container                             | Keywords                |
+| ---------------------------------------------------------------------------------------------|---------------------------------------|-------------------------|
+| [Migration on Deployment of New Process Version](migration/migrate-on-deployment)            | Application Server with Shared Engine | BPMN, Migration         |
+
 
 
 ### Contribute!
