@@ -148,7 +148,8 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 | Name                                                                                       | Container                                  | Keywords                |
 | -------------------------------------------------------------------------------------------|--------------------------------------------|-------------------------|
-| [Data Format Configuration to Customize JSON serialization](spin/dataformat-configuration) | Unit Test / Glassfish, WebLogic, Websphere | Spin, Process Variables |
+| [Global Data Format Configuration to Customize JSON serialization](spin/dataformat-configuration-global) | Unit Test  | Spin, Configuration |
+| [Process-Application-Specific Data Format Configuration to Customize JSON serialization](spin/dataformat-configuration-in-process-application) | Application Server | Spin, Configuration, Shared Engine |
 
 ### DMN Examples
 

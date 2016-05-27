@@ -14,26 +14,22 @@ package org.camunda.bpm.example.spin.dataformat.configuration;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 
 /**
- * Jackson-specific class for serialization of {@link Money} objects.
+ * Jackson-specific class for deserialization of {@link Money} objects.
  *
  * @author Thorben Lindhauer
  */
-public class MoneyJsonSerializer extends StdSerializer<Money> {
-
-  public MoneyJsonSerializer() {
-    super(Money.class);
-  }
+public class MoneyJsonDeserializer extends JsonDeserializer<Money> {
 
   @Override
-  public void serialize(Money money, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonGenerationException {
-    jgen.writeNumber(money.getAmount());
-
+  public Money deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+    int price = parser.getIntValue();
+    return new Money(price);
   }
 
 }
