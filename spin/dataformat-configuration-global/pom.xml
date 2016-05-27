@@ -4,10 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.camunda.bpm.example</groupId>
-  <artifactId>camunda-example-spin-dataformat-configuration</artifactId>
+  <artifactId>camunda-example-spin-dataformat-configuration-global</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>Spin - Configuring a Data Format</name>
+  <packaging>jar</packaging>
+  <name>Spin - Configuring a Data Format Globally</name>
 
   <properties>
     <version.camunda>7.5.0</version.camunda>
@@ -44,22 +44,6 @@
     <dependency>
       <groupId>org.camunda.spin</groupId>
       <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-cdi</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.camunda.bpm.javaee</groupId>
-      <artifactId>camunda-ejb-client</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>6.0</version>
       <scope>provided</scope>
     </dependency>
 

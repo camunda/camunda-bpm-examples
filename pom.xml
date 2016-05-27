@@ -34,7 +34,8 @@
     <module>servicetask/rest-service</module>
     <module>servicetask/soap-service</module>
     <module>servicetask/soap-cxf-service</module>
-    <module>spin/dataformat-configuration</module>
+    <module>spin/dataformat-configuration-global</module>
+    <module>spin/dataformat-configuration-in-process-application</module>
     <module>startevent/message-start</module>
     <module>usertask/task-form-embedded</module>
     <module>usertask/task-form-embedded-serialized-java-object</module>
