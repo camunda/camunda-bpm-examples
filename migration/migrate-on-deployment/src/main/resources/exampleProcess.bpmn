@@ -19,7 +19,7 @@
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="201" y="240" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="_BPMNShape_StartEvent_2" targetElement="_BPMNShape_ServiceTask_2">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="_BPMNShape_StartEvent_2">
         <di:waypoint xsi:type="dc:Point" x="237" y="258" />
         <di:waypoint xsi:type="dc:Point" x="287" y="258" />
       </bpmndi:BPMNEdge>
@@ -29,7 +29,7 @@
           <dc:Bounds x="410" y="276" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_ServiceTask_2" targetElement="_BPMNShape_EndEvent_2">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" targetElement="_BPMNShape_EndEvent_2">
         <di:waypoint xsi:type="dc:Point" x="387" y="258" />
         <di:waypoint xsi:type="dc:Point" x="437" y="258" />
       </bpmndi:BPMNEdge>
