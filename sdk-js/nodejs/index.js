@@ -9,7 +9,7 @@ var Table = require('cli-table');
 var fs = require('fs');
 var path = require('path');
 
-var deployDir;
+var deployDir = __dirname + '/bpmn';
 
 function notEmpty(input) {
   return !!input;
@@ -168,7 +168,7 @@ function listProcessInstances() {
 
     // collect the relevant process definitions in a array (suitable for CamSDK.utils.series())
     var processDefinitionRequests = {};
-    instances.items.forEach(function (instance) {
+    instances.forEach(function (instance) {
       if (!processDefinitionRequests[instance.definitionId]) {
         processDefinitionRequests[instance.definitionId] = function (cb) {
           processDefinitionService.get(instance.definitionId, cb);
@@ -195,7 +195,7 @@ function listProcessInstances() {
         ]
       });
 
-      instances.items.forEach(function (instance) {
+      instances.forEach(function (instance) {
         var definition = definitions[instance.definitionId];
         table.push([
           instance.id,
@@ -263,9 +263,9 @@ function listTasksByFilter() {
 
         taskResults._embedded.task.forEach(function (task) {
           table.push([
-            task.id,
-            task._embedded.processDefinition[0].name,
-            task.name
+            task.id || '',
+            task._embedded.processDefinition[0].name || '',
+            task.name || ''
           ]);
         });
 
