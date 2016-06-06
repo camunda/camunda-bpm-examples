@@ -57,19 +57,19 @@ a:focus {
 }
 
 
-.control-group {
+.form-group {
   overflow: visible;
   padding: 1em 0;
   margin-bottom: 1em;
 }
 
 .control-label,
-.controls {
+.form-control {
   float: left;
 }
 
 .control-label,
-.controls input{
+.form-control input{
   vertical-align: middle;
   line-height: 2em;
 }
@@ -79,11 +79,11 @@ a:focus {
   width: 33%;
   padding: 0 1em 0 0;
 }
-.controls {
+.form-control {
   width: 66%;
   padding: 0 0 0 1em;
 }
 
-.controls input[type="text"]{
+.form-control input[type="text"]{
   width: 100%;
 }
