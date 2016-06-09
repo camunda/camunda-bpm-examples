@@ -70,6 +70,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Process Application - Spring Servlet](deployment/spring-servlet-pa-jboss) | JBoss AS 7           | Spring, Servlet, War      |
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)      | vanilla Apache Tomcat | Spring, Rest, Embedded   |
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)   | JBoss AS 7           | Spring, Jndi, War         |
+| [Process Application - Spring Boot](deployment/spring-boot)                | Spring Boot          | Spring                    |
 
 
 ### Process Engine Plugin Examples

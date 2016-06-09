@@ -10,7 +10,6 @@ The example process looks like:
 
 ![Example Process](docs/loanRequest.png)
 
-It contains a service task that invokes a spring bean.
 
 ## How to use it?
 
@@ -18,7 +17,7 @@ It contains a service task that invokes a spring bean.
 2. Import the project into your IDE
 3. Build it with Maven `clean install`
 4. Execute the JAR `java -jar target/camunda-spring-boot-example-1.0.0-SNAPSHOT.jar`
-5. Check the console or the log file if you can find the line `calculating interest`
+5. Check the console if you can find the line `calculating interest`
 
 ### Run it as JUnit Test  
 
@@ -35,30 +34,34 @@ Note that you can generate your project skeleton using the [Spring Initializr](h
 Create a basic `pom.xml` for your project and add the following dependencies for the process engine and Spring Boot.
 
 ```xml
-<!-- spring boot -->
-<dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-jdbc</artifactId>
-</dependency>
+<dependencies>
 
-<!-- camunda -->
-<dependency>
-  <groupId>org.camunda.bpm</groupId>
-  <artifactId>camunda-engine-spring</artifactId>
-</dependency>
+  <!-- spring boot -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jdbc</artifactId>
+  </dependency>
+  
+  <!-- camunda -->
+  <dependency>
+    <groupId>org.camunda.bpm</groupId>
+    <artifactId>camunda-engine-spring</artifactId>
+  </dependency>
+  
+  <!-- database (e.g. h2) -->
+  <dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+  </dependency>
+  
+  <!-- test (e.g. spring-test, junit, mockito etc.) -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+  </dependency>
 
-<!-- database (e.g. h2) -->
-<dependency>
-  <groupId>com.h2database</groupId>
-  <artifactId>h2</artifactId>
-</dependency>
-
-<!-- test (e.g. spring-test, junit, mockito etc.) -->
-<dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-test</artifactId>
-  <scope>test</scope>
-</dependency>
+</dependencies>
 ```
 
 Also add the following Spring Boot plugin to build the JAR.
@@ -76,7 +79,7 @@ Also add the following Spring Boot plugin to build the JAR.
 
 ### Configure the Process Engine
 
-Create the following Java Config to bootstrap and configure the process engine.
+Create the following Java Config class to bootstrap and configure the process engine.
 
 ``` java
 @Configuration
@@ -166,9 +169,9 @@ camunda.bpm.history-level=audit
 
 Note that you can add even more configuration (e.g. for logging).
 
-### Application Class
+### Create an Application Class
 
-Create the application class which is annotated with `SpringBootApplication` and implement the main method.
+Create an application class which is annotated with `SpringBootApplication` and implement the main method as follow:
 
 ``` java
 @SpringBootApplication

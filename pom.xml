@@ -18,6 +18,7 @@
     <module>deployment/spring-jboss-non-pa</module>
     <module>deployment/embedded-spring-rest</module>
     <module>deployment/ejb-pa</module>
+    <module>deployment/spring-boot</module>
 <!--     <module>modeler/custom-task-simple</module> -->
 <!--     <module>modeler/custom-task-advanced</module> -->
     <module>multi-tenancy/schema-isolation</module>
@@ -44,7 +45,6 @@
     <module>usertask/task-form-embedded-json</module>
     <module>usertask/task-form-external-jsf</module>
     <module>dmn-engine/dmn-engine-java-main-method</module>
-    <module>spring/camunda-spring-boot-example</module>
   </modules>
 
 </project>
