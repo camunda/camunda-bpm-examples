@@ -101,6 +101,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | ---------------------------------------------------------------------------|---------------------------|
 | [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin                    |
 | [Failed Jobs Plugin](/cockpit/cockpit-failed-jobs-plugin)                  | Plugin                    |
+| [Javascript Only Plugin](/cockpit/js-only-plugin)                          | Plugin, Custom Script     |
 
 ### Tasklist Examples
 
