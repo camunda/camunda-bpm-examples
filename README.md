@@ -58,6 +58,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Script Task XSLT](/scripttask/xslt-scripttask)                            | Unit Test            | XSLT Scripttask           |
 | [Script Task XQuery](/scripttask/xquery-scripttask)                        | Unit Test            | XQuery Scripttask         |
 | [Start Event - Message](/startevent/message-start)                         | Unit Test            | Message Start Event       |
+| [Start Process - SOAP CXF](/startevent/soap-cxf-server-start)              | Unit Test            | SOAP, CXF, Spring         |
 
 (\*) _complete demo applications_.
 

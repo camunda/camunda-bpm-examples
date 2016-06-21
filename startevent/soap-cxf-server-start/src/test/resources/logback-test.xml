@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+
+  <!-- *************************************************************************************************** -->
+  <!-- *** FILE *** -->
+  <!-- *************************************************************************************************** -->
+  <appender name="fileAppender"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>soap-cxf-server-start.log</File>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- daily rollover -->
+      <FileNamePattern>soap-cxf-server-start.%d{yyyy-MM-dd}.log
+      </FileNamePattern>
+
+      <!-- keep 30 days' worth of history -->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+
+    <encoder>
+      <Pattern>%d{ISO8601} %m%n</Pattern>
+    </encoder>
+  </appender>
+
+  <!-- *************************************************************************************************** -->
+  <!-- *** CONSOLE *** -->
+  <!-- *************************************************************************************************** -->
+
+  <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+      </Pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
+  </appender>
+
+  <logger name="com.camunda.bpm.example.spring" additivity="false">
+    <level value="DEBUG" />
+    <appender-ref ref="consoleAppender" />
+    <appender-ref ref="fileAppender" />
+  </logger>
+
+  <root>
+    <level value="INFO" />
+    <appender-ref ref="consoleAppender" />
+    <appender-ref ref="fileAppender" />
+  </root>
+
+</configuration>

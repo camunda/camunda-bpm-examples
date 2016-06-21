@@ -1,0 +1,81 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns="http://www.springframework.org/schema/beans"
+  xmlns:cxf="http://cxf.apache.org/core" xmlns:security="http://www.springframework.org/schema/security"
+  xsi:schemaLocation="
+		http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.1.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		
+		">
+
+  <context:property-placeholder
+    location="classpath:properties/service.properties,classpath:properties/secrets.properties"
+    ignore-unresolvable="false" />
+
+  <context:component-scan base-package="com.camunda.bpm.example.spring.soap.start" />
+
+  <import resource="classpath:META-INF/cxf/cxf.xml" />
+  <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+  <!-- security -->
+  <bean id="bankHeaderInterceptor"
+    class="com.camunda.bpm.example.spring.soap.start.security.BankHeaderInterceptor">
+    <property name="secret" value="${secret}" />
+  </bean>
+
+  <bean id="authenticationFailedEntryPoint"
+    class="com.camunda.bpm.example.spring.soap.start.security.AuthenticationFailedEntryPoint">
+    <property name="realmName" value="example" />
+  </bean>
+
+  <security:http create-session="never" auto-config="true"
+    use-expressions="true">
+    <security:intercept-url pattern="/**"
+      access='hasRole("ROLE_WS")' />
+    <security:http-basic entry-point-ref="authenticationFailedEntryPoint" />
+  </security:http>
+
+  <security:authentication-manager>
+    <security:authentication-provider>
+      <security:user-service id="userDetailsService"
+        properties="classpath:properties/users.properties" />
+    </security:authentication-provider>
+  </security:authentication-manager>
+
+  <!-- SOAP service -->
+
+  <bean id="bankAccountServiceBean"
+    class="com.camunda.bpm.example.spring.soap.start.BankAccountService" />
+
+  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor" id="logInInterceptor">
+    <property name="prettyLogging" value="true" />
+  </bean>
+
+  <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"
+    id="logOutInterceptor">
+    <property name="prettyLogging" value="true" />
+  </bean>
+
+  <jaxws:endpoint id="bankAccountService" implementor="#bankAccountServiceBean"
+    address="${bankaccount.service.server}" wsdlLocation="classpath:wsdl/BankAccountService.wsdl"
+    serviceName="s:BankAccountService" xmlns:s="http://start.soap.spring.example.bpm.camunda.com/v1"
+    endpointName="s:BankAccountServicePort">
+
+    <jaxws:inInterceptors>
+      <ref bean="logInInterceptor" />
+      <ref bean="bankHeaderInterceptor" />
+    </jaxws:inInterceptors>
+    <jaxws:outInterceptors>
+      <ref bean="logOutInterceptor" />
+    </jaxws:outInterceptors>
+
+  </jaxws:endpoint>
+
+</beans>

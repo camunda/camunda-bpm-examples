@@ -38,6 +38,7 @@
     <module>spin/dataformat-configuration-global</module>
     <module>spin/dataformat-configuration-in-process-application</module>
     <module>startevent/message-start</module>
+    <module>startevent/soap-cxf-server-start</module>
     <module>usertask/task-form-embedded</module>
     <module>usertask/task-form-embedded-serialized-java-object</module>
     <module>usertask/task-form-generated</module>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://start.soap.spring.example.bpm.camunda.com/v1"
+  xmlns:tns="http://start.soap.spring.example.bpm.camunda.com/v1"
+  elementFormDefault="qualified">
+
+  <annotation>
+    <documentation>Example of web service.</documentation>
+  </annotation>
+
+  <element name="setAccountNameRequest">
+    <complexType>
+      <sequence>
+        <element name="accountNumber" type="string">
+          <annotation>
+            <documentation>Account number.</documentation>
+          </annotation>
+        </element>
+        <element name="accountName" type="string">
+          <annotation>
+            <documentation>Account name to set.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+
+  <element name="setAccountNameResponse">
+    <complexType>
+      <sequence>
+        <element name="status" type="tns:statusType">
+          <annotation>
+            <documentation>Response status.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+
+  <element name="invalidValueException">
+    <annotation>
+      <documentation>Invalid value.</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="name" type="string">
+          <annotation>
+            <documentation>Name of offending field.</documentation>
+          </annotation>
+        </element>
+        <element name="message" type="string" />
+      </sequence>
+    </complexType>
+  </element>
+
+  <element name="bankRequestHeader">
+    <complexType>
+      <sequence>
+        <element name="secret" type="string">
+          <annotation>
+            <documentation>Secret token.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+
+  <simpleType name="statusType">
+    <annotation>
+      <documentation>Request status.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="success">
+        <annotation>
+          <documentation>Name was successfully set.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="failure">
+        <annotation>
+          <documentation>Failed to set name.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+
+</schema>

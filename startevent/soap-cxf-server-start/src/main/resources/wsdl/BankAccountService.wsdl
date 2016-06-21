@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="LoggerService"
+  targetNamespace="http://start.soap.spring.example.bpm.camunda.com/v1"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:e="http://start.soap.spring.example.bpm.camunda.com/v1"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import namespace="http://start.soap.spring.example.bpm.camunda.com/v1"
+        schemaLocation="BankAccountService.xsd" />
+    </xsd:schema>
+  </wsdl:types>
+
+  <!-- Messages -->
+
+  <wsdl:message name="setAccountNameRequest">
+    <wsdl:part name="setAccountNameRequest" element="e:setAccountNameRequest" />
+  </wsdl:message>
+  <wsdl:message name="setAccountNameResponse">
+    <wsdl:part name="setAccountNameResponse" element="e:setAccountNameResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="invalidValueException">
+    <wsdl:part name="invalidValueException" element="e:invalidValueException" />
+  </wsdl:message>
+
+  <wsdl:message name="bankRequestHeader">
+    <wsdl:part name="bankRequestHeader" element="e:bankRequestHeader" />
+  </wsdl:message>
+
+  <!-- Port types -->
+
+  <wsdl:portType name="BankAccountServicePortType">
+    <wsdl:operation name="setAccountName">
+      <wsdl:input message="e:setAccountNameRequest" />
+      <wsdl:output message="e:setAccountNameResponse" />
+      <wsdl:fault name="invalidValueException" message="e:invalidValueException" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <!-- Bindings -->
+
+  <wsdl:binding name="BankAccountServiceBinding" type="e:BankAccountServicePortType">
+    <soap:binding style="document"
+      transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="setAccountName">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header use="literal" part="bankRequestHeader"
+          message="e:bankRequestHeader" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="invalidValueException">
+        <soap:fault name="invalidValueException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <!-- Services -->
+
+  <wsdl:service name="BankAccountService">
+    <wsdl:port name="BankAccountServicePort" binding="e:BankAccountServiceBinding">
+      <soap:address location="http://localhost:50000/services/bankAccount" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
