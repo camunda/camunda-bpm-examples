@@ -1,7 +1,7 @@
-# Camunda Dmn Engine in a Java Main Method
+# Decision Requirements Diagram (DRD) Example
 
 This example demonstrates how to use the [Camunda DMN engine] as library
-in a custom application. The DMN Engine is added to the example as a Maven dependency.
+in a custom application to evaluate DRD. The DMN Engine is added to the example as a Maven dependency.
 The example contains a Java class with a Main Method in which the DMN Engine is bootstraped and
 used to execute a decision loaded from the classpath.
 
@@ -200,8 +200,7 @@ Dish Decision:
 [Camunda DMN engine]: https://docs.camunda.org/manual/user-guide/dmn-engine/
 [DRD reference]: http://stage.docs.camunda.org/manual/develop/reference/dmn11/drd/
 [Dish Decision]: src/main/resources/org/camunda/bpm/example/drd/dish-decision.png
-[dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/dish-decision.dmn11.xml
-[Camunda Modeler]: https://camunda.org/dmn/tool/
-[DishDecider.java]: src/main/java/org/camunda/bpm/example/DishDecider.java
+[dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/drd/dish-decision.dmn11.xml
+[DishDecider.java]: src/main/java/org/camunda/bpm/example/drd/DishDecider.java
 [User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
-[DishDecisionTest.java]: src/test/java/org/camunda/bpm/example/DishDecisionTest.java
+[DrdDecisionDishTest.java]: src/test/java/org/camunda/bpm/example/drd/DrdDecisionDishTest.java
