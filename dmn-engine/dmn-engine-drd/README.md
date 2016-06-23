@@ -200,7 +200,7 @@ Dish Decision:
 [Camunda DMN engine]: https://docs.camunda.org/manual/user-guide/dmn-engine/
 [DRD reference]: http://stage.docs.camunda.org/manual/develop/reference/dmn11/drd/
 [Dish Decision]: src/main/resources/org/camunda/bpm/example/drd/dish-decision.png
-[dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/drd/dish-decision.dmn11.xml
+[drd-dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/drd/drd-dish-decision.dmn11.xml
 [DishDecider.java]: src/main/java/org/camunda/bpm/example/drd/DishDecider.java
 [User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
 [DrdDecisionDishTest.java]: src/test/java/org/camunda/bpm/example/drd/DrdDecisionDishTest.java
