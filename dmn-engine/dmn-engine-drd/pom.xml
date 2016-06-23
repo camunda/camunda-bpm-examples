@@ -56,7 +56,7 @@
           <mainClass>org.camunda.bpm.example.drd.DishDecider</mainClass>
           <arguments>
             <argument>35</argument>
-            <argument>WeekDay</argument>
+            <argument>Weekday</argument>
           </arguments>
         </configuration>
       </plugin>
