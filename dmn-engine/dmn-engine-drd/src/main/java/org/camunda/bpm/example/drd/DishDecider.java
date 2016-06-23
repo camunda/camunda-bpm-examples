@@ -27,7 +27,7 @@ public class DishDecider {
 
   public static void printUsage(String errorMessage, int exitCode) {
     System.err.println("Error: " + errorMessage);
-    System.err.println("Usage: java -jar DishDecider.jar CURRENT_TEMPERATURE TYPE_OF_DAY\n\n\tTEMPERATURE: Current Temperature \n\tTYPE_OF_DAY: (WeekDay, Holiday, Weekend)");
+    System.err.println("Usage: java -jar DishDecider.jar CURRENT_TEMPERATURE TYPE_OF_DAY\n\n\tTEMPERATURE: Current Temperature in number \n\tTYPE_OF_DAY: (Weekday, Holiday, Weekend)");
     System.exit(exitCode);
   }
 
@@ -48,7 +48,12 @@ public class DishDecider {
     
 
     String typeOfDay = args[1];
-    
+    if(!((typeOfDay.equals("Weekday")) 
+      || (typeOfDay.equals("Holiday"))  
+      || (typeOfDay.equals("Weekend")))) {
+      printUsage("Type of day must be of type - Weekday/Holiday/Weekend", 2);
+    }
+
     // prepare variables for decision evaluation
     VariableMap variables = Variables
       .putValue("temperature", temperature)

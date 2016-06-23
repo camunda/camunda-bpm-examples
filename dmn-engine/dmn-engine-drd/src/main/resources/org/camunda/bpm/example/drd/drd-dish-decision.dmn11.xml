@@ -131,7 +131,7 @@
       <output id="guestCountOutput" label="Guest count" name="guestCount" typeRef="integer" />
       <rule id="row-495762709-8">
         <inputEntry id="UnaryTests_0l72u8n">
-          <text><![CDATA["WeekDay"]]></text>
+          <text><![CDATA["Weekday"]]></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wuwqaz">
           <text>4</text>

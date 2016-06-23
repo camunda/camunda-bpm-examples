@@ -44,7 +44,7 @@ public class DrdDecisionDishTest {
   public void shouldServeGuestsOnAWeekDayWithTemperatureOfTenDegree() {
     VariableMap variables = Variables
       .putValue("temperature", 8)
-      .putValue("dayType", "WeekDay");
+      .putValue("dayType", "Weekday");
     
     DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
     assertEquals("Spareribs", result.getSingleResult().getSingleEntry());

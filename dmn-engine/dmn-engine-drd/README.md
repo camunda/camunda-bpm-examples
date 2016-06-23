@@ -135,7 +135,7 @@ public class DrdDecisionDishTest {
   public void shouldServeGuestsOnAWeekDayWithTemperatureOfTenDegree() {
     VariableMap variables = Variables
       .putValue("temperature", 8)
-      .putValue("dayType", "WeekDay");
+      .putValue("dayType", "Weekday");
     
     DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
     assertEquals("Spareribs", result.getSingleResult().getSingleEntry());
@@ -156,7 +156,7 @@ public class DrdDecisionDishTest {
 
 ## Running the Example
 
-The example expects two arguments. First, the current temperature and second the type of day (WeekDay, Holiday, Weekend).
+The example expects two arguments. First, the current temperature (in number) and second the type of day (Weekday, Holiday, Weekend).
 
 To run it you can either use maven:
 
@@ -165,7 +165,7 @@ mvn compile exec:java
 ```
 
 This will compile the project and execute it with the arguments
-`35` for the current temperature and `WeekDay` for the type of day.
+`35` for the current temperature and `Weekday` for the type of day.
 
 This should produce an output which contains:
 
