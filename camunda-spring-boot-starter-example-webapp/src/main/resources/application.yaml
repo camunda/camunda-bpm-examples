@@ -1,0 +1,3 @@
+camunda.bpm:
+  webapp:
+    index-redirect-enabled: false
