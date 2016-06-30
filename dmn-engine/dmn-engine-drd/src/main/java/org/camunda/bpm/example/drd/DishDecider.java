@@ -32,21 +32,31 @@ public class DishDecider {
   }
 
   public static void main(String[] args) {
+
+    validateInput(args);
+
+    VariableMap variables = prepareVariableMap(args);
+
+    // parse decision from resource input stream
+    InputStream inputStream = DishDecider.class.getResourceAsStream("drd-dish-decision.dmn11.xml");
+    parseAndEvaluateDecision(variables, inputStream);
+    
+  }
+
+  protected static void validateInput(String[] args) {
+
     // parse arguments
     if (args.length != 2) {
       printUsage("Please specify the current temperature and type of day", 1);
     }
 
-    int temperature = 0;
-    
     try  {
-      temperature = Integer.parseInt(args[0]);
+     Integer.parseInt(args[0]);
     }
     catch (NumberFormatException e) {
       printUsage("Temperature must be a number", 2);
     }
     
-
     String typeOfDay = args[1];
     if(!((typeOfDay.equals("Weekday")) 
       || (typeOfDay.equals("Holiday"))  
@@ -54,16 +64,25 @@ public class DishDecider {
       printUsage("Type of day must be of type - Weekday/Holiday/Weekend", 2);
     }
 
+  }
+
+  protected static VariableMap prepareVariableMap(String[] args) {
+
+    int temperature = Integer.parseInt(args[0]);
+    String typeOfDay = args[1];
+
     // prepare variables for decision evaluation
     VariableMap variables = Variables
       .putValue("temperature", temperature)
       .putValue("dayType", typeOfDay);
 
+    return variables;
+  }
+
+  protected static void parseAndEvaluateDecision(VariableMap variables, InputStream inputStream) {
+
     // create a new default DMN engine
     DmnEngine dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
-
-    // parse decision from resource input stream
-    InputStream inputStream = DishDecider.class.getResourceAsStream("drd-dish-decision.dmn11.xml");
 
     try {
       DmnDecision decision = dmnEngine.parseDecision("Dish", inputStream);
@@ -85,4 +104,6 @@ public class DishDecider {
       }
     }
   }
+
+  
 }
