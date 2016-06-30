@@ -16,64 +16,7 @@ resources.
 
 ## Code Walkthrough
 
-### Maven Dependencies
-
-Include the DMN engine BOM for dependency management:
-
-```xml
-<dependencyManagement>
-  <dependencies>
-    <dependency>
-      <groupId>org.camunda.bpm.dmn</groupId>
-      <artifactId>camunda-engine-dmn-bom</artifactId>
-      <version>${version.camunda}</version>
-      <type>pom</type>
-      <scope>import</scope>
-    </dependency>
-  </dependencies>
-</dependencyManagement>
-```
-
-Add the DMN engine as a dependency:
-
-```xml
-<dependency>
-  <groupId>org.camunda.bpm.dmn</groupId>
-  <artifactId>camunda-engine-dmn</artifactId>
-</dependency>
-```
-
-Include some slf4j backend. The simplest option is to not add a backend at all but simply redirect logging to jdk logging:
-
-```xml
-<!-- redirect slf4j logging to jdk logging -->
-<dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-jdk14</artifactId>
-  <version>1.7.12</version>
-</dependency>
-```
-
-### Bootstrap the DMN Engine in a Main Method
-
-The Java Class [DishDecider.java] has a main method which bootstraps the DMN Engine using the
-default configuration:
-
-```java
-public class DishDecider {
-
-  public static void main(String[] args) {
-
-    // create a new default DMN engine
-    DmnEngine dmnEngine = DmnEngineConfiguration
-      .createDefaultDmnEngineConfiguration()
-      .buildEngine();
-
-  }
-
-}
-
-```
+Refer [dmn-engine-java-main-method] example for Maven dependencies  and bootstrapping the DMN Engine.
 
 ### Parsing and Executing the Decision Requirements Diagram
 
@@ -105,32 +48,6 @@ of the command line arguments.
 inputs on the decision:
 
 ```java
-public class DrdDecisionDishTest {
-  
-  @Rule
-  public DmnEngineRule dmnEngineRule = new DmnEngineRule();
-  
-  public DmnEngine dmnEngine;
-  public DmnDecision decision;
-  
-  @Before
-  public void parseDecision() {
-    InputStream inputStream = DrdDecisionDishTest.class
-      .getResourceAsStream("drd-dish-decision.dmn11.xml");
-    dmnEngine = dmnEngineRule.getDmnEngine();
-    decision = dmnEngine.parseDecision("Dish", inputStream);
-  }
-  
-  @Test
-  public void shouldServeGuestsOnAWeekEndWithTemperatureOfTwentyDegree() {
-    VariableMap variables = Variables
-      .putValue("temperature", 20)
-      .putValue("dayType", "Weekend");
-    
-    DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
-    assertEquals("Steak", result.getSingleResult().getSingleEntry());
-  }
-  
   @Test
   public void shouldServeGuestsOnAWeekDayWithTemperatureOfTenDegree() {
     VariableMap variables = Variables
@@ -140,17 +57,6 @@ public class DrdDecisionDishTest {
     DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
     assertEquals("Spareribs", result.getSingleResult().getSingleEntry());
   }
-  
-  @Test
-  public void shouldServeGuestsOnAHolidayWithTemperatureOfThirtyDegree() {
-    VariableMap variables = Variables
-      .putValue("temperature", 35)
-      .putValue("dayType", "Holiday");
-    
-    DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
-    assertEquals("Beans salad", result.getSingleResult().getSingleEntry());
-  }
-  
 }
 ```
 
@@ -204,3 +110,4 @@ Dish Decision:
 [DishDecider.java]: src/main/java/org/camunda/bpm/example/drd/DishDecider.java
 [User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
 [DrdDecisionDishTest.java]: src/test/java/org/camunda/bpm/example/drd/DrdDecisionDishTest.java
+[dmn-engine-java-main-method]: ../dmn-engine-java-main-method/ 
