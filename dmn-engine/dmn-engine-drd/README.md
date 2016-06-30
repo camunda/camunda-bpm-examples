@@ -48,15 +48,14 @@ of the command line arguments.
 inputs on the decision:
 
 ```java
-  @Test
-  public void shouldServeGuestsOnAWeekDayWithTemperatureOfTenDegree() {
-    VariableMap variables = Variables
-      .putValue("temperature", 8)
-      .putValue("dayType", "Weekday");
-    
-    DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
-    assertEquals("Spareribs", result.getSingleResult().getSingleEntry());
-  }
+@Test
+public void shouldServeGuestsOnAWeekDayWithTemperatureOfTenDegree() {
+  VariableMap variables = Variables
+    .putValue("temperature", 8)
+    .putValue("dayType", "Weekday");
+   
+  DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
+  assertEquals("Spareribs", result.getSingleResult().getSingleEntry());
 }
 ```
 
