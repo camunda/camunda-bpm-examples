@@ -159,7 +159,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | Name                                                                                       | Container | Keywords                |
 | -------------------------------------------------------------------------------------------|-----------|-------------------------|
 | [Embed Decision Engine - Dish Decision Maker](dmn-engine/dmn-engine-java-main-method)      | Jar       | DMN, Embed              |
-| [Decision Requirements Diagram(DRD) Example](dmn-engine/dmn-engine-drd)                    | Jar       | DMN, DRD, Embed         |
+| [Decision Requirements Graph(DRG) Example](dmn-engine/dmn-engine-drg)                      | Jar       | DMN, DRG, Embed         |
 
 ### Process Instance Migration Examples
 

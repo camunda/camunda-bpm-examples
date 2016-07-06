@@ -1,4 +1,4 @@
-package org.camunda.bpm.example.drd;
+package org.camunda.bpm.example.drg;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class DrdDecisionDishTest {
+public class DrgDecisionDishTest {
   
   @Rule
   public DmnEngineRule dmnEngineRule = new DmnEngineRule();
@@ -24,8 +24,8 @@ public class DrdDecisionDishTest {
   
   @Before
   public void parseDecision() {
-    InputStream inputStream = DrdDecisionDishTest.class
-      .getResourceAsStream("drd-dish-decision.dmn11.xml");
+    InputStream inputStream = DrgDecisionDishTest.class
+      .getResourceAsStream("drg-dish-decision.dmn11.xml");
     dmnEngine = dmnEngineRule.getDmnEngine();
     decision = dmnEngine.parseDecision("Dish", inputStream);
   }

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package org.camunda.bpm.example.drd;
+package org.camunda.bpm.example.drg;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ public class DishDecider {
     VariableMap variables = prepareVariableMap(args);
 
     // parse decision from resource input stream
-    InputStream inputStream = DishDecider.class.getResourceAsStream("drd-dish-decision.dmn11.xml");
+    InputStream inputStream = DishDecider.class.getResourceAsStream("drg-dish-decision.dmn11.xml");
     parseAndEvaluateDecision(variables, inputStream);
     
   }

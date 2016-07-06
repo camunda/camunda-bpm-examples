@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.camunda.bpm.example.drd</groupId>
-  <artifactId>camunda-example-drd</artifactId>
+  <groupId>org.camunda.bpm.example.drg</groupId>
+  <artifactId>camunda-example-drg</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -53,7 +53,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>org.camunda.bpm.example.drd.DishDecider</mainClass>
+          <mainClass>org.camunda.bpm.example.drg.DishDecider</mainClass>
           <arguments>
             <argument>35</argument>
             <argument>Weekday</argument>
@@ -90,7 +90,7 @@
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
               <useUniqueVersions>false</useUniqueVersions>
-              <mainClass>org.camunda.bpm.example.drd.DishDecider</mainClass>
+              <mainClass>org.camunda.bpm.example.drg.DishDecider</mainClass>
             </manifest>
           </archive>
           <finalName>DishDecider</finalName>

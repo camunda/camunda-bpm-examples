@@ -1,17 +1,17 @@
-# Decision Requirements Diagram (DRD) Example
+# Decision Requirements Graph (DRG) Example
 
 This example demonstrates how to use the [Camunda DMN engine] as library
-in a custom application to evaluate DRD. The DMN Engine is added to the example as a Maven dependency.
+in a custom application to evaluate DRG. The DMN Engine is added to the example as a Maven dependency.
 The example contains a Java class with a Main Method in which the DMN Engine is bootstraped and
 used to execute a decision loaded from the classpath.
 
 ## The used Decision Requirements Diagram
 
-The example uses a DRD from the [DRD reference] to decide which dish should be served to our guests for dinner:
+The example uses a DRG from the [DRG reference] to decide which dish should be served to our guests for dinner:
 
 ![Dish Decision]
 
-You can find the corresponding DMN XML file [drd-dish-decision.dmn11.xml] in the
+You can find the corresponding DMN XML file [drg-dish-decision.dmn11.xml] in the
 resources.
 
 ## Code Walkthrough
@@ -23,7 +23,7 @@ Refer [dmn-engine-java-main-method] example for Maven dependencies  and bootstra
 Once the DMN Engine is bootstrapped, it can be used to first parse a decision loaded from the classpath:
 
 ```java
-InputStream inputStream = DishDecider.class.getResourceAsStream("drd-dish-decision.dmn11.xml");
+InputStream inputStream = DishDecider.class.getResourceAsStream("drg-dish-decision.dmn11.xml");
 
 DmnDecision decision = dmnEngine.parseDecision("Dish", inputStream);
 
@@ -44,7 +44,7 @@ of the command line arguments.
 
 > Note: You can read more about decision testing in our [User Guide].
 
-[DrdDecisionDishTest.java] uses the `DmnEngineRule` JUnit Rule to create a default DMN engine and than test different
+[DrgDecisionDishTest.java] uses the `DmnEngineRule` JUnit Rule to create a default DMN engine and than test different
 inputs on the decision:
 
 ```java
@@ -103,10 +103,10 @@ Dish Decision:
 
 
 [Camunda DMN engine]: https://docs.camunda.org/manual/user-guide/dmn-engine/
-[DRD reference]: http://stage.docs.camunda.org/manual/develop/reference/dmn11/drd/
-[Dish Decision]: src/main/resources/org/camunda/bpm/example/drd/dish-decision.png
-[drd-dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/drd/drd-dish-decision.dmn11.xml
-[DishDecider.java]: src/main/java/org/camunda/bpm/example/drd/DishDecider.java
+[DRG reference]: http://stage.docs.camunda.org/manual/develop/reference/dmn11/drg/
+[Dish Decision]: src/main/resources/org/camunda/bpm/example/drg/dish-decision.png
+[drg-dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/drg/drg-dish-decision.dmn11.xml
+[DishDecider.java]: src/main/java/org/camunda/bpm/example/drg/DishDecider.java
 [User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
-[DrdDecisionDishTest.java]: src/test/java/org/camunda/bpm/example/drd/DrdDecisionDishTest.java
+[DrgDecisionDishTest.java]: src/test/java/org/camunda/bpm/example/drg/DrgDecisionDishTest.java
 [dmn-engine-java-main-method]: ../dmn-engine-java-main-method/ 
