@@ -5,7 +5,7 @@ in a custom application to evaluate DRG. The DMN Engine is added to the example 
 The example contains a Java class with a Main Method in which the DMN Engine is bootstraped and
 used to execute a decision loaded from the classpath.
 
-## The used Decision Requirements Diagram
+## The used Decision Requirements Graph
 
 The example uses a DRG from the [DRG reference] to decide which dish should be served to our guests for dinner:
 
@@ -18,7 +18,7 @@ resources.
 
 Refer [dmn-engine-java-main-method] example for Maven dependencies  and bootstrapping the DMN Engine.
 
-### Parsing and Executing the Decision Requirements Diagram
+### Parsing and Executing the Decision Requirements Graph
 
 Once the DMN Engine is bootstrapped, it can be used to first parse a decision loaded from the classpath:
 
