@@ -44,9 +44,6 @@ public class SimpleApplication implements CommandLineRunner {
   @Autowired
   private Showcase showcase;
 
-  @Autowired
-  private SpringBootProcessApplication springBootProcessApplication;
-
   @Bean
   public SpringBootProcessApplication processApplication() {
     return new SpringBootProcessApplication();
@@ -83,11 +80,10 @@ public class SimpleApplication implements CommandLineRunner {
   }
 
   public boolean isProcessInstanceFinished() {
-      final HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
-        .processInstanceId(showcase.getProcessInstanceId())
-        .singleResult();
+    final HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
+        .processInstanceId(showcase.getProcessInstanceId()).singleResult();
 
-      return historicProcessInstance != null && historicProcessInstance.getEndTime() != null;
+    return historicProcessInstance != null && historicProcessInstance.getEndTime() != null;
 
   }
 

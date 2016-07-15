@@ -1,6 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.example.cloud.simple;
 
-import com.netflix.hystrix.contrib.javanica.aop.aspectj.HystrixCommandAspect;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.slf4j.Logger;
@@ -16,6 +15,8 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import com.netflix.hystrix.contrib.javanica.aop.aspectj.HystrixCommandAspect;
 
 @SpringBootApplication
 @EnableScheduling
@@ -75,11 +76,10 @@ public class SimpleApplication {
   }
 
   public boolean isProcessInstanceFinished() {
-      final HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
-        .processInstanceId(showcase.getProcessInstanceId())
-        .singleResult();
+    final HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
+        .processInstanceId(showcase.getProcessInstanceId()).singleResult();
 
-      return historicProcessInstance != null && historicProcessInstance.getEndTime() != null;
+    return historicProcessInstance != null && historicProcessInstance.getEndTime() != null;
 
   }
 
