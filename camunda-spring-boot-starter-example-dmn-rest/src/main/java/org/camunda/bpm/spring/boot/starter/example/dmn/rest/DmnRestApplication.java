@@ -4,8 +4,6 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
-import org.camunda.bpm.spring.boot.starter.rest.CamundaJerseyResourceConfig;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -20,11 +18,6 @@ public class DmnRestApplication {
   }
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-  @Bean
-  public ResourceConfig jerseyConfig() {
-    return new CamundaJerseyResourceConfig();
-  }
 
   @Bean
   public ProcessEnginePlugin statusPlugin() {
