@@ -83,6 +83,7 @@ Create the following Java Config class to bootstrap and configure the process en
 
 ``` java
 @Configuration
+@Import( SpringProcessEngineServicesConfiguration.class )
 public class CamundaProcessEngineConfiguration {
 
   @Value("${camunda.bpm.history-level:none}")
@@ -130,23 +131,6 @@ public class CamundaProcessEngineConfiguration {
     factoryBean.setProcessEngineConfiguration(processEngineConfiguration());
     return factoryBean;
   }
-
-  @Bean
-  public RepositoryService repositoryService(ProcessEngine processEngine) {
-    return processEngine.getRepositoryService();
-  }
-
-  @Bean
-  public RuntimeService runtimeService(ProcessEngine processEngine) {
-    return processEngine.getRuntimeService();
-  }
-
-  @Bean
-  public TaskService taskService(ProcessEngine processEngine) {
-    return processEngine.getTaskService();
-  }
-
-  // add even more services here
 
 }
 ```
