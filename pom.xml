@@ -6,6 +6,10 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>
 
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
   <modules>
     <module>bpmn-model-api/generate-process-fluent-api</module>
     <module>bpmn-model-api/generate-jsf-form</module>
