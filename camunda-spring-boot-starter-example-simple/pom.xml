@@ -10,7 +10,7 @@
   <artifactId>camunda-bpm-spring-boot-starter-example-simple</artifactId>
 
   <properties>
-    <start-class>org.camunda.bpm.spring.boot.starter.test.helper.SimpleApplication</start-class>
+    <start-class>org.camunda.bpm.spring.boot.starter.example.simple.SimpleApplication</start-class>
   </properties>
 
   <dependencyManagement>
