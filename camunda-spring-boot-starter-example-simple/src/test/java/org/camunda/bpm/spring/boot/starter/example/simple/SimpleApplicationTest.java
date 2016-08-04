@@ -20,7 +20,7 @@ public class SimpleApplicationTest {
 
   @Test
   public void would_fail_if_process_not_completed_after_5_seconds() throws InterruptedException {
-    while (!application.contextClosed && !application.isProcessInstanceFinished()) {
+    while (!application.processApplicationStopped && !application.isProcessInstanceFinished()) {
       Thread.sleep(500L);
     }
   }

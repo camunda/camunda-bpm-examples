@@ -5,9 +5,9 @@ import static org.slf4j.LoggerFactory.getLogger;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStartedEvent;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ public class Showcase {
   private String processInstanceId;
 
   @EventListener
-  public void notify(final ContextRefreshedEvent unused) {
+  public void notify(final ProcessApplicationStartedEvent unused) {
     processInstanceId = runtimeService.startProcessInstanceByKey("Sample").getProcessInstanceId();
     logger.info("started instance: {}", processInstanceId);
 

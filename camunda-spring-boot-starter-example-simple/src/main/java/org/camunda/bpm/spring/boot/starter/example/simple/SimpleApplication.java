@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.SpringBootProcessApplication;
+import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStoppedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,7 +24,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class SimpleApplication implements CommandLineRunner {
 
-  boolean contextClosed;
+  boolean processApplicationStopped;
 
   public static void main(final String... args) throws Exception {
     SpringApplication.run(SimpleApplication.class, args);
@@ -50,9 +50,9 @@ public class SimpleApplication implements CommandLineRunner {
   }
 
   @EventListener
-  public void contextClosed(ContextClosedEvent event) {
-    logger.info("context closed!");
-    contextClosed = true;
+  public void processApplicationStopped(ProcessApplicationStoppedEvent event) {
+    logger.info("process application stopped!");
+    processApplicationStopped = true;
   }
 
   @Scheduled(fixedDelay = 1500L)
