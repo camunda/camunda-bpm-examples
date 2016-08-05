@@ -68,8 +68,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-example-testhelper</artifactId>
+      <groupId>${project.groupId}</groupId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
