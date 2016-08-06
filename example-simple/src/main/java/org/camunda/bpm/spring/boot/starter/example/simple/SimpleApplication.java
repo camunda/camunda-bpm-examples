@@ -3,7 +3,9 @@ package org.camunda.bpm.spring.boot.starter.example.simple;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.SpringBootProcessApplication;
 import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStoppedEvent;
@@ -19,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.Assert;
 
 @SpringBootApplication
 @EnableScheduling
@@ -44,6 +47,9 @@ public class SimpleApplication implements CommandLineRunner {
   @Autowired
   private Showcase showcase;
 
+  @Autowired
+  private ProcessEngine processEngine;
+
   @Bean
   public SpringBootProcessApplication processApplication() {
     return new SpringBootProcessApplication();
@@ -57,6 +63,9 @@ public class SimpleApplication implements CommandLineRunner {
 
   @Scheduled(fixedDelay = 1500L)
   public void exitApplicationWhenProcessIsFinished() {
+    Assert.isTrue(!((ProcessEngineConfigurationImpl)processEngine.getProcessEngineConfiguration()).isDbMetricsReporterActivate());
+
+
     String processInstanceId = showcase.getProcessInstanceId();
 
     if (processInstanceId == null) {
