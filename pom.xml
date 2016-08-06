@@ -10,6 +10,10 @@
     <java.version>1.8</java.version>
   </properties>
 
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
   <modules>
     <module>bpmn-model-api/generate-process-fluent-api</module>
     <module>bpmn-model-api/generate-jsf-form</module>
