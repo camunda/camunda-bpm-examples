@@ -1,6 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.example.cloud.simple;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@Ignore("java.lang.NoSuchMethodError: org.springframework.boot.builder.SpringApplicationBuilder.showBanner(Z)Lorg/springframework/boot/builder/SpringApplicationBuilder")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { SimpleApplication.class })
 public class SimpleApplicationTest {
