@@ -3,25 +3,18 @@ package org.camunda.bpm.spring.boot.starter.example.web;
 import static org.junit.Assert.assertEquals;
 
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-@Ignore("Caused by: java.lang.NullPointerException at org.springframework.test.context.web.socket.MockServerContainerContextCustomizer.customizeContext")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { RestApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WebAppConfiguration
 @DirtiesContext
 public class CamundaBpmRestIT {
 
