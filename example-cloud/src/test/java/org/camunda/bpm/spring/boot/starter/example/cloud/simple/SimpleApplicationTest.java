@@ -13,13 +13,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SimpleApplicationTest {
 
   @Rule
-  public Timeout timeout = Timeout.seconds(5);
+  public Timeout timeout = Timeout.seconds(10);
 
   @Autowired
   private SimpleApplication application;
 
   @Test
-  public void would_fail_if_process_not_completed_after_5_seconds() throws InterruptedException {
+  public void would_fail_if_process_not_completed_after_10_seconds() throws InterruptedException {
     while (!application.contextClosed && !application.isProcessInstanceFinished()) {
       Thread.sleep(500L);
     }
