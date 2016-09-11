@@ -17,10 +17,17 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <!-- Import dependency management from Spring Boot -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.camunda.bpm.extension.springboot</groupId>
+        <artifactId>camunda-bpm-spring-boot-starter-bom</artifactId>
+        <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -31,7 +38,6 @@
     <dependency>
       <groupId>org.camunda.bpm.extension.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -40,8 +46,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>org.camunda.bpm.extension.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
