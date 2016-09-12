@@ -12,6 +12,7 @@ import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStoppedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
@@ -50,6 +51,9 @@ public class SimpleApplication implements CommandLineRunner {
   @Autowired
   private ProcessEngine processEngine;
 
+  @Value("${org.camunda.bpm.spring.boot.starter.example.simple.SimpleApplication.exitWhenFinished:true}")
+  private boolean exitWhenFinished;
+
   @Bean
   public SpringBootProcessApplication processApplication() {
     return new SpringBootProcessApplication();
@@ -63,8 +67,7 @@ public class SimpleApplication implements CommandLineRunner {
 
   @Scheduled(fixedDelay = 1500L)
   public void exitApplicationWhenProcessIsFinished() {
-    Assert.isTrue(!((ProcessEngineConfigurationImpl)processEngine.getProcessEngineConfiguration()).isDbMetricsReporterActivate());
-
+    Assert.isTrue(!((ProcessEngineConfigurationImpl) processEngine.getProcessEngineConfiguration()).isDbMetricsReporterActivate());
 
     String processInstanceId = showcase.getProcessInstanceId();
 
@@ -76,13 +79,15 @@ public class SimpleApplication implements CommandLineRunner {
     if (isProcessInstanceFinished()) {
       logger.info("processinstance ended!");
 
-      SpringApplication.exit(context, new ExitCodeGenerator() {
+      if (exitWhenFinished) {
+        SpringApplication.exit(context, new ExitCodeGenerator() {
 
-        @Override
-        public int getExitCode() {
-          return 0;
-        }
-      });
+          @Override
+          public int getExitCode() {
+            return 0;
+          }
+        });
+      }
       return;
     }
     logger.info("processInstance not yet ended!");

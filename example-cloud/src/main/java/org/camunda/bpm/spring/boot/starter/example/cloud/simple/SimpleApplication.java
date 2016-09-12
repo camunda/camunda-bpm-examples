@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,6 +46,9 @@ public class SimpleApplication {
   @Autowired
   private Showcase showcase;
 
+  @Value("${org.camunda.bpm.spring.boot.starter.example.cloud.simple.SimpleApplication.exitWhenFinished:true}")
+  private boolean exitWhenFinished;
+
   @EventListener
   public void contextClosed(ContextClosedEvent event) {
     logger.info("context closed!");
@@ -63,13 +67,15 @@ public class SimpleApplication {
     if (isProcessInstanceFinished()) {
       logger.info("processinstance ended!");
 
-      SpringApplication.exit(context, new ExitCodeGenerator() {
+      if (exitWhenFinished) {
+        SpringApplication.exit(context, new ExitCodeGenerator() {
 
-        @Override
-        public int getExitCode() {
-          return 0;
-        }
-      });
+          @Override
+          public int getExitCode() {
+            return 0;
+          }
+        });
+      }
       return;
     }
     logger.info("processInstance not yet ended!");

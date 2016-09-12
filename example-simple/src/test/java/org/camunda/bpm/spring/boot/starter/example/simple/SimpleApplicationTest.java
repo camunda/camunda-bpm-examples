@@ -9,7 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { SimpleApplication.class })
+@SpringBootTest(classes = { SimpleApplication.class }, properties = {
+    "org.camunda.bpm.spring.boot.starter.example.simple.SimpleApplication.exitWhenFinished=false" })
 public class SimpleApplicationTest {
 
   @Rule
