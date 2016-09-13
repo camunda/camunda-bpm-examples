@@ -9,25 +9,22 @@ import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { DmnRestApplication.class }, webEnvironment = WebEnvironment.RANDOM_PORT)
-@DirtiesContext
 public class DmnRestApplicationTest {
 
   private static final String CHECK_ORDER = "checkOrder";
 
-  @Value("${local.server.port}")
-  private int port;
+  @Autowired
+  private TestRestTemplate testRestTemplate;
 
   @Autowired
   private CamundaBpmProperties camundaBpmProperties;
@@ -43,9 +40,6 @@ public class DmnRestApplicationTest {
 
   @Test
   public void evaluate_checkOrder() throws InterruptedException {
-    String url = String.format("http://localhost:%d/rest/engine/%s/decision-definition/key/%s/evaluate", port, camundaBpmProperties.getProcessEngineName(),
-        CHECK_ORDER);
-
     String JSONInput = "{\n" + "  \"variables\" : {\n" + "    \"status\" : { \"value\" : \"silver\", \"type\" : \"String\" },\n"
         + "    \"sum\" : { \"value\" : 900, \"type\" : \"Integer\" }\n" + "  }\n" + "}\n";
 
@@ -54,7 +48,8 @@ public class DmnRestApplicationTest {
 
     HttpEntity<String> request = new HttpEntity<String>(JSONInput, headers);
 
-    final String check = new TestRestTemplate().postForObject(url, request, String.class);
+    final String check = testRestTemplate.postForObject("/rest/engine/{engineName}/decision-definition/key/{key}/evaluate", request, String.class,
+        camundaBpmProperties.getProcessEngineName(), CHECK_ORDER);
 
     assertThat(new JSONArray(check).getJSONObject(0).getJSONObject("result").getString("value")).isEqualTo("ok");
 

@@ -6,23 +6,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { RestApplication.class }, webEnvironment = WebEnvironment.RANDOM_PORT, properties = "management.security.enabled:false")
-@DirtiesContext
 public class CamundaBpmActuatorIT {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CamundaBpmActuatorIT.class);
 
-  @Value("${local.server.port}")
-  private int port;
+  @Autowired
+  private TestRestTemplate testRestTemplate;
 
   @Test
   public void jobExecutorHealthIndicatorTest() {
@@ -37,7 +35,7 @@ public class CamundaBpmActuatorIT {
   }
 
   private String getHealthBody() {
-    ResponseEntity<String> entity = new TestRestTemplate().getForEntity("http://localhost:{port}/health", String.class, port);
+    ResponseEntity<String> entity = testRestTemplate.getForEntity("/health", String.class);
     final String body = entity.getBody();
     LOGGER.info("body: {}", body);
     return body;
