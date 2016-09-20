@@ -43,6 +43,7 @@ public class ProgressLoggingSupportParseListenerPlugin extends AbstractProcessEn
     
     // add new BPMN Parse Listener
     preParseListeners.add(new ProgressLoggingSupportParseListener());
+  }
 }
 ```
 
@@ -115,6 +116,7 @@ public class ProgressLoggingExecutionListener implements ExecutionListener {
     // logging statement to see which value have the property 'progress'
     LOGGER.info("value of service task extension property 'progress': " + propertyValue);
   }
+}
 ```
 
 ### Activate the BPMN Parse Listener Plugin
