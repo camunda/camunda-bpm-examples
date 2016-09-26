@@ -63,7 +63,7 @@ public class DishDecisionTest {
   }
 
   @Test
-  public void shouldServeStewInSpringForMayGuests() {
+  public void shouldServeStewInSpringForManyGuests() {
     VariableMap variables = Variables
       .putValue("season", "Spring")
       .putValue("guestCount", 20);
