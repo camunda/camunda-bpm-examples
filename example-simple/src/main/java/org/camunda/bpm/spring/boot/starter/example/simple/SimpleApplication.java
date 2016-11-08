@@ -7,8 +7,9 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
-import org.camunda.bpm.spring.boot.starter.SpringBootProcessApplication;
+import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStoppedEvent;
+import org.camunda.bpm.spring.boot.starter.util.GetProcessApplicationNameFromAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 
+import java.util.concurrent.Executor;
+
 @SpringBootApplication
 @EnableScheduling
+@EnableProcessApplication("mySimpleApplication")
 public class SimpleApplication implements CommandLineRunner {
 
   boolean processApplicationStopped;
@@ -54,8 +59,8 @@ public class SimpleApplication implements CommandLineRunner {
   private boolean exitWhenFinished;
 
   @Bean
-  public SpringBootProcessApplication processApplication() {
-    return new SpringBootProcessApplication();
+  public Executor taskExecutor() {
+    return new SimpleAsyncTaskExecutor();
   }
 
   @EventListener
@@ -91,11 +96,10 @@ public class SimpleApplication implements CommandLineRunner {
         .processInstanceId(showcase.getProcessInstanceId()).singleResult();
 
     return historicProcessInstance != null && historicProcessInstance.getEndTime() != null;
-
   }
 
   @Override
   public void run(String... strings) throws Exception {
-    logger.error(ToStringBuilder.reflectionToString(camundaBpmProperties.getApplication(), ToStringStyle.MULTI_LINE_STYLE));
+    logger.info("CommandLineRunner#run() - {}", ToStringBuilder.reflectionToString(camundaBpmProperties.getApplication(), ToStringStyle.SHORT_PREFIX_STYLE));
   }
 }
