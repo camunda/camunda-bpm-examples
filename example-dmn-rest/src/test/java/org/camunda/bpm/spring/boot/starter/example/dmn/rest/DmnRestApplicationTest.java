@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.impl.util.json.JSONArray;
 import org.camunda.bpm.engine.repository.DecisionDefinition;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

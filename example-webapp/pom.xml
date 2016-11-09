@@ -10,10 +10,6 @@
   <groupId>org.camunda.bpm.extension.springboot.example</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-example-webapp</artifactId>
 
-  <properties>
-    <start-class>org.camunda.bpm.spring.boot.starter.example.webapp.WebappExampleApplication</start-class>
-  </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -58,7 +54,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <mainClass>${start-class}</mainClass>
           <layout>ZIP</layout>
         </configuration>
         <executions>
