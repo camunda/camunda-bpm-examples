@@ -1,0 +1,5 @@
+camunda:
+  bpm:
+    admin-user:
+      id: kermit
+      password: kermit
