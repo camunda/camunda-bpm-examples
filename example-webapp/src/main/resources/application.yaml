@@ -1,6 +1,6 @@
 camunda.bpm:
   webapp:
-    index-redirect-enabled: false
+    index-redirect-enabled: true
   admin-user:
     id: kermit
     password: superSecret
