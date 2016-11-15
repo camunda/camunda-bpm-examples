@@ -33,7 +33,7 @@
   <dependencies>
     <dependency>
       <groupId>org.camunda.bpm.extension.springboot</groupId>
-      <artifactId>camunda-bpm-spring-boot-starter-webapp-core</artifactId>
+      <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
     </dependency>
 
     <dependency>
@@ -50,20 +50,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.camunda.bpm.extension.springboot.maven</groupId>
-        <artifactId>camunda-bpm-spring-boot-webjar-maven-plugin</artifactId>
-        <version>${project.version}</version>
-        <executions>
-          <execution>
-            <id>create-webjar</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
