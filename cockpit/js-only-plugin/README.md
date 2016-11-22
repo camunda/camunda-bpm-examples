@@ -11,9 +11,9 @@ Built and tested against Camunda BPM version `7.6.0`.
 Integrate into Camunda Webapp
 -----------------------------
 
-Copy the `cats.js` file into the `app/cockpit/scripts` folder in your Camunda webapp distribution.
+Copy the `cats.js` file into the `server/apache-tomcat-8.0.24/webapps/camunda/app/cockpit/scripts/` folder in your Camunda webapp distribution.
 
-Add the following content to the `customScripts` object in the `app/cockpit/scripts/config.js` file:
+Add the following content to the `customScripts` object in the `server/apache-tomcat-8.0.24/webapps/camunda/app/cockpit/scripts/config.js` file:
 
 ```
   // …
