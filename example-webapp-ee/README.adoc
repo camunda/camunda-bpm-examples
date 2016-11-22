@@ -1,0 +1,16 @@
+# Example Webapp-EE
+
+This is an example using camunda enterprise version.
+
+It features:
+
+* automatic creation of an admin user "kermit"
+* automatic use of a `camunda-license.txt`
+
+
+You will need:
+
+* credentials to access the enterprise repo in your settings.xml
+* a valid camunda-license key file
+
+
