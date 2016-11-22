@@ -27,7 +27,11 @@ Each Cockpit plugin has an Angular Controller, a unique pseudo-URL, such as: `pl
 
 ## Integrate into Camunda webapp
 
-Add the plugin as a dependency to the Cockpit `pom.xml` and rebuild the Camunda web application.
+1. Build this demo: `mvn clean install`
+
+2. Clone the [camunda-bpm-webapp][6] repository
+
+3. Add the plugin as a dependency to the camunda-bpm-webapp `pom.xml` and rebuild the Camunda web application.
 
 ```xml
 <dependencies>
@@ -44,8 +48,9 @@ Add the plugin as a dependency to the Cockpit `pom.xml` and rebuild the Camunda 
 Use under terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 
-[1]: https://docs.camunda.org/manual/webapps/cockpit/failed-jobs/
+[1]: https://docs.camunda.org/manual/latest/webapps/cockpit/bpmn/failed-jobs/
 [2]: https://docs.camunda.org/manual/user-guide/process-engine/process-engine-concepts/#jobs-and-job-definitions
 [3]: https://docs.camunda.org/manual/user-guide/process-engine/the-job-executor/
 [4]: https://docs.camunda.org/manual/user-guide/process-engine/incidents/
 [5]: https://docs.camunda.org/manual/user-guide/process-engine/transactions-in-processes/#transaction-boundaries
+[6]: https://github.com/camunda/camunda-bpm-webapp
