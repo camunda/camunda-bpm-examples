@@ -15,16 +15,16 @@ Integrate into Camunda webapp
 2. Clone the [camunda-bpm-webapp][1] repository
 
 3. Add the plugin as a dependency to the camunda-bpm-webapp `pom.xml` and rebuild the Camunda web application.
-
-    <dependencies>
-      ...
-      <dependency>
-        <groupId>org.camunda.bpm.cockpit.plugin</groupId>
-        <artifactId>cockpit-sample-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <scope>runtime</scope>
-      </dependency>
-
+```xml
+<dependencies>
+  <!-- ... -->
+  <dependency>
+    <groupId>org.camunda.bpm.cockpit.plugin</groupId>
+    <artifactId>cockpit-sample-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <scope>runtime</scope>
+  </dependency>
+```
 
 Guide
 -----
