@@ -1,16 +1,22 @@
 # Decision Requirements Graph (DRG) Example
 
 This example demonstrates how to use the [Camunda DMN engine] as library
-in a custom application to evaluate DRG. The DMN Engine is added to the example as a Maven dependency.
+in a custom application to evaluate a decision from a DRG. The DMN Engine is added to the example as a Maven dependency.
 The example contains a Java class with a Main Method in which the DMN Engine is bootstraped and
 used to execute a decision loaded from the classpath.
 
 ## The used Decision Requirements Graph
 
-The example uses a DRG from the [DRG reference] to decide which beverages should be served to our guests for dinner:
+The example uses the DRG from the [reference guide] to decide which beverages should be served to our guests for dinner:
 
 ![Dinner Decisions]
+
+---
+
 ![Beverages Decision]
+
+---
+
 ![Dish Decision]
 
 You can find the corresponding DMN XML file [dinnerDecisions.dmn] in the
@@ -20,12 +26,12 @@ resources.
 
 Refer [dmn-engine-java-main-method] example for Maven dependencies  and bootstrapping the DMN Engine.
 
-### Parsing and Executing the Decision Requirements Graph
+### Parsing and Executing the Decision of the DRG
 
 Once the DMN Engine is bootstrapped, it can be used to first parse a decision loaded from the classpath:
 
 ```java
-InputStream inputStream = DishDecider.class.getResourceAsStream("dinnerDecisions.dmn");
+InputStream inputStream = BeveragesDecider.class.getResourceAsStream("dinnerDecisions.dmn");
 
 DmnDecision decision = dmnEngine.parseDecision("beverages", inputStream);
 
@@ -46,23 +52,24 @@ of the command line arguments.
 
 > Note: You can read more about decision testing in our [User Guide].
 
-[DrgDecisionTest.java] uses the `DmnEngineRule` JUnit Rule to create a default DMN engine and than test different
+[DrgDecisionTest.java] uses the JUnit Rule `DmnEngineRule` to create a default DMN engine and than test different
 inputs on the decision:
 
 ```java
 @Test
-  public void shouldServeGuiness() {
-    VariableMap variables = Variables
-      .putValue("season", "Spring")
-      .putValue("guestCount", 10)
-      .putValue("guestsWithChildren", false);
+public void shouldServeGuiness() {
 
-    DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
+  VariableMap variables = Variables
+    .putValue("season", "Spring")
+    .putValue("guestCount", 10)
+    .putValue("guestsWithChildren", false);
 
-    assertThat(result.collectEntries("beverages"))
-      .hasSize(2)
-      .contains("Guiness", "Water");
-  }
+  DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
+
+  assertThat(result.collectEntries("beverages"))
+    .hasSize(2)
+    .contains("Guiness", "Water");
+}
 ```
 
 ## Running the Example
@@ -109,11 +116,11 @@ Beverages:
 
 
 [Camunda DMN engine]: https://docs.camunda.org/manual/user-guide/dmn-engine/
-[DRG reference]: http://stage.docs.camunda.org/manual/develop/reference/dmn11/drg/
+[reference guide]: http://stage.docs.camunda.org/manual/develop/reference/dmn11/drg/
 [Dinner Decisions]: src/main/resources/org/camunda/bpm/example/drg/dinnerDecisions.png
 [Beverages Decision]: src/main/resources/org/camunda/bpm/example/drg/beverages.png
 [Dish Decision]: src/main/resources/org/camunda/bpm/example/drg/dish.png
-[dinnerDecisions.xml]: src/main/resources/org/camunda/bpm/example/drg/dinnerDecisions.dmn
+[dinnerDecisions.dmn]: src/main/resources/org/camunda/bpm/example/drg/dinnerDecisions.dmn
 [BeveragesDecider.java]: src/main/java/org/camunda/bpm/example/drg/BeveragesDecider.java
 [User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
 [DrgDecisionTest.java]: src/test/java/org/camunda/bpm/example/drg/DrgDecisionTest.java
