@@ -1,6 +1,6 @@
 package org.camunda.bpm.example.drg;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;
 
@@ -14,50 +14,62 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class DrgDecisionDishTest {
-  
+public class DrgDecisionTest {
+
   @Rule
   public DmnEngineRule dmnEngineRule = new DmnEngineRule();
-  
+
   public DmnEngine dmnEngine;
   public DmnDecision decision;
-  
+
   @Before
   public void parseDecision() {
-    InputStream inputStream = DrgDecisionDishTest.class
-      .getResourceAsStream("drg-dish-decision.dmn11.xml");
+    InputStream inputStream = DrgDecisionTest.class
+      .getResourceAsStream("dinnerDecisions.dmn");
     dmnEngine = dmnEngineRule.getDmnEngine();
-    decision = dmnEngine.parseDecision("Dish", inputStream);
+    decision = dmnEngine.parseDecision("beverages", inputStream);
   }
-  
+
   @Test
-  public void shouldServeGuestsOnAWeekEndWithTemperatureOfTwentyDegree() {
+  public void shouldServeGuiness() {
     VariableMap variables = Variables
-      .putValue("temperature", 20)
-      .putValue("dayType", "Weekend");
-    
+      .putValue("season", "Spring")
+      .putValue("guestCount", 10)
+      .putValue("guestsWithChildren", false);
+
     DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
-    assertEquals("Steak", result.getSingleResult().getSingleEntry());
+
+    assertThat(result.collectEntries("beverages"))
+      .hasSize(2)
+      .contains("Guiness", "Water");
   }
-  
+
   @Test
-  public void shouldServeGuestsOnAWeekDayWithTemperatureOfTenDegree() {
+  public void shouldServeBordeauxAndAppleJuice() {
     VariableMap variables = Variables
-      .putValue("temperature", 8)
-      .putValue("dayType", "Weekday");
-    
+      .putValue("season", "Winter")
+      .putValue("guestCount", 7)
+      .putValue("guestsWithChildren", true);
+
     DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
-    assertEquals("Spareribs", result.getSingleResult().getSingleEntry());
+
+    assertThat(result.collectEntries("beverages"))
+      .hasSize(3)
+      .contains("Bordeaux", "Apple Juice", "Water");
   }
-  
+
   @Test
-  public void shouldServeGuestsOnAHolidayWithTemperatureOfThirtyDegree() {
+  public void shouldServePinotNoir() {
     VariableMap variables = Variables
-      .putValue("temperature", 35)
-      .putValue("dayType", "Holiday");
-    
+      .putValue("season", "Summer")
+      .putValue("guestCount", 14)
+      .putValue("guestsWithChildren", false);
+
     DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
-    assertEquals("Beans salad", result.getSingleResult().getSingleEntry());
+
+    assertThat(result.collectEntries("beverages"))
+      .hasSize(2)
+      .contains("Pinot Noir", "Water");
   }
-  
+
 }

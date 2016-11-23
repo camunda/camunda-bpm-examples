@@ -15,6 +15,8 @@ package org.camunda.bpm.example.drg;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import org.camunda.bpm.dmn.engine.DmnDecision;
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
@@ -23,11 +25,13 @@ import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 
-public class DishDecider {
+public class BeveragesDecider {
+
+  private static final List<String> SEASONS = Arrays.asList("Winter", "Spring", "Summer");
 
   public static void printUsage(String errorMessage, int exitCode) {
     System.err.println("Error: " + errorMessage);
-    System.err.println("Usage: java -jar DishDecider.jar CURRENT_TEMPERATURE TYPE_OF_DAY\n\n\tTEMPERATURE: Current Temperature in number \n\tTYPE_OF_DAY: (Weekday, Holiday, Weekend)");
+    System.err.println("Usage: java -jar BeveragesDecider.jar Spring 10 false");
     System.exit(exitCode);
   }
 
@@ -38,43 +42,50 @@ public class DishDecider {
     VariableMap variables = prepareVariableMap(args);
 
     // parse decision from resource input stream
-    InputStream inputStream = DishDecider.class.getResourceAsStream("drg-dish-decision.dmn11.xml");
-    parseAndEvaluateDecision(variables, inputStream);
-    
+    InputStream inputStream = BeveragesDecider.class.getResourceAsStream("dinnerDecisions.dmn");
+
+    try {
+      parseAndEvaluateDecision(variables, inputStream);
+
+    } finally {
+      try {
+        inputStream.close();
+      } catch (IOException e) {
+      }
+    }
   }
 
   protected static void validateInput(String[] args) {
 
     // parse arguments
-    if (args.length != 2) {
-      printUsage("Please specify the current temperature and type of day", 1);
+    if (args.length != 3) {
+      printUsage("Please specify the season, guest count and if guests have children", 1);
+    }
+
+    String season = args[0];
+    if (!SEASONS.contains(season)) {
+      printUsage("Season must be one of " + SEASONS, 2);
     }
 
     try  {
-     Integer.parseInt(args[0]);
+     Integer.parseInt(args[1]);
     }
     catch (NumberFormatException e) {
-      printUsage("Temperature must be a number", 2);
+      printUsage("Guest count must be a number", 2);
     }
-    
-    String typeOfDay = args[1];
-    if(!((typeOfDay.equals("Weekday")) 
-      || (typeOfDay.equals("Holiday"))  
-      || (typeOfDay.equals("Weekend")))) {
-      printUsage("Type of day must be of type - Weekday/Holiday/Weekend", 2);
-    }
-
   }
 
   protected static VariableMap prepareVariableMap(String[] args) {
 
-    int temperature = Integer.parseInt(args[0]);
-    String typeOfDay = args[1];
+    String season = args[0];
+    int guestCount = Integer.parseInt(args[1]);
+    boolean guestsWithChildren = Boolean.parseBoolean(args[2]);
 
     // prepare variables for decision evaluation
     VariableMap variables = Variables
-      .putValue("temperature", temperature)
-      .putValue("dayType", typeOfDay);
+      .putValue("season", season)
+      .putValue("guestCount", guestCount)
+      .putValue("guestsWithChildren", guestsWithChildren);
 
     return variables;
   }
@@ -84,26 +95,15 @@ public class DishDecider {
     // create a new default DMN engine
     DmnEngine dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
 
-    try {
-      DmnDecision decision = dmnEngine.parseDecision("Dish", inputStream);
+    DmnDecision decision = dmnEngine.parseDecision("beverages", inputStream);
 
-      // evaluate decision
-      DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
+    // evaluate decision
+    DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
 
-      // print result
-      String desiredDish = result.getSingleResult().getSingleEntry();
-      System.out.println("Dish Decision:\n\tI would recommend to serve: " + desiredDish);
-
-    }
-    finally {
-      try {
-        inputStream.close();
-      }
-      catch (IOException e) {
-        System.err.println("Could not close stream: "+e.getMessage());
-      }
-    }
+    // print result
+    List<String> beverages = result.collectEntries("beverages");
+    System.out.println("Beverages:\n\tI would recommend to serve: " + beverages);
   }
 
-  
+
 }

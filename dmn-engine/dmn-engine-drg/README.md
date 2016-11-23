@@ -7,11 +7,13 @@ used to execute a decision loaded from the classpath.
 
 ## The used Decision Requirements Graph
 
-The example uses a DRG from the [DRG reference] to decide which dish should be served to our guests for dinner:
+The example uses a DRG from the [DRG reference] to decide which beverages should be served to our guests for dinner:
 
+![Dinner Decisions]
+![Beverages Decision]
 ![Dish Decision]
 
-You can find the corresponding DMN XML file [drg-dish-decision.dmn11.xml] in the
+You can find the corresponding DMN XML file [dinnerDecisions.dmn] in the
 resources.
 
 ## Code Walkthrough
@@ -23,45 +25,49 @@ Refer [dmn-engine-java-main-method] example for Maven dependencies  and bootstra
 Once the DMN Engine is bootstrapped, it can be used to first parse a decision loaded from the classpath:
 
 ```java
-InputStream inputStream = DishDecider.class.getResourceAsStream("drg-dish-decision.dmn11.xml");
+InputStream inputStream = DishDecider.class.getResourceAsStream("dinnerDecisions.dmn");
 
-DmnDecision decision = dmnEngine.parseDecision("Dish", inputStream);
+DmnDecision decision = dmnEngine.parseDecision("beverages", inputStream);
 
 ```
 
 The parsed DmnDecsion can be cached and executed multiple times.
 
-In order to execute it, it needs to be passed to the `evaluateDecisionTable` method:
+In order to execute it, it needs to be passed to the `evaluateDecision` method:
 
 ```java
-DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
+DmnDecisionResult result = dmnEngine.evaluateDecision(decision, variables);
 ```
 
-The File [DishDecider.java] contains the complete source code including variable handling and parsing
+The File [BeveragesDecider.java] contains the complete source code including variable handling and parsing
 of the command line arguments.
 
 ### Writing Tests with JUnit
 
 > Note: You can read more about decision testing in our [User Guide].
 
-[DrgDecisionDishTest.java] uses the `DmnEngineRule` JUnit Rule to create a default DMN engine and than test different
+[DrgDecisionTest.java] uses the `DmnEngineRule` JUnit Rule to create a default DMN engine and than test different
 inputs on the decision:
 
 ```java
 @Test
-public void shouldServeGuestsOnAWeekDayWithTemperatureOfTenDegree() {
-  VariableMap variables = Variables
-    .putValue("temperature", 8)
-    .putValue("dayType", "Weekday");
-   
-  DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
-  assertEquals("Spareribs", result.getSingleResult().getSingleEntry());
-}
+  public void shouldServeGuiness() {
+    VariableMap variables = Variables
+      .putValue("season", "Spring")
+      .putValue("guestCount", 10)
+      .putValue("guestsWithChildren", false);
+
+    DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);
+
+    assertThat(result.collectEntries("beverages"))
+      .hasSize(2)
+      .contains("Guiness", "Water");
+  }
 ```
 
 ## Running the Example
 
-The example expects two arguments. First, the current temperature (in number) and second the type of day (Weekday, Holiday, Weekend).
+The example expects three arguments. First, the current season, second the number of guests (integer) and third if guests has children (boolean).
 
 To run it you can either use maven:
 
@@ -70,19 +76,19 @@ mvn compile exec:java
 ```
 
 This will compile the project and execute it with the arguments
-`35` for the current temperature and `Weekday` for the type of day.
+`Spring` for the current season, `10` for the guest count and `false` for guests with children.
 
 This should produce an output which contains:
 
 ```
-Dish Decision:
-	I would recommend to serve: Beans salad
+Beverages:
+	I would recommend to serve: [Guiness, Water]
 ```
 
-You can specify other arguments with maven. For example for your cold holiday party :
+You can specify other arguments with maven. For example:
 
 ```
-mvn compile exec:java -Dexec.args="2 Holiday"
+mvn compile exec:java -Dexec.args="Winter 7 true"
 ```
 
 You can also create a executable Java jar file with:
@@ -91,22 +97,24 @@ You can also create a executable Java jar file with:
 mvn clean package
 ```
 
-This will produce a `DishDecider.jar` file in the `target` folder. You can
+This will produce a `BeveragesDecider.jar` file in the `target` folder. You can
 than call it like any other jar file:
 
 ```
-java -jar target/DishDecider.jar 25 Weekend
+java -jar target/BeveragesDecider.jar Spring 10 false
 
-Dish Decision:
-        I would recommend to serve: Steak
+Beverages:
+        I would recommend to serve: [Guniess, Water]
 ```
 
 
 [Camunda DMN engine]: https://docs.camunda.org/manual/user-guide/dmn-engine/
 [DRG reference]: http://stage.docs.camunda.org/manual/develop/reference/dmn11/drg/
-[Dish Decision]: src/main/resources/org/camunda/bpm/example/drg/dish-decision.png
-[drg-dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/drg/drg-dish-decision.dmn11.xml
-[DishDecider.java]: src/main/java/org/camunda/bpm/example/drg/DishDecider.java
+[Dinner Decisions]: src/main/resources/org/camunda/bpm/example/drg/dinnerDecisions.png
+[Beverages Decision]: src/main/resources/org/camunda/bpm/example/drg/beverages.png
+[Dish Decision]: src/main/resources/org/camunda/bpm/example/drg/dish.png
+[dinnerDecisions.xml]: src/main/resources/org/camunda/bpm/example/drg/dinnerDecisions.dmn
+[BeveragesDecider.java]: src/main/java/org/camunda/bpm/example/drg/BeveragesDecider.java
 [User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
-[DrgDecisionDishTest.java]: src/test/java/org/camunda/bpm/example/drg/DrgDecisionDishTest.java
+[DrgDecisionTest.java]: src/test/java/org/camunda/bpm/example/drg/DrgDecisionTest.java
 [dmn-engine-java-main-method]: ../dmn-engine-java-main-method/ 
