@@ -1,3 +1,5 @@
+**Note: This Example might not work due to irregularities of the called web service. The called SOAP service [Get Weather Forecast](http://www.webservicex.net/globalweather.asmx?op=GetWeather) is known to be down on a regular basis.**
+
 # SOAP Service Task
 
 This quickstart demonstrates how to use the built-in SOAP HTTP connector for invoking SOAP services in camunda BPM. The example is *classless*, relying entirely on scripting and expression language. It makes use of the camunda Connect and the camunda Spin extensions.

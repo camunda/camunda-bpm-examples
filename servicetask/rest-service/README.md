@@ -93,7 +93,7 @@ The task *Get holiday* makes use of Connect's HTTP connector. It does the follow
 1. Invoke a REST web service using the HTTP connector provided by camunda Connect.
 2. Extract a property indicating whether a day is a holiday from the service's JSON response using Javascript and camunda Spin. This variable is used on the follow-up exclusive gateway.
 
-In detail, the task is declared as follows (see the [process model][3]):
+In general, the task is declared as follows (see the [process model][3]):
 
 ```xml
 <bpmn2:serviceTask id="ServiceTask_1" name="Get holiday">
@@ -139,11 +139,12 @@ The task uses a `camunda:connector` extension element. It means that a connector
 
 The `connector-id` element identifies the HTTP connector. The `inputOutput` element defines a mapping of values to connector parameters. For example, the `url` parameter identifies the REST endpoint to be called.
 
-The *outputParameter* element maps the response obtained by the connector to a variable `isHoliday`. The mapping makes use of camunda Spin to extract an element from the returned JSON and is implemented in a [Javascript file][4].
+The *outputParameter* element maps the response obtained by the connector to a variable `isHoliday`. The mapping makes use of camunda Spin to extract an element from the returned JSON and is implemented in a [Javascript file][6].
 
 [1]: src/main/resources/invokeRestService.png
 [2]: src/test/java/org/camunda/bpm/example/servicetask/rest/ServiceTaskRestTest.java
 [3]: src/main/resources/invokeRestService.bpmn
-[4]: src/main/resources/parseHoliday.js
+[4]: pom.xml#L20-L84
 [5]: src/test/resources/camunda.cfg.xml
+[6]: src/main/resources/parseHoliday.js
 

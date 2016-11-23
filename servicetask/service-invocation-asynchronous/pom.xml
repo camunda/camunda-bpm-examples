@@ -8,7 +8,7 @@
   <name>Service Invocation - Asynchronous</name>
 
   <properties>
-    <version.camunda>7.5.0</version.camunda>
+    <version.camunda>7.6.0</version.camunda>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
