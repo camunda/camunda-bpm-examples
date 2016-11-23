@@ -17,7 +17,7 @@ BPMN model API, composed of the following elements:
 
 ## Invoice example process
 
-The process we want to create is the invoice process from the [camunda-bpm-platform/examples][1].
+The process we want to create is similar to the invoice process from the [camunda-bpm-platform/examples][1].
 We aim to file it again with the executable process definition of the depicted invoice process.
 
 ![Invoice Process][3]

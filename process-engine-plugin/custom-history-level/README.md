@@ -15,7 +15,7 @@ This examples adds two history levels:
 
 **Note**: This is example code and not intended to be used as is in a production setting (especially the `per-process` history level).
 It rather highlights the mechanics on how a custom history level can be implemented.
-If you are interested in these feature, make sure you understand the code and its limitations or ask for help on the camunda forums.
+If you are interested in these feature, make sure you understand the code and its limitations or ask for help in the [Camunda forum](https://forum.camunda.org/).
 
 ## Show me the important parts!
 
