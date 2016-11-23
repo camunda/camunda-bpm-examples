@@ -7,7 +7,7 @@ used to execute a decision loaded from the classpath.
 
 ## The used Decision Requirements Graph
 
-The example uses the DRG from the [reference guide] to decide which beverages should be served to our guests for dinner:
+The example uses the DRG from the [Reference Guide] to decide which beverages should be served to our guests for dinner:
 
 ![Dinner Decisions]
 
@@ -116,12 +116,12 @@ Beverages:
 
 
 [Camunda DMN engine]: https://docs.camunda.org/manual/user-guide/dmn-engine/
-[reference guide]: http://stage.docs.camunda.org/manual/develop/reference/dmn11/drg/
+[Reference Guide]: http://docs.camunda.org/manual/reference/dmn11/drg/
+[User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
 [Dinner Decisions]: src/main/resources/org/camunda/bpm/example/drg/dinnerDecisions.png
 [Beverages Decision]: src/main/resources/org/camunda/bpm/example/drg/beverages.png
 [Dish Decision]: src/main/resources/org/camunda/bpm/example/drg/dish.png
 [dinnerDecisions.dmn]: src/main/resources/org/camunda/bpm/example/drg/dinnerDecisions.dmn
 [BeveragesDecider.java]: src/main/java/org/camunda/bpm/example/drg/BeveragesDecider.java
-[User Guide]: https://docs.camunda.org/manual/user-guide/dmn-engine/testing/
 [DrgDecisionTest.java]: src/test/java/org/camunda/bpm/example/drg/DrgDecisionTest.java
 [dmn-engine-java-main-method]: ../dmn-engine-java-main-method/ 
