@@ -14,6 +14,7 @@
     <module>cockpit/cockpit-failed-jobs-plugin</module>
     <module>cycle/camunda-cycle-connector-example</module>
     <module>deployment/spring-servlet-pa-jboss</module>
+    <module>deployment/spring-servlet-pa-tomcat</module>
     <module>deployment/servlet-pa</module>
     <module>deployment/spring-jboss-non-pa</module>
     <module>deployment/embedded-spring-rest</module>

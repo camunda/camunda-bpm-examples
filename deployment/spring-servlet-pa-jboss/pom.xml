@@ -122,7 +122,7 @@
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.camunda.bpm.jboss</groupId>
-                      <artifactId>camunda-bpm-jboss</artifactId>
+                      <artifactId>camunda -jboss</artifactId>
                       <version>${camunda.version}</version>
                       <type>tar.gz</type>
                       <overWrite>true</overWrite>

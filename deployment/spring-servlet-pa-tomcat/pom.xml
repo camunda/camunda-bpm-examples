@@ -1,0 +1,189 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.camunda.bpm.quickstart</groupId>
+  <artifactId>camunda-quickstart-spring-servlet-pa-tomcat</artifactId>
+  <packaging>war</packaging>
+  <name>camunda BPM - Quickstarts - Spring Servlet Process Application For Tomcat</name>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <camunda.version>7.6.0</camunda.version>
+    <spring.version>3.1.2.RELEASE</spring.version>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-spring</artifactId>
+      <version>${camunda.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.3.168</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.uuid</groupId>
+      <artifactId>java-uuid-generator</artifactId>
+      <version>3.1.2</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>2.4.5</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>camunda-bpm-nexus</id>
+      <name>camunda-bpm-nexus</name>
+      <url>https://app.camunda.com/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
+
+  <build>
+
+    <plugins>
+
+      <!-- prepare final versions of tomcat configuration file with paths filtering -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <!-- here the phase you need -->
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/tomcatconf</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/tomcatconf</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+
+      <!-- prepare deployment folder that will be used by web container. (see server.xml:150)  -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>war</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/to_deploy/</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+
+      <!-- run embedded tomcat using pre-configured server.xml -->
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>tomcat-run</id>
+            <goals>
+              <goal>run-war</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <serverXml>${project.build.directory}/tomcatconf/server.xml</serverXml>
+              <fork>true</fork>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>tomcat-shutdown</id>
+            <goals>
+              <goal>shutdown</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+
+        <!-- declare root dependencies of tomcat web container, required by engine (NOTE: those are not webapp libs) -->
+        <dependencies>
+          <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-engine-spring</artifactId>
+            <version>${camunda.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.168</version>
+          </dependency>
+
+          <dependency>
+            <groupId>com.fasterxml.uuid</groupId>
+            <artifactId>java-uuid-generator</artifactId>
+            <version>3.1.2</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.5</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+
+    </plugins>
+  </build>
+
+
+</project>
