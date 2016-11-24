@@ -2,6 +2,7 @@ package org.camunda.bpm.example.parselistener;
 
 import java.util.List;
 
+import org.camunda.bpm.application.impl.event.ProcessApplicationEventParseListener;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.camunda.bpm.engine.impl.bpmn.parser.AbstractBpmnParseListener;
 import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
@@ -30,7 +31,7 @@ public class ProgressLoggingSupportParseListener extends AbstractBpmnParseListen
           String value = property.attribute("value");
           if("progress".equals(name)) {
             ProgressLoggingExecutionListener progressLoggingExecutionListener = new ProgressLoggingExecutionListener(value);
-            activity.addExecutionListener(ExecutionListener.EVENTNAME_END, progressLoggingExecutionListener);
+            activity.addListener(ExecutionListener.EVENTNAME_END, progressLoggingExecutionListener);
           }
         }
       }

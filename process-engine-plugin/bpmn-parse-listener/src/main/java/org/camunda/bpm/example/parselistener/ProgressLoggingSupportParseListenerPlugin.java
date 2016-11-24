@@ -18,10 +18,10 @@ public class ProgressLoggingSupportParseListenerPlugin extends AbstractProcessEn
 
   @Override
   public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-    List<BpmnParseListener> preParseListeners = processEngineConfiguration.getPreParseListeners();
+    List<BpmnParseListener> preParseListeners = processEngineConfiguration.getCustomPreBPMNParseListeners();
     if(preParseListeners == null) {
       preParseListeners = new ArrayList<BpmnParseListener>();
-      processEngineConfiguration.setPreParseListeners(preParseListeners);
+      processEngineConfiguration.setCustomPreBPMNParseListeners(preParseListeners);
     }
     preParseListeners.add(new ProgressLoggingSupportParseListener());
   }
