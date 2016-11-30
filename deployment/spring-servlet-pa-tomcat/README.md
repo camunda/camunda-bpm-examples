@@ -45,12 +45,14 @@ There are couple important parts customized in this example:
   1. all dependencies of web application itself are configured wit *provided* scope. As they are deployed into root
     classloader of web container
 
+    ```xml
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-spring</artifactId>
       <version>${camunda.version}</version>
       <scope>provided</scope>
     </dependency>
+    ```
 
   2. we prepare tomcat configuration, that is going to be used by container, by filtering variables in _server.xml_
 
