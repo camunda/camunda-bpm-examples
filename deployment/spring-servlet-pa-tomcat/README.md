@@ -42,7 +42,7 @@ Through the ```META-INF/processes.xml```, we can define process archives and add
 
 There are couple important parts customized in this example:
 
-    1. all dependencies of web application itself are configured wit *provided* scope. As they are deployed into root
+  1. all dependencies of web application itself are configured wit *provided* scope. As they are deployed into root
     classloader of web container
 
     <dependency>
@@ -52,7 +52,7 @@ There are couple important parts customized in this example:
       <scope>provided</scope>
     </dependency>
 
-    2. we prepare tomcat configuration, that is going to be used by container, by filtering variables in _server.xml_
+  2. we prepare tomcat configuration, that is going to be used by container, by filtering variables in _server.xml_
 
     ```xml
     <Resource name="jdbc/ProcessEngine"
@@ -72,7 +72,7 @@ There are couple important parts customized in this example:
                 unpackWARs="true" autoDeploy="true">
     ```
 
-    3. we run embedded tomcat with our pre-configured _server.xml_
+  3. we run embedded tomcat with our pre-configured _server.xml_
 
 
 ## How to use it?
@@ -83,7 +83,7 @@ There are couple important parts customized in this example:
 mvn clean verify
 ```
 
-    will start embedded tomcat using specified server.xml file, copy _bpm-platform.xml_ into tomcat configuration folder.
+  will start embedded tomcat using specified server.xml file, copy _bpm-platform.xml_ into tomcat configuration folder.
 
   2. Watch out for this console log:
 
