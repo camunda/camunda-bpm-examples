@@ -42,11 +42,6 @@
         <type>pom</type>
       </dependency>
 
-      <dependency>
-        <groupId>org.camunda.bpm.extension.springboot.example</groupId>
-        <artifactId>camunda-bpm-spring-boot-starter-example-webapp-ee-webjar</artifactId>
-        <version>${project.version}</version>
-      </dependency>
     </dependencies>
 
   </dependencyManagement>
