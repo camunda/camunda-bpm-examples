@@ -11,4 +11,5 @@ public class EnterpriseWebappExampleApplication {
   public static void main(String... args) {
     SpringApplication.run(EnterpriseWebappExampleApplication.class, args);
   }
+
 }

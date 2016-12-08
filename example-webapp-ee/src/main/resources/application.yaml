@@ -1,5 +1,9 @@
 camunda:
   bpm:
+    filter:
+      create: All
+    job-execution:
+      core-pool-size: 10
     admin-user:
       id: kermit
       password: demodemo

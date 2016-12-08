@@ -1,7 +1,0 @@
-# Enterprise WebJar
-
-INFO: This is going to be obsolete once the new webjar-style using the maven-plugin is in place.
-
-
-We create a custom enterprise webjar following this guide: https://github.com/camunda/camunda-consulting/tree/master/snippets/camunda-webapp-webjar-ee
-

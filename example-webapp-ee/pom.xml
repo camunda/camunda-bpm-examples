@@ -10,16 +10,10 @@
   </parent>
 
   <groupId>org.camunda.bpm.extension.springboot.example</groupId>
-  <artifactId>camunda-bpm-spring-boot-starter-example-webapp-ee-root</artifactId>
-  <packaging>pom</packaging>
-
-  <modules>
-    <module>webjar</module>
-    <module>app</module>
-  </modules>
+  <artifactId>camunda-bpm-spring-boot-starter-example-webapp-ee</artifactId>
 
   <properties>
-    <camunda.version>7.5.6-ee</camunda.version>
+    <camunda.version>7.6.0-ee</camunda.version>
   </properties>
 
   <dependencyManagement>
@@ -56,6 +50,57 @@
     </dependencies>
 
   </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.camunda.bpm.extension.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-webapp-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.webapp</groupId>
+      <artifactId>camunda-webapp-ee-plugins</artifactId>
+      <version>${camunda.version}</version>
+      <type>jar</type>
+      <classifier>classes</classifier>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <layout>ZIP</layout>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.camunda.bpm.extension.springboot.maven</groupId>
+        <artifactId>camunda-bpm-spring-boot-webjar-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <id>create-webjar</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <repositories>
     <repository>
