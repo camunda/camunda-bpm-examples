@@ -78,11 +78,12 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 ### Process Engine Plugin Examples
 
-| Name                                                                       | Container            |  Keywords                                   |
-| ---------------------------------------------------------------------------|----------------------|---------------------------------------------|
-| [BPMN Parse Listener](process-engine-plugin/bpmn-parse-listener)           | Unit Test            | Process Engine Plugin, Bpmn Parse Listener  |
-| [Custom History Level](process-engine-plugin/custom-history-level)         | Unit Test            | Process Engine Plugin, Custom History Level |
-| [Command Interceptor - Blocking](process-engine-plugin/command-interceptor-blocking) | Unit Test  | Maintenance, Interceptor, Configuration     |
+| Name                                                                                        | Container            |  Keywords                                   |
+| --------------------------------------------------------------------------------------------|----------------------|---------------------------------------------|
+| [BPMN Parse Listener](process-engine-plugin/bpmn-parse-listener)                            | Unit Test            | Process Engine Plugin, Bpmn Parse Listener  |
+| [BPMN Parse Listener on User Task](process-engine-plugin/bpmn-parse-listener-on-user-task)  | Unit Test            | Process Engine Plugin, Bpmn Parse Listener  |
+| [Custom History Level](process-engine-plugin/custom-history-level)                          | Unit Test            | Process Engine Plugin, Custom History Level |
+| [Command Interceptor - Blocking](process-engine-plugin/command-interceptor-blocking)        | Unit Test            | Maintenance, Interceptor, Configuration     |
 
 ### Bpmn 2.0 Model API Examples
 
