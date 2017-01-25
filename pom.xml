@@ -47,6 +47,7 @@
     <module>usertask/task-form-embedded-json</module>
     <module>usertask/task-form-external-jsf</module>
     <module>dmn-engine/dmn-engine-java-main-method</module>
+    <module>authentication/basic</module>
   </modules>
 
 </project>

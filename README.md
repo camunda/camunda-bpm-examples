@@ -170,7 +170,11 @@ If you clone this repository, use the checkout commands to access the sources fo
 | ---------------------------------------------------------------------------------------------|---------------------------------------|-------------------------|
 | [Migration on Deployment of New Process Version](migration/migrate-on-deployment)            | Application Server with Shared Engine | BPMN, Migration         |
 
+### Authentication
 
+| Name                                                    | Container                                                                  | Keywords                |
+| --------------------------------------------------------|----------------------------------------------------------------------------|-------------------------|
+| [Basic Authentication](authentication/basic)            | Spring boot with embedded engine, REST API and Basic Authentication filter |  Authentication         |
 
 ### Contribute!
 
