@@ -216,6 +216,8 @@ public class CamundaSpringBootExampleApplication extends SpringBootServletInitia
 
 you can either build it with maven and see that tests are executed successfully, or you
 can run `CamundaSpringBootExampleApplication` class as a Java application, and try to open
-following url in your browser [http://localhost:8080/engine/default/user]. Which will request
+following url in your browser [http://localhost:8080/engine/default/user][1]. Which will request
 username and password from you. If you use `demo\demo` as your authentication data, you should
 see information of demo user in JSON format printed to your screen. 
+
+[1]:http://localhost:8080/engine/default/user
