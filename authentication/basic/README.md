@@ -14,7 +14,7 @@ available as well as basic authentication filter.
 
 ## Show me the important parts!
 
-Add basic spring `applicationContext.xml` with your engine configuration 
+Add basic spring `applicationContext.xml` with your engine configuration.
 
 ```xml
   <bean id="processEngineConfiguration"
@@ -85,8 +85,10 @@ public class RestProcessEngineProvider implements ProcessEngineProvider {
 ```
 
 Add a file named:
+
     `src/main/resources/META-INF/services/org.camunda.bpm.engine.rest.spi.ProcessEngineProvider`
 which contains the name of the provider:
+
     `org.camunda.bpm.example.authentication.rest.RestProcessEngineProvider`
     
 Add maven dependencies: 
@@ -145,7 +147,7 @@ Add maven dependencies:
 ```
 
 Configure your spring boot application to instantiate all required filters and import engine 
-beans from separate xml based context file
+beans from separate xml based context file.
 
 ```java
 @SpringBootApplication
@@ -207,7 +209,7 @@ public class CamundaSpringBootExampleApplication extends SpringBootServletInitia
     
 ## How to use it?
 
-you can either build it with maven and see that tests are executed successfully, or you
+You can either build it with maven and see that tests are executed successfully, or you
 can run `CamundaSpringBootExampleApplication` class as a Java application, and try to open
 following url in your browser [http://localhost:8080/engine/default/user][1]. Which will request
 username and password from you. If you use `demo\demo` as your authentication data, you should
