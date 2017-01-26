@@ -14,6 +14,8 @@ available as well as basic authentication filter.
 
 ## Show me the important parts!
 
+Add basic spring `applicationContext.xml` with your engine configuration 
+
 ```xml
   <bean id="processEngineConfiguration"
     class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
@@ -87,6 +89,7 @@ Add a file named:
 which contains the name of the provider:
     `org.camunda.bpm.example.authentication.rest.RestProcessEngineProvider`
     
+Add maven dependencies: 
 ```xml
 <!-- spring boot -->
 <dependency>
@@ -141,7 +144,7 @@ which contains the name of the provider:
 </dependency>
 ```
 
-configure your spring boot application to instantiate all required filters and import engine 
+Configure your spring boot application to instantiate all required filters and import engine 
 beans from separate xml based context file
 
 ```java
@@ -173,16 +176,6 @@ public class CamundaSpringBootExampleApplication extends SpringBootServletInitia
 
 	private static SpringApplicationBuilder configureApplication(SpringApplicationBuilder builder) {
 		return builder.sources(CamundaSpringBootExampleApplication.class).bannerMode(Banner.Mode.OFF);
-	}
-
-	@Bean
-	public FilterRegistrationBean cacheControlFilter() {
-		FilterRegistrationBean registration = new FilterRegistrationBean();
-		Filter myFilter = new CacheControlFilter();
-		registration.setFilter(myFilter);
-		registration.addUrlPatterns("/*");
-		registration.setName("CacheControlFilter");
-		return registration;
 	}
 
 	@Bean

@@ -50,16 +50,6 @@ public class CamundaSpringBootExampleApplication extends SpringBootServletInitia
 	}
 
 	@Bean
-	public FilterRegistrationBean cacheControlFilter() {
-		FilterRegistrationBean registration = new FilterRegistrationBean();
-		Filter myFilter = new CacheControlFilter();
-		registration.setFilter(myFilter);
-		registration.addUrlPatterns("/*");
-		registration.setName("CacheControlFilter");
-		return registration;
-	}
-
-	@Bean
 	public FilterRegistrationBean authenticationFilter() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		Filter myFilter = new ProcessEngineAuthenticationFilter();
