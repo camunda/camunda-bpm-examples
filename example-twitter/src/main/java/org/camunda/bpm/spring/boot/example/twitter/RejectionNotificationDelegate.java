@@ -4,6 +4,7 @@ import javax.inject.Named;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.stereotype.Service;
 
 /**
  * Rejection is just done via a sysout since the camunda BPM platform does not support the Mail Task of Activiti
@@ -11,7 +12,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
  *
  * Use your own Mail mechanisms for this or use your application server features.
  */
-@Named("emailAdapter")
+@Service("emailAdapter")
 public class RejectionNotificationDelegate implements JavaDelegate {
 
   public void execute(DelegateExecution execution) throws Exception {

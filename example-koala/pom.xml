@@ -39,6 +39,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.camunda.bpm.extension.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>

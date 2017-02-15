@@ -2,6 +2,7 @@ package org.camunda.bpm.spring.boot.example.twitter;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Named;
 
@@ -9,7 +10,7 @@ import javax.inject.Named;
  * Use if you don't want to access Twitter but just to do some sysout
  * @author ruecker
  */
-@Named("tweetAdapter")
+@Service("tweetAdapter")
 public class TweetContentOfflineDelegate implements JavaDelegate {
 
   public void execute(DelegateExecution execution) throws Exception {
