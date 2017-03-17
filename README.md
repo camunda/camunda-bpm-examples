@@ -75,6 +75,8 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)                      | JBoss AS 7            | Spring, Jndi, War         |
 | [Process Application - Spring Boot](deployment/spring-boot)                                   | Spring Boot           | Spring                    |
 
+Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/7 to run/compile the project. Otherwise the JBoss 7 will not start, just hang. This is a JBoss 7.2 issue and does not affect JBoss Wildfly.
+
 
 ### Process Engine Plugin Examples
 

@@ -49,8 +49,9 @@ Additionally, you have to package the camunda-engine-spring module as a maven co
 
 ## How to use it?
 
-  1. Build it with maven, it will download the camunda BPM JBoss AS 7 distribution and execute the included Arquillian test.
-  2. Watch out for this console log:
+  1. Make sure you use **JDK 6/7** otherwise the JBoss AS 7 won't start.
+  2. Build it with maven, it will download the camunda BPM JBoss AS 7 distribution and execute the included Arquillian test.
+  3. Watch out for this console log:
 
 ```bash
 Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.jboss.servlet.SpringServletProcessApplication
