@@ -18,13 +18,13 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class SimpleApplicationTest {
 
   @Rule
-  public Timeout timeout = Timeout.seconds(5);
+  public Timeout timeout = Timeout.seconds(15);
 
   @Autowired
   private SimpleApplication application;
 
   @Test
-  public void would_fail_if_process_not_completed_after_5_seconds() throws InterruptedException {
+  public void would_fail_if_process_not_completed_after_15_seconds() throws InterruptedException {
     while (!application.contextClosed && !application.isProcessInstanceFinished()) {
       Thread.sleep(500L);
     }
