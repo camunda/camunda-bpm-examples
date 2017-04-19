@@ -1,3 +1,3 @@
 camunda:
   bpm:
-    auto-deployment-enabled: false
+    auto-deployment-enabled: true
