@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.camunda.bpm.extension.springboot.gradle:camunda-bpm-spring-boot-webjar-gradle-plugin:2.1.0-SNAPSHOT'
+        classpath 'org.camunda.bpm.extension.springboot.gradle:camunda-bpm-spring-boot-webjar-gradle-plugin:2.1.0'
     }
 }
 
@@ -36,7 +36,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom 'org.camunda.bpm.extension.springboot:camunda-bpm-spring-boot-starter-bom:2.0.0'
+        mavenBom 'org.camunda.bpm.extension.springboot:camunda-bpm-spring-boot-starter-bom:2.1.0'
     }
     imports {
         mavenBom 'org.springframework.boot:spring-boot-dependencies:1.4.4.RELEASE'
