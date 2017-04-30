@@ -55,22 +55,13 @@
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>findbugs</artifactId>
-      <version>3.0.0</version>
-    </dependency>
-    <dependency>
       <groupId>com.netflix.hystrix</groupId>
       <artifactId>hystrix-javanica</artifactId>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.camunda.bpm.extension.springboot</groupId>
