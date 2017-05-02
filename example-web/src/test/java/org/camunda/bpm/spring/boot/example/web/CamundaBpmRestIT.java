@@ -1,7 +1,5 @@
 package org.camunda.bpm.spring.boot.example.web;
 
-import static org.junit.Assert.assertEquals;
-
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
 import org.camunda.bpm.spring.boot.example.web.CamundaBpmRestIT.RestConfig;
 import org.junit.Test;
@@ -15,10 +13,14 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { RestApplication.class, RestConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 public class CamundaBpmRestIT {
 
   @Autowired
