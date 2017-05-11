@@ -1,4 +1,4 @@
-# Spring Servlet Process Application (using enbedded Tomcat 7)
+# Spring Servlet Process Application (using embedded Tomcat 7)
 
 This example demonstrates how to deploy a spring powered web application which
 
@@ -45,7 +45,7 @@ There are couple important parts customized in this example:
   1. all dependencies of web application itself are configured wit *provided* scope. As they are deployed into root
     classloader of web container
 
-    ```xml
+    ```
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-spring</artifactId>
@@ -56,7 +56,7 @@ There are couple important parts customized in this example:
 
   2. we prepare tomcat configuration, that is going to be used by container, by filtering variables in _server.xml_
 
-    ```xml
+    ```
     <Resource name="jdbc/ProcessEngine"
                   auth="Container"
                   type="javax.sql.DataSource"
