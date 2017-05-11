@@ -16,14 +16,17 @@ advantages, including a managed container shared process engine paired with the 
 We create a process application class which extends the ServletProcessApplication and annotate it with @ProcessApplication, so
 the camunda BPM platform can pick it up and register the process application without any further action:
 
-    @ProcessApplication
+```java
+    @ProcessApplication
     public class SpringServletProcessApplication extends ServletProcessApplication {
       ...
-    }
+    }
+```
 
 Through the ```META-INF/processes.xml```, we can define process archives and additional options, like creating new engines when deploying the process application:
 
-    <?xml version="1.0" encoding="UTF-8"?>
+```xml
+    <?xml version="1.0" encoding="UTF-8"?>
     <process-application
         xmlns="http://www.camunda.org/schema/1.0/ProcessApplication"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -36,7 +39,8 @@ Through the ```META-INF/processes.xml```, we can define process archives and add
 
       </process-archive>
 
-    </process-application>
+    </process-application>
+```
 
 ### Maven dependencies
 
@@ -45,18 +49,18 @@ There are couple important parts customized in this example:
   1. all dependencies of web application itself are configured wit *provided* scope. As they are deployed into root
     classloader of web container
 
-    ```
+```xml
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-spring</artifactId>
       <version>${camunda.version}</version>
       <scope>provided</scope>
     </dependency>
-    ```
+```
 
   2. we prepare tomcat configuration, that is going to be used by container, by filtering variables in _server.xml_
 
-    ```
+```xml
     <Resource name="jdbc/ProcessEngine"
                   auth="Container"
                   type="javax.sql.DataSource"
@@ -72,7 +76,7 @@ There are couple important parts customized in this example:
     ...
     <Host name="localhost"  appBase="${project.build.directory}/to_deploy"
                 unpackWARs="true" autoDeploy="true">
-    ```
+```
 
   3. we run embedded tomcat with our pre-configured _server.xml_
 
