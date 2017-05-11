@@ -50,5 +50,5 @@ Note that testing the transform without going through the process engine is also
 [skills]: src/main/resources/org/camunda/bpm/example/xqueryexample/example_skills.xml
 [names]: src/main/resources/org/camunda/bpm/example/xqueryexample/example_names.xml
 [output]: src/test/resources/expected_result.xml
-[unit tests]: src/test/java/org/camunda/bpm/example/xqueryexample/XQueryExampleTest.java
+[unit tests]: src/test/java/org/camunda/bpm/example/queryexample/XQueryExampleTest.java
 

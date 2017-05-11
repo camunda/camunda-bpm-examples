@@ -19,7 +19,7 @@
 	</parent>
 
 	<properties>
-    <version.camunda>7.6.0</version.camunda>
+    <version.camunda>7.7.0</version.camunda>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 	</properties>
@@ -39,28 +39,24 @@
 	<dependencies>
   
 		<!-- spring boot -->
-    
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
 
     <!-- camunda -->
-    
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-spring</artifactId>
     </dependency>
 
     <!-- database -->
-
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
 
     <!-- test -->
-    
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>

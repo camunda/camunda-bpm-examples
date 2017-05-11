@@ -8,44 +8,50 @@ This example demonstrates how to deploy a spring powered web application which
 
 ## Why is this example interesting?
 
-This example shows how to combine a @ProcessApplication class, a processes.xml and a spring applicationContext into a fully fledged process application with all its
+This example shows how to combine a @ProcessApplication class, a `processes.xml` and a spring applicationContext into a fully-fledged process application with all its
 advantages, including a managed container shared process engine paired with the power of spring beans inside your processes.
 
 ## Show me the important parts!
 
-We create a process application class which extends the ServletProcessApplication and annotate it with @ProcessApplication, so
+We create a process application class which extends the `ServletProcessApplication` and annotate it with @ProcessApplication, so
 the camunda BPM platform can pick it up and register the process application without any further action:
 
-    @ProcessApplication
-    public class SpringServletProcessApplication extends ServletProcessApplication {
-      ...
-    }
+```java
+@ProcessApplication
+public class SpringServletProcessApplication extends ServletProcessApplication {
+  ...
+}
+```
 
-Through the ```META-INF/processes.xml```, we can define process archives and additional options, like creating new engines when deploying the process application:
+Through the `META-INF/processes.xml`, we can define process archives and additional options, like creating new engines when deploying the process application:
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <process-application
-        xmlns="http://www.camunda.org/schema/1.0/ProcessApplication"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.camunda.org/schema/1.0/ProcessApplication http://www.camunda.org/schema/1.0/ProcessApplication ">
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<process-application
+    xmlns="http://www.camunda.org/schema/1.0/ProcessApplication"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.camunda.org/schema/1.0/ProcessApplication http://www.camunda.org/schema/1.0/ProcessApplication ">
 
-      <process-archive>
-        <properties>
-          <property name="isDeleteUponUndeploy">true</property>
-        </properties>
+  <process-archive>
+    <properties>
+      <property name="isDeleteUponUndeploy">true</property>
+    </properties>
 
-      </process-archive>
+  </process-archive>
 
-    </process-application>
+</process-application>
+```
 
 Additionally, you have to package the camunda-engine-spring module as a maven compile time dependency like:
 
-    <dependency>
-      <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-spring</artifactId>
-      <version>${camunda.version}</version>
-      <scope>compile</scope>
-    </dependency>
+```xml
+<dependency>
+  <groupId>org.camunda.bpm</groupId>
+  <artifactId>camunda-engine-spring</artifactId>
+  <version>${camunda.version}</version>
+  <scope>compile</scope>
+</dependency>
+```
 
 ## How to use it?
 

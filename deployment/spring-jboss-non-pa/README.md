@@ -10,7 +10,7 @@ This example demonstrates how to deploy a plain web application which
 
 The JBoss AS 7 extensions from camunda allow you to manage Process Engines as JBoss Services. However, if your application does not
 provide a @ProcessApplication class, JBoss AS 7 is not aware of the fact that your application uses the process engine. In that case,
-the following scenarious can occur:
+the following scenarios can occur:
 
   * At deployment, your application is deployed *before* the process engine is started, causing the deployment of your application to fail.
   * When the process engine is stopped, your application is not stopped but will likely fail at some point because the process engine is not available anymore.
@@ -36,20 +36,18 @@ In our case, we want to reference it from a Spring application context:
 
 ```xml
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
-    <!-- lookup the process engine from local JNDI -->
-    <bean name="processEngine" id="processEngine" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/processEngine/default" />
-    </bean>
-
-    <!-- inject it into a bean -->
-    <bean class="org.camunda.bpm.example.spring.jboss.ProcessEngineClient">
-        <property name="processEngine" ref="processEngine" />
-    </bean>
+  <!-- lookup the process engine from local JNDI -->
+  <bean name="processEngine" id="processEngine" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName" value="java:comp/env/processEngine/default" />
+  </bean>
+  
+  <!-- inject it into a bean -->
+  <bean class="org.camunda.bpm.example.spring.jboss.ProcessEngineClient">
+    <property name="processEngine" ref="processEngine" />
+  </bean>
 
 </beans>
 ```

@@ -19,7 +19,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.model.bpmn.instance.FlowElement;
 
 /**
- * This is an implementation of the {@link JavaDelegate} interface. Implemenations of that class can
+ * This is an implementation of the {@link JavaDelegate} interface. Implementations of that class can
  * be directly invoked by the process engine while executing a BPMN process.
  *
  * @author Daniel Meyer

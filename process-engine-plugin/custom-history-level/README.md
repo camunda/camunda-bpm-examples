@@ -1,4 +1,4 @@
-#Custom History Level
+# Custom History Level
 
 This example demonstrates how to register custom history levels by implementing a process engine plugin.
 
@@ -19,7 +19,7 @@ If you are interested in these feature, make sure you understand the code and it
 
 ## Show me the important parts!
 
-The process model is composed of one tasks which adds 4 variables to the process:
+The process model is composed of one task which adds 4 variables to the process:
 
 ![Process Model][1]
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>{@link ProcessEnginePlugin} enabling the progress logging support parse listener support.</p>
+ * <p>{@link ProcessEnginePlugin} enabling the assignee informing parse listener.</p>
  *
  */
 public class InformAssigneeParseListenerPlugin extends AbstractProcessEnginePlugin {

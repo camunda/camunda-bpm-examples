@@ -21,7 +21,6 @@
  -->
 <Server port="8005" shutdown="SHUTDOWN">
   <Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />
-
   <!-- Security listener. Documentation at /docs/config/listeners.html
   <Listener className="org.apache.catalina.security.SecurityListener" />
   -->

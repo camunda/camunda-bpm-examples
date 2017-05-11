@@ -24,6 +24,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [Deployment & Project Setup](#deployment--project-setup-examples)
 * [Process Engine Plugin](#process-engine-plugin-examples)
 * [Bpmn 2.0 Model API](#bpmn-20-model-api-examples)
+* [Cmmn 1.1 Model API Examples](#cmmn-10-model-api-examples)
 * [Cockpit](#cockpit-examples)
 * [Tasklist](#tasklist-examples)
 * [camunda Modeler (Eclipse)](#camunda-modeler-examples)
@@ -95,7 +96,7 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/
 | [Generate JSF forms](/bpmn-model-api/generate-jsf-form)                    | JavaEE Containers    | JSF, Usertask             |
 | [Parse BPMN model](/bpmn-model-api/parse-bpmn)                             | Unit Test            | BPMN                      |
 
-### Cmmn 1.0 Model API Examples
+### Cmmn 1.1 Model API Examples
 
 | Name                                                                                              | Container            | Keywords                  |
 | --------------------------------------------------------------------------------------------------|----------------------|---------------------------|

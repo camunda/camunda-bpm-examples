@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://www.camunda.org/schema/1.0/BpmPlatform http://www.camunda.org/schema/1.0/BpmPlatform ">
 
   <job-executor>
-    <job-acquisition name="default" />
+   <job-acquisition name="default" />
   </job-executor>
 
   <process-engine name="default">
@@ -17,7 +17,7 @@
       <property name="authorizationEnabled">true</property>
       <property name="jobExecutorDeploymentAware">true</property>
     </properties>
-    
+
   </process-engine>
 
 </bpm-platform>

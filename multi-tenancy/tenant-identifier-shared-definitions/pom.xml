@@ -4,10 +4,10 @@
   <groupId>org.camunda.bpm.example</groupId>
   <artifactId>camunda-example-multi-tenancy-tenant-identifier-shared-definitions</artifactId>
   <name>camunda BPM - Example - Multi Tenancy - Tenant Identifier - Shared Definitions</name>
-  <version>7.5.0-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.6.0</version.camunda>
+    <version.camunda>7.7.0</version.camunda>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

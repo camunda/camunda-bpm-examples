@@ -81,7 +81,7 @@ Also add the following Spring Boot plugin to build the JAR.
 
 Create the following Java Config class to bootstrap and configure the process engine.
 
-``` java
+```java
 @Configuration
 @Import( SpringProcessEngineServicesConfiguration.class )
 public class CamundaProcessEngineConfiguration {
@@ -137,7 +137,7 @@ public class CamundaProcessEngineConfiguration {
 
 In this configuration the data source and the history level of the process engine are configured by the `application.properties`. Add the following lines to use an In-Memory H2 database and `audit` history level.
 
-```
+```properties
 # data source config
 spring.datasource.url=jdbc:h2:mem:camunda
 spring.datasource.username=sa
@@ -157,7 +157,7 @@ Note that you can add even more configuration (e.g. for logging).
 
 Create an application class which is annotated with `SpringBootApplication` and implement the main method as follow:
 
-``` java
+```java
 @SpringBootApplication
 public class CamundaSpringBootExampleApplication {
 

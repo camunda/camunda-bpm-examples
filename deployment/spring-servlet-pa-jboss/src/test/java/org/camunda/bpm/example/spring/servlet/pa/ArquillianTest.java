@@ -87,7 +87,7 @@ public class ArquillianTest {
             // regular deployment descriptor
         .addAsResource("META-INF/processes.xml", "META-INF/processes.xml")
 
-            // web xml that bootstrapps spring
+            // web xml that bootstraps spring
         .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
 
             // spring application context & libs

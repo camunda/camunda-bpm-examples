@@ -113,13 +113,19 @@ Reference all required libraries in pom.xml:
 <dependency>
   <groupId>org.jboss.resteasy</groupId>
   <artifactId>resteasy-jaxrs</artifactId>
-  <version>3.0.2.Final</version>
+  <version>3.0.8.Final</version>
 </dependency>
 
 <dependency>
   <groupId>org.springframework</groupId>
   <artifactId>spring-web</artifactId>
   <version>${spring.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>com.h2database</groupId>
+  <artifactId>h2</artifactId>
+  <version>1.3.171</version>
 </dependency>
 ```
 
