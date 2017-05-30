@@ -1,8 +1,8 @@
 Jackson Annotation Example for WildFly
 ==========================================
 
-WildFly adds implicit to each new deployment, which uses JAX-RS annotations, the JAX-RS subsystem these includes Jackson dependencies (see [here](https://docs.jboss.org/author/display/WFLY8/Implicit+module+dependencies+for+deployments)).
-The version of the implicit added Jackson dependencies do not match with the version of the Jackson dependency,
+WildFly adds implicitly to each new deployment, which uses JAX-RS annotations, the JAX-RS subsystem that includes Jackson dependencies (see [here](https://docs.jboss.org/author/display/WFLY8/Implicit+module+dependencies+for+deployments)).
+The version of the implicitly added Jackson dependencies do not match with the version of the Jackson dependency,
 which is used by Camunda Spin. This leads to problems with the usage of variable serialization and the usage of Jackson annotations (like `@JsonIgnore` for example).
 
 This example demonstrates how to configure the own application together with WildFly to use Jackson annotations
