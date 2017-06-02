@@ -1,0 +1,21 @@
+spring.application.name: simpleApplication
+spring:
+  datasource:
+    url: jdbc:h2:mem:example-simple;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+camunda:
+  bpm:
+    application:
+      isDeleteUponUndeploy: false
+      isScanForProcessDefinitions: false
+      isDeployChangedOnly: true
+      isResumePreviousVersions: true
+      resumePreviousBy: a value
+    job-execution:
+      enabled: true
+    metrics:
+      enabled: false
+      db-reporter-activate: false
+
+
+#camunda.bpm.auto-deployment-enabled: false
+
