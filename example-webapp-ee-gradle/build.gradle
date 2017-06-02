@@ -12,7 +12,7 @@ buildscript {
 
 plugins {
     id "java"
-    id "org.springframework.boot" version "1.5.2.RELEASE"
+    id "org.springframework.boot" version "1.5.3.RELEASE"
     id "io.spring.dependency-management" version "1.0.1.RELEASE"
 }
 
@@ -27,8 +27,8 @@ repositories {
     mavenCentral()
     maven {
         credentials {
-            username camundaRepoUser
-            password camundaRepoPassword
+            username "camundaRepoUser"
+            password "camundaRepoPassword"
         }
         url 'https://app.camunda.com/nexus/content/repositories/camunda-bpm-ee'
     }
@@ -36,10 +36,10 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom 'org.camunda.bpm.extension.springboot:camunda-bpm-spring-boot-starter-bom:2.1.0'
+        mavenBom 'org.camunda.bpm.extension.springboot:camunda-bpm-spring-boot-starter-bom:2.1.2'
     }
     imports {
-        mavenBom 'org.springframework.boot:spring-boot-dependencies:1.4.4.RELEASE'
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:1.5.3.RELEASE'
     }
     imports {
         mavenBom 'org.camunda.bpm:camunda-bom:7.6.3-ee'
@@ -51,7 +51,7 @@ dependencies {
     compile 'org.camunda.bpm.webapp:camunda-webapp-ee-plugins:7.6.3-ee:classes'
     compile 'com.h2database:h2'
 
-    testCompile 'junit:junit:4.11'
+    testCompile 'org.camunda.bpm.extension.springboot:camunda-bpm-spring-boot-starter-test'
 }
 
 jar.dependsOn resolveCamundaEnterpriseWebjar
