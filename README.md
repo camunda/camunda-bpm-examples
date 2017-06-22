@@ -110,6 +110,7 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/
 | [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin                    |
 | [Failed Jobs Plugin](/cockpit/cockpit-failed-jobs-plugin)                  | Plugin                    |
 | [Javascript Only Plugin](/cockpit/js-only-plugin)                          | Plugin, Custom Script     |
+| [Request Interceptor](/cockpit/request-interceptor)                        | Custom Script             |
 
 ### Tasklist Examples
 
