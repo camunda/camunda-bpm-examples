@@ -13,7 +13,7 @@
   <artifactId>camunda-bpm-spring-boot-starter-example-webapp-ee</artifactId>
 
   <properties>
-    <camunda.version>7.6.4-ee</camunda.version>
+    <camunda.version>7.7.2-ee</camunda.version>
   </properties>
 
   <dependencyManagement>
