@@ -7,6 +7,8 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
+import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
+import org.camunda.bpm.spring.boot.starter.event.PreUndeployEvent;
 import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStoppedEvent;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.slf4j.Logger;
@@ -57,7 +59,20 @@ public class SimpleApplication implements CommandLineRunner {
   public void processApplicationStopped(ProcessApplicationStoppedEvent event) {
     logger.info("process application stopped!");
     processApplicationStopped = true;
+
+
   }
+
+  @EventListener
+  public void onPostDeploy(PostDeployEvent event) {
+    logger.info("postDeploy: {}", event);
+  }
+
+  @EventListener
+  public void onPreUndeploy(PreUndeployEvent event) {
+    logger.info("preUndeploy: {}", event);
+  }
+
 
   @Scheduled(fixedDelay = 1500L)
   public void exitApplicationWhenProcessIsFinished() {

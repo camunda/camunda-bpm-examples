@@ -12,7 +12,7 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStartedEvent;
+import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.camunda.bpm.spring.boot.starter.test.helper.AbstractProcessEngineRuleTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class ShowcaseTest extends AbstractProcessEngineRuleTest {
 
   @Test
   public void startAndFinishProcess() {
-    showcase.notify(mock(ProcessApplicationStartedEvent.class));
+    showcase.notify(mock(PostDeployEvent.class));
     final String processInstanceId = showcase.getProcessInstanceId();
 
     final Job job = jobQuery().active().processInstanceId(processInstanceId).singleResult();
