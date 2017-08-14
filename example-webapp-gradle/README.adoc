@@ -1,7 +1,0 @@
-# Example Webapp with Gradle
-
-This is an example project, to show how to setup a Camunda spring boot application with Gradle.
-
-It is designed for camunda community edition.
-
-Build from the command line with `./gradlew clean build` and run with `./gradlew bootRun`.

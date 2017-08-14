@@ -2,12 +2,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda.bpm.extension.springboot.project</groupId>
+    <groupId>org.camunda.bpm.springboot.project</groupId>
     <artifactId>camunda-bpm-spring-boot-starter-example-root</artifactId>
     <version>2.3.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.camunda.bpm.extension.springboot.example</groupId>
+  <groupId>org.camunda.bpm.springboot.example</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-example-cloud</artifactId>
 
   <properties>
@@ -31,13 +31,6 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <dependency>
-        <groupId>org.camunda.bpm.extension.springboot</groupId>
-        <artifactId>camunda-bpm-spring-boot-starter-bom</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -51,8 +44,9 @@
       <artifactId>spring-cloud-starter-eureka</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.camunda.bpm.extension.springboot</groupId>
+      <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.netflix.hystrix</groupId>
@@ -64,8 +58,9 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.camunda.bpm.extension.springboot</groupId>
+      <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

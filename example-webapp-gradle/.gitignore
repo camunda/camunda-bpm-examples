@@ -1,8 +1,0 @@
-build
-bin
-
-# Eclipse
-.classpath
-.project
-.gradle
-.settings
