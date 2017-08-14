@@ -6,14 +6,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>
 
-  <properties>
-    <java.version>1.8</java.version>
-  </properties>
-
-  <properties>
-    <java.version>1.8</java.version>
-  </properties>
-
   <modules>
     <module>bpmn-model-api/generate-process-fluent-api</module>
     <module>bpmn-model-api/generate-jsf-form</module>
@@ -37,7 +29,6 @@
     <module>process-engine-plugin/custom-history-level</module>
     <module>process-engine-plugin/bpmn-parse-listener</module>
     <module>process-engine-plugin/command-interceptor-blocking</module>
-    <module>process-engine-plugin/failed-job-retry-profile</module>
     <module>scripttask/xslt-scripttask</module>
     <module>scripttask/xquery-scripttask</module>
     <module>servicetask/service-invocation-asynchronous</module>
@@ -47,6 +38,16 @@
     <module>servicetask/soap-cxf-service</module>
     <module>spin/dataformat-configuration-global</module>
     <module>spin/dataformat-configuration-in-process-application</module>
+    <module>spring-boot-starter/example-autodeployment</module>
+    <module>spring-boot-starter/example-cloud</module>
+    <module>spring-boot-starter/example-koala</module>
+    <module>spring-boot-starter/example-simple</module>
+    <module>spring-boot-starter/example-simple-760</module>
+    <module>spring-boot-starter/example-twitter</module>
+    <module>spring-boot-starter/example-war</module>
+    <module>spring-boot-starter/example-web</module>
+    <module>spring-boot-starter/example-webapp</module>
+    <module>spring-boot-starter/example-webapp-ee</module>
     <module>startevent/message-start</module>
     <module>startevent/soap-cxf-server-start</module>
     <module>usertask/task-form-embedded</module>
