@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+                      http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="processEngineConfiguration"
+    class="org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
+
+    <property name="processEnginePlugins">
+      <list>
+        <bean class="org.camunda.bpm.example.FailedJobRetryProfilePlugin">
+          <property name="retryProfiles">
+            <map>
+              <entry key="CRM" value="R5/PT10M" />
+              <entry key="ERP" value="R7/PT5M" />
+            </map>
+          </property>
+        </bean>
+      </list>
+    </property>
+
+    <property name="enableExceptionsAfterUnhandledBpmnError" value="true" />
+
+  </bean>
+</beans>
