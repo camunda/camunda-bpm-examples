@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.camunda.bpm.example</groupId>
-  <artifactId>job-retry-profile</artifactId>
+  <artifactId>failed-job-retry-profile</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 

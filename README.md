@@ -88,6 +88,7 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/
 | [BPMN Parse Listener on User Task](process-engine-plugin/bpmn-parse-listener-on-user-task)  | Unit Test            | Process Engine Plugin, Bpmn Parse Listener  |
 | [Custom History Level](process-engine-plugin/custom-history-level)                          | Unit Test            | Process Engine Plugin, Custom History Level |
 | [Command Interceptor - Blocking](process-engine-plugin/command-interceptor-blocking)        | Unit Test            | Maintenance, Interceptor, Configuration     |
+| [Failed Job Retry Profile](process-engine-plugin/failed-job-retry-profile)                  | Unit Test            | Process Engine Plugin, Failed Job Retry     |
 
 ### Bpmn 2.0 Model API Examples
 
