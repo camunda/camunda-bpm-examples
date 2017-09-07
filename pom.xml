@@ -29,6 +29,7 @@
     <module>process-engine-plugin/custom-history-level</module>
     <module>process-engine-plugin/bpmn-parse-listener</module>
     <module>process-engine-plugin/command-interceptor-blocking</module>
+    <module>process-engine-plugin/failed-job-retry-profile</module>
     <module>scripttask/xslt-scripttask</module>
     <module>scripttask/xquery-scripttask</module>
     <module>servicetask/service-invocation-asynchronous</module>
