@@ -12,7 +12,7 @@
       <bpmn:incoming>SequenceFlow_1chlaz1</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1chlaz1" sourceRef="Task_0ucnd3u" targetRef="EndEvent_1wq706h" />
-    <bpmn:serviceTask id="Task_1mtbyg2" name="Fetch data from the CRM system " camunda:asyncBefore="true" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
+    <bpmn:serviceTask id="Task_1mtbyg2" name="Fetch data from the CRM system " camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property name="retryProfile" value="CRM" />
@@ -21,7 +21,7 @@
       <bpmn:incoming>SequenceFlow_0pewutp</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1nm31xl</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_0mlo9sf" name="Fetch address data from CRM system" camunda:asyncBefore="true" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
+    <bpmn:serviceTask id="Task_0mlo9sf" name="Fetch address data from CRM system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property name="retryProfile" value="CRM" />
@@ -30,7 +30,7 @@
       <bpmn:incoming>SequenceFlow_1nm31xl</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1cq4b7w</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_0y89gle" name="Send customer data to the ERP system" camunda:asyncBefore="true" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskTwoDelegate">
+    <bpmn:serviceTask id="Task_0y89gle" name="Send customer data to the ERP system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskTwoDelegate">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property name="retryProfile" value="ERP" />
@@ -39,7 +39,7 @@
       <bpmn:incoming>SequenceFlow_1cq4b7w</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0a0gkxc</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_0ucnd3u" name="Add address data in the ERP system" camunda:asyncBefore="true" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskTwoDelegate">
+    <bpmn:serviceTask id="Task_0ucnd3u" name="Add address data in the ERP system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskTwoDelegate">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property name="retryProfile" value="ERP" />

@@ -14,7 +14,7 @@ The process model is composed of four service tasks communicating with two diffe
 
 ### Create a Process Engine Plugin Implementation
 
-Extend the `org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin` abstract class:
+In order to extend the `org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin` class:
 
 ``` java
 public class FailedJobRetryProfilePlugin extends AbstractProcessEnginePlugin {
@@ -44,7 +44,7 @@ public class FailedJobRetryProfilePlugin extends AbstractProcessEnginePlugin {
 
 ### Create a Failed Job Retry Profile Parse Listener Implementation
 
-Extend the `org.camunda.bpm.engine.impl.bpmn.parser.DefaultFailedJobParseListener` abstract class:
+Extend the `org.camunda.bpm.engine.impl.bpmn.parser.DefaultFailedJobParseListener` class:
 
 ``` java
 public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseListener {
@@ -54,6 +54,12 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
   public FailedJobRetryProfileParseListener(Map<String, String> retryProfiles) {
     super();
     this.retryProfiles = retryProfiles;
+  }
+
+  public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
+    // each service task is asynchronous
+    activity.setAsyncBefore(true);
+    parseActivity(serviceTaskElement, activity);
   }
 
   private Element getProfileElement(Element element) {
@@ -95,6 +101,8 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
 }
 ```
 
+This listener helps us during the parsing of the bpmn to set the retry value if we have specified attribute for the current task. 
+
 ### Activate the Plugin
 
 The BPMN Parse Listener can be activated in the `camunda.cfg.xml`:
@@ -114,14 +122,14 @@ The BPMN Parse Listener can be activated in the `camunda.cfg.xml`:
 </property>
 ```
 
-It is important to define the profiles for your external systems.
+It is important to define the profiles for your external systems. You can use a map as shown and define the names of the profile as keys and the retries as values of the map.
 
 ### Configure Extension Properties on Service Task
 
-It is possible to configure properties into the extensionElements of all BPMN 2.0 elements.
+Configure the `retryProfile` property into the extensionElements.
 
 ``` xml
-<bpmn:serviceTask id="ServiceTask_1" name="Fetch data from the CRM system " camunda:asyncBefore="true" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
+<bpmn:serviceTask id="ServiceTask_1" name="Fetch data from the CRM system " camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
   <bpmn:extensionElements>
     <camunda:properties>
       <camunda:property name="retryProfile" value="CRM" />
@@ -152,6 +160,6 @@ implementation. When the service task fails, the process engine retries the job 
 2. Import the project into your IDE
 3. Inspect the sources and run the unit test.
 
-[1]: docs/retry-example.jpg
-[2]: docs/extension-property.jpg
+[1]: docs/retry-example.JPG
+[2]: docs/extension-property.JPG
 [3]: src/test/java/org/camunda/bpm/example/test/FailedJobRetryProfileTest.java

@@ -22,6 +22,7 @@ import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.el.Expression;
 import org.camunda.bpm.engine.impl.el.ExpressionManager;
 import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
+import org.camunda.bpm.engine.impl.pvm.process.ScopeImpl;
 import org.camunda.bpm.engine.impl.util.xml.Element;
 
 public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseListener {
@@ -31,6 +32,13 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
   public FailedJobRetryProfileParseListener(Map<String, String> retryProfiles) {
     super();
     this.retryProfiles = retryProfiles;
+  }
+
+  @Override
+  public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
+    // each service task is asynchronous
+    activity.setAsyncBefore(true);
+    parseActivity(serviceTaskElement, activity);
   }
 
   private Element getProfileElement(Element element) {
