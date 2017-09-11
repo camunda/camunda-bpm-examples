@@ -2,7 +2,7 @@
 
 This example demonstrates how to configure "job retry profile" for each external system as Process Engine Plugin.
 
-Usually there are specific patterns during communication between the process engine and external systems. Let's imagine you want to configure that every time a job fails trying to connect to specific external system (for example CRM system) to retry at least 10 times within duration 5 minutes This is your right example to do so.
+Usually there are specific patterns during communication between the process engine and external systems. Let's imagine you want to configure that every time a job fails trying to connect to specific external system (for example CRM system) to retry at least 10 times within duration 5 minutes. This is your right example to do so.
 
 ## Show me the important parts!
 
@@ -56,6 +56,7 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
     this.retryProfiles = retryProfiles;
   }
 
+  @Override
   public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
     // each service task is asynchronous
     activity.setAsyncBefore(true);
