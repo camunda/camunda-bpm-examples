@@ -1,8 +1,0 @@
-# SimpleApplication 760
-
-This is a copy of the example-simple.
-
-On code Level, camunda 7.7 is compatible with 7.6.
-This example internally shows how to still use 7.6 with the
-latest version 7.7 and also asures that we will recognize
-when future versions become incompatible.

@@ -1,1 +1,0 @@
-This is an example provided by Olaf Rauch for the issue https://github.com/camunda/camunda-bpm-spring-boot-starter/issues/148.

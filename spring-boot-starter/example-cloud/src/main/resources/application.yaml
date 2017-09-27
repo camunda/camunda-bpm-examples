@@ -1,5 +1,0 @@
-camunda:
-  bpm:
-    auto-deployment-enabled: true
-    admin-user:
-      id: admin

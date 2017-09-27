@@ -3,7 +3,11 @@ package org.camunda.bpm.spring.boot.example.autodeployment;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.repository.ProcessDefinition;
+import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
+import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
+import org.camunda.bpm.spring.boot.starter.event.PreUndeployEvent;
 import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStartedEvent;
+import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStoppedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.util.Assert;
 
 @SpringBootApplication
+@EnableProcessApplication
 public class AutoDeploymentApplication {
 
   public static void main(String[] args) {
@@ -31,10 +36,11 @@ public class AutoDeploymentApplication {
   }
 
   @EventListener
-  public void notify(final ProcessApplicationStartedEvent unused) {
+  public void notify(final PostDeployEvent unused) {
     final ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("Sample").singleResult();
 
     logger.info("Found deployed process: {}", processDefinition);
     Assert.notNull(processDefinition, "process 'Sample' should be deployed!");
   }
+
 }

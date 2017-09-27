@@ -7,9 +7,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Service;
 
 /**
- * Rejection is just done via a sysout since the camunda BPM platform does not support the Mail Task of Activiti
- * at this moment.
- *
+ * Rejection is just done via a sysout. You could, for example, implement sending mail to the author here.
  * Use your own Mail mechanisms for this or use your application server features.
  */
 @Service("emailAdapter")

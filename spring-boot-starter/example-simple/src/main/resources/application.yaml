@@ -5,11 +5,11 @@ spring:
 camunda:
   bpm:
     application:
-      isDeleteUponUndeploy: false
-      isScanForProcessDefinitions: false
-      isDeployChangedOnly: true
-      isResumePreviousVersions: true
-      resumePreviousBy: a value
+      delete-upon-undeploy: false
+      scan-for-process-definitions: false
+      deploy-changed-only: true
+      resume-previous-versions: true
+      resume-previous-by: a value
     job-execution:
       enabled: true
     metrics:

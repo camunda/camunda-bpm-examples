@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Named;
 
 /**
- * Use if you don't want to access Twitter but just to do some sysout
- * @author ruecker
+ * Use this delegate instead of TweetContentDelegate, if you don't want to access Twitter, but just to do some sysout.
  */
 @Service("tweetAdapter")
 public class TweetContentOfflineDelegate implements JavaDelegate {

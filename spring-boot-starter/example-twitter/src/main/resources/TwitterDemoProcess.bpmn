@@ -65,7 +65,7 @@
       <outgoing>SequenceFlow_9</outgoing>
     </startEvent>
     <sequenceFlow id="SequenceFlow_9" name="" sourceRef="start_event_new_tweet" targetRef="user_task_review_tweet" />
-    <userTask id="user_task_review_tweet" name="Review Tweet" camunda:formKey="embedded:app:forms/reviewTweet.html" camunda:assignee="demo">
+    <userTask id="user_task_review_tweet" name="Review Tweet" camunda:formKey="embedded:app:forms/reviewTweet.html" camunda:assignee="kermit">
       <extensionElements>
         <camunda:properties>
           <camunda:property name="durationMean" value="10000" />

@@ -1,7 +1,0 @@
-Start tomcat by running
-
-`mvn clean verify org.codehaus.cargo:cargo-maven2-plugin:run`
-
- and point your browser to
-
- http://localhost:8080/camunda-bpm-spring-boot-starter-example-war/app/

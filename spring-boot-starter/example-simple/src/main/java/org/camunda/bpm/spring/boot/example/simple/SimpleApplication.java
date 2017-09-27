@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.camunda.bpm.spring.boot.starter.event.PreUndeployEvent;
@@ -38,6 +39,9 @@ public class SimpleApplication implements CommandLineRunner {
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Autowired
+  private JobExecutor jobExecutor;
+
+  @Autowired
   private HistoryService historyService;
 
   @Autowired
@@ -56,14 +60,6 @@ public class SimpleApplication implements CommandLineRunner {
   private boolean exitWhenFinished;
 
   @EventListener
-  public void processApplicationStopped(ProcessApplicationStoppedEvent event) {
-    logger.info("process application stopped!");
-    processApplicationStopped = true;
-
-
-  }
-
-  @EventListener
   public void onPostDeploy(PostDeployEvent event) {
     logger.info("postDeploy: {}", event);
   }
@@ -71,6 +67,7 @@ public class SimpleApplication implements CommandLineRunner {
   @EventListener
   public void onPreUndeploy(PreUndeployEvent event) {
     logger.info("preUndeploy: {}", event);
+    processApplicationStopped = true;
   }
 
 
@@ -89,6 +86,7 @@ public class SimpleApplication implements CommandLineRunner {
       logger.info("processinstance ended!");
 
       if (exitWhenFinished) {
+        jobExecutor.shutdown();
         SpringApplication.exit(context, () -> 0);
       }
       return;
