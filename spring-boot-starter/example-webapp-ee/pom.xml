@@ -70,6 +70,11 @@
 
   <repositories>
     <repository>
+      <id>camunda-bpm-nexus</id>
+      <name>camunda-bpm-nexus</name>
+      <url>https://app.camunda.com/nexus/content/groups/public</url>
+    </repository>
+    <repository>
       <id>camunda-bpm-ee</id>
       <name>camunda-bpm-ee</name>
       <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-ee</url>
