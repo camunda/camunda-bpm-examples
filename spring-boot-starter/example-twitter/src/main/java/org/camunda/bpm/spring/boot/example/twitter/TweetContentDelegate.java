@@ -1,13 +1,8 @@
 package org.camunda.bpm.spring.boot.example.twitter;
 
 import java.net.UnknownHostException;
-
-import javax.inject.Named;
-
-import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;

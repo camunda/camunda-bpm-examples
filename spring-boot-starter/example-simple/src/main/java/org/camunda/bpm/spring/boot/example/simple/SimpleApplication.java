@@ -10,7 +10,6 @@ import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.camunda.bpm.spring.boot.starter.event.PreUndeployEvent;
-import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStoppedEvent;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

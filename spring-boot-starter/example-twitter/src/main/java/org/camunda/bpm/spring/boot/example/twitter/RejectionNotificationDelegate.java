@@ -1,7 +1,5 @@
 package org.camunda.bpm.spring.boot.example.twitter;
 
-import javax.inject.Named;
-
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Service;

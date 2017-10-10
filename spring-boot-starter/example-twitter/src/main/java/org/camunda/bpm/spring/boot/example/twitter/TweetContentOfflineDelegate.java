@@ -4,8 +4,6 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
-
 /**
  * Use this delegate instead of TweetContentDelegate, if you don't want to access Twitter, but just to do some sysout.
  */

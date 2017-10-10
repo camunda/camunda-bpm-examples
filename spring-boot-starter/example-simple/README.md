@@ -11,7 +11,7 @@ It demonstrates how Camunda can be used in combination with Spring Boot to spawn
 - JobExecutor executes async service task
 - once the process instance is ended, the spring boot application terminates
 
-It also demonstrates usage of `application.yaml` configuration file.
+It also demonstrates usage of `application.yaml` configuration file and contains couple of integration tests, showing how this can be tested.
 
 ## How is it done
 

@@ -47,3 +47,5 @@ Or you can try it via Cargo Maven Plugin:
 and point your browser to
 
 [http://localhost:8080/camunda-bpm-spring-boot-starter-example-war/app/](http://localhost:8080/camunda-bpm-spring-boot-starter-example-war/app/)
+
+The project also contains integration test to show how this can be tested.

@@ -34,6 +34,9 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [Spin](#spin-examples)
 * [DMN](#dmn-examples)
 * [Process Instance Migration](#process-instance-migration-examples)
+* [SDK-JS Examples](#sdk-js-examples)
+* [Authentication](#authentication)
+* [Spring Boot Starter examples](#spring-boot-starter-examples)
 
 ### Getting Started with camunda BPM
 

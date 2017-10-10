@@ -43,7 +43,7 @@ public class TwitterServletProcessApplication {
 4. You can configure your Spring Boot application using `application.yaml` file. All possible Camunda-specific configuration parameters are listed [here](https://stage.docs.camunda.org/manual/develop/user-guide/spring-boot-integration/configuration/)
 
 5. This example provides two implementations for posting a Tweet:
-* `TweetContentOfflineDelegate` (default) - will just pring the tweet content on console
+* `TweetContentOfflineDelegate` (default) - will just print the tweet content on console
 * `TweetContentDelegate` - will really post a tweet on http://twitter.com/#!/camunda_demo
 
 You can switch between two implementation by making one of the the Spring bean with `tweetAdapter` bean name. This `tweetAdapter` bean is further referenced in 
