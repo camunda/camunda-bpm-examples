@@ -28,7 +28,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [Cmmn 1.1 Model API Examples](#cmmn-10-model-api-examples)
 * [Cockpit](#cockpit-examples)
 * [Tasklist](#tasklist-examples)
-* [camunda Modeler (Eclipse)](#camunda-modeler-examples)
+* [camunda Modeler (Eclipse)](#camunda-modeler-eclipse-plugin-examples)
 * [CMMN](#cmmn-examples)
 * [Multi-Tenancy](#multi-tenancy-examples)
 * [Spin](#spin-examples)
