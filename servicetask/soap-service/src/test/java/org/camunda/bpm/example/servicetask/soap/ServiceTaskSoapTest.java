@@ -36,7 +36,7 @@ public class ServiceTaskSoapTest {
   @Deployment(resources={"invokeSoapService.bpmn"})
   public void shouldInvokeService() {
     Map<String, Object> variables = new HashMap<String, Object>();
-    variables.put("city", "Berlin");
+    variables.put("city", "Berlin-Tempelhof");
     variables.put("country", "Germany");
 
     RuntimeService runtimeService = processEngineRule.getRuntimeService();

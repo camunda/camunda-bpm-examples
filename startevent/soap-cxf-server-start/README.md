@@ -46,6 +46,8 @@ The `BankAccountService` service translates start node form-validation exception
 3. Build with maven and deploy .war file. 
 4. Access the [WDSL][wsdl-localhost] using credentials 'user'/'password' using for example SoapUI.
 
+> **Note:** This example works with Tomcat distribution
+
 [png]: src/main/resources/setAccountName.png
 [bpmn]: src/main/resources/setAccountName.bpmn
 [wsdl]: src/main/resources/wsdl/BankAccountService.wsdl
