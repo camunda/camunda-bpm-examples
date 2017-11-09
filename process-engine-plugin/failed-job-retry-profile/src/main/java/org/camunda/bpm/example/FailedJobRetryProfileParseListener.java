@@ -18,11 +18,10 @@ import java.util.Map;
 
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.impl.bpmn.parser.DefaultFailedJobParseListener;
-import org.camunda.bpm.engine.impl.context.Context;
-import org.camunda.bpm.engine.impl.el.Expression;
-import org.camunda.bpm.engine.impl.el.ExpressionManager;
+import org.camunda.bpm.engine.impl.bpmn.parser.FailedJobRetryConfiguration;
 import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
 import org.camunda.bpm.engine.impl.pvm.process.ScopeImpl;
+import org.camunda.bpm.engine.impl.util.ParseUtil;
 import org.camunda.bpm.engine.impl.util.xml.Element;
 
 public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseListener {
@@ -70,9 +69,9 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
       } else {
         throw new ProcessEngineException("Something went wrong with the configuration.");
       }
-      ExpressionManager expressionManager = Context.getProcessEngineConfiguration().getExpressionManager();
-      Expression expression = expressionManager.createExpression(retryProfileExpression);
-      activity.getProperties().set(FAILED_JOB_CONFIGURATION, expression);
+
+      FailedJobRetryConfiguration configuration = ParseUtil.parseRetryIntervals(retryProfileExpression);
+      activity.getProperties().set(FAILED_JOB_CONFIGURATION, configuration);
     } else {
       super.setFailedJobRetryTimeCycleValue(element, activity);
     }
