@@ -3,7 +3,7 @@ Request Interceptor for Camunda Cockpit
 
 This example shows how to intercept requests made by Camunda Cockpit. This might be useful if you need to set additional properties or request headers on all requests made by Cockpit against the rest API.
 
-Built and tested against Camunda BPM version `7.7.0`.
+Built and tested against Camunda BPM version `7.8.0`.
 
 
 Integrate into Camunda Webapp
