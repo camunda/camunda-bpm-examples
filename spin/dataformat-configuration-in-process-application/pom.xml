@@ -10,7 +10,7 @@
   <name>Spin - Configuring a Data Format Per Process Application</name>
 
   <properties>
-    <version.camunda>7.7.0</version.camunda>
+    <version.camunda>7.8.0</version.camunda>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -145,6 +145,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
+            <version>1.9.1</version>
             <executions>
               <execution>
                 <id>add-source</id>
@@ -187,21 +188,6 @@
       </dependencies>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>2.6</version>
-            <configuration>
-              <webResources>
-                <resource>
-                  <directory>src/main/webapp</directory>
-                </resource>
-                <resource>
-                  <directory>src/main/runtime/jboss/webapp</directory>
-                </resource>
-              </webResources>
-            </configuration>
-          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
