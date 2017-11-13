@@ -15,7 +15,7 @@
     <camunda.plugin.category>Monitoring</camunda.plugin.category>
 
     <camunda.plugin.screenshot>screenshot.png</camunda.plugin.screenshot>
-    <camunda.plugin.testedOnVersion>7.5.0</camunda.plugin.testedOnVersion>
+    <camunda.plugin.testedOnVersion>7.8.0</camunda.plugin.testedOnVersion>
     <camunda.plugin.language>EN</camunda.plugin.language>
 
     <maven.compiler.source>1.6</maven.compiler.source>
