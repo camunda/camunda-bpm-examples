@@ -8,6 +8,8 @@
   <packaging>war</packaging>
   
   <properties>
+    <spring.boot.version>1.5.8.RELEASE</spring.boot.version>
+    <camunda.spring.boot.starter.version>2.3.0-alpha2</camunda.spring.boot.starter.version>
     <cargo.maven.containerId>tomcat8x</cargo.maven.containerId>
     <cargo.maven.containerUrl>http://repo1.maven.org/maven2/org/apache/tomcat/tomcat/8.5.4/tomcat-8.5.4.zip</cargo.maven.containerUrl>
   </properties>
@@ -17,7 +19,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>1.5.7.RELEASE</version>
+        <version>${spring.boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -28,7 +30,7 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-      <version>2.3.0-SNAPSHOT</version>
+      <version>${camunda.spring.boot.starter.version}</version>
     </dependency>
 
     <dependency>
@@ -46,7 +48,7 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
-      <version>2.3.0-SNAPSHOT</version>
+      <version>${camunda.spring.boot.starter.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

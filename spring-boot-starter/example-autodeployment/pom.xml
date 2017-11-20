@@ -6,13 +6,18 @@
   <artifactId>camunda-bpm-spring-boot-starter-example-autodeployment</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
+  <properties>
+    <spring.boot.version>1.5.8.RELEASE</spring.boot.version>
+    <camunda.spring.boot.starter.version>2.3.0-alpha2</camunda.spring.boot.starter.version>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
         <!-- Import dependency management from Spring Boot -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>1.5.7.RELEASE</version>
+        <version>${spring.boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -23,7 +28,7 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter</artifactId>
-      <version>2.3.0-SNAPSHOT</version>
+      <version>${camunda.spring.boot.starter.version}</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
