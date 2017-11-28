@@ -7,7 +7,7 @@ This example demonstrates how you can build Spring Boot application having follo
 
 ## How is it done
 
-1. To embed Camunda Engine you must add following dependency in your `wpom.xml`:
+1. To embed Camunda Engine you must add following dependency in your `pom.xml`:
 
 ```xml
 ...

@@ -7,7 +7,7 @@
 
   <properties>
     <spring.boot.version>1.5.8.RELEASE</spring.boot.version>
-    <camunda.spring.boot.starter.version>2.3.0-alpha2</camunda.spring.boot.starter.version>
+    <camunda.spring.boot.starter.version>2.3.0</camunda.spring.boot.starter.version>
   </properties>
 
   <dependencyManagement>
