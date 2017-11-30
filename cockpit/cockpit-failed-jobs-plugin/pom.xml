@@ -9,13 +9,13 @@
   <description>A Cockpit plugin which shows a grid list of Failed Jobs on the start page of Cockpit and has three columns: Job ID, Process instance ID and Exception.</description>
 
   <properties>
-    <camunda.version>7.5.0</camunda.version>
+    <camunda.version>7.8.0</camunda.version>
 
     <!-- This property must be present for the pom.xml to be recognized as a plugin -->
     <camunda.plugin.category>Monitoring</camunda.plugin.category>
 
     <camunda.plugin.screenshot>screenshot.png</camunda.plugin.screenshot>
-    <camunda.plugin.testedOnVersion>7.5.0</camunda.plugin.testedOnVersion>
+    <camunda.plugin.testedOnVersion>7.8.0</camunda.plugin.testedOnVersion>
     <camunda.plugin.language>EN</camunda.plugin.language>
 
     <maven.compiler.source>1.6</maven.compiler.source>

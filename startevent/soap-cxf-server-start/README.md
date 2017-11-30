@@ -1,6 +1,6 @@
 SOAP CXF server start process example 
 ===============================================================
-This example demonstrates how to start a process via a SOAP webservice-server generated using CXF in a Spring application.
+This example demonstrates how to start a process via a SOAP webservice-server generated using CXF in a Spring application. This example works with Tomcat distribution
 
 ![Example Process][png]
 
@@ -43,8 +43,9 @@ The `BankAccountService` service translates start node form-validation exception
 
 1. Checkout the project with Git
 2. Read and run the [JUnit tests][unit tests]
-3. Build with maven and deploy .war file. 
-4. Access the [WDSL][wsdl-localhost] using credentials 'user'/'password' using for example SoapUI.
+3. Build with maven and deploy .war file on tomcat.
+4. Access the [WDSL][wsdl-localhost] using credentials 'user'/'password' used for example SoapUI.
+
 
 [png]: src/main/resources/setAccountName.png
 [bpmn]: src/main/resources/setAccountName.bpmn

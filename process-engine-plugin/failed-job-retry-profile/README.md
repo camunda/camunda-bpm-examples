@@ -92,9 +92,9 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
       } else {
         throw new ProcessEngineException("Something went wrong with the configuration.");
       }
-      ExpressionManager expressionManager = Context.getProcessEngineConfiguration().getExpressionManager();
-      Expression expression = expressionManager.createExpression(retryProfileExpression);
-      activity.getProperties().set(FAILED_JOB_CONFIGURATION, expression);
+
+      FailedJobRetryConfiguration configuration = ParseUtil.parseRetryIntervals(retryProfileExpression);
+      activity.getProperties().set(FAILED_JOB_CONFIGURATION, configuration);
     } else {
       super.setFailedJobRetryTimeCycleValue(element, activity);
     }
