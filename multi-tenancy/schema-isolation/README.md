@@ -1,7 +1,5 @@
 # Multi-Tenancy with Tenant Isolation via Database Schemas
 
-This is supplementary code to the tutorial on how to setup multi-tenancy by using one process engine and one database schema per tenant.
-
 <li><a href="#before-starting">Before Starting</a></li>
 <li><a href="#configuring-the-database">Configuring the Database</a></li>
 <li><a href="#configuring-process-engines">Configuring Process Engines</a></li>
