@@ -41,7 +41,7 @@ Built and tested against Camunda BPM version `7.8.0`.
 	  1. [Static Plugin Assets](#static-plugin-assets)
 			* [Testing Assets](#testing-assets)
 	  2. [Integration into Cockpit](#integration-into-cockpit)
-	  3. [plugin.js Main File](#plugin-js-main-file)
+	  3. [plugin.js Main File](#pluginjs-main-file)
 	  4. [HTML View](#html-view)
 3. [Summary](#summary)
 4. [How Client-Side Plugins Work](#how-client-side-plugins-work)
