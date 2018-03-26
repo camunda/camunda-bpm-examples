@@ -39,10 +39,7 @@
     <module>spin/dataformat-configuration-global</module>
     <module>spin/dataformat-configuration-in-process-application</module>
     <module>spring-boot-starter/example-autodeployment</module>
-    <module>spring-boot-starter/example-cloud</module>
-    <module>spring-boot-starter/example-koala</module>
     <module>spring-boot-starter/example-simple</module>
-    <module>spring-boot-starter/example-simple-760</module>
     <module>spring-boot-starter/example-twitter</module>
     <module>spring-boot-starter/example-war</module>
     <module>spring-boot-starter/example-web</module>
