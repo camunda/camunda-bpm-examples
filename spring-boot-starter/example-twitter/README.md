@@ -19,7 +19,7 @@ It also demonstrates usage of `application.yaml` configuration file.
 <dependency>
  <groupId>org.camunda.bpm.springboot</groupId>
  <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
- <version>2.3.0-SNAPSHOT</version>
+ <version>2.3.0</version>
 </dependency>
 ...
 ```
