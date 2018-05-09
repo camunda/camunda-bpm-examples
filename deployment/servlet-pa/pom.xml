@@ -7,7 +7,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.8.0</version.camunda>
+    <version.camunda>7.9.0</version.camunda>
     <version.arquillian>1.0.4.Final</version.arquillian>
     <version.jboss-as>7.2.0.Final</version.jboss-as>
     <maven.compiler.source>1.6</maven.compiler.source>

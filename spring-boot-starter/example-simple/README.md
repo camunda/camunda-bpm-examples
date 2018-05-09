@@ -1,4 +1,4 @@
-# Simple Camunda Spring Boot application
+# Simple Camunda Spring Boot Application
 
 This example only uses `camunda-bpm-spring-boot-starter`, so it does not start an embedded tomcat and provides no REST API.
 It demonstrates how Camunda can be used in combination with Spring Boot to spawn a node that:
@@ -11,24 +11,24 @@ It demonstrates how Camunda can be used in combination with Spring Boot to spawn
 - JobExecutor executes async service task
 - once the process instance is ended, the spring boot application terminates
 
-It also demonstrates usage of `application.yaml` configuration file and contains couple of integration tests, showing how this can be tested.
+It also demonstrates the usage of `application.yaml` configuration file and contains a couple of integration tests, showing how this can be tested.
 
 ## How is it done
 
-1. To embed Camunda Engine you must add following dependency in your `pom.xml`:
+1. To embed Camunda Engine you must add the following dependency to your `pom.xml`:
    
 ```xml
 ...
 <dependency>
  <groupId>org.camunda.bpm.springboot</groupId>
  <artifactId>camunda-bpm-spring-boot-starter</artifactId>
- <version>2.3.0-SNAPSHOT</version>
+ <version>3.0.0</version>
 </dependency>
 ...
 ```
 
-2. With Spring Boot you usually create "application" class annotated with `@SpringBootApplication`. In order to have Camunda process application
-registered, you can simply add annotation `@EnableProcessApplication` to the same class and also include `processes.xml` file in your `META-INF` folder:
+2. With Spring Boot you usually create an "application" class annotated with `@SpringBootApplication`. In order to have a Camunda process application
+registered, you can simply add the annotation `@EnableProcessApplication` to the same class and also include the `processes.xml` file in your `META-INF` folder:
 
 ```java
 @SpringBootApplication
@@ -42,13 +42,13 @@ public class SimpleApplication {
 }
 ```
 
-3. You can simply inject engine services in your Spring beans using `@Autowired` annotation.
+3. You can simply inject the engine services in your Spring beans using the `@Autowired` annotation.
 
 ## Run the application and check the result
 
-You can then build the application by calling `mvn clean install` and then run it with `java -jar` command.
+You can build the application with `mvn clean install` and then run it with the `java -jar` command.
 
-Observe log entries similar to these: 
+Observe the log entries similar to these: 
 
 ```text
 postDeploy: PostDeployEvent{processEngine=org.camunda.bpm.engine.impl.ProcessEngineImpl@6973b51b}

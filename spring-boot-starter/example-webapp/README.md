@@ -10,20 +10,20 @@ It also contains a simple integration test, showing how this can be tested.
 
 ## How is it done
 
-1. To embed Camunda Engine with webapps you must add following dependency in your `pom.xml`:
+1. To embed Camunda Engine with webapps you must add following dependency to your `pom.xml`:
 
 ```xml
 ...
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-  <version>2.3.0-SNAPSHOT</version>
+  <version>3.0.0</version>
 </dependency>
 ...
 ```
 
-2. With Spring Boot you usually create "application" class annotated with `@SpringBootApplication`. In order to have Camunda process application
-registered, you can simply add annotation `@EnableProcessApplication` to the same class and also include `processes.xml` file in your `META-INF` folder:
+2. With Spring Boot you usually create an "application" class annotated with `@SpringBootApplication`. In order to have a Camunda process application
+registered, you can simply add an annotation `@EnableProcessApplication` to the same class and also include a `processes.xml` file in your `META-INF` folder:
 
 ```java
 @SpringBootApplication
@@ -36,12 +36,12 @@ public class WebappExampleApplication {
 }
 ```
 
-3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within process application.
+3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within a process application.
 
 
 ## Run the application and use Camunda Webapps
 
-You can build the application by calling `mvn clean install` and then run it with `java -jar` command.
+You can build the application with `mvn clean install` and then run it with `java -jar` command.
 
 Then you can access Camunda Webapps in browser: `http://localhost:8080` (provide login/password from `application.yaml`)
 

@@ -3,7 +3,6 @@
   <script cam-script type="text/form-script">
 
     $scope.genders = [ 'female', 'male' ];
-
     camForm.on('form-loaded', function() {
       // tell the form SDK to fetch the variable named 'customer'
       camForm.variableManager.fetchVariable('customer');
@@ -33,7 +32,8 @@
   <div class="control-group">
     <label class="control-label" for="gender">Gender</label>
     <div class="controls">
-      <select id="gender" ng-model="customer.gender" ng-options="gender as gender for gender in genders">
+      <select id="gender" ng-model="customer.gender">
+        <option ng-repeat="gender in genders" ng-value="gender">{{gender}}</option>
       </select>
     </div>
   </div>

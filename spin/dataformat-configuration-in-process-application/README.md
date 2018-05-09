@@ -54,7 +54,7 @@ The script task *Extract price* expects a `Car` JSON object in the format of `{"
 1. Checkout the project with Git
 2. Run the Maven build `mvn clean install -P${profile}`. Dependending on the application server you use, set `${profile}` to `weblogic` (for WebLogic, Websphere, Glassfish), `tomcat`, `jboss` or `wildfly`
 3. Deploy the resulting WAR file to your application server
-4. Perform a HTTP GET request to the url `http://localhost:8080/dataformat-example/start-process` either with a REST client or simply in the address bar of your browser
+4. Perform a HTTP GET request to the url `http://localhost:8080/dataformat-example/start-process` (or `http://localhost:8080/camunda-example-spin-dataformat-configuration-process-application-0.0.1-SNAPSHOT/start-process` if you're using Tomcat) either with a REST client or simply in the address bar of your browser
 5. Go to Cockpit and verify that the process variable named `car` was serialized correctly
 
 

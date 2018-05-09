@@ -3,7 +3,7 @@ Sample Plugin for Camunda Cockpit
 
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda BPM](http://docs.camunda.org).
 
-Built and tested against Camunda BPM version `7.8.0`.
+Built and tested against Camunda BPM version `7.9.0`.
 
 ![Screenshot](screenshot.png)
 

@@ -1,8 +1,8 @@
 # Spring Boot Web application with enterprise Camunda Webapps
 
-This example demonstrates how you cam build Spring Boot application with embedded Camunda enterprise version.
+This example demonstrates how you can build a Spring Boot application with the embedded Camunda enterprise version.
 
-* Embedded Camunda engine
+* Embedded Camunda Engine
 * Camunda Enterprise web applications automatically deployed
 * Process application and one BPMN process deployed
 * Admin user configured with login and password configured in `application.yaml`
@@ -14,16 +14,16 @@ It also contains a simple integration test, showing how this can be tested.
 You will need:
 
 * credentials to access the enterprise repo in your `settings.xml`
-* a valid camunda-license key file in your classpath in file `camunda-license.txt`
+* a valid camunda-license key file in your classpath in the file `camunda-license.txt`
 
 ## How is it done
 
-1. To embed Camunda Engine with Enterprise webapps you must add following in your `pom.xml`:
+1. To embed the Camunda Engine with Enterprise webapps you must add the following maven coordinates to your `pom.xml`:
 
 ```xml
 ...
   <properties>
-    <camunda.version>7.8.0-ee</camunda.version>
+    <camunda.version>7.9.0-ee</camunda.version>
   </properties>
 
   <dependencyManagement>
@@ -43,15 +43,15 @@ You will need:
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-      <version>2.3.0</version>
+      <version>3.0.0</version>
     </dependency>
     ...
   </dependencies>
 ...
 ```
 
-2. With Spring Boot you usually create "application" class annotated with `@SpringBootApplication`. In order to have Camunda process application
-registered, you can simply add annotation `@EnableProcessApplication` to the same class and also include `processes.xml` file in your `META-INF` folder:
+2. With Spring Boot you usually create an "application" class annotated with `@SpringBootApplication`. In order to have Cthe amunda process application
+registered, you can simply add the annotation `@EnableProcessApplication` to the same class and also include a `processes.xml` file to your `META-INF` folder:
 
 ```java
 @SpringBootApplication
@@ -65,12 +65,12 @@ public class EnterpriseWebappExampleApplication {
 }
 ```
 
-3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within process application.
+3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within the process application.
 
-4. If you want you Camunda license automatically used on Engine startup, just put the file with the name `camunda-license.txt` license in your classpath. 
+4. If you want your Camunda license automatically used on Engine startup, just put the file with the name `camunda-license.txt` on your classpath. 
 
 ## Run the application and use Camunda Webapps
 
-You can build the application by calling `mvn clean install` and then run it with `java -jar` command.
+You can build the application with `mvn clean install` and then run it with the `java -jar` command.
 
-Then you can access Camunda Webapps in browser: `http://localhost:8080` (provide login/password from `application.yaml`)
+Then you can access the Camunda Webapps in your browser: `http://localhost:8080` (provide login/password from `application.yaml`)

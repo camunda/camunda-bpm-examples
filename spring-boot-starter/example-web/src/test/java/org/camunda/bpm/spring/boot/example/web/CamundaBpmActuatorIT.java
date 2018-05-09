@@ -15,7 +15,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { RestApplication.class }, webEnvironment = WebEnvironment.RANDOM_PORT, properties = "management.security.enabled:false")
+@SpringBootTest(classes = { RestApplication.class }, webEnvironment = WebEnvironment.RANDOM_PORT,
+properties = {"management.endpoint.health.show-details=always", "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration"})
 @DirtiesContext
 public class CamundaBpmActuatorIT {
 
@@ -33,11 +34,11 @@ public class CamundaBpmActuatorIT {
   @Test
   public void processEngineHealthIndicatorTest() {
     final String body = getHealthBody();
-    assertTrue("wrong body " + body, body.contains("\"processEngine\":{\"status\":\"UP\",\"name\":\"default\"}"));
+    assertTrue("wrong body " + body, body.contains("processEngine\":{\"status\":\"UP\",\"details\":{\"name\":\"default\"}}"));
   }
 
   private String getHealthBody() {
-    ResponseEntity<String> entity = testRestTemplate.getForEntity("/health", String.class);
+    ResponseEntity<String> entity = testRestTemplate.getForEntity("/actuator/health", String.class);
     final String body = entity.getBody();
     LOGGER.info("body: {}", body);
     return body;

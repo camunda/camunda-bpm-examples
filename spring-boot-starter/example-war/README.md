@@ -1,7 +1,7 @@
 # WAR built with Spring Boot
 
-This example demonstrates how you can build a normal WAR file, containing Camunda engine and [Webapps](https://docs.camunda.org/manual/latest/webapps/), 
-to deploy it inside Web container.
+This example demonstrates how you can build a normal WAR file, containing the Camunda engine and [Webapps](https://docs.camunda.org/manual/latest/webapps/), 
+to deploy it inside the Web container.
 
 To achieve this you need to configure your project to produce a WAR file and additionally 
 declare the embedded container dependencies in `provided` scope:
@@ -37,7 +37,7 @@ declare the embedded container dependencies in `provided` scope:
 
 ```
 
-You can then build the WAR by calling `mvn clean install`, deploy it in Tomcat and try the URL:
+You can then build the WAR by `mvn clean install`, deploy it in Tomcat and try the URL:
 [http://localhost:8080/camunda-bpm-spring-boot-starter-example-war-0.0.1-SNAPSHOT/app/](http://localhost:8080/camunda-bpm-spring-boot-starter-example-war-0.0.1-SNAPSHOT/app/)
 
 Or you can try it via Cargo Maven Plugin:

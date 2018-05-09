@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SimpleApplicationTest {
 
   @Rule
-  public Timeout timeout = Timeout.seconds(5);
+  public Timeout timeout = new Timeout(5000);
 
   @Autowired
   private SimpleApplication application;

@@ -264,7 +264,7 @@ function listTasksByFilter() {
         taskResults._embedded.task.forEach(function (task) {
           table.push([
             task.id || '',
-            task._embedded.processDefinition[0].name || '',
+            task._embedded.processDefinition && task._embedded.processDefinition[0].name || '',
             task.name || ''
           ]);
         });
