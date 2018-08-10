@@ -188,13 +188,12 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/
 | [Basic Authentication](authentication/basic)            | Spring boot with embedded engine, REST API and Basic Authentication filter |  Authentication         |
 
 ### Spring Boot Starter examples
- 
+
  | Name                                                       | Container                                                                  | Keywords                |
  | --------------------------------------------------------   |----------------------------------------------------------------------------|-------------------------|
  | [Plain Camunda Engine](spring-boot-starter/example-simple) | Jar                                                                        |  Spring Boot Starter           |
  | [Webapps](spring-boot-starter/example-webapp)              | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, Webapps  |
  | [Webapps EE](spring-boot-starter/example-webapp-ee)        | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, Webapps  |
- | [War](spring-boot-starter/example-war)                     | War                                                                        |  Spring Boot Starter, Webapps  |
  | [REST API](spring-boot-starter/example-web)                | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, REST API |
  | [Autodeployment](spring-boot-starter/example-autodeployment) | Spring boot with embedded engine and Webapps                             |  Spring Boot Starter           |
  | [Twitter](spring-boot-starter/example-twitter)             | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, Webapps, Twitter  |

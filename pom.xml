@@ -41,7 +41,6 @@
     <module>spring-boot-starter/example-autodeployment</module>
     <module>spring-boot-starter/example-simple</module>
     <module>spring-boot-starter/example-twitter</module>
-    <module>spring-boot-starter/example-war</module>
     <module>spring-boot-starter/example-web</module>
     <module>spring-boot-starter/example-webapp</module>
     <module>spring-boot-starter/example-webapp-ee</module>

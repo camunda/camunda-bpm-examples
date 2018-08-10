@@ -1,4 +1,0 @@
-camunda.bpm:
-  webapp:
-    index-redirect-enabled: false
-    security-config-file: /securityFilterRules.json
