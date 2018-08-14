@@ -5,6 +5,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,15 @@ public class Showcase {
 
   @EventListener
   public void notify(final PostDeployEvent unused) {
-    processInstanceId = runtimeService.startProcessInstanceByKey("Sample").getProcessInstanceId();
+
+    final User user = new User("Noah", 25);
+    logger.info("User object created: " + user);
+
+    processInstanceId = runtimeService.startProcessInstanceByKey("Sample", Variables.putValue("user", user))
+      .getProcessInstanceId();
     logger.info("started instance: {}", processInstanceId);
+
+    logger.info("User variable instance value: " + runtimeService.createVariableInstanceQuery().variableName("user").singleResult().getValue());
 
     Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     taskService.complete(task.getId());

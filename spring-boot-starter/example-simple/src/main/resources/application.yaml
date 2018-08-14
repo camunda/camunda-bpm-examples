@@ -4,6 +4,7 @@ spring:
     url: jdbc:h2:mem:example-simple;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 camunda:
   bpm:
+    defaultSerializationFormat: application/json
     application:
       delete-upon-undeploy: false
       scan-for-process-definitions: false
