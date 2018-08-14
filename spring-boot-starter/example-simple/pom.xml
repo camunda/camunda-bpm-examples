@@ -6,8 +6,9 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <spring.boot.version>2.0.2.RELEASE</spring.boot.version>
-    <camunda.spring.boot.starter.version>3.0.0</camunda.spring.boot.starter.version>
+    <spring.boot.version>1.5.8.RELEASE</spring.boot.version>
+    <camunda.spring.boot.starter.version>2.3.0</camunda.spring.boot.starter.version>
+    <camunda.version>7.8.8-ee</camunda.version>
   </properties>
 
   <dependencyManagement>
@@ -20,13 +21,27 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <!-- Import dependency management from camunda -->
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-bom</artifactId>
+        <version>${camunda.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
-      <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+      <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+      <version>${camunda.spring.boot.starter.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
       <version>${camunda.spring.boot.starter.version}</version>
     </dependency>
 
@@ -73,6 +88,16 @@
       <artifactId>assertj-core</artifactId>
       <version>2.5.0</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-spin</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.spin</groupId>
+      <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
     </dependency>
   </dependencies>
 
