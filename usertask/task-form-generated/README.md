@@ -16,13 +16,13 @@ Both `startEvent` and the `userTask` have form metadata defined:
 <bpmn2:startEvent id="StartEvent_1" name="Loan Request Received">
   <bpmn2:extensionElements>
     <camunda:formData>
-      <camunda:formField id="firstname" label="Firstname" type="string">
+      <camunda:formField id="firstname" label="First Name" type="string">
         <camunda:validation>
           <camunda:constraint name="maxlength" config="25"/>
           <camunda:constraint name="required"/>
         </camunda:validation>
       </camunda:formField>
-      <camunda:formField id="lastname" label="Lastname" type="string">
+      <camunda:formField id="lastname" label="Last Name" type="string">
         <camunda:validation>
           <camunda:constraint name="maxlength" config="25"/>
           <camunda:constraint name="required"/>
