@@ -4,13 +4,13 @@
     <bpmn2:startEvent id="StartEvent_1" name="Loan Request &#xD;&#xA;Received">
       <bpmn2:extensionElements>
         <camunda:formData>
-          <camunda:formField id="firstname" label="Firstname" type="string">
+          <camunda:formField id="firstname" label="First Name" type="string">
             <camunda:validation>
               <camunda:constraint name="maxlength" config="25"/>
               <camunda:constraint name="required"/>
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="lastname" label="Lastname" type="string">
+          <camunda:formField id="lastname" label="Last Name" type="string">
             <camunda:validation>
               <camunda:constraint name="maxlength" config="25"/>
               <camunda:constraint name="required"/>
@@ -44,12 +44,12 @@
     <bpmn2:userTask id="UserTask_1" camunda:assignee="demo" name="Approve Request">
       <bpmn2:extensionElements>
         <camunda:formData>
-          <camunda:formField id="firstname" label="Firstname" type="string">
+          <camunda:formField id="firstname" label="First Name" type="string">
             <camunda:validation>
               <camunda:constraint name="readonly"/>
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="lastname" label="Lastname" type="string">
+          <camunda:formField id="lastname" label="Last Name" type="string">
             <camunda:validation>
               <camunda:constraint name="readonly"/>
             </camunda:validation>

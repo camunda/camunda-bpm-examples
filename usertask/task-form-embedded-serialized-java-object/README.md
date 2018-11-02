@@ -79,7 +79,7 @@ inside Camunda Tasklist (or inside a custom application using the camunda-bpm-sd
   <h3>Customer Data</h3>
 
   <div class="control-group">
-    <label class="control-label" for="firstname">Firstname</label>
+    <label class="control-label" for="firstname">First Name</label>
     <div class="controls">
       <input id="firstname"
              class="form-control"
