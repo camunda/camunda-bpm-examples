@@ -1,6 +1,6 @@
 SOAP CXF server start process example 
 ===============================================================
-This example demonstrates how to start a process via a SOAP webservice-server generated using CXF in a Spring application. This example works with Tomcat distribution
+This example demonstrates how to start a process via a SOAP webservice-server generated using CXF in a Spring application. This example works with Tomcat distribution. Note: The example does not work with JDK 9+.
 
 ![Example Process][png]
 

@@ -6,6 +6,8 @@ This example demonstrates how to deploy a spring powered web application which
   * Starts a Spring Web application context based on a shared, container managed process engine
   * Uses Spring Beans and delegation code in expressions within processes
 
+Note: The example does not work with JDK 9+.
+
 ## Why is this example interesting?
 
 This example shows how to combine a @ProcessApplication class, a `processes.xml` and a spring applicationContext into a fully-fledged process application with all its

@@ -10,7 +10,9 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.camunda>7.9.0</version.camunda>
+    <version.camunda>7.10.0</version.camunda>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 

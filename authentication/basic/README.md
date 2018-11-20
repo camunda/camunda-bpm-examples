@@ -7,6 +7,8 @@ This example demonstrates how to perform following steps:
 * configure basic authentication on REST API in spring-boot
 * perform a request towards API protected with Basic Authentication
 
+Note: The example does not work with JDK 9+.
+
 ## Why is this example interesting?
 
 This example illustrates how to start spring boot application with embedded engine and REST API

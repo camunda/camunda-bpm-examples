@@ -10,8 +10,9 @@
   <packaging>jar</packaging>
 
   <properties>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
+    <camunda.version>7.10.0</camunda.version>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -20,7 +21,7 @@
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
-        <version>7.9.0</version>
+        <version>${camunda.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

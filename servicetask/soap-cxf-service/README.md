@@ -3,6 +3,7 @@ SOAP CXF example
 This example demonstrates how use a SOAP webservice-client generated using CXF in a Spring application.
 
 > The process engine relies on camunda spin for working with JAXB-annotated classes. 
+Note: The example does not work with JDK 9+.
 
 ![Example Process][png]
 
