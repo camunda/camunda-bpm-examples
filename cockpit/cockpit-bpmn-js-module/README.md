@@ -27,6 +27,7 @@ bpmnJs: {
 }
 // …
 ```
+After that start the server, login to cockpit and navigate to the Process instance view to check the result.
 
 License
 -------
