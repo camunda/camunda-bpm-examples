@@ -5,18 +5,19 @@ Camunda BPM examples
 
 Camunda BPM examples is a collection of focused usage examples for the [camunda BPM platform](https://github.com/camunda/camunda-bpm-platform), intended to get you started quickly. The sources on the master branch work with the current Camunda release. Follow the links below to browse the examples for the Camunda version you use:
 
-| Camunda Version  | Link                                                                | Checkout command      |
-| -----------------|---------------------------------------------------------------------|-----------------------|
-| Latest           | [Master branch](https://github.com/camunda/camunda-bpm-examples)    | `git checkout master` |
-| 7.9              | [7.9 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.9) | `git checkout 7.9`    |
-| 7.8              | [7.8 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.8) | `git checkout 7.8`    |
-| 7.7              | [7.7 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.7) | `git checkout 7.7`    |
-| 7.6              | [7.6 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.6) | `git checkout 7.6`    |
-| 7.5              | [7.5 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.5) | `git checkout 7.5`    |
-| 7.4              | [7.4 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.4) | `git checkout 7.4`    |
-| 7.3              | [7.3 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.3) | `git checkout 7.3`    |
-| 7.2              | [7.2 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.2) | `git checkout 7.2`    |
-| 7.1              | [7.1 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.1) | `git checkout 7.1`    |
+| Camunda Version  | Link                                                                 | Checkout command      |
+| -----------------|----------------------------------------------------------------------|-----------------------|
+| Latest           | [Master branch](https://github.com/camunda/camunda-bpm-examples)     | `git checkout master` |
+| 7.10             | [7.10 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.10)| `git checkout 7.10`   |
+| 7.9              | [7.9 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.9)  | `git checkout 7.9`    |
+| 7.8              | [7.8 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.8)  | `git checkout 7.8`    |
+| 7.7              | [7.7 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.7)  | `git checkout 7.7`    |
+| 7.6              | [7.6 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.6)  | `git checkout 7.6`    |
+| 7.5              | [7.5 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.5)  | `git checkout 7.5`    |
+| 7.4              | [7.4 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.4)  | `git checkout 7.4`    |
+| 7.3              | [7.3 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.3)  | `git checkout 7.3`    |
+| 7.2              | [7.2 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.2)  | `git checkout 7.2`    |
+| 7.1              | [7.1 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.1)  | `git checkout 7.1`    |
 
 If you clone this repository, use the checkout commands to access the sources for the desired version.
 
