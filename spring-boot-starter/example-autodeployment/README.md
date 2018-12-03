@@ -14,7 +14,7 @@ This example demonstrates how you can build a Spring Boot application having fol
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter</artifactId>
-  <version>3.0.0</version>
+  <version>3.2.0</version>
 </dependency>
 ...
 ```
