@@ -43,7 +43,7 @@ You will need:
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-      <version>3.1.0</version>
+      <version>3.2.0</version>
     </dependency>
     ...
   </dependencies>
