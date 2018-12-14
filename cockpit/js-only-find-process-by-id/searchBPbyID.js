@@ -10,7 +10,6 @@ define(['angular'], function(angular) {
         };
     
     $scope.activeSection = localConf.get('searchBpByIDActive', true);
-    $scope.activeSection = true;
 
     $scope.toggleSection = function toggleSection() {
           $scope.activeSection = !$scope.activeSection;
@@ -30,7 +29,7 @@ define(['angular'], function(angular) {
       template: '<section class="processes-dashboard" ng-class="{\'section-collapsed\': !activeSection}">'
 		+'<div class="inner">'
               	+'<button tooltip="Toggle this section" class="section-toggle btn btn-link btn-sm" ng-click="toggleSection()">'
-                +'<span class="glyphicon glyphicon-menu-up" ng-class="{\'glyphicon-menu-down\': !activeSection, \'glyphicon-menu-up\': activeSection}"></span></button>'
+                +'<span class="glyphicon" ng-class="{\'glyphicon-menu-down\': !activeSection, \'glyphicon-menu-up\': activeSection}"></span></button>'
 		+'<h2>Search process by ID</h2>'
 		+'<div ng-if="activeSection"><br/>Enter process IDs: <input ng-keydown="pressEnter($event)" id="processId" ng-model="bpID" type="text" size="80"></input> '
 		+'<a id="searchBpGo" href="#/process-instance/{{bpID}}"><button>Search</button></a></div>'
@@ -41,4 +40,3 @@ define(['angular'], function(angular) {
 
   return ngModule;
 });
-
