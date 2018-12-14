@@ -31,7 +31,7 @@ define(['angular'], function(angular) {
               	+'<button tooltip="Toggle this section" class="section-toggle btn btn-link btn-sm" ng-click="toggleSection()">'
                 +'<span class="glyphicon" ng-class="{\'glyphicon-menu-down\': !activeSection, \'glyphicon-menu-up\': activeSection}"></span></button>'
 		+'<h2>Search process by ID</h2>'
-		+'<div ng-if="activeSection"><br/>Enter process IDs: <input ng-keydown="pressEnter($event)" id="processId" ng-model="bpID" type="text" size="80"></input> '
+		+'<div ng-if="activeSection"><br/>Enter process ID: <input ng-keydown="pressEnter($event)" id="processId" ng-model="bpID" type="text" size="80"></input> '
 		+'<a id="searchBpGo" href="#/process-instance/{{bpID}}"><button>Search</button></a></div>'
 		+'</div></section>',
       controller: searchBpViewController
