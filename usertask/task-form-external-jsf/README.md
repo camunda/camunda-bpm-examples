@@ -134,4 +134,4 @@ For more detailed information about External Task Forms, see [JSF Task Forms][6]
 [3]: docs/screenshot-modeler.png
 [4]: src/main/webapp
 [5]: https://docs.camunda.org/manual/user-guide/task-forms/#external-task-forms
-[6]: https://docs.camunda.org/manual/examples/tutorials/jsf-task-forms/
+[6]: https://docs.camunda.org/manual/user-guide/task-forms/jsf-task-forms/
