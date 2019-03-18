@@ -1,0 +1,146 @@
+<form class='form-horizontal'>
+    <div id='reactContainer' />
+
+    <script cam-script type='text/form-script'>
+    const container = document.getElementById('reactContainer');
+
+    const e = React.createElement;
+
+    class InputGroup extends React.Component {
+      render() {
+        return e('div', {className: 'form-group'}, [
+          e('label', {className: 'control-label col-md-4', key: 'label'}, this.props.label),
+          e('div', {className: 'col-md-6', key: 'input field'}, [
+            this.props.children,
+            e('div', {className: 'help-block', key: 'help label'}, this.props.helpText)])
+          ]);
+      }
+    }
+
+    class StartForm extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          creditor: '',
+          amount: '',
+          category: 'Travel Expenses',
+          invoiceID: ''
+        };
+
+        this.fileInput = React.createRef();
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFileUpload = this.handleFileUpload.bind(this);
+        // Register submit
+        camForm.on('submit', evt => {
+          this.handleSubmit(evt);
+        });
+      }
+
+      handleFileUpload(event) {
+        const reader = new FileReader();
+        reader.readAsDataURL(this.fileInput.current.files[0]);
+        reader.onload = () => {this.setState({invoiceDocument: reader.result.replace(/^data:(.*;base64,)?/, '')})};
+        reader.onerror = error => {console.error(error)};
+      }
+
+
+      handleInputChange(event) {
+          const value = event.target.value;
+          const name = event.target.name;
+
+          this.setState({
+            [name]: value
+          });
+        }
+
+      handleSubmit(event) {
+        camForm.variableManager.createVariable({
+          'name': 'invoiceDocument',
+          'type': 'File',
+          'value': this.state.invoiceDocument,
+          'valueInfo': {filename: 'invoice.pdf'},
+          isDirty: true}
+        );
+        camForm.variableManager.createVariable({
+          'name': 'creditor',
+          'type': 'String',
+          'value': this.state.creditor,
+          isDirty: true}
+        );
+        camForm.variableManager.createVariable({
+          'name': 'amount',
+          'type': 'Double',
+          'value': this.state.amount,
+          isDirty: true}
+        );
+        camForm.variableManager.createVariable({
+          'name': 'category',
+          'type': 'String',
+          'value': this.state.category,
+          isDirty: true}
+        );
+        camForm.variableManager.createVariable({
+          'name': 'invoiceID',
+          'type': 'String',
+          'value': this.state.invoiceID,
+          isDirty: true}
+        );
+      }
+
+      render() {
+        return e('div', {className: 'form-group'}, [
+          e(InputGroup, {label: 'Invoice Document: ', key: 'InvoiceDocument'},
+            e('input', {
+              className: 'form-control',
+              name: 'invoiceDocument',
+              type: 'file',
+              ref: this.fileInput,
+              onChange: this.handleFileUpload})),
+          e(InputGroup, { label: 'Creditor: ',
+                          helpText: 'e.g. "Super Awesome Pizza"',
+                          key: 'Creditor'},
+            e('input', {
+              className: 'form-control',
+              name: 'creditor',
+              type: 'text',
+              onChange: this.handleInputChange,
+              value: this.state.creditor})),
+          e(InputGroup, { label: 'Amount: ',
+                          helpText: 'e.g. "30.00"',
+                          key: 'Amount'},
+            e('input', {
+              className: 'form-control',
+              name: 'amount',
+              type: 'number',
+              onChange: this.handleInputChange,
+              value: this.state.amount})),
+          e(InputGroup, { label: 'Invoice Category: ',
+                          key: 'Category'},
+            e('select', {
+              className: 'form-control',
+              name: 'category',
+              value: this.state.category,
+              onChange: this.handleInputChange
+            }, [
+              e('option', {value: 'Travel Expenses', key: 'Travel'}, 'Travel Expenses'),
+              e('option', {value: 'Business Meals', key: 'Meals'}, 'Business Meals'),
+              e('option', {value: 'Other', key: 'Other'}, 'Other'),
+            ])),
+            e(InputGroup, {label: 'Invoice Number: ',
+                          helpText: 'e.g. "I-12345"',
+                          key: 'InvoiceNumber'},
+              e('input', {
+                className: 'form-control',
+                name: 'invoiceID',
+                type: 'text',
+                onChange: this.handleInputChange,
+                value: this.state.invoiceID})),
+        ]);
+      }
+    }
+
+    ReactDOM.render(e(StartForm), container);
+    </script>
+  </form>

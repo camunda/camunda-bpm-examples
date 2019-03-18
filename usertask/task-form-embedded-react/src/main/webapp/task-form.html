@@ -1,0 +1,119 @@
+<form class='form-horizontal'>
+  <div id='reactContainer' />
+
+  <script cam-script type='text/form-script'>
+
+    // Fetch Variables and create new ones
+    camForm.on('form-loaded', function () {
+      camForm.variableManager.createVariable({
+        'name': 'approved',
+        'type': 'Boolean',
+        'value': false,
+        isDirty: true
+      });
+
+      camForm.variableManager.fetchVariable('amount');
+      camForm.variableManager.fetchVariable('creditor');
+      camForm.variableManager.fetchVariable('invoiceID');
+      camForm.variableManager.fetchVariable('invoiceDocument');
+      camForm.variableManager.fetchVariable('category');
+    });
+
+    camForm.on('variables-applied', function () {
+      renderReactForm();
+    });
+
+    // Render React here
+    function renderReactForm() {
+      const container = document.getElementById('reactContainer');
+
+      const e = React.createElement;
+
+      class DisplayGroup extends React.Component {
+        render() {
+          return e('div', {className: 'form-group'}, [
+            e('label', {className: 'control-label col-md-4', key: 'label'}, this.props.label),
+            e('div', {className: 'col-md-6', key:'container'},
+              e('input', {
+                className: 'form-control',
+                value: this.props.value,
+                readOnly: true
+              }))
+            ]);
+        }
+      }
+
+      class Approval extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            value: false,
+          };
+          this.handleInputChange = this.handleInputChange.bind(this);
+        }
+
+        handleInputChange(event) {
+          const target = event.target;
+          const value = target.type === 'checkbox' ? target.checked : target.value;
+
+          camForm.variableManager.variableValue('approved', value);
+          // Activate 'save' button
+          $scope.$$camForm.$dirty = true;
+
+          this.setState({
+            value: value
+          });
+        }
+
+        render() {
+          return e('div', null, [
+            e('h3', {key: 'h3'}, 'Do you approve this Invoice?'),
+            e('br', {key: 'br1'}),
+            e('div', {className: 'form-group', key: 'InvoiceDocument'}, [
+              e('label', {className: 'control-label col-md-4', key: 'label'}, 'Download Invoice'),
+              e('div', {className: 'col-md-6', key: 'div'},
+                e('a', {href: this.props.invoiceDocument.contentUrl}, 'invoice.pdf'))
+            ]),
+            e('br', {key: 'br2'}),
+            e(DisplayGroup, {
+              label: 'Amount: ',
+              value: this.props.amount.value,
+              key: 'Amount'
+            }),
+            e(DisplayGroup, {
+              label: 'Creditor: ',
+              value: this.props.creditor.value,
+              key: 'Creditor'
+            }),
+            e(DisplayGroup, {
+              label: 'Invoice Category: ',
+              value: this.props.category.value,
+              key: 'Category'
+            }),
+            e(DisplayGroup, {
+              label: 'Invoice Number: ',
+              value: this.props.invoiceID.value,
+              key: 'InvoiceID'
+            }),
+            e('br', {key: 'br3'}),
+            e('label', {className: 'control-label col-md-4', key: 'ApprovalLabel'}, 'I approve this Invoice'),
+            e('div', {className: 'col-md-6', key: 'ApprovalContainer'},
+              e('input', {
+                className: 'form-control',
+                name: 'approved',
+                type: 'checkbox',
+                checked: this.state.value,
+                className: 'form-control',
+                onChange: this.handleInputChange
+              })
+            )
+          ]);
+        }
+      }
+
+      ReactDOM.render(e(Approval,
+          camForm.variableManager.variables ),
+        container);
+    }
+  </script>
+</form>
