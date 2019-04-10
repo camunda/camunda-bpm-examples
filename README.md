@@ -207,4 +207,6 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/
   * Getting Started: https://docs.camunda.org/get-started/
   * Issue Tracker: https://app.camunda.com/jira
   * Contribution Guidelines: http://www.camunda.org/community/contribute.html
-  * License: Apache License, Version 2.0  http://www.apache.org/licenses/LICENSE-2.0
+
+### License
+The source files in this repository are made available under the [Apache License Version 2.0](./LICENSE).
