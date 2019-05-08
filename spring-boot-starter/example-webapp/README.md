@@ -45,3 +45,5 @@ You can build the application with `mvn clean install` and then run it with `jav
 
 Then you can access Camunda Webapps in browser: `http://localhost:8080` (provide login/password from `application.yaml`)
 
+You can start `bpmn/sample.bpmn` process by simply sending a `Http.GET` request to `http://localhost:8080/process/start/Sample`
+
