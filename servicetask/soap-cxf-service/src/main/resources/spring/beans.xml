@@ -16,10 +16,6 @@
 
 	<context:property-placeholder location="classpath*:application.properties"/>
 
-	<import resource="classpath:META-INF/cxf/cxf.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
-     		
 	<context:annotation-config/>
 
 	<context:component-scan base-package="com.camunda.bpm.example.spring"/>

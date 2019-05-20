@@ -48,9 +48,9 @@ Each Cockpit plugin has an Angular Controller, a unique pseudo-URL, such as: `pl
 Use under terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 
-[1]: https://docs.camunda.org/manual/webapps/cockpit/bpmn/failed-jobs/
-[2]: https://docs.camunda.org/manual/user-guide/process-engine/process-engine-concepts/#jobs-and-job-definitions
-[3]: https://docs.camunda.org/manual/user-guide/process-engine/the-job-executor/
-[4]: https://docs.camunda.org/manual/user-guide/process-engine/incidents/
-[5]: https://docs.camunda.org/manual/user-guide/process-engine/transactions-in-processes/#transaction-boundaries
+[1]: https://docs.camunda.org/manual/7.11/webapps/cockpit/bpmn/failed-jobs/
+[2]: https://docs.camunda.org/manual/7.11/user-guide/process-engine/process-engine-concepts/#jobs-and-job-definitions
+[3]: https://docs.camunda.org/manual/7.11/user-guide/process-engine/the-job-executor/
+[4]: https://docs.camunda.org/manual/7.11/user-guide/process-engine/incidents/
+[5]: https://docs.camunda.org/manual/7.11/user-guide/process-engine/transactions-in-processes/#transaction-boundaries
 [6]: https://github.com/camunda/camunda-bpm-webapp

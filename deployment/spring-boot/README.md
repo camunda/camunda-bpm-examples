@@ -10,22 +10,13 @@ The example process looks like:
 
 ![Example Process](docs/loanRequest.png)
 
-
-## How to use it?
-
-1. Checkout the project with Git
-2. Import the project into your IDE
-3. Build it with Maven `clean install`
-4. Execute the JAR `java -jar target/camunda-spring-boot-example-1.0.0-SNAPSHOT.jar`
-5. Check the console if you can find the line `calculating interest`
-
 ### Run it as JUnit Test  
 
-The JUnit test [CamundaSpringBootExampleApplicationTest](src/test/java/org/camunda/bpm/example/CamundaSpringBootExampleApplicationTest.java) starts the application and verify that it starts a process instance.
+The JUnit test [CamundaSpringBootExampleApplicationTest](src/test/java/org/camunda/bpm/example/CamundaSpringBootExampleApplicationTest.java) starts the application and verifies that a process instance is started.
 
 ## How it works
 
-Follow steps to create a basic setup for your Spring Boot application which embeds the Camunda process engine.
+Follow steps to create a basic setup for your Spring Boot application which embeds the Camunda Process Engine.
 
 Note that you can generate your project skeleton using the [Spring Initializr](https://start.spring.io/).
 
@@ -178,3 +169,10 @@ public class CamundaSpringBootExampleApplication {
 
 On startup, the application loads the configuration and initialize all beans. After initialization, it creates an instance of the process with id 'loanRequest'.
 
+## How to use it?
+
+1. Checkout the project with Git
+2. Import the project into your IDE
+3. Build it with Maven `clean install`
+4. Execute the JAR `java -jar target/camunda-spring-boot-example-1.0.0-SNAPSHOT.jar`
+5. Check the console if you can find the line `calculating interest`

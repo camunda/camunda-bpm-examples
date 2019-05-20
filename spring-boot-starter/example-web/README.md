@@ -1,6 +1,6 @@
 # Spring Boot Web application with embedded Camunda engine
 
-This example demonstrates how you can build Spring Boot Web application having following configured:
+This example demonstrates how you can build a Spring Boot Web application with the following configured:
 * Embedded Camunda engine accessible via REST
 * Process application and one BPMN process deployed
 * Spring Boot Security basic authentication
@@ -16,7 +16,7 @@ It also contains a couple of integration tests, showing how this can be tested.
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-  <version>3.2.0</version>
+  <version>3.3.1</version>
 </dependency>
 ...
 ```
@@ -38,13 +38,13 @@ public class RestApplication {
 
 3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within a process application.
 
->Note: Basic authentication is configured on Spring Boot level, this is NOT Camunda Engine authentication. Check [this docs](https://docs.camunda.org/manual/latest/) 
+>Note: Basic authentication is configured on Spring Boot level, this is NOT a Camunda Engine authentication. Check [this docs](https://docs.camunda.org/manual/7.11/) 
 to configure Basic Authentication for Camunda Engine REST API.
  
 ## Run the application and call the REST API
 
 You can then build the application with `mvn clean install` and then run it with `java -jar` command.
 
-Then you can access REST API in browser: `http://localhost:8080/rest/engine` (provide login/password: user/password).
+Then you can access the REST API in the browser through: `http://localhost:8080/rest/engine` (provide login/password: user/password).
 
 Another endpoint to test: `http://localhost:8080/rest/engine/default/process-definition` - this will show you the deployed process definition.

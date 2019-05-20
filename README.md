@@ -8,6 +8,7 @@ Camunda BPM examples is a collection of focused usage examples for the [camunda 
 | Camunda Version  | Link                                                                 | Checkout command      |
 | -----------------|----------------------------------------------------------------------|-----------------------|
 | Latest           | [Master branch](https://github.com/camunda/camunda-bpm-examples)     | `git checkout master` |
+| 7.11             | [7.11 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.11)| `git checkout 7.11`   |
 | 7.10             | [7.10 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.10)| `git checkout 7.10`   |
 | 7.9              | [7.9 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.9)  | `git checkout 7.9`    |
 | 7.8              | [7.8 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.8)  | `git checkout 7.8`    |
@@ -32,7 +33,6 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [Cockpit](#cockpit-examples)
 * [Tasklist](#tasklist-examples)
 * [camunda Modeler (Eclipse)](#camunda-modeler-eclipse-plugin-examples)
-* [CMMN](#cmmn-examples)
 * [Multi-Tenancy](#multi-tenancy-examples)
 * [Spin](#spin-examples)
 * [DMN](#dmn-examples)
@@ -83,7 +83,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)                      | JBoss AS 7            | Spring, Jndi, War         |
 | [Process Application - Spring Boot](deployment/spring-boot)                                   | Spring Boot           | Spring                    |
 
-Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/7 to run/compile the project. Otherwise the JBoss 7 will not start, just hang. This is a JBoss 7.2 issue and does not affect JBoss Wildfly.
+Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 7 to run/compile the project. Otherwise the JBoss 7 will not start, just hang. This is a JBoss 7.2 issue and does not affect WildFly.
 
 
 ### Process Engine Plugin Examples
@@ -142,12 +142,6 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/
 | [Custom Task Simple](/modeler/custom-task-simple)                          | Plugin, Eclipse           | 2.3+    |
 | [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse           | 2.3+    |
 
-### CMMN Examples
-
-| Name                                                                       |
-| ---------------------------------------------------------------------------|
-| [Case Manager UI](https://github.com/camunda/camunda-casemanager-ui) (External) |
-
 ### Cycle Examples
 
 | Name                                                                       | Version |
@@ -199,6 +193,7 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 6/
  | [REST API](spring-boot-starter/example-web)                | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, REST API |
  | [Autodeployment](spring-boot-starter/example-autodeployment) | Spring boot with embedded engine and Webapps                             |  Spring Boot Starter           |
  | [Twitter](spring-boot-starter/example-twitter)             | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, Webapps, Twitter  |
+ | [REST API DMN](spring-boot-starter/example-dmn-rest)       | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, REST API |
 
 
 ### Contribute!

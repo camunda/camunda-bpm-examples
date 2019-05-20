@@ -22,7 +22,7 @@ It also demonstrates the usage of `application.yaml` configuration file and cont
 <dependency>
  <groupId>org.camunda.bpm.springboot</groupId>
  <artifactId>camunda-bpm-spring-boot-starter</artifactId>
- <version>3.2.0</version>
+ <version>3.3.1</version>
 </dependency>
 ...
 ```

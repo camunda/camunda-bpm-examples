@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.camunda.bpm.springboot.project</groupId>
-    <artifactId>camunda-bpm-spring-boot-starter-example-root</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
-  </parent>
-
   <groupId>org.camunda.bpm.springboot.example</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-example-dmn-rest</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <properties>
+    <spring.boot.version>2.1.5.RELEASE</spring.boot.version>
+    <camunda.spring.boot.starter.version>3.3.1</camunda.spring.boot.starter.version>
+  </properties>
 
   <dependencyManagement>
     <dependencies>
@@ -16,7 +16,7 @@
         <!-- Import dependency management from Spring Boot -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring-boot.version}</version>
+        <version>${spring.boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-      <version>${project.version}</version>
+      <version>${camunda.spring.boot.starter.version}</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -38,10 +38,15 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
-      <version>${project.version}</version>
+      <version>${camunda.spring.boot.starter.version}</version>
       <scope>test</scope>
     </dependency>
 
+<!--     <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.2.3</version>
+    </dependency> -->
   </dependencies>
 
   <build>

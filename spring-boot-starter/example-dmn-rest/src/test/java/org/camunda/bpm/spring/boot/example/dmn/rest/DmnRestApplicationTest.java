@@ -19,9 +19,11 @@ package org.camunda.bpm.spring.boot.example.dmn.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.camunda.bpm.engine.RepositoryService;
-import org.camunda.bpm.engine.impl.util.json.JSONArray;
+
 import org.camunda.bpm.engine.repository.DecisionDefinition;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +51,13 @@ public class DmnRestApplicationTest {
   private RepositoryService repositoryService;
 
   @Test
-  public void deploys_orderDiscount_dmn() {
+  public void deploysOrderDiscountDmn() {
     final DecisionDefinition definition = repositoryService.createDecisionDefinitionQuery().decisionDefinitionKey(CHECK_ORDER).singleResult();
     assertThat(definition).isNotNull();
   }
 
   @Test
-  public void evaluate_checkOrder() throws InterruptedException {
+  public void evaluateCheckOrder() throws JSONException {
     String JSONInput = "{\n" + "  \"variables\" : {\n" + "    \"status\" : { \"value\" : \"silver\", \"type\" : \"String\" },\n"
         + "    \"sum\" : { \"value\" : 900, \"type\" : \"Integer\" }\n" + "  }\n" + "}\n";
 
@@ -68,7 +70,6 @@ public class DmnRestApplicationTest {
         camundaBpmProperties.getProcessEngineName(), CHECK_ORDER);
 
     assertThat(new JSONArray(check).getJSONObject(0).getJSONObject("result").getString("value")).isEqualTo("ok");
-
   }
 
 }

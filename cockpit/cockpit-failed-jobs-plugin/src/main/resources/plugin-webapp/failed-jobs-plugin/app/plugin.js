@@ -30,16 +30,16 @@ define(['angular'], function(angular) {
 
       $http.get(Uri.appUri('engine://engine/:engine/job/count'), {
         params : queryParams
-      }).success(function(data) {
-        pages.total = data.count;
+      }).then(function(res) {
+        pages.total = res.data.count;
       });
 
       var params = angular.extend({}, pagingParams, queryParams);
 
       $http.get(Uri.appUri('engine://engine/:engine/job'), {
         params : params
-      }).success(function(data) {
-        $scope.failedJobs = data;
+      }).then(function(res) {
+        $scope.failedJobs = res.data;
       });
     }
 

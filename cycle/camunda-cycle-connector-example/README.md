@@ -52,7 +52,7 @@ This configuration parameter as well as the other necessary configuration can be
 4. Update the `connector-configurations.xml` file
 4. Start Cycle, goto Connectors and add a new Example Connector
 
-[1]: https://docs.camunda.org/manual/webapps/cycle/
+[1]: https://docs.camunda.org/manual/7.11/webapps/cycle/
 [2]: docs/screenshot.png
 [3]: src/main/java/org/camunda/cycle/example/ExampleConnector.java
 [4]: src/main/java/org/camunda/cycle/example/ExampleConnectorNode.java

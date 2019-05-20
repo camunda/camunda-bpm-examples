@@ -23,7 +23,7 @@ You will need:
 ```xml
 ...
   <properties>
-    <camunda.version>7.10.0-ee</camunda.version>
+    <camunda.version>7.11.0-ee</camunda.version>
   </properties>
 
   <dependencyManagement>
@@ -43,14 +43,14 @@ You will need:
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-      <version>3.2.0</version>
+      <version>3.3.1</version>
     </dependency>
     ...
   </dependencies>
 ...
 ```
 
-2. With Spring Boot you usually create an "application" class annotated with `@SpringBootApplication`. In order to have Cthe amunda process application
+2. With Spring Boot you usually create an "application" class annotated with `@SpringBootApplication`. In order to have the Camunda process application
 registered, you can simply add the annotation `@EnableProcessApplication` to the same class and also include a `processes.xml` file to your `META-INF` folder:
 
 ```java

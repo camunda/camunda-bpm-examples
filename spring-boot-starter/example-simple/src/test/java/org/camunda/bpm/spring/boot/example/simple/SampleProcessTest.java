@@ -16,12 +16,12 @@
  */
 package org.camunda.bpm.spring.boot.example.simple;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.complete;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.execute;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.job;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.runtimeService;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.task;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.autoMock;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;

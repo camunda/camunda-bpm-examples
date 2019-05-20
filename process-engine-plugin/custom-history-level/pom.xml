@@ -7,7 +7,7 @@
   <description>an example project that shows how to implement a custom history level for camunda BPM platform</description>
 
   <properties>
-    <version.camunda>7.10.0</version.camunda>
+    <version.camunda>7.11.0</version.camunda>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

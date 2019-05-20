@@ -30,7 +30,7 @@ public class TweetContentOfflineDelegate implements JavaDelegate {
     String content = (String) execution.getVariable("content");
 
     System.out.println("\n\n\n######\n\n\n");
-    System.out.println("NOW WE WOULD TWITTER: '" + content + "'");
+    System.out.println("NOW WE WOULD TWEET: '" + content + "'");
     System.out.println("\n\n\n######\n\n\n");
   }
 

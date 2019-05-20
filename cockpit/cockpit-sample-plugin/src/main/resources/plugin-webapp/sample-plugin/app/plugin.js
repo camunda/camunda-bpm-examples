@@ -3,8 +3,8 @@ define(['angular'], function(angular) {
   var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
 
     $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
-      .success(function(data) {
-        $scope.processInstanceCounts = data;
+      .then(function(res) {
+        $scope.processInstanceCounts = res.data;
       });
   }];
 

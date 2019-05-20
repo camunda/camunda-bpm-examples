@@ -3,7 +3,7 @@ Sample Plugin for Camunda Cockpit
 
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda BPM](http://docs.camunda.org).
 
-Built and tested against Camunda BPM version `7.10.0`.
+Built and tested against Camunda BPM version `7.11.0`.
 
 ![Screenshot](screenshot.png)
 
@@ -26,7 +26,7 @@ Built and tested against Camunda BPM version `7.10.0`.
 ![Cockpit Plugin](cockpit-plugin.png)
 
 
-> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/latest/webapps/cockpit/extend/plugins/) for the basics first.
+> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.11/webapps/cockpit/extend/plugins/) for the basics first.
 
 1. [Server Side](#server-side)
 	  1. [Plug-in Archive](#plug-in-archive)
@@ -499,8 +499,8 @@ define(['angular'], function(angular) {
   var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
 
     $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
-      .success(function(data) {
-        $scope.processInstanceCounts = data;
+      .then(function(res) {
+        $scope.processInstanceCounts = res.data;
       });
   }];
 
