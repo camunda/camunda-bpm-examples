@@ -111,6 +111,8 @@ The asynchronous nature of the invocation decouples the process engine from the 
 
 If a failure occurs in the service implementation (Business Logic), the failure will not cause the process engine to roll back. The reason being that the service implementation is not directly invoked by the process engine and does not participate in the process engine transaction.
 
+Additionally it has to be noted that `signal()` can't create an Incident if an error occured while running the Business Logic.
+
 ## How to use it?
 
 1. Checkout the project with Git
