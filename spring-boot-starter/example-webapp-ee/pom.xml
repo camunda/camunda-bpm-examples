@@ -83,8 +83,8 @@
       <url>https://app.camunda.com/nexus/content/groups/public</url>
     </repository>
     <repository>
-      <id>camunda-bpm-ee</id>
-      <name>camunda-bpm-ee</name>
+      <id>camunda-bpm-nexus-ee</id>
+      <name>camunda-bpm-nexus-ee</name>
       <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-ee</url>
     </repository>
   </repositories>
