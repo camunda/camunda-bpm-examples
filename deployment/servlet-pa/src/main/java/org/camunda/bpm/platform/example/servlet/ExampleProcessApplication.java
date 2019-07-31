@@ -22,6 +22,9 @@ import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.ProcessApplication;
 import org.camunda.bpm.application.impl.ServletProcessApplication;
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.dmn.DecisionsEvaluationBuilder;
+import org.camunda.bpm.engine.variable.Variables;
+import org.joda.time.LocalDate;
 
 /**
  * <p>This class transforms your regular java web application
@@ -53,11 +56,22 @@ public class ExampleProcessApplication extends ServletProcessApplication {
    */
   @PostDeploy
   public void startProcessInstance(ProcessEngine processEngine) {
+    // given
+    LocalDate date1 = LocalDate.now();
+    LocalDate date2 = date1.plusMonths(7);
 
-    // start a new instance of our process
-    processEngine.getRuntimeService()
-      .startProcessInstanceByKey("exampleProcess");
+    DecisionsEvaluationBuilder hoorayStateEvaluator =
+        processEngine.getDecisionService()
+            .evaluateDecisionByKey("HoorayStateEvaluator")
+            .variables(Variables
+                .putValue("date1", date1.toDate())
+                .putValue("date2", date2.toDate()));
 
+    // when
+    String hoorayResult = hoorayStateEvaluator.evaluate().getSingleEntry();
+
+    // then
+    assert("hooray".equals(hoorayResult));
   }
 
 }
