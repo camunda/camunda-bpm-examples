@@ -1,0 +1,17 @@
+<form role="form" name="form">
+  <h2>Please Pay this invoice:</h2>
+
+  <a cam-file-download="INVOICE_DOCUMENT" />
+
+  <br />
+
+  <button cam-error-code="invoice-error"
+          cam-error-message="No amount specified">
+    No Amount specified
+  </button>
+
+  <button cam-escalation-code="invoice-escalate">
+    This invoice seems suspicious
+  </button>
+
+</form>
