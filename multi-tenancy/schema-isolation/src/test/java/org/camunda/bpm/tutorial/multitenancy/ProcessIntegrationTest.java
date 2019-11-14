@@ -59,7 +59,6 @@ public class ProcessIntegrationTest {
   public static WebArchive createDeployment() {
     // resolve given dependencies from Maven POM
     File[] libs = Maven.resolver()
-      .offline(false)
       .loadPomFromFile("pom.xml")
       .importCompileAndRuntimeDependencies().resolve().withoutTransitivity().asFile();
 
