@@ -18,6 +18,7 @@ package org.camunda.bpm.spring.boot.example.simple;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.camunda.bpm.application.ProcessApplicationInterface;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
@@ -26,7 +27,6 @@ import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.camunda.bpm.spring.boot.starter.event.PreUndeployEvent;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,13 +63,13 @@ public class SimpleApplication implements CommandLineRunner {
   private ConfigurableApplicationContext context;
 
   @Autowired
-  private CamundaBpmProperties camundaBpmProperties;
-
-  @Autowired
   private Showcase showcase;
 
   @Autowired
   private ProcessEngine processEngine;
+
+  @Autowired
+  private ProcessApplicationInterface application;
 
   @Value("${org.camunda.bpm.spring.boot.starter.example.simple.SimpleApplication.exitWhenFinished:true}")
   private boolean exitWhenFinished;
@@ -88,7 +88,8 @@ public class SimpleApplication implements CommandLineRunner {
 
   @Scheduled(fixedDelay = 1500L)
   public void exitApplicationWhenProcessIsFinished() {
-    Assert.isTrue(!((ProcessEngineConfigurationImpl) processEngine.getProcessEngineConfiguration()).isDbMetricsReporterActivate());
+    Assert.isTrue(!((ProcessEngineConfigurationImpl) processEngine.getProcessEngineConfiguration()).isDbMetricsReporterActivate(),
+        "Metrics reporter should be deactivated");
 
     String processInstanceId = showcase.getProcessInstanceId();
 
@@ -118,6 +119,6 @@ public class SimpleApplication implements CommandLineRunner {
 
   @Override
   public void run(String... strings) throws Exception {
-    logger.info("CommandLineRunner#run() - {}", ToStringBuilder.reflectionToString(camundaBpmProperties.getApplication(), ToStringStyle.SHORT_PREFIX_STYLE));
+    logger.info("CommandLineRunner#run() - {}", ToStringBuilder.reflectionToString(application, ToStringStyle.SHORT_PREFIX_STYLE));
   }
 }

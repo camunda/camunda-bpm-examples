@@ -17,7 +17,7 @@ It also contains a simple integration test, showing how this can be tested.
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-  <version>3.3.1</version>
+  <version>3.4.0</version>
 </dependency>
 ...
 ```

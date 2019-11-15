@@ -64,7 +64,7 @@ public class CamundaBpmRestIT {
 
     @Bean
     public RestTemplate restTemplate() {
-      return new RestTemplateBuilder().basicAuthorization("user", password).build();
+      return new RestTemplateBuilder().basicAuthentication("user", password).build();
     }
 
   }
