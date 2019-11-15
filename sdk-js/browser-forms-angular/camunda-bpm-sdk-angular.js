@@ -33,127 +33,122 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+'use strict'; // exposify: CamSDK.Form
 
-'use strict';
-
-// exposify: CamSDK.Form
 var CamundaForm = require('./../../forms/camunda-form');
 
-var angular = (typeof window !== "undefined" ? window['angular'] : typeof global !== "undefined" ? global['angular'] : null);
+var angular = typeof window !== "undefined" ? window['angular'] : typeof global !== "undefined" ? global['angular'] : null;
 var $ = CamundaForm.$;
+
 var constants = require('./../../forms/constants');
 
+var CamundaFormAngular = CamundaForm.extend({
+  renderForm: function renderForm() {
+    var self = this;
+    this.formElement = angular.element(this.formElement); // first add the form to the DOM:
 
-var CamundaFormAngular = CamundaForm.extend(
-  {
+    CamundaForm.prototype.renderForm.apply(this, arguments); // next perform auto-scope binding for all fields which do not have custom bindings
 
-    renderForm: function() {
-      var self = this;
+    function autoBind(key, el) {
+      var element = $(el);
 
-      this.formElement = angular.element(this.formElement);
+      if (!element.attr('ng-model')) {
+        var camVarName = element.attr(constants.DIRECTIVE_CAM_VARIABLE_NAME);
 
-      // first add the form to the DOM:
-      CamundaForm.prototype.renderForm.apply(this, arguments);
-
-      // next perform auto-scope binding for all fields which do not have custom bindings
-      function autoBind(key, el) {
-        var element = $(el);
-        if(!element.attr('ng-model')) {
-          var camVarName = element.attr(constants.DIRECTIVE_CAM_VARIABLE_NAME);
-          if(camVarName) {
-            element.attr('ng-model', camVarName);
-          }
+        if (camVarName) {
+          element.attr('ng-model', camVarName);
         }
       }
+    }
 
-      for(var i = 0; i < this.formFieldHandlers.length; i++) {
-        var handler = this.formFieldHandlers[i];
-        var selector = handler.selector;
-        $(selector, self.formElement).each(autoBind);
-      }
+    for (var i = 0; i < this.formFieldHandlers.length; i++) {
+      var handler = this.formFieldHandlers[i];
+      var selector = handler.selector;
+      $(selector, self.formElement).each(autoBind);
+    }
 
-      this.formElement = angular.element(this.formElement);
-      // finally compile the form with angular and linked to the current scope
-      var injector = self.formElement.injector();
-      if (!injector) { return; }
+    this.formElement = angular.element(this.formElement); // finally compile the form with angular and linked to the current scope
 
-      var scope = self.formElement.scope();
-      injector.invoke(['$compile', function($compile) {
-        $compile(self.formElement)(scope);
-      }]);
-      scope.camForm = this;
-    },
+    var injector = self.formElement.injector();
 
-    executeFormScript: function(script) {
+    if (!injector) {
+      return;
+    }
 
-      // overrides executeFormScript to make sure the following variables / functions are available to script implementations:
+    var scope = self.formElement.scope();
+    injector.invoke(['$compile', function ($compile) {
+      $compile(self.formElement)(scope);
+    }]);
+    scope.camForm = this;
+  },
+  executeFormScript: function executeFormScript(script) {
+    // overrides executeFormScript to make sure the following variables / functions are available to script implementations:
+    // * $scope
+    // * inject
+    this.formElement = angular.element(this.formElement);
 
-      // * $scope
-      // * inject
+    var moment = require('moment');
 
-      this.formElement = angular.element(this.formElement);
+    var injector = this.formElement.injector();
+    var scope = this.formElement.scope();
+    /*eslint-disable */
 
-      var moment = require('moment');
-      var injector = this.formElement.injector();
-      var scope = this.formElement.scope();
-
-      /*eslint-disable */
-      (function(camForm, $scope, moment) {
-        // hook to create the service with injection
-        var inject = function(extensions) {
-          // if result is an array or function we expect
-          // an injectable service
-          if (angular.isFunction(extensions) || angular.isArray(extensions)) {
-            injector.instantiate(extensions, { $scope: scope });
-          } else {
-            throw new Error('Must call inject(array|fn)');
-          }
-        };
-
-      /* jshint evil: true */
-        eval(script);
-      /* jshint evil: false */
-
-      })(this, scope, moment);
-      /*eslint-enable */
-
-    },
-
-    fireEvent: function() {
-
-      // overrides fireEvent to make sure event listener is invoked in an apply phase
-      this.formElement = angular.element(this.formElement);
-
-      var self = this;
-      var args = arguments;
-      var scope = this.formElement.scope();
-
-      var doFireEvent = function() {
-        CamundaForm.prototype.fireEvent.apply(self, args);
-      };
-
-      var injector = self.formElement.injector();
-      if (!injector) { return; }
-
-      injector.invoke(['$rootScope', function($rootScope) {
-        var phase = $rootScope.$$phase;
-        // only apply if not already in digest / apply
-        if(phase !== '$apply' && phase !== '$digest') {
-          scope.$apply(function() {
-            doFireEvent();
+    (function (camForm, $scope, moment) {
+      // hook to create the service with injection
+      var inject = function inject(extensions) {
+        // if result is an array or function we expect
+        // an injectable service
+        if (angular.isFunction(extensions) || angular.isArray(extensions)) {
+          injector.instantiate(extensions, {
+            $scope: scope
           });
         } else {
-          doFireEvent();
+          throw new Error('Must call inject(array|fn)');
         }
+      };
+      /* jshint evil: true */
 
-      }]);
+
+      eval(script);
+      /* jshint evil: false */
+    })(this, scope, moment);
+    /*eslint-enable */
+
+  },
+  fireEvent: function fireEvent() {
+    // overrides fireEvent to make sure event listener is invoked in an apply phase
+    this.formElement = angular.element(this.formElement);
+    var self = this;
+    var args = arguments;
+    var scope = this.formElement.scope();
+
+    var doFireEvent = function doFireEvent() {
+      CamundaForm.prototype.fireEvent.apply(self, args);
+    };
+
+    var injector = self.formElement.injector();
+
+    if (!injector) {
+      return;
     }
-  });
 
+    injector.invoke(['$rootScope', function ($rootScope) {
+      var phase = $rootScope.$$phase; // only apply if not already in digest / apply
+
+      if (phase !== '$apply' && phase !== '$digest') {
+        scope.$apply(function () {
+          doFireEvent();
+        });
+      } else {
+        doFireEvent();
+      }
+    }]);
+  }
+});
 module.exports = CamundaFormAngular;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./../../forms/camunda-form":38,"./../../forms/constants":39,"moment":51}],2:[function(require,module,exports){
+},{"./../../forms/camunda-form":38,"./../../forms/constants":39,"moment":61}],2:[function(require,module,exports){
 (function (global){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
@@ -171,57 +166,47 @@ module.exports = CamundaFormAngular;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
-var angular = (typeof window !== "undefined" ? window['angular'] : typeof global !== "undefined" ? global['angular'] : null),
+var angular = typeof window !== "undefined" ? window['angular'] : typeof global !== "undefined" ? global['angular'] : null,
     CamundaFormAngular = require('./camunda-form-angular'),
-    isType = require('./../../forms/type-util').isType;
+    isType = require('./../../forms/type-util').isType; // define embedded forms angular module
 
-// define embedded forms angular module
+
 var ngModule = angular.module('cam.embedded.forms', []);
-
 /**
  * Exposes 'cam-variable-name' as angular directive making sure
  * that updates to a HTML Control made through the camunda form
  * infrastructure are propagated over ngModel bindings.
  */
-ngModule.directive('camVariableName', ['$rootScope', function($rootScope) {
+
+ngModule.directive('camVariableName', ['$rootScope', function ($rootScope) {
   return {
     require: 'ngModel',
-    link: function(scope, elm, attrs, ctrl) {
+    link: function link(scope, elm, attrs, ctrl) {
+      elm.on('camFormVariableApplied', function (evt, value) {
+        var phase = $rootScope.$$phase; // only apply if not already in digest / apply
 
-      elm.on('camFormVariableApplied', function(evt, value) {
-        var phase = $rootScope.$$phase;
-        // only apply if not already in digest / apply
-        if(phase !== '$apply' && phase !== '$digest') {
-          scope.$apply(function() {
+        if (phase !== '$apply' && phase !== '$digest') {
+          scope.$apply(function () {
             ctrl.$setViewValue(value);
           });
         } else {
           ctrl.$setViewValue(value);
         }
       });
-
     }
   };
 }]);
-
-ngModule.directive('camVariableType', [function() {
-
+ngModule.directive('camVariableType', [function () {
   return {
-
     require: 'ngModel',
-    link: function($scope, $element, $attrs, ctrl) {
-
-      var validate = function(viewValue) {
-
+    link: function link($scope, $element, $attrs, ctrl) {
+      var validate = function validate(viewValue) {
         var type = $attrs.camVariableType;
-
-        ctrl.$setValidity('camVariableType', true );
+        ctrl.$setValidity('camVariableType', true);
 
         if (viewValue || viewValue === false || type === 'Bytes') {
-
           if (ctrl.$pristine) {
             ctrl.$pristine = false;
             ctrl.$dirty = true;
@@ -229,14 +214,13 @@ ngModule.directive('camVariableType', [function() {
             $element.removeClass('ng-pristine');
           }
 
-          if(['Boolean', 'String', 'Bytes'].indexOf(type) === -1 && !isType(viewValue, type)) {
-            ctrl.$setValidity('camVariableType', false );
+          if (['Boolean', 'String', 'Bytes'].indexOf(type) === -1 && !isType(viewValue, type)) {
+            ctrl.$setValidity('camVariableType', false);
           }
 
-          if($attrs.type==='file' && type === 'Bytes' && $element[0].files && $element[0].files[0] && $element[0].files[0].size > ($attrs.camMaxFilesize || 5000000)) {
-            ctrl.$setValidity('camVariableType', false );
+          if ($attrs.type === 'file' && type === 'Bytes' && $element[0].files && $element[0].files[0] && $element[0].files[0].size > ($attrs.camMaxFilesize || 5000000)) {
+            ctrl.$setValidity('camVariableType', false);
           }
-
         }
 
         return viewValue;
@@ -244,24 +228,22 @@ ngModule.directive('camVariableType', [function() {
 
       ctrl.$parsers.unshift(validate);
       ctrl.$formatters.push(validate);
-
-      $attrs.$observe('camVariableType', function() {
+      $attrs.$observe('camVariableType', function () {
         return validate(ctrl.$viewValue);
       });
-
-      $element.bind('change', function() {
+      $element.bind('change', function () {
         validate(ctrl.$viewValue);
         $scope.$apply();
       });
-
-    }};
+    }
+  };
 }]);
-
 module.exports = CamundaFormAngular;
-
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./../../forms/type-util":45,"./camunda-form-angular":1}],3:[function(require,module,exports){
+"use strict";
+
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -280,13 +262,11 @@ module.exports = CamundaFormAngular;
  */
 
 /** @namespace CamSDK */
-
 module.exports = {
   Client: require('./../api-client'),
   Form: require('./forms'),
   utils: require('./../utils')
 };
-
 
 },{"./../api-client":7,"./../utils":47,"./forms":2}],4:[function(require,module,exports){
 /*
@@ -305,19 +285,19 @@ module.exports = {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+'use strict'; // var HttpClient = require('./http-client');
 
-'use strict';
-
-// var HttpClient = require('./http-client');
 var Q = require('q');
-var Events = require('./../events');
-var BaseClass = require('./../base-class');
 
+var Events = require('./../events');
+
+var BaseClass = require('./../base-class');
 /**
  * No-Op callback
  */
-function noop() {}
 
+
+function noop() {}
 /**
  * Abstract class for resources
  *
@@ -372,210 +352,202 @@ function noop() {}
  *
  * });
  */
+
+
 var AbstractClientResource = BaseClass.extend(
-  /** @lends AbstractClientResource.prototype */
-  {
-    /**
-     * Initializes a AbstractClientResource instance
-     *
-     * This method is aimed to be overriden by other implementations
-     * of the AbstractClientResource.
-     *
-     * @method initialize
-     */
-    initialize: function() {
-      // do something to initialize the instance
-      // like copying the Model http property to the "this" (instanciated)
-      this.http = this.constructor.http;
+/** @lends AbstractClientResource.prototype */
+{
+  /**
+   * Initializes a AbstractClientResource instance
+   *
+   * This method is aimed to be overriden by other implementations
+   * of the AbstractClientResource.
+   *
+   * @method initialize
+   */
+  initialize: function initialize() {
+    // do something to initialize the instance
+    // like copying the Model http property to the "this" (instanciated)
+    this.http = this.constructor.http;
+  }
+},
+/** @lends AbstractClientResource */
+{
+  /**
+   * Path used by the resource to perform HTTP queries
+   *
+   * @abstract
+   * @memberOf CamSDK.client.AbstractClientResource
+   */
+  path: '',
+
+  /**
+   * Object hosting the methods for HTTP queries.
+   *
+   * @abstract
+   * @memberof CamSDK.client.AbstractClientResource
+   */
+  http: {},
+
+  /**
+   * Create an instance on the backend
+   *
+   * @abstract
+   * @memberOf CamSDK.client.AbstractClientResource
+   *
+   * @param  {!Object|Object[]}  attributes
+   * @param  {requestCallback} [done]
+   */
+  create: function create() {},
+
+  /**
+   * Fetch a list of instances
+   *
+   * @memberof CamSDK.client.AbstractClientResource
+   *
+   * @fires CamSDK.AbstractClientResource#error
+   * @fires CamSDK.AbstractClientResource#loaded
+   *
+   * @param  {?Object.<String, String>} params
+   * @param  {requestCallback} [done]
+   */
+  list: function list(params, _done) {
+    // allows to pass only a callback
+    if (typeof params === 'function') {
+      _done = params;
+      params = {};
     }
-  },
 
+    params = params || {};
+    _done = _done || noop; // var likeExp = /Like$/;
 
-  /** @lends AbstractClientResource */
-  {
-    /**
-     * Path used by the resource to perform HTTP queries
-     *
-     * @abstract
-     * @memberOf CamSDK.client.AbstractClientResource
-     */
-    path: '',
+    var self = this;
+    var results = {
+      count: 0,
+      items: []
+    };
+    var combinedPromise = Q.defer();
+    var countFinished = false;
+    var listFinished = false;
 
-    /**
-     * Object hosting the methods for HTTP queries.
-     *
-     * @abstract
-     * @memberof CamSDK.client.AbstractClientResource
-     */
-    http: {},
+    var checkCompletion = function checkCompletion() {
+      if (listFinished && countFinished) {
+        self.trigger('loaded', results);
+        combinedPromise.resolve(results);
 
-
-
-    /**
-     * Create an instance on the backend
-     *
-     * @abstract
-     * @memberOf CamSDK.client.AbstractClientResource
-     *
-     * @param  {!Object|Object[]}  attributes
-     * @param  {requestCallback} [done]
-     */
-    create: function() {},
-
-
-    /**
-     * Fetch a list of instances
-     *
-     * @memberof CamSDK.client.AbstractClientResource
-     *
-     * @fires CamSDK.AbstractClientResource#error
-     * @fires CamSDK.AbstractClientResource#loaded
-     *
-     * @param  {?Object.<String, String>} params
-     * @param  {requestCallback} [done]
-     */
-    list: function(params, done) {
-      // allows to pass only a callback
-      if (typeof params === 'function') {
-        done = params;
-        params = {};
+        _done(null, results);
       }
-      params = params || {};
-      done = done || noop;
+    }; // until a new webservice is made available,
+    // we need to perform 2 requests.
+    // Since they are independent requests, make them asynchronously
 
-      // var likeExp = /Like$/;
-      var self = this;
-      var results = {
-        count: 0,
-        items: []
-      };
 
-      var combinedPromise = Q.defer();
+    self.count(params, function (err, count) {
+      if (err) {
+        self.trigger('error', err);
+        combinedPromise.reject(err);
 
-      var countFinished = false;
-      var listFinished = false;
-
-      var checkCompletion = function() {
-        if(listFinished && countFinished) {
-          self.trigger('loaded', results);
-          combinedPromise.resolve(results);
-          done(null, results);
-        }
-      };
-
-      // until a new webservice is made available,
-      // we need to perform 2 requests.
-      // Since they are independent requests, make them asynchronously
-      self.count(params, function(err, count) {
-        if(err) {
+        _done(err);
+      } else {
+        results.count = count;
+        countFinished = true;
+        checkCompletion();
+      }
+    });
+    self.http.get(self.path, {
+      data: params,
+      done: function done(err, itemsRes) {
+        if (err) {
           self.trigger('error', err);
           combinedPromise.reject(err);
-          done(err);
+
+          _done(err);
         } else {
-          results.count = count;
-          countFinished = true;
+          results.items = itemsRes; // QUESTION: should we return that too?
+
+          results.firstResult = parseInt(params.firstResult || 0, 10);
+          results.maxResults = results.firstResult + parseInt(params.maxResults || 10, 10);
+          listFinished = true;
           checkCompletion();
         }
-      });
-
-      self.http.get(self.path, {
-        data: params,
-        done: function(err, itemsRes) {
-          if (err) {
-            self.trigger('error', err);
-            combinedPromise.reject(err);
-            done(err);
-          } else {
-            results.items = itemsRes;
-            // QUESTION: should we return that too?
-            results.firstResult = parseInt(params.firstResult || 0, 10);
-            results.maxResults = results.firstResult + parseInt(params.maxResults || 10, 10);
-            listFinished = true;
-            checkCompletion();
-          }
-        }
-      });
-
-      return combinedPromise.promise;
-    },
-
-    /**
-     * Fetch a count of instances
-     *
-     * @memberof CamSDK.client.AbstractClientResource
-     *
-     * @fires CamSDK.AbstractClientResource#error
-     * @fires CamSDK.AbstractClientResource#loaded
-     *
-     * @param  {?Object.<String, String>} params
-     * @param  {requestCallback} [done]
-     */
-    count: function(params, done) {
-      // allows to pass only a callback
-      if (typeof params === 'function') {
-        done = params;
-        params = {};
       }
-      params = params || {};
-      done = done || noop;
-      var self = this;
-      var deferred = Q.defer();
+    });
+    return combinedPromise.promise;
+  },
 
-      this.http.get(this.path +'/count', {
-        data: params,
-        done: function(err, result) {
-          if (err) {
-            /**
-             * @event CamSDK.AbstractClientResource#error
-             * @type {Error}
-             */
-            self.trigger('error', err);
+  /**
+   * Fetch a count of instances
+   *
+   * @memberof CamSDK.client.AbstractClientResource
+   *
+   * @fires CamSDK.AbstractClientResource#error
+   * @fires CamSDK.AbstractClientResource#loaded
+   *
+   * @param  {?Object.<String, String>} params
+   * @param  {requestCallback} [done]
+   */
+  count: function count(params, _done2) {
+    // allows to pass only a callback
+    if (typeof params === 'function') {
+      _done2 = params;
+      params = {};
+    }
 
-            deferred.reject(err);
-            done(err);
-          } else {
-            deferred.resolve(result.count);
-            done(null, result.count);
-          }
+    params = params || {};
+    _done2 = _done2 || noop;
+    var self = this;
+    var deferred = Q.defer();
+    this.http.get(this.path + '/count', {
+      data: params,
+      done: function done(err, result) {
+        if (err) {
+          /**
+           * @event CamSDK.AbstractClientResource#error
+           * @type {Error}
+           */
+          self.trigger('error', err);
+          deferred.reject(err);
+
+          _done2(err);
+        } else {
+          deferred.resolve(result.count);
+
+          _done2(null, result.count);
         }
-      });
+      }
+    });
+    return deferred.promise;
+  },
 
-      return deferred.promise;
-    },
+  /**
+   * Update one or more instances
+   *
+   * @abstract
+   * @memberof CamSDK.AbstractClientResource
+   *
+   * @param  {!String|String[]}     ids
+   * @param  {Object.<String, *>}   attributes
+   * @param  {requestCallback} [done]
+   */
+  update: function update() {},
 
-
-    /**
-     * Update one or more instances
-     *
-     * @abstract
-     * @memberof CamSDK.AbstractClientResource
-     *
-     * @param  {!String|String[]}     ids
-     * @param  {Object.<String, *>}   attributes
-     * @param  {requestCallback} [done]
-     */
-    update: function() {},
-
-
-
-    /**
-     * Delete one or more instances
-     *
-     * @abstract
-     * @memberof CamSDK.AbstractClientResource
-     *
-     * @param  {!String|String[]}  ids
-     * @param  {requestCallback} [done]
-     */
-    delete: function() {}
-  });
-
-
+  /**
+   * Delete one or more instances
+   *
+   * @abstract
+   * @memberof CamSDK.AbstractClientResource
+   *
+   * @param  {!String|String[]}  ids
+   * @param  {requestCallback} [done]
+   */
+  "delete": function _delete() {}
+});
 Events.attach(AbstractClientResource);
-
 module.exports = AbstractClientResource;
 
-},{"./../base-class":36,"./../events":37,"q":53}],5:[function(require,module,exports){
+},{"./../base-class":36,"./../events":37,"q":63}],5:[function(require,module,exports){
+"use strict";
+
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -592,9 +564,8 @@ module.exports = AbstractClientResource;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-exports.createSimpleGetQueryFunction = function(urlSuffix) {
-  return function(params, done) {
+exports.createSimpleGetQueryFunction = function (urlSuffix) {
+  return function (params, done) {
     var url = this.path + urlSuffix;
 
     if (typeof params === 'function') {
@@ -627,19 +598,21 @@ exports.createSimpleGetQueryFunction = function(urlSuffix) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
-var request = require('./../../vendor/superagent').default;
-var Q = require('q');
-var Events = require('./../events');
-var utils = require('./../utils');
+var request = require('superagent');
 
+var Q = require('q');
+
+var Events = require('./../events');
+
+var utils = require('./../utils');
 /**
  * No-Op callback
  */
-function noop() {}
 
+
+function noop() {}
 /**
  * HttpClient
  *
@@ -648,10 +621,12 @@ function noop() {}
  * @class
  * @memberof CamSDK.client
  */
-var HttpClient = function(config) {
-  config = config || {};
 
+
+var HttpClient = function HttpClient(config) {
+  config = config || {};
   config.headers = config.headers || {};
+
   if (!config.headers.Accept) {
     config.headers.Accept = 'application/hal+json, application/json; q=0.5';
   }
@@ -661,71 +636,77 @@ var HttpClient = function(config) {
   }
 
   Events.attach(this);
-
   this.config = config;
 };
 
 function end(self, done, deferred) {
   done = done || noop;
-  return function(err, response) {
+  return function (err, response) {
     // TODO: investigate the possible problems related to response without content
-    if (err || (!response.ok && !response.noContent)) {
-      err = err || response.error || new Error('The '+ response.req.method +' request on '+ response.req.url +' failed');
+    if (err || !response.ok && !response.noContent) {
+      err = err || response.error || new Error('The ' + response.req.method + ' request on ' + response.req.url + ' failed');
+
       if (response && response.body) {
         if (response.body.message) {
           err.message = response.body.message;
         }
       }
-      self.trigger('error', err);
-      if(deferred) {deferred.reject(err);}
-      return done(err);
-    }
 
-    // superagent puts the parsed data into a property named "body"
+      self.trigger('error', err);
+
+      if (deferred) {
+        deferred.reject(err);
+      }
+
+      return done(err);
+    } // superagent puts the parsed data into a property named "body"
     // and the "raw" content in property named "text"
     // and.. it does not parse the response if it does not have
     // the "application/json" type.
+
+
     if (response.type === 'application/hal+json') {
       if (!response.body || Object.keys(response.body).length === 0) {
         response.body = JSON.parse(response.text);
-      }
+      } // and process embedded resources
 
-      // and process embedded resources
+
       response.body = utils.solveHALEmbedded(response.body);
     }
 
-    if(deferred) {deferred.resolve(response.body ? response.body : (response.text ? response.text : ''));}
-    done(null, response.body ? response.body : (response.text ? response.text : ''));
+    if (deferred) {
+      deferred.resolve(response.body ? response.body : response.text ? response.text : '');
+    }
+
+    done(null, response.body ? response.body : response.text ? response.text : '');
   };
 }
-
 /**
  * Performs a POST HTTP request
  */
-HttpClient.prototype.post = function(path, options) {
+
+
+HttpClient.prototype.post = function (path, options) {
   options = options || {};
   var done = options.done || noop;
   var self = this;
   var deferred = Q.defer();
-  var url = this.config.baseUrl + (path ? '/'+ path : '');
+  var url = this.config.baseUrl + (path ? '/' + path : '');
   var req = request.post(url);
-
   var headers = options.headers || this.config.headers;
   headers.Accept = headers.Accept || this.config.headers.Accept;
+  var isFieldOrAttach = false; // Buffer object is only available in node.js environement
 
-  var isFieldOrAttach = false;
-  // Buffer object is only available in node.js environement
   if (typeof Buffer !== 'undefined') {
-    Object.keys(options.fields || {}).forEach(function(field) {
+    Object.keys(options.fields || {}).forEach(function (field) {
       req.field(field, options.fields[field]);
       isFieldOrAttach = true;
     });
-    (options.attachments || []).forEach(function(file, idx) {
-      req.attach('data_'+idx, new Buffer(file.content), file.name);
+    (options.attachments || []).forEach(function (file, idx) {
+      req.attach('data_' + idx, new Buffer(file.content), file.name);
       isFieldOrAttach = true;
     });
-  }
-  else if (!!options.fields || !!options.attachments) {
+  } else if (!!options.fields || !!options.attachments) {
     var err = new Error('Multipart request is only supported in node.js environement.');
     done(err);
     return deferred.reject(err);
@@ -735,119 +716,91 @@ HttpClient.prototype.post = function(path, options) {
     req.send(options.data || {});
   }
 
-  req
-    .set(headers)
-    .query(options.query || {});
-
+  req.set(headers).query(options.query || {});
   req.end(end(self, done, deferred));
   return deferred.promise;
 };
-
-
 /**
  * Performs a GET HTTP request
  */
-HttpClient.prototype.get = function(path, options) {
-  var url = this.config.baseUrl + (path ? '/'+ path : '');
+
+
+HttpClient.prototype.get = function (path, options) {
+  var url = this.config.baseUrl + (path ? '/' + path : '');
   return this.load(url, options);
 };
-
 /**
  * Loads a resource using http GET
  */
-HttpClient.prototype.load = function(url, options) {
+
+
+HttpClient.prototype.load = function (url, options) {
   options = options || {};
   var done = options.done || noop;
   var self = this;
   var deferred = Q.defer();
-
   var headers = options.headers || this.config.headers;
   var accept = options.accept || headers.Accept || this.config.headers.Accept;
-
-  var req = request
-    .get(url)
-    .set(headers)
-    .set('Accept', accept)
-    .query(options.data || {});
-
+  var req = request.get(url).set(headers).set('Accept', accept).query(options.data || {});
   req.end(end(self, done, deferred));
   return deferred.promise;
 };
-
-
 /**
  * Performs a PUT HTTP request
  */
-HttpClient.prototype.put = function(path, options) {
+
+
+HttpClient.prototype.put = function (path, options) {
   options = options || {};
   var done = options.done || noop;
   var self = this;
   var deferred = Q.defer();
-  var url = this.config.baseUrl + (path ? '/'+ path : '');
-
+  var url = this.config.baseUrl + (path ? '/' + path : '');
   var headers = options.headers || this.config.headers;
   headers.Accept = headers.Accept || this.config.headers.Accept;
-
-  var req = request
-    .put(url)
-    .set(headers)
-    .send(options.data || {});
-
-  req.end(end(self, done,deferred));
+  var req = request.put(url).set(headers).send(options.data || {});
+  req.end(end(self, done, deferred));
   return deferred.promise;
 };
-
-
-
 /**
  * Performs a DELETE HTTP request
  */
-HttpClient.prototype.del = function(path, options) {
+
+
+HttpClient.prototype.del = function (path, options) {
   options = options || {};
   var done = options.done || noop;
   var self = this;
   var deferred = Q.defer();
-  var url = this.config.baseUrl + (path ? '/'+ path : '');
-
+  var url = this.config.baseUrl + (path ? '/' + path : '');
   var headers = options.headers || this.config.headers;
   headers.Accept = headers.Accept || this.config.headers.Accept;
-
-  var req = request
-    .del(url)
-    .set(headers)
-    .send(options.data || {});
-
+  var req = request.del(url).set(headers).send(options.data || {});
   req.end(end(self, done, deferred));
   return deferred.promise;
 };
-
-
-
 /**
  * Performs a OPTIONS HTTP request
  */
-HttpClient.prototype.options = function(path, options) {
+
+
+HttpClient.prototype.options = function (path, options) {
   options = options || {};
   var done = options.done || noop;
   var self = this;
   var deferred = Q.defer();
-  var url = this.config.baseUrl + (path ? '/'+ path : '');
-
+  var url = this.config.baseUrl + (path ? '/' + path : '');
   var headers = options.headers || this.config.headers;
   headers.Accept = headers.Accept || this.config.headers.Accept;
-
-  var req = request('OPTIONS', url)
-    .set(headers);
-
+  var req = request('OPTIONS', url).set(headers);
   req.end(end(self, done, deferred));
   return deferred.promise;
 };
-
 
 module.exports = HttpClient;
 
 }).call(this,require("buffer").Buffer)
-},{"./../../vendor/superagent":56,"./../events":37,"./../utils":47,"buffer":49,"q":53}],7:[function(require,module,exports){
+},{"./../events":37,"./../utils":47,"buffer":49,"q":63,"superagent":65}],7:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -864,10 +817,9 @@ module.exports = HttpClient;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
-var Events = require('./../events');
 
+var Events = require('./../events');
 /**
  * For all API client related
  * @namespace CamSDK.client
@@ -889,6 +841,8 @@ var Events = require('./../events');
  * @param  {String} config.apiUri
  * @param  {String} [config.headers]        Headers that should be used for all Http requests.
  */
+
+
 function CamundaClient(config) {
   if (!config) {
     throw new Error('Needs configuration');
@@ -898,41 +852,34 @@ function CamundaClient(config) {
     throw new Error('An apiUri is required');
   }
 
-  Events.attach(this);
+  Events.attach(this); // use 'default' engine
 
-  // use 'default' engine
-  config.engine = typeof config.engine !== 'undefined'
-    ? config.engine
-    : 'default';
+  config.engine = typeof config.engine !== 'undefined' ? config.engine : 'default'; // mock by default.. for now
 
-  // mock by default.. for now
-  config.mock =  typeof config.mock !== 'undefined' ? config.mock : true;
-
+  config.mock = typeof config.mock !== 'undefined' ? config.mock : true;
   config.resources = config.resources || {};
-
   this.HttpClient = config.HttpClient || CamundaClient.HttpClient;
-
   this.baseUrl = config.apiUri;
+
   if (config.engine) {
-    this.baseUrl += (this.baseUrl.slice(-1) !== '/' ? '/' : '');
-    this.baseUrl += 'engine/'+ config.engine;
+    this.baseUrl += this.baseUrl.slice(-1) !== '/' ? '/' : '';
+    this.baseUrl += 'engine/' + config.engine;
   }
 
   this.config = config;
-
   this.initialize();
 }
-
 /**
  * [HttpClient description]
  * @memberof CamSDK.client.CamundaClient
  * @name HttpClient
  * @type {CamSDK.client.HttpClient}
  */
-CamundaClient.HttpClient = require('./http-client');
 
-// provide an isolated scope
-(function(proto) {
+
+CamundaClient.HttpClient = require('./http-client'); // provide an isolated scope
+
+(function (proto) {
   /**
    * configuration storage
    * @memberof CamSDK.client.CamundaClient.prototype
@@ -940,78 +887,78 @@ CamundaClient.HttpClient = require('./http-client');
    * @type {Object}
    */
   proto.config = {};
-
   var _resources = {};
-
   /**
    * @memberof CamSDK.client.CamundaClient.prototype
    * @name initialize
    */
-  proto.initialize = function() {
+
+  proto.initialize = function () {
     /* jshint sub: true */
-    _resources['authorization']       = require('./resources/authorization');
-    _resources['batch']               = require('./resources/batch');
-    _resources['deployment']          = require('./resources/deployment');
-    _resources['external-task']       = require('./resources/external-task');
-    _resources['filter']              = require('./resources/filter');
-    _resources['history']             = require('./resources/history');
-    _resources['process-definition']  = require('./resources/process-definition');
-    _resources['process-instance']    = require('./resources/process-instance');
-    _resources['task']                = require('./resources/task');
-    _resources['task-report']         = require('./resources/task-report');
-    _resources['variable']            = require('./resources/variable');
-    _resources['case-execution']      = require('./resources/case-execution');
-    _resources['case-instance']       = require('./resources/case-instance');
-    _resources['case-definition']     = require('./resources/case-definition');
-    _resources['user']                = require('./resources/user');
-    _resources['group']               = require('./resources/group');
-    _resources['tenant']              = require('./resources/tenant');
-    _resources['incident']            = require('./resources/incident');
-    _resources['job-definition']      = require('./resources/job-definition');
-    _resources['job']                 = require('./resources/job');
-    _resources['metrics']             = require('./resources/metrics');
+    _resources['authorization'] = require('./resources/authorization');
+    _resources['batch'] = require('./resources/batch');
+    _resources['deployment'] = require('./resources/deployment');
+    _resources['external-task'] = require('./resources/external-task');
+    _resources['filter'] = require('./resources/filter');
+    _resources['history'] = require('./resources/history');
+    _resources['process-definition'] = require('./resources/process-definition');
+    _resources['process-instance'] = require('./resources/process-instance');
+    _resources['task'] = require('./resources/task');
+    _resources['task-report'] = require('./resources/task-report');
+    _resources['variable'] = require('./resources/variable');
+    _resources['case-execution'] = require('./resources/case-execution');
+    _resources['case-instance'] = require('./resources/case-instance');
+    _resources['case-definition'] = require('./resources/case-definition');
+    _resources['user'] = require('./resources/user');
+    _resources['group'] = require('./resources/group');
+    _resources['tenant'] = require('./resources/tenant');
+    _resources['incident'] = require('./resources/incident');
+    _resources['job-definition'] = require('./resources/job-definition');
+    _resources['job'] = require('./resources/job');
+    _resources['metrics'] = require('./resources/metrics');
     _resources['decision-definition'] = require('./resources/decision-definition');
-    _resources['execution']           = require('./resources/execution');
-    _resources['migration']           = require('./resources/migration');
-    _resources['drd']                 = require('./resources/drd');
-    _resources['modification']        = require('./resources/modification');
-    _resources['message']             = require('./resources/message');
-    _resources['password-policy']     = require('./resources/password-policy');
+    _resources['execution'] = require('./resources/execution');
+    _resources['migration'] = require('./resources/migration');
+    _resources['drd'] = require('./resources/drd');
+    _resources['modification'] = require('./resources/modification');
+    _resources['message'] = require('./resources/message');
+    _resources['password-policy'] = require('./resources/password-policy');
     /* jshint sub: false */
+
     var self = this;
 
     function forwardError(err) {
       self.trigger('error', err);
-    }
+    } // create global HttpClient instance
 
-    // create global HttpClient instance
-    this.http = new this.HttpClient({baseUrl: this.baseUrl, headers: this.config.headers});
 
-    // configure the client for each resources separately,
+    this.http = new this.HttpClient({
+      baseUrl: this.baseUrl,
+      headers: this.config.headers
+    }); // configure the client for each resources separately,
+
     var name, conf, resConf, c;
-    for (name in _resources) {
 
+    for (name in _resources) {
       conf = {
-        name:     name,
+        name: name,
         // use the SDK config for some default values
-        mock:     this.config.mock,
-        baseUrl:  this.baseUrl,
-        headers:  this.config.headers
+        mock: this.config.mock,
+        baseUrl: this.baseUrl,
+        headers: this.config.headers
       };
       resConf = this.config.resources[name] || {};
 
       for (c in resConf) {
         conf[c] = resConf[c];
-      }
+      } // instanciate a HTTP client for the resource
 
-      // instanciate a HTTP client for the resource
-      _resources[name].http = new this.HttpClient(conf);
 
-      // forward request errors
+      _resources[name].http = new this.HttpClient(conf); // forward request errors
+
       _resources[name].http.on('error', forwardError);
     }
   };
-
   /**
    * Allows to get a resource from SDK by its name
    * @memberof CamSDK.client.CamundaClient.prototype
@@ -1020,20 +967,18 @@ CamundaClient.HttpClient = require('./http-client');
    * @param  {String} name
    * @return {CamSDK.client.AbstractClientResource}
    */
-  proto.resource = function(name) {
+
+
+  proto.resource = function (name) {
     return _resources[name];
   };
-}(CamundaClient.prototype));
-
+})(CamundaClient.prototype);
 
 module.exports = CamundaClient;
-
-
 /**
  * A [universally unique identifier]{@link en.wikipedia.org/wiki/Universally_unique_identifier}
  * @typedef {String} uuid
  */
-
 
 /**
  * This callback is displayed as part of the Requester class.
@@ -1041,7 +986,6 @@ module.exports = CamundaClient;
  * @param {?Object} error
  * @param {CamSDK.AbstractClientResource|CamSDK.AbstractClientResource[]} [results]
  */
-
 
 /**
  * Function who does not perform anything
@@ -1065,30 +1009,24 @@ module.exports = CamundaClient;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * Authorization Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Authorization = AbstractClientResource.extend();
 
+
+var Authorization = AbstractClientResource.extend();
 /**
  * API path for the process definition resource
  * @type {String}
  */
+
 Authorization.path = 'authorization';
-
-
-
-
 /**
  * Fetch a list of authorizations
  *
@@ -1111,57 +1049,54 @@ Authorization.path = 'authorization';
  *                                        Specifies the maximum number of results to return.
  * @param {Function} done
  */
-Authorization.list = function(params, done) {
+
+Authorization.list = function (params, done) {
   return this.http.get(this.path, {
     data: params,
     done: done
   });
 };
-
-
-
 /**
  * Retrieve a single authorization
  *
  * @param  {uuid}     authorizationId     of the authorization to be requested
  * @param  {Function} done
  */
-Authorization.get = function(authorizationId, done) {
-  return this.http.get(this.path +'/'+ authorizationId, {
+
+
+Authorization.get = function (authorizationId, done) {
+  return this.http.get(this.path + '/' + authorizationId, {
     done: done
   });
 };
-
-
 /**
  * Creates an authorization
  *
  * @param  {Object}   authorization       is an object representation of an authorization
  * @param  {Function} done
  */
-Authorization.create = function(authorization, done) {
-  return this.http.post(this.path +'/create', {
+
+
+Authorization.create = function (authorization, done) {
+  return this.http.post(this.path + '/create', {
     data: authorization,
     done: done
   });
 };
-
-
 /**
  * Update an authorization
  *
  * @param  {Object}   authorization       is an object representation of an authorization
  * @param  {Function} done
  */
-Authorization.update = function(authorization, done) {
-  return this.http.put(this.path +'/'+ authorization.id, {
+
+
+Authorization.update = function (authorization, done) {
+  return this.http.put(this.path + '/' + authorization.id, {
     data: authorization,
     done: done
   });
 };
-
-
-
 /**
  * Save an authorization
  *
@@ -1173,35 +1108,33 @@ Authorization.update = function(authorization, done) {
  *                                    otherwise created
  * @param  {Function} done
  */
-Authorization.save = function(authorization, done) {
+
+
+Authorization.save = function (authorization, done) {
   return Authorization[authorization.id ? 'update' : 'create'](authorization, done);
 };
-
-
-
 /**
  * Delete an authorization
  *
  * @param  {uuid}     id   of the authorization to delete
  * @param  {Function} done
  */
-Authorization.delete = function(id, done) {
-  return this.http.del(this.path +'/'+ id, {
+
+
+Authorization["delete"] = function (id, done) {
+  return this.http.del(this.path + '/' + id, {
     done: done
   });
 };
 
-Authorization.check = function(authorization, done) {
+Authorization.check = function (authorization, done) {
   return this.http.get(this.path + '/check', {
     data: authorization,
     done: done
   });
 };
 
-
-
 module.exports = Authorization;
-
 
 },{"./../abstract-client-resource":4}],9:[function(require,module,exports){
 /*
@@ -1220,37 +1153,35 @@ module.exports = Authorization;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * Batch Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Batch = AbstractClientResource.extend();
 
+
+var Batch = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-Batch.path = 'batch';
 
+Batch.path = 'batch';
 /**
  * Retrieves a single batch according to the Batch interface in the engine.
  */
-Batch.get = function(id, done) {
+
+Batch.get = function (id, done) {
   return this.http.get(this.path + '/' + id, {
     done: done
   });
 };
 
-Batch.suspended = function(params, done) {
+Batch.suspended = function (params, done) {
   return this.http.put(this.path + '/' + params.id + '/suspended', {
     data: {
       suspended: !!params.suspended
@@ -1259,24 +1190,24 @@ Batch.suspended = function(params, done) {
   });
 };
 
-Batch.statistics = function(params, done) {
+Batch.statistics = function (params, done) {
   return this.http.get(this.path + '/statistics/', {
     data: params,
     done: done
   });
 };
 
-Batch.statisticsCount = function(params, done) {
+Batch.statisticsCount = function (params, done) {
   return this.http.get(this.path + '/statistics/count', {
     data: params,
     done: done
   });
 };
 
-Batch.delete = function(params, done) {
+Batch["delete"] = function (params, done) {
   var path = this.path + '/' + params.id;
 
-  if(params.cascade) {
+  if (params.cascade) {
     path += '?cascade=true';
   }
 
@@ -1304,64 +1235,62 @@ module.exports = Batch;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
 /**
  * No-Op callback
  */
-function noop() {}
 
+
+function noop() {}
 /**
  * CaseDefinition Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var CaseDefinition = AbstractClientResource.extend();
 
+
+var CaseDefinition = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 CaseDefinition.path = 'case-definition';
-
-
-
 /**
  * Retrieve a single case definition
  *
  * @param  {uuid}     id    of the case definition to be requested
  * @param  {Function} done
  */
-CaseDefinition.get = function(id, done) {
-  return this.http.get(this.path +'/'+ id, {
+
+CaseDefinition.get = function (id, done) {
+  return this.http.get(this.path + '/' + id, {
     done: done
   });
 };
-
-
 /**
  * Retrieve a single cace definition
  *
  * @param  {String}   key    of the case definition to be requested
  * @param  {Function} done
  */
-CaseDefinition.getByKey = function(key, done) {
-  return this.http.get(this.path +'/key/'+ key, {
+
+
+CaseDefinition.getByKey = function (key, done) {
+  return this.http.get(this.path + '/key/' + key, {
     done: done
   });
 };
 
-CaseDefinition.list = function(params, done) {
+CaseDefinition.list = function (params, done) {
   return this.http.get(this.path, {
     data: params,
     done: done
   });
 };
-
 /**
  * Instantiates a given case definition.
  *
@@ -1371,7 +1300,9 @@ CaseDefinition.list = function(params, done) {
  * @param {String} [params.variables]       A JSON object containing the variables the case is to be initialized with. Each key corresponds to a variable name and each value to a variable value.
  * @param {String} [params.businessKey]     The business key the case instance is to be initialized with. The business key identifies the case instance in the context of the given case definition.
  */
-CaseDefinition.create = function(params, done) {
+
+
+CaseDefinition.create = function (params, done) {
   var url = this.path + '/';
 
   if (params.id) {
@@ -1389,31 +1320,30 @@ CaseDefinition.create = function(params, done) {
     done: done
   });
 };
-
-
 /**
  * Retrieves the CMMN XML of this case definition.
  * @param  {uuid}     id   The id of the case definition.
  * @param  {Function} done
  */
-CaseDefinition.xml = function(data, done) {
-  var path = this.path +'/'+ (data.id ? data.id : 'key/'+ data.key) +'/xml';
+
+
+CaseDefinition.xml = function (data, done) {
+  var path = this.path + '/' + (data.id ? data.id : 'key/' + data.key) + '/xml';
   return this.http.get(path, {
     done: done || noop
   });
 };
-
-
 /**
-* Instantiates a given process definition.
-*
-* @param {String} [id]                        The id of the process definition to activate or suspend.
-* @param {Object} [params]
-* @param {Number} [params.historyTimeToLive]  New value for historyTimeToLive field of process definition. Can be null.
-*/
-CaseDefinition.updateHistoryTimeToLive = function(id, params, done) {
-  var url = this.path + '/' + id + '/history-time-to-live';
+ * Instantiates a given process definition.
+ *
+ * @param {String} [id]                        The id of the process definition to activate or suspend.
+ * @param {Object} [params]
+ * @param {Number} [params.historyTimeToLive]  New value for historyTimeToLive field of process definition. Can be null.
+ */
 
+
+CaseDefinition.updateHistoryTimeToLive = function (id, params, done) {
+  var url = this.path + '/' + id + '/history-time-to-live';
   return this.http.put(url, {
     data: params,
     done: done
@@ -1439,32 +1369,34 @@ module.exports = CaseDefinition;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-var utils = require('../../utils');
 
+var utils = require('../../utils');
 /**
  * No-Op callback
  */
-function noop() {}
 
+
+function noop() {}
 /**
  * CaseExecution Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var CaseExecution = AbstractClientResource.extend();
 
+
+var CaseExecution = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 CaseExecution.path = 'case-execution';
 
-CaseExecution.list = function(params, done) {
+CaseExecution.list = function (params, done) {
   done = done || noop;
   return this.http.get(this.path, {
     data: params,
@@ -1472,51 +1404,52 @@ CaseExecution.list = function(params, done) {
   });
 };
 
-CaseExecution.disable = function(executionId, params, done) {
+CaseExecution.disable = function (executionId, params, done) {
   return this.http.post(this.path + '/' + executionId + '/disable', {
     data: params,
     done: done
   });
 };
 
-CaseExecution.reenable = function(executionId, params, done) {
+CaseExecution.reenable = function (executionId, params, done) {
   return this.http.post(this.path + '/' + executionId + '/reenable', {
     data: params,
     done: done
   });
 };
 
-CaseExecution.manualStart = function(executionId, params, done) {
+CaseExecution.manualStart = function (executionId, params, done) {
   return this.http.post(this.path + '/' + executionId + '/manual-start', {
     data: params,
     done: done
   });
 };
 
-CaseExecution.complete = function(executionId, params, done) {
+CaseExecution.complete = function (executionId, params, done) {
   return this.http.post(this.path + '/' + executionId + '/complete', {
     data: params,
     done: done
   });
 };
-
 /**
  * Deletes a variable in the context of a given case execution. Deletion does not propagate upwards in the case execution hierarchy.
  */
-CaseExecution.deleteVariable = function(data, done) {
+
+
+CaseExecution.deleteVariable = function (data, done) {
   return this.http.del(this.path + '/' + data.id + '/localVariables/' + utils.escapeUrl(data.varId), {
     done: done
   });
 };
-
-
 /**
  * Updates or deletes the variables in the context of an execution.
  * The updates do not propagate upwards in the execution hierarchy.
  * Deletion precede updates.
  * So, if a variable is updated AND deleted, the updates overrides the deletion.
  */
-CaseExecution.modifyVariables = function(data, done) {
+
+
+CaseExecution.modifyVariables = function (data, done) {
   return this.http.post(this.path + '/' + data.id + '/localVariables', {
     data: data,
     done: done
@@ -1542,55 +1475,53 @@ module.exports = CaseExecution;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-var utils = require('../../utils');
 
+var utils = require('../../utils');
 /**
  * CaseInstance Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var CaseInstance = AbstractClientResource.extend();
 
+
+var CaseInstance = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 CaseInstance.path = 'case-instance';
 
-
-
-CaseInstance.get = function(instanceId, done) {
-  return this.http.get(this.path +'/'+ instanceId, {
+CaseInstance.get = function (instanceId, done) {
+  return this.http.get(this.path + '/' + instanceId, {
     done: done
   });
 };
 
-CaseInstance.list = function(params, done) {
+CaseInstance.list = function (params, done) {
   return this.http.get(this.path, {
     data: params,
     done: done
   });
 };
 
-CaseInstance.close = function(instanceId, params, done) {
+CaseInstance.close = function (instanceId, params, done) {
   return this.http.post(this.path + '/' + instanceId + '/close', {
     data: params,
     done: done
   });
 };
 
-CaseInstance.terminate = function(instanceId, params, done) {
+CaseInstance.terminate = function (instanceId, params, done) {
   return this.http.post(this.path + '/' + instanceId + '/terminate', {
     data: params,
     done: done
   });
 };
-
 /**
  * Sets a variable of a given case instance by id.
  *
@@ -1600,7 +1531,9 @@ CaseInstance.terminate = function(instanceId, params, done) {
  * @param   {Object}            params
  * @param   {requestCallback}   done
  */
-CaseInstance.setVariable = function(id, params, done) {
+
+
+CaseInstance.setVariable = function (id, params, done) {
   var url = this.path + '/' + id + '/variables/' + utils.escapeUrl(params.name);
   return this.http.put(url, {
     data: params,
@@ -1627,28 +1560,24 @@ module.exports = CaseInstance;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * DecisionDefinition Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var DecisionDefinition = AbstractClientResource.extend();
 
+
+var DecisionDefinition = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 DecisionDefinition.path = 'decision-definition';
-
-
 /**
  * Fetch a list of decision definitions
  * @param  {Object} params                        Query parameters as follow
@@ -1680,35 +1609,37 @@ DecisionDefinition.path = 'decision-definition';
  *                                                Will return less results, if there are no more results left.
  * @param {Function} done
  */
-DecisionDefinition.list = function(params, done) {
+
+DecisionDefinition.list = function (params, done) {
   return this.http.get(this.path, {
     data: params,
     done: done
   });
 };
-
 /**
  * Retrieves a single decision definition according to the DecisionDefinition interface in the engine.
  * @param  {uuid}     id   The id of the decision definition to be retrieved.
  * @param  {Function} done
  */
-DecisionDefinition.get = function(id, done) {
-  return this.http.get(this.path +'/'+ id, {
+
+
+DecisionDefinition.get = function (id, done) {
+  return this.http.get(this.path + '/' + id, {
     done: done
   });
 };
-
 /**
  * Retrieves the DMN 1.0 XML of this decision definition.
  * @param  {uuid}     id   The id of the decision definition.
  * @param  {Function} done
  */
-DecisionDefinition.getXml = function(id, done) {
-  return this.http.get(this.path +'/'+ id + '/xml', {
+
+
+DecisionDefinition.getXml = function (id, done) {
+  return this.http.get(this.path + '/' + id + '/xml', {
     done: done
   });
 };
-
 /**
  * Evaluates a given decision.
  *
@@ -1717,23 +1648,25 @@ DecisionDefinition.getXml = function(id, done) {
  * @param {String} [params.key]             The key of the decision definition (the latest version thereof) to be evaluated. Must be omitted if id is provided.
  * @param {String} [params.variables]       A JSON object containing the input variables of the decision. Each key corresponds to a variable name and each value to a variable value.
  */
-DecisionDefinition.evaluate = function(params, done) {
-  return this.http.post(this.path +'/'+ (params.id ? params.id : 'key/'+params.key ) + '/evaluate', {
+
+
+DecisionDefinition.evaluate = function (params, done) {
+  return this.http.post(this.path + '/' + (params.id ? params.id : 'key/' + params.key) + '/evaluate', {
     data: params,
     done: done
   });
 };
-
 /**
-* Instantiates a given process definition.
-*
-* @param {String} [id]                        The id of the process definition to activate or suspend.
-* @param {Object} [params]
-* @param {Number} [params.historyTimeToLive]  New value for historyTimeToLive field of process definition. Can be null.
-*/
-DecisionDefinition.updateHistoryTimeToLive = function(id, params, done) {
-  var url = this.path + '/' + id + '/history-time-to-live';
+ * Instantiates a given process definition.
+ *
+ * @param {String} [id]                        The id of the process definition to activate or suspend.
+ * @param {Object} [params]
+ * @param {Number} [params.historyTimeToLive]  New value for historyTimeToLive field of process definition. Can be null.
+ */
 
+
+DecisionDefinition.updateHistoryTimeToLive = function (id, params, done) {
+  var url = this.path + '/' + id + '/history-time-to-live';
   return this.http.put(url, {
     data: params,
     done: done
@@ -1759,28 +1692,24 @@ module.exports = DecisionDefinition;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * Deployment Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Deployment = AbstractClientResource.extend();
 
+
+var Deployment = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 Deployment.path = 'deployment';
-
-
 /**
  * Create a deployment
  * @param  {Object} options
@@ -1794,14 +1723,12 @@ Deployment.path = 'deployment';
  * @param	 {String} [options.tenantId]
  * @param  {Function} done
  */
-Deployment.create = function(options, done) {
+
+Deployment.create = function (options, done) {
   var fields = {
     'deployment-name': options.deploymentName
   };
-
-  var files = Array.isArray(options.files) ?
-    options.files :
-    [options.files];
+  var files = Array.isArray(options.files) ? options.files : [options.files];
 
   if (options.deploymentSource) {
     fields['deployment-source'] = options.deploymentSource;
@@ -1819,14 +1746,13 @@ Deployment.create = function(options, done) {
     fields['tenant-id'] = options.tenantId;
   }
 
-  return this.http.post(this.path +'/create', {
-    data:         {},
-    fields:       fields,
-    attachments:  files,
-    done:         done
+  return this.http.post(this.path + '/create', {
+    data: {},
+    fields: fields,
+    attachments: files,
+    done: done
   });
 };
-
 /**
  * Deletes a deployment
  *
@@ -1839,13 +1765,15 @@ Deployment.create = function(options, done) {
  *
  * @param  {Function} done
  */
-Deployment.delete = function(id, options, done) {
+
+
+Deployment["delete"] = function (id, options, done) {
   var path = this.path + '/' + id;
 
   if (options) {
-
     var queryParams = [];
-    for(var key in options) {
+
+    for (var key in options) {
       var value = options[key];
       queryParams.push(key + '=' + value);
     }
@@ -1859,7 +1787,6 @@ Deployment.delete = function(id, options, done) {
     done: done
   });
 };
-
 /**
  * Lists the deployments
  * @param  {Object}   params                An object containing listing options.
@@ -1888,47 +1815,52 @@ Deployment.delete = function(id, options, done) {
  *                                          no more results left.
  * @param  {Function} done
  */
-Deployment.list = function() {
+
+
+Deployment.list = function () {
   return AbstractClientResource.list.apply(this, arguments);
 };
-
 /**
  * Returns information about a deployment resources for the given deployment.
  */
-Deployment.get = function(id, done) {
+
+
+Deployment.get = function (id, done) {
   return this.http.get(this.path + '/' + id, {
     done: done
   });
 };
-
 /**
  * Returns a list of deployment resources for the given deployment.
  */
-Deployment.getResources = function(id, done) {
+
+
+Deployment.getResources = function (id, done) {
   return this.http.get(this.path + '/' + id + '/resources', {
     done: done
   });
 };
-
 /**
  * Returns a deployment resource for the given deployment and resource id.
  */
-Deployment.getResource = function(deploymentId, resourceId, done) {
+
+
+Deployment.getResource = function (deploymentId, resourceId, done) {
   return this.http.get(this.path + '/' + deploymentId + '/resources/' + resourceId, {
     done: done
   });
 };
-
 /**
  * Returns the binary content of a single deployment resource for the given deployment.
  */
-Deployment.getResourceData = function(deploymentId, resourceId, done) {
+
+
+Deployment.getResourceData = function (deploymentId, resourceId, done) {
   return this.http.get(this.path + '/' + deploymentId + '/resources/' + resourceId + '/data', {
     accept: '*/*',
     done: done
   });
 };
-
 /**
  * Redeploy a deployment
 
@@ -1938,13 +1870,14 @@ Deployment.getResourceData = function(deploymentId, resourceId, done) {
  * @param  {Array} [options.resourceNames]
  * @param  {Function} done
  */
-Deployment.redeploy = function(options, done) {
+
+
+Deployment.redeploy = function (options, done) {
   var id = options.id;
   delete options.id;
-
   return this.http.post(this.path + '/' + id + '/redeploy', {
     data: options,
-    done: done || function() {}
+    done: done || function () {}
   });
 };
 
@@ -1967,26 +1900,26 @@ module.exports = Deployment;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('../abstract-client-resource');
-var utils = require('../../utils');
 
+var utils = require('../../utils');
 /**
  * DRD (Decision Requirements Definition) Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var DRD = AbstractClientResource.extend();
 
+
+var DRD = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-DRD.path = 'decision-requirements-definition';
 
+DRD.path = 'decision-requirements-definition';
 /**
  * Fetch a  count of DRD's
  * @param  {Object} params                          Query parameters as follow
@@ -2015,7 +1948,8 @@ DRD.path = 'decision-requirements-definition';
  *                                                  Can be used in combination with tenantIdIn. Value may only be true, as false is the default behavior.
  * @param {Function} done
  */
-DRD.count = function(params, done) {
+
+DRD.count = function (params, done) {
   if (typeof params === 'function') {
     done = params;
     params = {};
@@ -2026,7 +1960,6 @@ DRD.count = function(params, done) {
     done: done
   });
 };
-
 /**
  * Fetch a list of decision definitions
  * @param  {Object} params                        Query parameters as follow
@@ -2067,7 +2000,9 @@ DRD.count = function(params, done) {
  *                                                Will return less results, if there are no more results left.
  * @param {Function} done
  */
-DRD.list = function(params, done) {
+
+
+DRD.list = function (params, done) {
   if (typeof params === 'function') {
     done = params;
     params = {};
@@ -2082,13 +2017,14 @@ DRD.list = function(params, done) {
 function createIdUrl(path, id) {
   return path + '/' + utils.escapeUrl(id);
 }
-
 /**
  * Retrieves a single decision requirements definition.
  * @param  {uuid}     id   The id of the decision definition to be retrieved.
  * @param  {Function} done
  */
-DRD.get = function(id, done) {
+
+
+DRD.get = function (id, done) {
   return this.http.get(createIdUrl(this.path, id), {
     done: done
   });
@@ -2103,14 +2039,15 @@ function createKeyTenantUrl(path, key, tenantId) {
 
   return url;
 }
-
 /**
  * Retrieves a single decision requirements definition.
  * @param  {string}     key   The key of the decision requirements definition (the latest version thereof) to be retrieved.
  * @param  {uuid}     [tenantId]   The id of the tenant to which the decision requirements definition belongs to.
  * @param  {Function} done
  */
-DRD.getByKey = function(key, tenantId, done) {
+
+
+DRD.getByKey = function (key, tenantId, done) {
   var url = createKeyTenantUrl(this.path, key, tenantId);
 
   if (typeof tenantId === 'function') {
@@ -2121,26 +2058,27 @@ DRD.getByKey = function(key, tenantId, done) {
     done: done
   });
 };
-
-
 /**
  * Retrieves the DMN XML of this decision requirements definition.
  * @param  {uuid}     id   The id of the decision definition to be retrieved.
  * @param  {Function} done
  */
-DRD.getXML = function(id, done) {
+
+
+DRD.getXML = function (id, done) {
   return this.http.get(createIdUrl(this.path, id) + '/xml', {
     done: done
   });
 };
-
 /**
  * Retrieves the DMN XML of this decision requirements definition.
  * @param  {string}     key   The key of the decision requirements definition (the latest version thereof) to be retrieved.
  * @param  {uuid}     [tenantId]   The id of the tenant to which the decision requirements definition belongs to.
  * @param  {Function} done
  */
-DRD.getXMLByKey = function(key, tenantId, done) {
+
+
+DRD.getXMLByKey = function (key, tenantId, done) {
   var url = createKeyTenantUrl(this.path, key, tenantId) + '/xml';
 
   if (typeof tenantId === 'function') {
@@ -2151,7 +2089,6 @@ DRD.getXMLByKey = function(key, tenantId, done) {
     done: done
   });
 };
-
 
 module.exports = DRD;
 
@@ -2172,44 +2109,44 @@ module.exports = DRD;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
+
 var utils = require('../../utils');
-
-
-
 /**
  * Execution Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Execution = AbstractClientResource.extend();
 
+
+var Execution = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-Execution.path = 'execution';
 
+Execution.path = 'execution';
 /**
  * Deletes a variable in the context of a given execution. Deletion does not propagate upwards in the execution hierarchy.
  */
-Execution.deleteVariable = function(data, done) {
+
+Execution.deleteVariable = function (data, done) {
   return this.http.del(this.path + '/' + data.id + '/localVariables/' + utils.escapeUrl(data.varId), {
     done: done
   });
 };
-
 /**
  * Updates or deletes the variables in the context of an execution.
  * The updates do not propagate upwards in the execution hierarchy.
  * Updates precede deletions.
  * So, if a variable is updated AND deleted, the deletion overrides the update.
  */
-Execution.modifyVariables = function(data, done) {
+
+
+Execution.modifyVariables = function (data, done) {
   return this.http.post(this.path + '/' + data.id + '/localVariables', {
     data: data,
     done: done
@@ -2217,7 +2154,6 @@ Execution.modifyVariables = function(data, done) {
 };
 
 module.exports = Execution;
-
 
 },{"../../utils":47,"./../abstract-client-resource":4}],17:[function(require,module,exports){
 /*
@@ -2236,38 +2172,37 @@ module.exports = Execution;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
 /**
  * ExternalTask Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var ExternalTask = AbstractClientResource.extend();
 
+
+var ExternalTask = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-ExternalTask.path = 'external-task';
 
+ExternalTask.path = 'external-task';
 /**
  * Retrieves a single external task corresponding to the ExternalTask interface in the engine.
  *
  * @param {Object} [params]
  * @param {String} [params.id]      The id of the external task to be retrieved.
  */
-ExternalTask.get = function(params, done) {
-  return this.http.get(this.path+ '/' + params.id, {
+
+ExternalTask.get = function (params, done) {
+  return this.http.get(this.path + '/' + params.id, {
     data: params,
     done: done
   });
 };
-
 /**
  * Query for external tasks that fulfill given parameters in the form of a json object. This method is slightly more
  * powerful than the GET query because it allows to specify a hierarchical result sorting.
@@ -2294,19 +2229,18 @@ ExternalTask.get = function(params, done) {
  * @param {String} [params.firstResult]	      Pagination of results. Specifies the index of the first result to return.
  * @param {String} [params.maxResults]	      Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  */
-ExternalTask.list = function(params, done) {
-  var path = this.path +'/';
 
-  // those parameters have to be passed in the query and not body
-  path += '?firstResult='+ (params.firstResult || 0);
-  path += '&maxResults='+ (params.maxResults || 15);
 
+ExternalTask.list = function (params, done) {
+  var path = this.path + '/'; // those parameters have to be passed in the query and not body
+
+  path += '?firstResult=' + (params.firstResult || 0);
+  path += '&maxResults=' + (params.maxResults || 15);
   return this.http.post(path, {
     data: params,
     done: done
   });
 };
-
 /**
  * Query for the number of external tasks that fulfill given parameters. Takes the same parameters as the get external tasks method.
  *
@@ -2327,13 +2261,14 @@ ExternalTask.list = function(params, done) {
  * @param {String} [params.active]	          Only include active tasks. Value may only be true, as false matches any external task.
  * @param {String} [params.suspended]	        Only include suspended tasks. Value may only be true, as false matches any external task.
  */
-ExternalTask.count = function(params, done) {
+
+
+ExternalTask.count = function (params, done) {
   return this.http.post(this.path + '/count', {
     data: params,
     done: done
   });
 };
-
 /**
  * Query for the number of external tasks that fulfill given parameters. Takes the same parameters as the get external tasks method.
  *
@@ -2348,13 +2283,14 @@ ExternalTask.count = function(params, done) {
  *  lockDuration	 Mandatory. The duration to lock the external tasks for in milliseconds.
  *  variables	   A JSON array of String values that represent variable names. For each result task belonging to this topic, the given variables are returned as well if they are accessible from the external task's execution.
  */
-ExternalTask.fetchAndLock = function(params, done) {
+
+
+ExternalTask.fetchAndLock = function (params, done) {
   return this.http.post(this.path + '/fetchAndLock', {
     data: params,
     done: done
   });
 };
-
 /**
  * Complete an external task and update process variables.
  *
@@ -2377,13 +2313,14 @@ ExternalTask.fetchAndLock = function(params, done) {
  *                - mimetype: The mime type of the file that is being uploaded.
  *                - encoding: The encoding of the file that is being uploaded.
  */
-ExternalTask.complete = function(params, done) {
+
+
+ExternalTask.complete = function (params, done) {
   return this.http.post(this.path + '/' + params.id + '/complete', {
     data: params,
     done: done
   });
 };
-
 /**
  * Report a failure to execute an external task. A number of retries and a timeout until
  * the task can be retried can be specified. If retries are set to 0, an incident for this
@@ -2396,26 +2333,28 @@ ExternalTask.complete = function(params, done) {
  * @param {String} [params.retries]            A number of how often the task should be retried. Must be >= 0. If this is 0, an incident is created and the task cannot be fetched anymore unless the retries are increased again. The incident's message is set to the errorMessage parameter.
  * @param {String} [params.retryTimeout]       A timeout in milliseconds before the external task becomes available again for fetching. Must be >= 0.
  */
-ExternalTask.failure = function(params, done) {
+
+
+ExternalTask.failure = function (params, done) {
   return this.http.post(this.path + '/' + params.id + '/failure', {
     data: params,
     done: done
   });
 };
-
 /**
  * Unlock an external task. Clears the task’s lock expiration time and worker id.
  *
  * @param {Object} [params]
  * @param {String} [params.id]          The id of the external task to unlock.
  */
-ExternalTask.unlock = function(params, done) {
+
+
+ExternalTask.unlock = function (params, done) {
   return this.http.post(this.path + '/' + params.id + '/unlock', {
     data: params,
     done: done
   });
 };
-
 /**
  * Set the number of retries left to execute an external task. If retries are set to 0, an incident is created.
  *
@@ -2423,13 +2362,14 @@ ExternalTask.unlock = function(params, done) {
  * @param {String} [params.id]           The id of the external task to unlock.
  * @param {String} [params.retries]      The number of retries to set for the external task. Must be >= 0. If this is 0, an incident is created and the task cannot be fetched anymore unless the retries are increased again.
  */
-ExternalTask.retries = function(params, done) {
+
+
+ExternalTask.retries = function (params, done) {
   return this.http.put(this.path + '/' + params.id + '/retries', {
     data: params,
     done: done
   });
 };
-
 /**
  * Set the number of retries left to execute an external task asynchronously. If retries are set to 0, an incident is created.
  *
@@ -2438,7 +2378,9 @@ ExternalTask.retries = function(params, done) {
  * @param   {Object}            params
  * @param   {requestCallback}   done
  */
-ExternalTask.retriesAsync = function(params, done) {
+
+
+ExternalTask.retriesAsync = function (params, done) {
   return this.http.post(this.path + '/retries-async', {
     data: params,
     done: done
@@ -2464,41 +2406,36 @@ module.exports = ExternalTask;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * Filter Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Filter = AbstractClientResource.extend();
 
+
+var Filter = AbstractClientResource.extend();
 /**
  * API path for the filter resource
  * @type {String}
  */
+
 Filter.path = 'filter';
-
-
 /**
  * Retrieve a single filter
  *
  * @param  {uuid}     filterId   of the filter to be requested
  * @param  {Function} done
  */
-Filter.get = function(filterId, done) {
-  return this.http.get(this.path +'/'+ filterId, {
+
+Filter.get = function (filterId, done) {
+  return this.http.get(this.path + '/' + filterId, {
     done: done
   });
 };
-
-
 /**
  * Retrieve some filters
  *
@@ -2510,14 +2447,14 @@ Filter.get = function(filterId, done) {
  * @param  {Bool}     [data.itemCount]
  * @param  {Function} done
  */
-Filter.list = function(data, done) {
+
+
+Filter.list = function (data, done) {
   return this.http.get(this.path, {
     data: data,
     done: done
   });
 };
-
-
 /**
  * Get the tasks result of filter
  *
@@ -2529,58 +2466,55 @@ Filter.list = function(data, done) {
  * @param  {String}   [data.sortOrder]
  * @param  {Function} done
  */
-Filter.getTasks = function(data, done) {
-  var path = this.path +'/';
+
+
+Filter.getTasks = function (data, done) {
+  var path = this.path + '/';
 
   if (typeof data === 'string') {
-    path = path + data +'/list';
+    path = path + data + '/list';
     data = {};
-  }
-  else {
-    path = path + data.id +'/list';
+  } else {
+    path = path + data.id + '/list';
     delete data.id;
-  }
+  } // those parameters have to be passed in the query and not body
 
-  // those parameters have to be passed in the query and not body
-  path += '?firstResult='+ (data.firstResult || 0);
-  path += '&maxResults='+ (data.maxResults || 15);
 
+  path += '?firstResult=' + (data.firstResult || 0);
+  path += '&maxResults=' + (data.maxResults || 15);
   return this.http.post(path, {
     data: data,
     done: done
   });
 };
-
-
 /**
  * Creates a filter
  *
  * @param  {Object}   filter   is an object representation of a filter
  * @param  {Function} done
  */
-Filter.create = function(filter, done) {
-  return this.http.post(this.path +'/create', {
+
+
+Filter.create = function (filter, done) {
+  return this.http.post(this.path + '/create', {
     data: filter,
     done: done
   });
 };
-
-
 /**
  * Update a filter
  *
  * @param  {Object}   filter   is an object representation of a filter
  * @param  {Function} done
  */
-Filter.update = function(filter, done) {
-  return this.http.put(this.path +'/'+ filter.id, {
+
+
+Filter.update = function (filter, done) {
+  return this.http.put(this.path + '/' + filter.id, {
     data: filter,
     done: done
   });
 };
-
-
-
 /**
  * Save a filter
  *
@@ -2591,31 +2525,33 @@ Filter.update = function(filter, done) {
  *                             an id property, the filter will be updated, otherwise created
  * @param  {Function} done
  */
-Filter.save = function(filter, done) {
+
+
+Filter.save = function (filter, done) {
   return Filter[filter.id ? 'update' : 'create'](filter, done);
 };
-
-
 /**
  * Delete a filter
  *
  * @param  {uuid}     id   of the filter to delete
  * @param  {Function} done
  */
-Filter.delete = function(id, done) {
-  return this.http.del(this.path +'/'+ id, {
+
+
+Filter["delete"] = function (id, done) {
+  return this.http.del(this.path + '/' + id, {
     done: done
   });
 };
-
-
 /**
  * Performs an authorizations lookup on the resource or entity
  *
  * @param  {uuid}     [id]   of the filter to get authorizations for
  * @param  {Function} done
  */
-Filter.authorizations = function(id, done) {
+
+
+Filter.authorizations = function (id, done) {
   if (arguments.length === 1) {
     return this.http.options(this.path, {
       done: id,
@@ -2625,7 +2561,7 @@ Filter.authorizations = function(id, done) {
     });
   }
 
-  return this.http.options(this.path +'/'+ id, {
+  return this.http.options(this.path + '/' + id, {
     done: done,
     headers: {
       Accept: 'application/json'
@@ -2633,9 +2569,7 @@ Filter.authorizations = function(id, done) {
   });
 };
 
-
 module.exports = Filter;
-
 
 },{"./../abstract-client-resource":4}],19:[function(require,module,exports){
 /*
@@ -2654,48 +2588,49 @@ module.exports = Filter;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-var utils = require('../../utils');
 
+var utils = require('../../utils');
 /**
  * No-Op callback
  */
-function noop() {}
 
+
+function noop() {}
 /**
  * Group Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Group = AbstractClientResource.extend();
 
+
+var Group = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 Group.path = 'group';
-
-
 /**
  * Check resource access
  * @param  {Object}   options
  * @param  {String}   options.id
  * @param  {Function} done
  */
-Group.options = function(options, done) {
+
+Group.options = function (options, done) {
   var id;
 
   if (arguments.length === 1) {
     done = options;
     id = '';
-
   } else {
     id = typeof options === 'string' ? options : options.id;
-    if( id === undefined ) {
+
+    if (id === undefined) {
       id = '';
     }
   }
@@ -2707,7 +2642,6 @@ Group.options = function(options, done) {
     }
   });
 };
-
 /**
  * Creates a group
  *
@@ -2717,14 +2651,14 @@ Group.options = function(options, done) {
  * @param  {String}   group.type
  * @param  {Function} done
  */
-Group.create = function(options, done) {
-  return this.http.post(this.path +'/create', {
+
+
+Group.create = function (options, done) {
+  return this.http.post(this.path + '/create', {
     data: options,
     done: done || noop
   });
 };
-
-
 /**
  * Query for groups using a list of parameters and retrieves the count
  *
@@ -2735,12 +2669,13 @@ Group.create = function(options, done) {
  * @param {String} [options.member]    Only retrieve groups where the given user id is a member of.
  * @param  {Function} done
  */
-Group.count = function(options, done) {
+
+
+Group.count = function (options, done) {
   if (arguments.length === 1) {
     done = options;
     options = {};
-  }
-  else {
+  } else {
     options = options || {};
   }
 
@@ -2749,24 +2684,21 @@ Group.count = function(options, done) {
     done: done || noop
   });
 };
-
-
 /**
  * Retrieves a single group
  *
  * @param  {String} [options.id]    The id of the group, can be a property (id) of an object
  * @param  {Function} done
  */
-Group.get = function(options, done) {
-  var id = typeof options === 'string' ? options : options.id;
 
+
+Group.get = function (options, done) {
+  var id = typeof options === 'string' ? options : options.id;
   return this.http.get(this.path + '/' + utils.escapeUrl(id), {
     data: options,
     done: done || noop
   });
 };
-
-
 /**
  * Query for a list of groups using a list of parameters.
  * The size of the result set can be retrieved by using the get groups count method
@@ -2790,12 +2722,13 @@ Group.get = function(options, done) {
  *
  * @param  {Function} done
  */
-Group.list = function(options, done) {
+
+
+Group.list = function (options, done) {
   if (arguments.length === 1) {
     done = options;
     options = {};
-  }
-  else {
+  } else {
     options = options || {};
   }
 
@@ -2804,8 +2737,6 @@ Group.list = function(options, done) {
     done: done || noop
   });
 };
-
-
 /**
  * Add a memeber to a Group
  *
@@ -2813,14 +2744,14 @@ Group.list = function(options, done) {
  * @param {String} [options.userId]   The id of user to add to the group
  * @param  {Function} done
  */
-Group.createMember = function(options, done) {
-  return this.http.put(this.path +'/' + utils.escapeUrl(options.id) + '/members/' + utils.escapeUrl(options.userId), {
+
+
+Group.createMember = function (options, done) {
+  return this.http.put(this.path + '/' + utils.escapeUrl(options.id) + '/members/' + utils.escapeUrl(options.userId), {
     data: options,
     done: done || noop
   });
 };
-
-
 /**
  * Removes a memeber of a Group
  *
@@ -2828,36 +2759,38 @@ Group.createMember = function(options, done) {
  * @param {String} [options.userId]   The id of user to add to the group
  * @param  {Function} done
  */
-Group.deleteMember = function(options, done) {
-  return this.http.del(this.path +'/' + utils.escapeUrl(options.id) + '/members/' + utils.escapeUrl(options.userId), {
+
+
+Group.deleteMember = function (options, done) {
+  return this.http.del(this.path + '/' + utils.escapeUrl(options.id) + '/members/' + utils.escapeUrl(options.userId), {
     data: options,
     done: done || noop
   });
 };
-
-
 /**
  * Update a group
  *
  * @param  {Object}   group   is an object representation of a group
  * @param  {Function} done
  */
-Group.update = function(options, done) {
-  return this.http.put(this.path +'/' + utils.escapeUrl(options.id), {
+
+
+Group.update = function (options, done) {
+  return this.http.put(this.path + '/' + utils.escapeUrl(options.id), {
     data: options,
     done: done || noop
   });
 };
-
-
 /**
  * Delete a group
  *
  * @param  {Object}   group   is an object representation of a group
  * @param  {Function} done
  */
-Group.delete = function(options, done) {
-  return this.http.del(this.path +'/' + utils.escapeUrl(options.id), {
+
+
+Group["delete"] = function (options, done) {
+  return this.http.del(this.path + '/' + utils.escapeUrl(options.id), {
     data: options,
     done: done || noop
   });
@@ -2882,29 +2815,26 @@ module.exports = Group;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('../abstract-client-resource');
+
 var helpers = require('../helpers');
-
-
-
 /**
  * History Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var History = AbstractClientResource.extend();
 
+
+var History = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 History.path = 'history';
-
-
 /**
  * Queries for the number of user operation log entries that fulfill the given parameters
  *
@@ -2930,7 +2860,8 @@ History.path = 'history';
  * @param {Number}   [params.maxResults]            Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  * @param {Function} done
  */
-History.userOperationCount = function(params, done) {
+
+History.userOperationCount = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -2941,12 +2872,13 @@ History.userOperationCount = function(params, done) {
     done: done
   });
 };
-
 /**
  * Queries for user operation log entries that fulfill the given parameters
  * This method takes the same parameters as `History.userOperationCount`.
  */
-History.userOperation = function(params, done) {
+
+
+History.userOperation = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -2957,9 +2889,6 @@ History.userOperation = function(params, done) {
     done: done
   });
 };
-
-
-
 /**
  * Query for historic process instances that fulfill the given parameters.
  *
@@ -3015,7 +2944,9 @@ History.userOperation = function(params, done) {
 
  * @param  {Function} done
  */
-History.processInstance = function(params, done) {
+
+
+History.processInstance = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3028,8 +2959,7 @@ History.processInstance = function(params, done) {
   for (var p in params) {
     if (queryParams.indexOf(p) > -1) {
       query[p] = params[p];
-    }
-    else {
+    } else {
       body[p] = params[p];
     }
   }
@@ -3040,13 +2970,13 @@ History.processInstance = function(params, done) {
     done: done
   });
 };
-
-
 /**
  * Query for the number of historic process instances that fulfill the given parameters.
  * This method takes the same message body as `History.processInstance`.
  */
-History.processInstanceCount = function(params, done) {
+
+
+History.processInstanceCount = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3057,7 +2987,6 @@ History.processInstanceCount = function(params, done) {
     done: done
   });
 };
-
 /**
  * Delete finished process instances asynchronously. With creation of a batch operation.
  *
@@ -3066,7 +2995,9 @@ History.processInstanceCount = function(params, done) {
  * @param done - a callback function
  * @returns {*}
  */
-History.deleteProcessInstancesAsync = function(params, done) {
+
+
+History.deleteProcessInstancesAsync = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3077,7 +3008,6 @@ History.deleteProcessInstancesAsync = function(params, done) {
     done: done
   });
 };
-
 /**
  * Set removal time to historic process instances asynchronously. With creation of a batch operation.
  *
@@ -3086,7 +3016,9 @@ History.deleteProcessInstancesAsync = function(params, done) {
  * @param done - a callback function
  * @returns {*}
  */
-History.setRemovalTimeToHistoricProcessInstancesAsync = function(params, done) {
+
+
+History.setRemovalTimeToHistoricProcessInstancesAsync = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3097,7 +3029,6 @@ History.setRemovalTimeToHistoricProcessInstancesAsync = function(params, done) {
     done: done
   });
 };
-
 /**
  * Set removal time to historic decision instances asynchronously. With creation of a batch operation.
  *
@@ -3106,7 +3037,9 @@ History.setRemovalTimeToHistoricProcessInstancesAsync = function(params, done) {
  * @param done - a callback function
  * @returns {*}
  */
-History.setRemovalTimeToHistoricDecisionInstancesAsync = function(params, done) {
+
+
+History.setRemovalTimeToHistoricDecisionInstancesAsync = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3117,7 +3050,6 @@ History.setRemovalTimeToHistoricDecisionInstancesAsync = function(params, done) 
     done: done
   });
 };
-
 /**
  * Set removal time to historic batches asynchronously. With creation of a batch operation.
  *
@@ -3126,7 +3058,9 @@ History.setRemovalTimeToHistoricDecisionInstancesAsync = function(params, done) 
  * @param done - a callback function
  * @returns {*}
  */
-History.setRemovalTimeToHistoricBatchesAsync = function(params, done) {
+
+
+History.setRemovalTimeToHistoricBatchesAsync = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3137,7 +3071,6 @@ History.setRemovalTimeToHistoricBatchesAsync = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for historic decision instances that fulfill the given parameters.
  *
@@ -3166,7 +3099,9 @@ History.setRemovalTimeToHistoricBatchesAsync = function(params, done) {
  * @param  {Number}   [params.maxResults]                         Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  * @param  {Function} done
  */
-History.decisionInstance = function(params, done) {
+
+
+History.decisionInstance = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3177,13 +3112,13 @@ History.decisionInstance = function(params, done) {
     done: done
   });
 };
-
-
 /**
  * Query for the number of historic decision instances that fulfill the given parameters.
  * This method takes the same parameters as `History.decisionInstance`.
  */
-History.decisionInstanceCount = function(params, done) {
+
+
+History.decisionInstanceCount = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3194,7 +3129,6 @@ History.decisionInstanceCount = function(params, done) {
     done: done
   });
 };
-
 /**
  * Delete historic decision instances asynchronously. With creation of a batch operation.
  *
@@ -3203,7 +3137,9 @@ History.decisionInstanceCount = function(params, done) {
  * @param done - a callback function
  * @returns {*}
  */
-History.deleteDecisionInstancesAsync = function(params, done) {
+
+
+History.deleteDecisionInstancesAsync = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3214,13 +3150,13 @@ History.deleteDecisionInstancesAsync = function(params, done) {
     done: done
   });
 };
-
-
 /**
  * Query for historic batches that fulfill given parameters. Parameters may be the properties of batches, such as the id or type.
  * The size of the result set can be retrieved by using the GET query count.
  */
-History.batch = function(params, done) {
+
+
+History.batch = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3231,21 +3167,23 @@ History.batch = function(params, done) {
     done: done
   });
 };
-
 /**
  * Retrieves a single historic batch according to the HistoricBatch interface in the engine.
  */
-History.singleBatch = function(id, done) {
+
+
+History.singleBatch = function (id, done) {
   return this.http.get(this.path + '/batch/' + id, {
     done: done
   });
 };
-
 /**
  * Request the number of historic batches that fulfill the query criteria.
  * Takes the same filtering parameters as the GET query.
  */
-History.batchCount = function(params, done) {
+
+
+History.batchCount = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3257,15 +3195,12 @@ History.batchCount = function(params, done) {
   });
 };
 
-History.batchDelete = function(id, done) {
+History.batchDelete = function (id, done) {
   var path = this.path + '/batch/' + id;
-
   return this.http.del(path, {
     done: done
   });
 };
-
-
 /**
  * Query for process instance durations report.
  * @param  {Object}   [params]
@@ -3276,7 +3211,9 @@ History.batchDelete = function(id, done) {
  * @param  {Object}   [params.startedBefore]        Date before which the process instance were started
  * @param  {Function} done
  */
-History.report = function(params, done) {
+
+
+History.report = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3284,13 +3221,11 @@ History.report = function(params, done) {
 
   params.reportType = params.reportType || 'duration';
   params.periodUnit = params.periodUnit || 'month';
-
   return this.http.get(this.path + '/process-instance/report', {
     data: params,
     done: done
   });
 };
-
 /**
  * Query for process instance durations report.
  * @param  {Object}   [params]
@@ -3301,7 +3236,9 @@ History.report = function(params, done) {
  * @param  {Object}   [params.startedBefore]        Date before which the process instance were started
  * @param  {Function} done
  */
-History.reportAsCsv = function(params, done) {
+
+
+History.reportAsCsv = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3309,14 +3246,12 @@ History.reportAsCsv = function(params, done) {
 
   params.reportType = params.reportType || 'duration';
   params.periodUnit = params.periodUnit || 'month';
-
   return this.http.get(this.path + '/process-instance/report', {
     data: params,
     accept: 'text/csv',
     done: done
   });
 };
-
 /**
  * Query for historic task instances that fulfill the given parameters.
  *
@@ -3408,7 +3343,9 @@ History.reportAsCsv = function(params, done) {
 
  * @param  {Function} done
  */
-History.task = function(params, done) {
+
+
+History.task = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3421,8 +3358,7 @@ History.task = function(params, done) {
   for (var p in params) {
     if (queryParams.indexOf(p) > -1) {
       query[p] = params[p];
-    }
-    else {
+    } else {
       body[p] = params[p];
     }
   }
@@ -3433,12 +3369,13 @@ History.task = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the number of historic task instances that fulfill the given parameters.
  * This method takes the same parameters as `History.task`.
  */
-History.taskCount = function(params, done) {
+
+
+History.taskCount = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3449,7 +3386,6 @@ History.taskCount = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for a historic task instance duration report.
  *
@@ -3463,7 +3399,9 @@ History.taskCount = function(params, done) {
  * @param  {String}   [params.periodUnit]         Can be one of `month` or `quarter`, defaults to `month`
  * @param  {Function}  done
  */
-History.taskDurationReport = function(params, done) {
+
+
+History.taskDurationReport = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3471,13 +3409,11 @@ History.taskDurationReport = function(params, done) {
 
   params.reportType = params.reportType || 'duration';
   params.periodUnit = params.periodUnit || 'month';
-
   return this.http.get(this.path + '/task/report', {
     data: params,
     done: done
   });
 };
-
 /**
  * Query for a completed task instance report
  *
@@ -3494,20 +3430,20 @@ History.taskDurationReport = function(params, done) {
  * @param done
  * @returns {*}
  */
-History.taskReport = function(params, done) {
+
+
+History.taskReport = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
   }
 
   params.reportType = params.reportType || 'count';
-
   return this.http.get(this.path + '/task/report', {
     data: params,
     done: done
   });
 };
-
 /**
  * Query for historic case instances that fulfill the given parameters.
  *
@@ -3581,7 +3517,9 @@ History.taskReport = function(params, done) {
 
  * @param  {Function} done
  */
-History.caseInstance = function(params, done) {
+
+
+History.caseInstance = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3594,8 +3532,7 @@ History.caseInstance = function(params, done) {
   for (var p in params) {
     if (queryParams.indexOf(p) > -1) {
       query[p] = params[p];
-    }
-    else {
+    } else {
       body[p] = params[p];
     }
   }
@@ -3606,13 +3543,13 @@ History.caseInstance = function(params, done) {
     done: done
   });
 };
-
-
 /**
  * Query for the number of historic case instances that fulfill the given parameters.
  * This method takes the same parameters as `History.caseInstance`.
  */
-History.caseInstanceCount = function(params, done) {
+
+
+History.caseInstanceCount = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3623,8 +3560,6 @@ History.caseInstanceCount = function(params, done) {
     done: done
   });
 };
-
-
 /**
  * Query for historic case activty instances that fulfill the given parameters.
  *
@@ -3683,7 +3618,9 @@ History.caseInstanceCount = function(params, done) {
 
  * @param  {Function} done
  */
-History.caseActivityInstance = function(params, done) {
+
+
+History.caseActivityInstance = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3694,13 +3631,13 @@ History.caseActivityInstance = function(params, done) {
     done: done
   });
 };
-
-
 /**
  * Query for the number of historic case activity instances that fulfill the given parameters.
  * This method takes the same parameters as `History.caseActivityInstance`.
  */
-History.caseActivityInstanceCount = function(params, done) {
+
+
+History.caseActivityInstanceCount = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3711,8 +3648,6 @@ History.caseActivityInstanceCount = function(params, done) {
     done: done
   });
 };
-
-
 /**
  * Query for historic variable instances that fulfill the given parameters.
  *
@@ -3739,7 +3674,9 @@ History.caseActivityInstanceCount = function(params, done) {
 
  * @param  {Function} done
  */
-History.variableInstance = function(params, done) {
+
+
+History.variableInstance = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3752,8 +3689,7 @@ History.variableInstance = function(params, done) {
   for (var p in params) {
     if (queryParams.indexOf(p) > -1) {
       query[p] = params[p];
-    }
-    else {
+    } else {
       body[p] = params[p];
     }
   }
@@ -3764,12 +3700,13 @@ History.variableInstance = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the number of historic variable instances that fulfill the given parameters.
  * This method takes the same parameters as `History.variableInstance`.
  */
-History.variableInstanceCount = function(params, done) {
+
+
+History.variableInstanceCount = function (params, done) {
   if (typeof params === 'function') {
     done = arguments[0];
     params = {};
@@ -3781,17 +3718,14 @@ History.variableInstanceCount = function(params, done) {
   });
 };
 
-
-History.caseActivityStatistics = function(params, done) {
-
+History.caseActivityStatistics = function (params, done) {
   var id = params.id || params;
-
   return this.http.get(this.path + '/case-definition/' + id + '/statistics', {
     done: done
   });
 };
 
-History.drdStatistics = function(id, params, done) {
+History.drdStatistics = function (id, params, done) {
   var url = this.path + '/decision-requirements-definition/' + id + '/statistics';
 
   if (typeof params === 'function') {
@@ -3804,11 +3738,12 @@ History.drdStatistics = function(id, params, done) {
     done: done
   });
 };
-
 /**
  * Query for the history cleanup configuration
  */
-History.cleanupConfiguration = function(params,done) {
+
+
+History.cleanupConfiguration = function (params, done) {
   var url = this.path + '/cleanup/configuration';
 
   if (typeof params === 'function') {
@@ -3821,35 +3756,34 @@ History.cleanupConfiguration = function(params,done) {
     done: done
   });
 };
-
 /**
  * Delete the history of a single variable
  */
 
-History.deleteVariable = function(id, done) {
+
+History.deleteVariable = function (id, done) {
   var url = this.path + '/variable-instance/' + id;
-  
   return this.http.del(url, {
     done: done
   });
 };
-
 /**
  * Delete the history of a single variable
  */
 
-History.deleteAllVariables = function(id, done) {
-  var url = this.path + '/process-instance/' + id + '/variable-instances';
 
+History.deleteAllVariables = function (id, done) {
+  var url = this.path + '/process-instance/' + id + '/variable-instances';
   return this.http.del(url, {
     done: done
   });
 };
-
 /**
  * Query for the history cleanup job
  */
-History.cleanupJobs = function(params,done) {
+
+
+History.cleanupJobs = function (params, done) {
   var url = this.path + '/cleanup/jobs';
 
   if (typeof params === 'function') {
@@ -3862,15 +3796,15 @@ History.cleanupJobs = function(params,done) {
     done: done
   });
 };
-
 /**
  * Query to start a history cleanup job
  * @param  {Object}      [params]
  * @param  {Boolean}     [params.executeAtOnce]        Execute job in nearest future
  */
-History.cleanup = function(params,done) {
-  var url = this.path + '/cleanup';
 
+
+History.cleanup = function (params, done) {
+  var url = this.path + '/cleanup';
 
   if (typeof params === 'function') {
     done = params;
@@ -3882,8 +3816,6 @@ History.cleanup = function(params,done) {
     done: done
   });
 };
-
-
 /**
  * Query for the count of the finished historic process instances, cleanable process instances and basic process definition data - id, key, name and version
  * @param  {Object}      [params]
@@ -3892,7 +3824,9 @@ History.cleanup = function(params,done) {
  * @param  {Number}      [params.firstResult]                  Pagination of results. Specifies the index of the first result to return.
  * @param  {Number}      [params.maxResults]                   Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  */
-History.cleanableProcessCount = function(params, done) {
+
+
+History.cleanableProcessCount = function (params, done) {
   var url = this.path + '/process-definition/cleanable-process-instance-report/count';
 
   if (typeof params === 'function') {
@@ -3905,12 +3839,13 @@ History.cleanableProcessCount = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the report results about a process definition and finished process instances relevant to history cleanup
  * This method takes the same parameterers as 'History.cleanableProcessInstanceCount'
  */
-History.cleanableProcess = function(params, done) {
+
+
+History.cleanableProcess = function (params, done) {
   var url = this.path + '/process-definition/cleanable-process-instance-report';
 
   if (typeof params === 'function') {
@@ -3923,7 +3858,6 @@ History.cleanableProcess = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the count of the finished historic case instances, cleanable case instances and basic case definition data - id, key, name and version.
  * @param  {uuid[]}      [params.caseDefinitionIdIn]           Array of caseDefinition ids
@@ -3931,7 +3865,9 @@ History.cleanableProcess = function(params, done) {
  * @param  {Number}      [params.firstResult]                  Pagination of results. Specifies the index of the first result to return.
  * @param  {Number}      [params.maxResults]                   Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  */
-History.cleanableCaseCount = function(params, done) {
+
+
+History.cleanableCaseCount = function (params, done) {
   var url = this.path + '/case-definition/cleanable-case-instance-report/count';
 
   if (typeof params === 'function') {
@@ -3944,12 +3880,13 @@ History.cleanableCaseCount = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the report results about a case definition and finished case instances relevant to history cleanup
  * This method takes the same parameterers as 'History.cleanableCaseInstanceCount '
  */
-History.cleanableCase = function(params, done) {
+
+
+History.cleanableCase = function (params, done) {
   var url = this.path + '/case-definition/cleanable-case-instance-report';
 
   if (typeof params === 'function') {
@@ -3962,7 +3899,6 @@ History.cleanableCase = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the count of the finished historic decision instances, cleanable decision instances and basic decision definition data - id, key, name and version
  * @param  {Object}      [params]
@@ -3971,7 +3907,9 @@ History.cleanableCase = function(params, done) {
  * @param  {Number}      [params.firstResult]                      Pagination of results. Specifies the index of the first result to return.
  * @param  {Number}      [params.maxResults]                       Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  */
-History.cleanableDecisionCount = function(params, done) {
+
+
+History.cleanableDecisionCount = function (params, done) {
   var url = this.path + '/decision-definition/cleanable-decision-instance-report/count';
 
   if (typeof params === 'function') {
@@ -3984,12 +3922,13 @@ History.cleanableDecisionCount = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the report results about a decision definition and finished decision instances relevant to history cleanup
  * This method takes the same parameterers as 'History.cleanableDecisionInstanceCount '
  */
-History.cleanableDecision = function(params, done) {
+
+
+History.cleanableDecision = function (params, done) {
   var url = this.path + '/decision-definition/cleanable-decision-instance-report';
 
   if (typeof params === 'function') {
@@ -4002,14 +3941,15 @@ History.cleanableDecision = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the count of report results about historic batch operations relevant to history cleanup
  * @param  {Object}      [params]
  * @param  {Number}      [params.firstResult]                      Pagination of results. Specifies the index of the first result to return.
  * @param  {Number}      [params.maxResults]                       Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  */
-History.cleanableBatchCount = function(params, done) {
+
+
+History.cleanableBatchCount = function (params, done) {
   var url = this.path + '/batch/cleanable-batch-report/count';
 
   if (typeof params === 'function') {
@@ -4022,12 +3962,13 @@ History.cleanableBatchCount = function(params, done) {
     done: done
   });
 };
-
 /**
  * Query for the report about historic batch operations relevant to history cleanup
  * This method takes the same parameterers as 'History.cleanableBatchCount'
  */
-History.cleanableBatch = function(params, done) {
+
+
+History.cleanableBatch = function (params, done) {
   var url = this.path + '/batch/cleanable-batch-report';
 
   if (typeof params === 'function') {
@@ -4041,10 +3982,8 @@ History.cleanableBatch = function(params, done) {
   });
 };
 
-
 History.externalTaskLogList = helpers.createSimpleGetQueryFunction('/external-task-log');
 History.externalTaskLogCount = helpers.createSimpleGetQueryFunction('/external-task-log/count');
-
 module.exports = History;
 
 },{"../abstract-client-resource":4,"../helpers":5}],21:[function(require,module,exports){
@@ -4064,28 +4003,24 @@ module.exports = History;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * Incident Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Incident = AbstractClientResource.extend();
 
+
+var Incident = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 Incident.path = 'incident';
-
-
 /**
  * Query for incidents that fulfill given parameters. The size of the result set can be retrieved by using the get incidents count method.
  *
@@ -4129,13 +4064,13 @@ Incident.path = 'incident';
  *
  * @param  {RequestCallback}  done
  */
-Incident.get = function(params, done) {
+
+Incident.get = function (params, done) {
   return this.http.get(this.path, {
     data: params,
     done: done
   });
 };
-
 /**
  * Query for the number of incidents that fulfill given parameters. Takes the same parameters as the get incidents method.
  *
@@ -4163,15 +4098,16 @@ Incident.get = function(params, done) {
  *
  * @param  {RequestCallback}  done
  */
-Incident.count = function(params, done) {
-  return this.http.get(this.path+'/count', {
+
+
+Incident.count = function (params, done) {
+  return this.http.get(this.path + '/count', {
     data: params,
     done: done
   });
 };
 
 module.exports = Incident;
-
 
 },{"./../abstract-client-resource":4}],22:[function(require,module,exports){
 /*
@@ -4190,32 +4126,28 @@ module.exports = Incident;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
 
-
-
 var JobDefinition = AbstractClientResource.extend();
-
 JobDefinition.path = 'job-definition';
 
-JobDefinition.setRetries = function(params, done) {
+JobDefinition.setRetries = function (params, done) {
   return this.http.put(this.path + '/' + params.id + '/retries', {
     data: params,
     done: done
   });
 };
 
-JobDefinition.list = function(params, done) {
+JobDefinition.list = function (params, done) {
   return this.http.get(this.path, {
     data: params,
     done: done
   });
 };
 
-JobDefinition.get = function(id, done) {
+JobDefinition.get = function (id, done) {
   return this.http.get(this.path + '/' + id, {
     done: done
   });
@@ -4240,34 +4172,30 @@ module.exports = JobDefinition;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * Job Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Job = AbstractClientResource.extend();
 
+
+var Job = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 Job.path = 'job';
 
-
-Job.get = function(id, done) {
+Job.get = function (id, done) {
   return this.http.get(this.path + '/' + id, {
     done: done
   });
 };
-
 /**
  * Query for jobs that fulfill given parameters.
  * @param  {Object}   params
@@ -4297,23 +4225,22 @@ Job.get = function(id, done) {
  * @param  {String}   [params.maxResults]           Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  * @param  {Function} done
  */
-Job.list = function(params, done) {
 
-  var path = this.path;
 
-  // those parameters have to be passed in the query and not body
-  path += '?firstResult='+ (params.firstResult || 0);
-  if(params.maxResults) {
-    path += '&maxResults='+ (params.maxResults);
+Job.list = function (params, done) {
+  var path = this.path; // those parameters have to be passed in the query and not body
+
+  path += '?firstResult=' + (params.firstResult || 0);
+
+  if (params.maxResults) {
+    path += '&maxResults=' + params.maxResults;
   }
-
 
   return this.http.post(path, {
     data: params,
     done: done
   });
 };
-
 /**
  * Sets the retries of the job to the given number of retries.
  * @param  {Object}   params
@@ -4321,27 +4248,28 @@ Job.list = function(params, done) {
  * @param  {String}   params.retries The number of retries to set that a job has left.
  * @param  {Function} done
  */
-Job.setRetries = function(params, done) {
+
+
+Job.setRetries = function (params, done) {
   return this.http.put(this.path + '/' + params.id + '/retries', {
     data: params,
     done: done
   });
 };
 
-Job.delete = function(id, done) {
+Job["delete"] = function (id, done) {
   return this.http.del(this.path + '/' + id, {
     done: done
   });
 };
 
-Job.stacktrace = function(id, done) {
+Job.stacktrace = function (id, done) {
   var url = this.path + '/' + id + '/stacktrace';
   return this.http.get(url, {
     accept: 'text/plain',
     done: done
   });
 };
-
 /**
  * Recalculates the duedate for a given job.
  * @param {Object}    params
@@ -4349,17 +4277,19 @@ Job.stacktrace = function(id, done) {
  * @param {Bool}      params.creationDateBased    Base recalculation on Job creation date. Default: true
  * @param {Function}  done
  */
-Job.recalculateDuedate = function(params, done) {
+
+
+Job.recalculateDuedate = function (params, done) {
   var url = this.path + '/' + params.id + '/duedate/recalculate';
 
-  if(params.creationDateBased == false) {
+  if (params.creationDateBased == false) {
     url += '?creationDateBased=' + params.creationDateBased;
   }
+
   return this.http.post(url, {
     done: done
   });
 };
-
 /**
  * Sets the duedate of the job to the given date.
  * @param  {Object}   params
@@ -4368,7 +4298,8 @@ Job.recalculateDuedate = function(params, done) {
  * @param  {Function} done
  */
 
-Job.setDuedate = function(params, done) {
+
+Job.setDuedate = function (params, done) {
   var url = this.path + '/' + params.id + '/duedate';
   return this.http.put(url, {
     data: params,
@@ -4376,7 +4307,7 @@ Job.setDuedate = function(params, done) {
   });
 };
 
-Job.suspended = function(params, done) {
+Job.suspended = function (params, done) {
   return this.http.put(this.path + '/' + params.id + '/suspended', {
     data: {
       suspended: !!params.suspended
@@ -4404,26 +4335,24 @@ module.exports = Job;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
 /**
  * Message Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Message = AbstractClientResource.extend();
 
+
+var Message = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 Message.path = 'message';
-
-
 /**
  * correlates a message
  *
@@ -4433,9 +4362,9 @@ Message.path = 'message';
  * @param {String} [params.correlationKeys]       A JSON object containing the keys the recieve task is to be corrolated with. Each key corresponds to a variable name and each value to a variable value.
  * @param {String} [params.processVariables]       A JSON object containing the variables the recieve task is to be corrolated with. Each key corresponds to a variable name and each value to a variable value.
  */
-Message.correlate = function(params, done) {
-  var url = this.path + '/';
 
+Message.correlate = function (params, done) {
+  var url = this.path + '/';
   return this.http.post(url, {
     data: params,
     done: done
@@ -4461,27 +4390,24 @@ module.exports = Message;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * Job Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Metrics = AbstractClientResource.extend();
 
+
+var Metrics = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-Metrics.path = 'metrics';
 
+Metrics.path = 'metrics';
 /**
  * Query for jobs that fulfill given parameters.
  * @param  {Object}   params
@@ -4490,14 +4416,15 @@ Metrics.path = 'metrics';
  * @param  {String}   [params.endDate]
  * @param  {Function} done
  */
-Metrics.sum = function(params, done) {
 
+Metrics.sum = function (params, done) {
   var path = this.path + '/' + params.name + '/sum';
   delete params.name;
-
-  return this.http.get(path, { data: params, done: done });
+  return this.http.get(path, {
+    data: params,
+    done: done
+  });
 };
-
 /**
  * Retrieves a list of metrics, aggregated for a given interval.
  * @param  {Object}   params
@@ -4510,8 +4437,13 @@ Metrics.sum = function(params, done) {
  * @param  {Integer}  [params.interval]    The interval for which the metrics should be aggregated. Time unit is seconds. Default: The interval is set to 15 minutes (900 seconds).
  * @param  {Function} done
  */
-Metrics.byInterval = function(params, done) {
-  return this.http.get(this.path, { data: params, done: done });
+
+
+Metrics.byInterval = function (params, done) {
+  return this.http.get(this.path, {
+    data: params,
+    done: done
+  });
 };
 
 module.exports = Metrics;
@@ -4533,25 +4465,24 @@ module.exports = Metrics;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
 /**
  * Migration Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Migration = AbstractClientResource.extend();
 
+
+var Migration = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-Migration.path = 'migration';
 
+Migration.path = 'migration';
 /**
  * Generate a migration plan for a given source and target process definition
  * @param  {Object}   params
@@ -4559,15 +4490,14 @@ Migration.path = 'migration';
  * @param  {String}   [params.targetProcessDefinitionId]
  * @param  {Function} done
  */
-Migration.generate = function(params, done) {
-  var path = this.path + '/generate';
 
+Migration.generate = function (params, done) {
+  var path = this.path + '/generate';
   return this.http.post(path, {
     data: params,
     done: done
   });
 };
-
 /**
  * Execute a migration plan
  * @param  {Object}   params
@@ -4575,15 +4505,15 @@ Migration.generate = function(params, done) {
  * @param  {String}   [params.processInstanceIds]
  * @param  {Function} done
  */
-Migration.execute = function(params, done) {
-  var path = this.path + '/execute';
 
+
+Migration.execute = function (params, done) {
+  var path = this.path + '/execute';
   return this.http.post(path, {
     data: params,
     done: done
   });
 };
-
 /**
  * Execute a migration plan asynchronously
  * @param  {Object}   params
@@ -4591,18 +4521,18 @@ Migration.execute = function(params, done) {
  * @param  {String}   [params.processInstanceIds]
  * @param  {Function} done
  */
-Migration.executeAsync = function(params, done) {
-  var path = this.path + '/executeAsync';
 
+
+Migration.executeAsync = function (params, done) {
+  var path = this.path + '/executeAsync';
   return this.http.post(path, {
     data: params,
     done: done
   });
 };
 
-Migration.validate = function(params, done) {
+Migration.validate = function (params, done) {
   var path = this.path + '/validate';
-
   return this.http.post(path, {
     data: params,
     done: done
@@ -4628,25 +4558,24 @@ module.exports = Migration;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
 /**
  * Modification Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Modification = AbstractClientResource.extend();
 
+
+var Modification = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-Modification.path = 'modification';
 
+Modification.path = 'modification';
 /**
  * Execute a modification
  * @param  {Object}   params
@@ -4658,15 +4587,14 @@ Modification.path = 'modification';
  * @param  {String}   [params.instructions]
  * @param  {Function} done
  */
-Modification.execute = function(params, done) {
-  var path = this.path + '/execute';
 
+Modification.execute = function (params, done) {
+  var path = this.path + '/execute';
   return this.http.post(path, {
     data: params,
     done: done
   });
 };
-
 /**
  * Execute a modification asynchronously
  * @param  {Object}   params
@@ -4678,9 +4606,10 @@ Modification.execute = function(params, done) {
  * @param  {String}   [params.instructions]
  * @param  {Function} done
  */
-Modification.executeAsync = function(params, done) {
-  var path = this.path + '/executeAsync';
 
+
+Modification.executeAsync = function (params, done) {
+  var path = this.path + '/executeAsync';
   return this.http.post(path, {
     data: params,
     done: done
@@ -4706,37 +4635,35 @@ module.exports = Modification;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
 /**
  * Password Policy Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var PasswordPolicy = AbstractClientResource.extend();
 
+
+var PasswordPolicy = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-PasswordPolicy.path = 'identity/password-policy';
 
+PasswordPolicy.path = 'identity/password-policy';
 /**
  * Fetch the active password policy.
  *
  * @param {Function} done
  */
-PasswordPolicy.get = function(done) {
+
+PasswordPolicy.get = function (done) {
   return this.http.get(this.path, {
     done: done
   });
 };
-
 /**
  * Validate a password against the password policy
  *
@@ -4744,10 +4671,15 @@ PasswordPolicy.get = function(done) {
  * @param {String}   [params.password]  Password to be validated
  * @param {Function} done
  */
-PasswordPolicy.validate = function(params, done) {
-  if(typeof params === 'string') {
-    params = {'password': params};
+
+
+PasswordPolicy.validate = function (params, done) {
+  if (typeof params === 'string') {
+    params = {
+      password: params
+    };
   }
+
   return this.http.post(this.path, {
     data: params,
     done: done
@@ -4773,482 +4705,462 @@ module.exports = PasswordPolicy;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var Q = require('q');
-var AbstractClientResource = require('./../abstract-client-resource');
 
+var AbstractClientResource = require('./../abstract-client-resource');
 /**
  * No-Op callback
  */
-function noop() {}
 
+
+function noop() {}
 /**
  * Process Definition Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
+
+
 var ProcessDefinition = AbstractClientResource.extend(
-  /** @lends  CamSDK.client.resource.ProcessDefinition.prototype */
-  {
-    /**
-     * Suspends the process definition instance
-     *
-     * @param  {Object.<String, *>} [params]
-     * @param  {requestCallback}    [done]
-     */
-    suspend: function(params, done) {
-      // allows to pass only a callback
-      if (typeof params === 'function') {
-        done = params;
-        params = {};
-      }
-      params = params || {};
-      done = done || noop;
-
-      return this.http.post(this.path, {
-        done: done
-      });
-    },
-
-
-    /**
-     * Retrieves the statistics of a process definition.
-     *
-     * @param  {Function} [done]
-     */
-    stats: function(done) {
-      return this.http.post(this.path, {
-        done: done || noop
-      });
-    },
-
-
-    /**
-     * Retrieves the BPMN 2.0 XML document of a process definition.
-     *
-     * @param  {Function} [done]
-     */
-    // xml: function(id, done) {
-    //   return this.http.post(this.path + +'/xml', {
-    //     done: done || noop
-    //   });
-    // },
-
-
-    /**
-     * Starts a process instance from a process definition.
-     *
-     * @param  {Object} [varname]
-     * @param  {Function} [done]
-     */
-    start: function(done) {
-      return this.http.post(this.path, {
-        data: {},
-        done: done
-      });
+/** @lends  CamSDK.client.resource.ProcessDefinition.prototype */
+{
+  /**
+   * Suspends the process definition instance
+   *
+   * @param  {Object.<String, *>} [params]
+   * @param  {requestCallback}    [done]
+   */
+  suspend: function suspend(params, done) {
+    // allows to pass only a callback
+    if (typeof params === 'function') {
+      done = params;
+      params = {};
     }
+
+    params = params || {};
+    done = done || noop;
+    return this.http.post(this.path, {
+      done: done
+    });
   },
-  /** @lends  CamSDK.client.resource.ProcessDefinition */
-  {
-    /**
-     * API path for the process instance resource
-     */
-    path: 'process-definition',
 
+  /**
+   * Retrieves the statistics of a process definition.
+   *
+   * @param  {Function} [done]
+   */
+  stats: function stats(done) {
+    return this.http.post(this.path, {
+      done: done || noop
+    });
+  },
 
+  /**
+   * Retrieves the BPMN 2.0 XML document of a process definition.
+   *
+   * @param  {Function} [done]
+   */
+  // xml: function(id, done) {
+  //   return this.http.post(this.path + +'/xml', {
+  //     done: done || noop
+  //   });
+  // },
 
+  /**
+   * Starts a process instance from a process definition.
+   *
+   * @param  {Object} [varname]
+   * @param  {Function} [done]
+   */
+  start: function start(done) {
+    return this.http.post(this.path, {
+      data: {},
+      done: done
+    });
+  }
+},
+/** @lends  CamSDK.client.resource.ProcessDefinition */
+{
+  /**
+   * API path for the process instance resource
+   */
+  path: 'process-definition',
 
-    /**
-     * Retrieve a single process definition
-     *
-     * @param  {uuid}     id    of the process definition to be requested
-     * @param  {Function} done
-     */
-    get: function(id, done) {
+  /**
+   * Retrieve a single process definition
+   *
+   * @param  {uuid}     id    of the process definition to be requested
+   * @param  {Function} done
+   */
+  get: function get(id, done) {
+    // var pointer = '';
+    // if (data.key) {
+    //   pointer = 'key/'+ data.key;
+    // }
+    // else if (data.id) {
+    //   pointer = data.id;
+    // }
+    return this.http.get(this.path + '/' + id, {
+      done: done
+    });
+  },
 
-      // var pointer = '';
-      // if (data.key) {
-      //   pointer = 'key/'+ data.key;
-      // }
-      // else if (data.id) {
-      //   pointer = data.id;
-      // }
+  /**
+   * Retrieve a single process definition
+   *
+   * @param  {String}   key    of the process definition to be requested
+   * @param  {Function} done
+   */
+  getByKey: function getByKey(key, done) {
+    return this.http.get(this.path + '/key/' + key, {
+      done: done
+    });
+  },
 
-      return this.http.get(this.path +'/'+ id, {
-        done: done
-      });
-    },
+  /**
+   * Get a list of process definitions
+   * @param  {Object} params                        Query parameters as follow
+   * @param  {String} [params.name]                 Filter by name.
+   * @param  {String} [params.nameLike]             Filter by names that the parameter is a substring of.
+   * @param  {String} [params.deploymentId]         Filter by the deployment the id belongs to.
+   * @param  {String} [params.key]                  Filter by key, i.e. the id in the BPMN 2.0 XML. Exact match.
+   * @param  {String} [params.keyLike]              Filter by keys that the parameter is a substring of.
+   * @param  {String} [params.category]             Filter by category. Exact match.
+   * @param  {String} [params.categoryLike]         Filter by categories that the parameter is a substring of.
+   * @param  {String} [params.ver]                  Filter by version.
+   * @param  {String} [params.latest]               Only include those process definitions that are latest versions.
+   *                                                Values may be "true" or "false".
+   * @param  {String} [params.resourceName]         Filter by the name of the process definition resource. Exact match.
+   * @param  {String} [params.resourceNameLike]     Filter by names of those process definition resources that the parameter is a substring of.
+   * @param  {String} [params.startableBy]          Filter by a user name who is allowed to start the process.
+   * @param  {String} [params.active]               Only include active process definitions.
+   *                                                Values may be "true" or "false".
+   * @param  {String} [params.suspended]            Only include suspended process definitions.
+   *                                                Values may be "true" or "false".
+   * @param  {String} [params.incidentId]           Filter by the incident id.
+   * @param  {String} [params.incidentType]         Filter by the incident type.
+   * @param  {String} [params.incidentMessage]      Filter by the incident message. Exact match.
+   * @param  {String} [params.incidentMessageLike]  Filter by the incident message that the parameter is a substring of.
+   *
+   * @param  {String} [params.sortBy]               Sort the results lexicographically by a given criterion.
+   *                                                Valid values are category, "key", "id", "name", "version" and "deploymentId".
+   *                                                Must be used in conjunction with the "sortOrder" parameter.
+   *
+   * @param  {String} [params.sortOrder]            Sort the results in a given order.
+   *                                                Values may be asc for ascending "order" or "desc" for descending order.
+   *                                                Must be used in conjunction with the sortBy parameter.
+   *
+   * @param  {Integer} [params.firstResult]         Pagination of results. Specifies the index of the first result to return.
+   * @param  {Integer} [params.maxResults]          Pagination of results. Specifies the maximum number of results to return.
+   *                                                Will return less results, if there are no more results left.
+    * @param  {requestCallback} [done]
+   *
+   * @example
+   * CamSDK.resource('process-definition').list({
+   *   nameLike: 'Process'
+   * }, function(err, results) {
+   *   //
+   * });
+   */
+  list: function list() {
+    return AbstractClientResource.list.apply(this, arguments);
+  },
 
+  /**
+   * Get a count of process definitions
+   * Same parameters as list
+   */
+  count: function count() {
+    return AbstractClientResource.count.apply(this, arguments);
+  },
 
-    /**
-     * Retrieve a single process definition
-     *
-     * @param  {String}   key    of the process definition to be requested
-     * @param  {Function} done
-     */
-    getByKey: function(key, done) {
-      return this.http.get(this.path +'/key/'+ key, {
-        done: done
-      });
-    },
+  /**
+   * Fetch the variables of a process definition
+   * @param  {Object.<String, *>} data
+   * @param  {String}             [data.id]     of the process
+   * @param  {String}             [data.key]    of the process
+   * @param  {Array}              [data.names]  of variables to be fetched
+   * @param  {Function}           [done]
+   */
+  formVariables: function formVariables(data, done) {
+    var pointer = '';
+    done = done || noop;
 
-
-    /**
-     * Get a list of process definitions
-     * @param  {Object} params                        Query parameters as follow
-     * @param  {String} [params.name]                 Filter by name.
-     * @param  {String} [params.nameLike]             Filter by names that the parameter is a substring of.
-     * @param  {String} [params.deploymentId]         Filter by the deployment the id belongs to.
-     * @param  {String} [params.key]                  Filter by key, i.e. the id in the BPMN 2.0 XML. Exact match.
-     * @param  {String} [params.keyLike]              Filter by keys that the parameter is a substring of.
-     * @param  {String} [params.category]             Filter by category. Exact match.
-     * @param  {String} [params.categoryLike]         Filter by categories that the parameter is a substring of.
-     * @param  {String} [params.ver]                  Filter by version.
-     * @param  {String} [params.latest]               Only include those process definitions that are latest versions.
-     *                                                Values may be "true" or "false".
-     * @param  {String} [params.resourceName]         Filter by the name of the process definition resource. Exact match.
-     * @param  {String} [params.resourceNameLike]     Filter by names of those process definition resources that the parameter is a substring of.
-     * @param  {String} [params.startableBy]          Filter by a user name who is allowed to start the process.
-     * @param  {String} [params.active]               Only include active process definitions.
-     *                                                Values may be "true" or "false".
-     * @param  {String} [params.suspended]            Only include suspended process definitions.
-     *                                                Values may be "true" or "false".
-     * @param  {String} [params.incidentId]           Filter by the incident id.
-     * @param  {String} [params.incidentType]         Filter by the incident type.
-     * @param  {String} [params.incidentMessage]      Filter by the incident message. Exact match.
-     * @param  {String} [params.incidentMessageLike]  Filter by the incident message that the parameter is a substring of.
-     *
-     * @param  {String} [params.sortBy]               Sort the results lexicographically by a given criterion.
-     *                                                Valid values are category, "key", "id", "name", "version" and "deploymentId".
-     *                                                Must be used in conjunction with the "sortOrder" parameter.
-     *
-     * @param  {String} [params.sortOrder]            Sort the results in a given order.
-     *                                                Values may be asc for ascending "order" or "desc" for descending order.
-     *                                                Must be used in conjunction with the sortBy parameter.
-     *
-     * @param  {Integer} [params.firstResult]         Pagination of results. Specifies the index of the first result to return.
-     * @param  {Integer} [params.maxResults]          Pagination of results. Specifies the maximum number of results to return.
-     *                                                Will return less results, if there are no more results left.
-
-     * @param  {requestCallback} [done]
-     *
-     * @example
-     * CamSDK.resource('process-definition').list({
-     *   nameLike: 'Process'
-     * }, function(err, results) {
-     *   //
-     * });
-     */
-    list: function() {
-      return AbstractClientResource.list.apply(this, arguments);
-    },
-
-    /**
-     * Get a count of process definitions
-     * Same parameters as list
-     */
-    count: function() {
-      return AbstractClientResource.count.apply(this, arguments);
-    },
-
-
-    /**
-     * Fetch the variables of a process definition
-     * @param  {Object.<String, *>} data
-     * @param  {String}             [data.id]     of the process
-     * @param  {String}             [data.key]    of the process
-     * @param  {Array}              [data.names]  of variables to be fetched
-     * @param  {Function}           [done]
-     */
-    formVariables: function(data, done) {
-      var pointer = '';
-      done = done || noop;
-      if (data.key) {
-        pointer = 'key/'+ data.key;
-      }
-      else if (data.id) {
-        pointer = data.id;
-      }
-      else {
-        var err = new Error('Process definition task variables needs either a key or an id.');
-        done(err);
-        return Q.reject(err);
-      }
-
-      var queryData = {
-        deserializeValues: data.deserializeValues
-      };
-
-      if(data.names) {
-        queryData.variableNames = (data.names || []).join(',');
-      }
-
-      return this.http.get(this.path +'/'+ pointer +'/form-variables', {
-        data: queryData,
-        done: done
-      });
-    },
-
-
-    /**
-     * Submit a form to start a process definition
-     *
-     * @param  {Object.<String, *>} data
-     * @param  {String}             [data.key]            start the process-definition with this key
-     * @param  {String}             [data.tenantId]       and the this tenant-id
-     * @param  {String}             [data.id]             or: start the process-definition with this id
-     * @param  {String}             [data.businessKey]    of the process to be set
-     * @param  {Array}              [data.variables]      variables to be set
-     * @param  {Function}           [done]
-     */
-    submitForm: function(data, done) {
-      var pointer = '';
-      done = done || noop;
-      if (data.key) {
-        pointer = 'key/'+ data.key;
-        if (data.tenantId) {
-          pointer += '/tenant-id/' + data.tenantId;
-        }
-      }
-      else if (data.id) {
-        pointer = data.id;
-      }
-      else {
-        return done(new Error('Process definition task variables needs either a key or an id.'));
-      }
-
-      return this.http.post(this.path +'/'+ pointer +'/submit-form', {
-        data: {
-          businessKey : data.businessKey,
-          variables: data.variables
-        },
-        done: done
-      });
-    },
-
-
-    /**
-     * Delete multiple process definitions by key or a single process definition by id
-     *
-     * @param  {Object.<String, *>} data
-     * @param  {String}             [data.key]                        delete the process-definition with this key
-     * @param  {String}             [data.tenantId]                   and the this tenant-id
-     * @param  {String}             [data.id]                         or: delete the process-definition with this id
-     * @param  {Boolean}            [data.cascade]                    All instances, including historic instances,
-     *                                                                will also be deleted
-     * @param  {Boolean}            [data.skipCustomListeners]        Skip execution listener invocation for
-     *                                                                activities that are started or ended
-     *                                                                as part of this request.
-     * @param  {Function}           [done]
-     */
-    delete: function(data, done) {
-      done = done || noop;
-
-      var pointer = '';
-      if (data.key) {
-        pointer = 'key/'+ data.key;
-        if (data.tenantId) {
-          pointer += '/tenant-id/' + data.tenantId;
-        }
-        pointer += '/delete';
-      } else if (data.id) {
-        pointer = data.id;
-      } else {
-        return done(new Error('Process definition deletion needs either a key or an id.'));
-      }
-
-      var queryParams = '?';
-      var param = 'cascade';
-      if (typeof data[param] === 'boolean') {
-        queryParams += param + '=' + data[param];
-      }
-
-      param = 'skipCustomListeners';
-      if (typeof data[param] === 'boolean') {
-        if (queryParams.length > 1) {
-          queryParams += '&';
-        }
-
-        queryParams += param + '=' + data[param];
-      }
-
-      param = 'skipIoMappings';
-      if (typeof data[param] === 'boolean') {
-        if (queryParams.length > 1) {
-          queryParams += '&';
-        }
-
-        queryParams += param + '=' + data[param];
-      }
-
-      return this.http.del(this.path +'/'+ pointer + queryParams, {
-        done: done
-      });
-    },
-
-    /**
-     * Retrieves the form of a process definition.
-     * @param  {Function} [done]
-     */
-    startForm: function(data, done) {
-      var path = this.path +'/'+ (data.key ? 'key/'+ data.key : data.id) +'/startForm';
-      return this.http.get(path, {
-        done: done || noop
-      });
-    },
-
-
-    /**
-     * Retrieves the form of a process definition.
-     * @param  {Function} [done]
-     */
-    xml: function(data, done) {
-      var path = this.path +'/'+ (data.id ? data.id : 'key/'+ data.key) +'/xml';
-      return this.http.get(path, {
-        done: done || noop
-      });
-    },
-
-    /**
-     * Retrieves runtime statistics of a given process definition grouped by activities
-     * @param  {Function} [done]
-     */
-    statistics: function(data, done) {
-      var path = this.path;
-
-      if(data.id) {
-        path += '/' + data.id;
-      } else if (data.key) {
-        path += '/key/'+ data.key;
-      }
-
-      path += '/statistics';
-
-      return this.http.get(path, {
-        data: data,
-        done: done || noop
-      });
-    },
-
-
-    /**
-     * Submits the form of a process definition.
-     *
-     * @param  {Object} [data]
-     * @param  {Function} [done]
-     */
-    submit: function(data, done) {
-      var path = this.path;
-      if (data.key) {
-        path += '/key/'+ data.key;
-      }
-      else {
-        path += '/'+ data.id;
-      }
-      path += '/submit-form';
-
-      return this.http.post(path, {
-        data: data,
-        done: done
-      });
-    },
-
-
-    /**
-     * Suspends one or more process definitions
-     *
-     * @param  {String|String[]}    ids
-     * @param  {Object.<String, *>} [params]
-     * @param  {requestCallback}    [done]
-     */
-    suspend: function(ids, params, done) {
-      // allows to pass only a callback
-      if (typeof params === 'function') {
-        done = params;
-        params = {};
-      }
-      params = params || {};
-      done = done || noop;
-      // allows to pass a single ID
-      ids = Array.isArray(ids) ? ids : [ids];
-
-      return this.http.post(this.path, {
-        done: done
-      });
-    },
-
-    /**
-     * Instantiates a given process definition.
-     *
-     * @param {Object} [params]
-     * @param {String} [params.id]              The id of the process definition to be instantiated. Must be omitted if key is provided.
-     * @param {String} [params.key]             The key of the process definition (the latest version thereof) to be instantiated. Must be omitted if id is provided.
-     * @param {String} [params.tenantId]				The id of the tenant the process definition belongs to. Must be omitted if id is provided.
-     * @param {String} [params.variables]       A JSON object containing the variables the process is to be initialized with. Each key corresponds to a variable name and each value to a variable value.
-     * @param {String} [params.businessKey]     The business key the process instance is to be initialized with. The business key uniquely identifies the process instance in the context of the given process definition.
-     * @param {String} [params.caseInstanceId]  The case instance id the process instance is to be initialized with.
-     */
-    start: function(params, done) {
-      var url = this.path + '/';
-
-      if (params.id) {
-        url = url + params.id;
-      } else {
-        url = url + 'key/' + params.key;
-
-        if (params.tenantId) {
-          url = url + '/tenant-id/' + params.tenantId;
-        }
-      }
-
-      return this.http.post(url + '/start', {
-        data: params,
-        done: done
-      });
-    },
-
-    /**
-     * Instantiates a given process definition.
-
-     * @param {String} [id]                        The id of the process definition to activate or suspend.
-     * @param {Object} [params]
-     * @param {Number} [params.historyTimeToLive]  New value for historyTimeToLive field of process definition. Can be null.
-     */
-    updateHistoryTimeToLive: function(id, params, done) {
-      var url = this.path + '/' + id + '/history-time-to-live';
-
-      return this.http.put(url, {
-        data: params,
-        done: done
-      });
-    },
-
-    restart: function(id, params, done) {
-      var url = this.path + '/' + id + '/restart';
-
-      return this.http.post(url, {
-        data: params,
-        done: done
-      });
-    },
-
-    restartAsync: function(id, params, done) {
-      var url = this.path + '/' + id + '/restart-async';
-
-      return this.http.post(url, {
-        data: params,
-        done: done
-      });
+    if (data.key) {
+      pointer = 'key/' + data.key;
+    } else if (data.id) {
+      pointer = data.id;
+    } else {
+      var err = new Error('Process definition task variables needs either a key or an id.');
+      done(err);
+      return Q.reject(err);
     }
-  });
 
+    var queryData = {
+      deserializeValues: data.deserializeValues
+    };
 
+    if (data.names) {
+      queryData.variableNames = (data.names || []).join(',');
+    }
+
+    return this.http.get(this.path + '/' + pointer + '/form-variables', {
+      data: queryData,
+      done: done
+    });
+  },
+
+  /**
+   * Submit a form to start a process definition
+   *
+   * @param  {Object.<String, *>} data
+   * @param  {String}             [data.key]            start the process-definition with this key
+   * @param  {String}             [data.tenantId]       and the this tenant-id
+   * @param  {String}             [data.id]             or: start the process-definition with this id
+   * @param  {String}             [data.businessKey]    of the process to be set
+   * @param  {Array}              [data.variables]      variables to be set
+   * @param  {Function}           [done]
+   */
+  submitForm: function submitForm(data, done) {
+    var pointer = '';
+    done = done || noop;
+
+    if (data.key) {
+      pointer = 'key/' + data.key;
+
+      if (data.tenantId) {
+        pointer += '/tenant-id/' + data.tenantId;
+      }
+    } else if (data.id) {
+      pointer = data.id;
+    } else {
+      return done(new Error('Process definition task variables needs either a key or an id.'));
+    }
+
+    return this.http.post(this.path + '/' + pointer + '/submit-form', {
+      data: {
+        businessKey: data.businessKey,
+        variables: data.variables
+      },
+      done: done
+    });
+  },
+
+  /**
+   * Delete multiple process definitions by key or a single process definition by id
+   *
+   * @param  {Object.<String, *>} data
+   * @param  {String}             [data.key]                        delete the process-definition with this key
+   * @param  {String}             [data.tenantId]                   and the this tenant-id
+   * @param  {String}             [data.id]                         or: delete the process-definition with this id
+   * @param  {Boolean}            [data.cascade]                    All instances, including historic instances,
+   *                                                                will also be deleted
+   * @param  {Boolean}            [data.skipCustomListeners]        Skip execution listener invocation for
+   *                                                                activities that are started or ended
+   *                                                                as part of this request.
+   * @param  {Function}           [done]
+   */
+  "delete": function _delete(data, done) {
+    done = done || noop;
+    var pointer = '';
+
+    if (data.key) {
+      pointer = 'key/' + data.key;
+
+      if (data.tenantId) {
+        pointer += '/tenant-id/' + data.tenantId;
+      }
+
+      pointer += '/delete';
+    } else if (data.id) {
+      pointer = data.id;
+    } else {
+      return done(new Error('Process definition deletion needs either a key or an id.'));
+    }
+
+    var queryParams = '?';
+    var param = 'cascade';
+
+    if (typeof data[param] === 'boolean') {
+      queryParams += param + '=' + data[param];
+    }
+
+    param = 'skipCustomListeners';
+
+    if (typeof data[param] === 'boolean') {
+      if (queryParams.length > 1) {
+        queryParams += '&';
+      }
+
+      queryParams += param + '=' + data[param];
+    }
+
+    param = 'skipIoMappings';
+
+    if (typeof data[param] === 'boolean') {
+      if (queryParams.length > 1) {
+        queryParams += '&';
+      }
+
+      queryParams += param + '=' + data[param];
+    }
+
+    return this.http.del(this.path + '/' + pointer + queryParams, {
+      done: done
+    });
+  },
+
+  /**
+   * Retrieves the form of a process definition.
+   * @param  {Function} [done]
+   */
+  startForm: function startForm(data, done) {
+    var path = this.path + '/' + (data.key ? 'key/' + data.key : data.id) + '/startForm';
+    return this.http.get(path, {
+      done: done || noop
+    });
+  },
+
+  /**
+   * Retrieves the form of a process definition.
+   * @param  {Function} [done]
+   */
+  xml: function xml(data, done) {
+    var path = this.path + '/' + (data.id ? data.id : 'key/' + data.key) + '/xml';
+    return this.http.get(path, {
+      done: done || noop
+    });
+  },
+
+  /**
+   * Retrieves runtime statistics of a given process definition grouped by activities
+   * @param  {Function} [done]
+   */
+  statistics: function statistics(data, done) {
+    var path = this.path;
+
+    if (data.id) {
+      path += '/' + data.id;
+    } else if (data.key) {
+      path += '/key/' + data.key;
+    }
+
+    path += '/statistics';
+    return this.http.get(path, {
+      data: data,
+      done: done || noop
+    });
+  },
+
+  /**
+   * Submits the form of a process definition.
+   *
+   * @param  {Object} [data]
+   * @param  {Function} [done]
+   */
+  submit: function submit(data, done) {
+    var path = this.path;
+
+    if (data.key) {
+      path += '/key/' + data.key;
+    } else {
+      path += '/' + data.id;
+    }
+
+    path += '/submit-form';
+    return this.http.post(path, {
+      data: data,
+      done: done
+    });
+  },
+
+  /**
+   * Suspends one or more process definitions
+   *
+   * @param  {String|String[]}    ids
+   * @param  {Object.<String, *>} [params]
+   * @param  {requestCallback}    [done]
+   */
+  suspend: function suspend(ids, params, done) {
+    // allows to pass only a callback
+    if (typeof params === 'function') {
+      done = params;
+      params = {};
+    }
+
+    params = params || {};
+    done = done || noop; // allows to pass a single ID
+
+    ids = Array.isArray(ids) ? ids : [ids];
+    return this.http.post(this.path, {
+      done: done
+    });
+  },
+
+  /**
+   * Instantiates a given process definition.
+   *
+   * @param {Object} [params]
+   * @param {String} [params.id]              The id of the process definition to be instantiated. Must be omitted if key is provided.
+   * @param {String} [params.key]             The key of the process definition (the latest version thereof) to be instantiated. Must be omitted if id is provided.
+   * @param {String} [params.tenantId]				The id of the tenant the process definition belongs to. Must be omitted if id is provided.
+   * @param {String} [params.variables]       A JSON object containing the variables the process is to be initialized with. Each key corresponds to a variable name and each value to a variable value.
+   * @param {String} [params.businessKey]     The business key the process instance is to be initialized with. The business key uniquely identifies the process instance in the context of the given process definition.
+   * @param {String} [params.caseInstanceId]  The case instance id the process instance is to be initialized with.
+   */
+  start: function start(params, done) {
+    var url = this.path + '/';
+
+    if (params.id) {
+      url = url + params.id;
+    } else {
+      url = url + 'key/' + params.key;
+
+      if (params.tenantId) {
+        url = url + '/tenant-id/' + params.tenantId;
+      }
+    }
+
+    return this.http.post(url + '/start', {
+      data: params,
+      done: done
+    });
+  },
+
+  /**
+   * Instantiates a given process definition.
+    * @param {String} [id]                        The id of the process definition to activate or suspend.
+   * @param {Object} [params]
+   * @param {Number} [params.historyTimeToLive]  New value for historyTimeToLive field of process definition. Can be null.
+   */
+  updateHistoryTimeToLive: function updateHistoryTimeToLive(id, params, done) {
+    var url = this.path + '/' + id + '/history-time-to-live';
+    return this.http.put(url, {
+      data: params,
+      done: done
+    });
+  },
+  restart: function restart(id, params, done) {
+    var url = this.path + '/' + id + '/restart';
+    return this.http.post(url, {
+      data: params,
+      done: done
+    });
+  },
+  restartAsync: function restartAsync(id, params, done) {
+    var url = this.path + '/' + id + '/restart-async';
+    return this.http.post(url, {
+      data: params,
+      done: done
+    });
+  }
+});
 module.exports = ProcessDefinition;
 
-},{"./../abstract-client-resource":4,"q":53}],30:[function(require,module,exports){
+},{"./../abstract-client-resource":4,"q":63}],30:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -5265,12 +5177,11 @@ module.exports = ProcessDefinition;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-var utils = require('../../utils');
 
+var utils = require('../../utils');
 /**
  * Process Instance Resource
  *
@@ -5278,208 +5189,197 @@ var utils = require('../../utils');
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var ProcessInstance = AbstractClientResource.extend(
-  /** @lends  CamSDK.client.resource.ProcessInstance.prototype */
-  {
 
+
+var ProcessInstance = AbstractClientResource.extend(
+/** @lends  CamSDK.client.resource.ProcessInstance.prototype */
+{},
+/** @lends  CamSDK.client.resource.ProcessInstance */
+{
+  /**
+   * API path for the process instance resource
+   */
+  path: 'process-instance',
+
+  /**
+   * Retrieve a single process instance
+   *
+   * @param  {uuid}     id    of the process instance to be requested
+   * @param  {Function} done
+   */
+  get: function get(id, done) {
+    return this.http.get(this.path + '/' + id, {
+      done: done
+    });
   },
 
-  /** @lends  CamSDK.client.resource.ProcessInstance */
-  {
-    /**
-     * API path for the process instance resource
-     */
-    path: 'process-instance',
+  /**
+   * Creates a process instance from a process definition
+   *
+   * @param  {Object}   params
+   * @param  {String}   [params.id]
+   * @param  {String}   [params.key]
+   * @param  {Object.<String, *>} [params.variables]
+   * @param  {requestCallback} [done]
+   */
+  create: function create(params, done) {
+    return this.http.post(params, done);
+  },
+  list: function list(params, done) {
+    var path = this.path; // those parameters have to be passed in the query and not body
 
-    /**
-     * Retrieve a single process instance
-     *
-     * @param  {uuid}     id    of the process instance to be requested
-     * @param  {Function} done
-     */
-    get: function(id, done) {
-      return this.http.get(this.path +'/'+ id, {
-        done: done
-      });
-    },
+    path += '?firstResult=' + (params.firstResult || 0);
+    path += '&maxResults=' + (params.maxResults || 15);
+    return this.http.post(path, {
+      data: params,
+      done: done
+    });
+  },
+  count: function count(params, done) {
+    var path = this.path + '/count';
+    return this.http.post(path, {
+      data: params,
+      done: done
+    });
+  },
 
+  /**
+   * Post process instance modifications
+   * @see http://docs.camunda.org/api-references/rest/#process-instance-modify-process-instance-execution-state-method
+   *
+   * @param  {Object}           params
+   * @param  {UUID}             params.id                     process instance UUID
+   *
+   * @param  {Array}            params.instructions           Array of instructions
+   *
+   * @param  {Boolean}          [params.skipCustomListeners]  Skip execution listener invocation for
+   *                                                          activities that are started or ended
+   *                                                          as part of this request.
+   *
+   * @param  {Boolean}          [params.skipIoMappings]       Skip execution of input/output
+   *                                                          variable mappings for activities that
+   *                                                          are started or ended as part of
+   *                                                          this request.
+   *
+   * @param  {requestCallback}  done
+   */
+  modify: function modify(params, done) {
+    return this.http.post(this.path + '/' + params.id + '/modification', {
+      data: {
+        instructions: params.instructions,
+        skipCustomListeners: params.skipCustomListeners,
+        skipIoMappings: params.skipIoMappings
+      },
+      done: done
+    });
+  },
+  modifyAsync: function modifyAsync(params, done) {
+    return this.http.post(this.path + '/' + params.id + '/modification-async', {
+      data: {
+        instructions: params.instructions,
+        skipCustomListeners: params.skipCustomListeners,
+        skipIoMappings: params.skipIoMappings
+      },
+      done: done
+    });
+  },
 
-    /**
-     * Creates a process instance from a process definition
-     *
-     * @param  {Object}   params
-     * @param  {String}   [params.id]
-     * @param  {String}   [params.key]
-     * @param  {Object.<String, *>} [params.variables]
-     * @param  {requestCallback} [done]
-     */
-    create: function(params, done) {
-      return this.http.post(params, done);
-    },
+  /**
+   * Delete multiple process instances asynchronously (batch).
+   *
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-delete/
+   *
+   * @param   {Object}            payload
+   * @param   {requestCallback}   done
+   *
+   */
+  deleteAsync: function deleteAsync(payload, done) {
+    return this.http.post(this.path + '/delete', {
+      data: payload,
+      done: done
+    });
+  },
 
-    list: function(params, done) {
-      var path = this.path;
+  /**
+   * Delete a set of process instances asynchronously (batch) based on a historic process instance query.
+   *
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-delete-historic-query-based/
+   *
+   * @param   {Object}            payload
+   * @param   {requestCallback}   done
+   *
+   */
+  deleteAsyncHistoricQueryBased: function deleteAsyncHistoricQueryBased(payload, done) {
+    return this.http.post(this.path + '/delete-historic-query-based', {
+      data: payload,
+      done: done
+    });
+  },
 
-      // those parameters have to be passed in the query and not body
-      path += '?firstResult='+ (params.firstResult || 0);
-      path += '&maxResults='+ (params.maxResults || 15);
+  /**
+   * Set retries of jobs belonging to process instances asynchronously (batch).
+   *
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-set-job-retries
+   *
+   * @param   {Object}            payload
+   * @param   {requestCallback}   done
+   *
+   */
+  setJobsRetriesAsync: function setJobsRetriesAsync(payload, done) {
+    return this.http.post(this.path + '/job-retries', {
+      data: payload,
+      done: done
+    });
+  },
 
-      return this.http.post(path, {
-        data: params,
-        done: done
-      });
-    },
+  /**
+   * Create a batch to set retries of jobs asynchronously based on a historic process instance query.
+   *
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-set-job-retries-historic-query-based
+   *
+   * @param   {Object}            payload
+   * @param   {requestCallback}   done
+   *
+   */
+  setJobsRetriesAsyncHistoricQueryBased: function setJobsRetriesAsyncHistoricQueryBased(payload, done) {
+    return this.http.post(this.path + '/job-retries-historic-query-based', {
+      data: payload,
+      done: done
+    });
+  },
 
-    count: function(params, done) {
-      var path = this.path + '/count';
+  /**
+   * Activates or suspends process instances asynchronously with a list of process instance ids, a process instance query, and/or a historical process instance query
+   *
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-activate-suspend-in-batch/
+   *
+   * @param   {Object}            payload
+   * @param   {requestCallback}   done
+   */
+  suspendAsync: function suspendAsync(payload, done) {
+    return this.http.post(this.path + '/suspended-async', {
+      data: payload,
+      done: done
+    });
+  },
 
-      return this.http.post(path, {
-        data: params,
-        done: done
-      });
-    },
-
-    /**
-     * Post process instance modifications
-     * @see http://docs.camunda.org/api-references/rest/#process-instance-modify-process-instance-execution-state-method
-     *
-     * @param  {Object}           params
-     * @param  {UUID}             params.id                     process instance UUID
-     *
-     * @param  {Array}            params.instructions           Array of instructions
-     *
-     * @param  {Boolean}          [params.skipCustomListeners]  Skip execution listener invocation for
-     *                                                          activities that are started or ended
-     *                                                          as part of this request.
-     *
-     * @param  {Boolean}          [params.skipIoMappings]       Skip execution of input/output
-     *                                                          variable mappings for activities that
-     *                                                          are started or ended as part of
-     *                                                          this request.
-     *
-     * @param  {requestCallback}  done
-     */
-    modify: function(params, done) {
-      return this.http.post(this.path + '/' + params.id + '/modification', {
-        data: {
-          instructions:         params.instructions,
-          skipCustomListeners:  params.skipCustomListeners,
-          skipIoMappings:       params.skipIoMappings
-        },
-        done: done
-      });
-    },
-
-    modifyAsync: function(params, done) {
-      return this.http.post(this.path + '/' + params.id + '/modification-async', {
-        data: {
-          instructions:         params.instructions,
-          skipCustomListeners:  params.skipCustomListeners,
-          skipIoMappings:       params.skipIoMappings
-        },
-        done: done
-      });
-    },
-
-    /**
-     * Delete multiple process instances asynchronously (batch).
-     *
-     * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-delete/
-     *
-     * @param   {Object}            payload
-     * @param   {requestCallback}   done
-     *
-     */
-    deleteAsync: function(payload, done) {
-      return this.http.post(this.path + '/delete', {
-        data: payload,
-        done: done
-      });
-    },
-
-    /**
-     * Delete a set of process instances asynchronously (batch) based on a historic process instance query.
-     *
-     * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-delete-historic-query-based/
-     *
-     * @param   {Object}            payload
-     * @param   {requestCallback}   done
-     *
-     */
-    deleteAsyncHistoricQueryBased: function(payload, done) {
-      return this.http.post(this.path + '/delete-historic-query-based', {
-        data: payload,
-        done: done
-      });
-    },
-
-    /**
-     * Set retries of jobs belonging to process instances asynchronously (batch).
-     *
-     * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-set-job-retries
-     *
-     * @param   {Object}            payload
-     * @param   {requestCallback}   done
-     *
-     */
-    setJobsRetriesAsync: function(payload, done) {
-      return this.http.post(this.path + '/job-retries', {
-        data: payload,
-        done: done
-      });
-    },
-
-    /**
-     * Create a batch to set retries of jobs asynchronously based on a historic process instance query.
-     *
-     * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-set-job-retries-historic-query-based
-     *
-     * @param   {Object}            payload
-     * @param   {requestCallback}   done
-     *
-     */
-    setJobsRetriesAsyncHistoricQueryBased: function(payload, done) {
-      return this.http.post(this.path + '/job-retries-historic-query-based', {
-        data: payload,
-        done: done
-      });
-    },
-
-    /**
-     * Activates or suspends process instances asynchronously with a list of process instance ids, a process instance query, and/or a historical process instance query
-     *
-     * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-activate-suspend-in-batch/
-     *
-     * @param   {Object}            payload
-     * @param   {requestCallback}   done
-     */
-    suspendAsync: function(payload, done) {
-      return this.http.post(this.path + '/suspended-async', {
-        data: payload,
-        done: done
-      });
-    },
-
-    /**
-     * Sets a variable of a given process instance by id.
-     *
-     * @see http://docs.camunda.org/manual/develop/reference/rest/process-instance/variables/put-variable/
-     *
-     * @param   {uuid}              id
-     * @param   {Object}            params
-     * @param   {requestCallback}   done
-     */
-    setVariable: function(id, params, done) {
-      var url = this.path + '/' + id + '/variables/' + utils.escapeUrl(params.name);
-      return this.http.put(url, {
-        data: params,
-        done: done
-      });
-    }
-
-  });
-
-
+  /**
+   * Sets a variable of a given process instance by id.
+   *
+   * @see http://docs.camunda.org/manual/develop/reference/rest/process-instance/variables/put-variable/
+   *
+   * @param   {uuid}              id
+   * @param   {Object}            params
+   * @param   {requestCallback}   done
+   */
+  setVariable: function setVariable(id, params, done) {
+    var url = this.path + '/' + id + '/variables/' + utils.escapeUrl(params.name);
+    return this.http.put(url, {
+      data: params,
+      done: done
+    });
+  }
+});
 module.exports = ProcessInstance;
 
 },{"../../utils":47,"./../abstract-client-resource":4}],31:[function(require,module,exports){
@@ -5499,37 +5399,35 @@ module.exports = ProcessInstance;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
 /**
  * Task Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var TaskReport = AbstractClientResource.extend();
 
+
+var TaskReport = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 TaskReport.path = 'task/report';
-
-
 /**
  * Fetch the count of tasks grouped by candidate group.
  *
  * @param {Function} done
  */
-TaskReport.countByCandidateGroup = function(done) {
+
+TaskReport.countByCandidateGroup = function (done) {
   return this.http.get(this.path + '/candidate-group-count', {
     done: done
   });
 };
-
 /**
  * Query for process instance durations report.
  * @param  {Object}   [params]
@@ -5540,7 +5438,9 @@ TaskReport.countByCandidateGroup = function(done) {
  * @param  {Object}   [params.startedBefore]        Date before which the process instance were started
  * @param  {Function} done
  */
-TaskReport.countByCandidateGroupAsCsv = function(done) {
+
+
+TaskReport.countByCandidateGroupAsCsv = function (done) {
   return this.http.get(this.path + '/candidate-group-count', {
     accept: 'text/csv',
     done: done
@@ -5548,7 +5448,6 @@ TaskReport.countByCandidateGroupAsCsv = function(done) {
 };
 
 module.exports = TaskReport;
-
 
 },{"./../abstract-client-resource":4}],32:[function(require,module,exports){
 /*
@@ -5567,34 +5466,34 @@ module.exports = TaskReport;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var Q = require('q');
-var AbstractClientResource = require('./../abstract-client-resource');
-var utils = require('../../utils');
 
+var AbstractClientResource = require('./../abstract-client-resource');
+
+var utils = require('../../utils');
 /**
  * No-Op callback
  */
+
+
 function noop() {}
-
-
 /**
  * Task Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Task = AbstractClientResource.extend();
 
+
+var Task = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 Task.path = 'task';
-
-
 /**
  * Fetch a list of tasks
  * @param {Object} [params]
@@ -5667,15 +5566,16 @@ Task.path = 'task';
  *                                                          Will return less results, if there are no more results left.
  * @param {Function} done
  */
-Task.list = function(params, done) {
-  done = done || noop;
-  var deferred = Q.defer();
 
+Task.list = function (params, _done) {
+  _done = _done || noop;
+  var deferred = Q.defer();
   this.http.get(this.path, {
     data: params,
-    done: function(err, data) {
+    done: function done(err, data) {
       if (err) {
-        done(err);
+        _done(err);
+
         return deferred.reject(err);
       }
 
@@ -5687,6 +5587,7 @@ Task.list = function(params, done) {
         for (var t in tasks) {
           var task = tasks[t];
           task._embedded = task._embedded || {};
+
           for (var p in procDefs) {
             if (procDefs[p].id === task.processDefinitionId) {
               task._embedded.processDefinition = [procDefs[p]];
@@ -5696,48 +5597,49 @@ Task.list = function(params, done) {
         }
       }
 
-      done(null, data);
+      _done(null, data);
+
       deferred.resolve(data);
     }
   });
-
   return deferred.promise;
 };
-
-
 /**
  * Retrieve a single task
  * @param  {uuid}     taskId   of the task to be requested
  * @param  {Function} done
  */
-Task.get = function(taskId, done) {
-  return this.http.get(this.path +'/'+ taskId, {
+
+
+Task.get = function (taskId, done) {
+  return this.http.get(this.path + '/' + taskId, {
     done: done
   });
 };
-
 /**
  * Retrieve the comments for a single task
  * @param  {uuid}     taskId   of the task for which the comments are requested
  * @param  {Function} done
  */
-Task.comments = function(taskId, done) {
-  return this.http.get(this.path +'/'+ taskId + '/comment', {
+
+
+Task.comments = function (taskId, done) {
+  return this.http.get(this.path + '/' + taskId + '/comment', {
     done: done
   });
 };
-
 /**
  * Retrieve the identity links for a single task
  * @param  {uuid}     taskId   of the task for which the identity links are requested
  * @param  {Function} done
  */
-Task.identityLinks = function(taskId, done) {
-  return this.http.get(this.path +'/'+ taskId + '/identity-links', {
+
+
+Task.identityLinks = function (taskId, done) {
+  return this.http.get(this.path + '/' + taskId + '/identity-links', {
     done: done
   });
 };
-
 /**
  * Add an identity link to a task
  * @param  {uuid}     taskId          of the task for which the identity link is created
@@ -5747,18 +5649,20 @@ Task.identityLinks = function(taskId, done) {
  * @param  {String} [params.type]     Sets the type of the link. Must be provided
  * @param  {Function} done
  */
-Task.identityLinksAdd = function(taskId, params, done) {
+
+
+Task.identityLinksAdd = function (taskId, params, done) {
   if (arguments.length === 2) {
     done = arguments[1];
     params = arguments[0];
     taskId = params.id;
   }
-  return this.http.post(this.path +'/'+ taskId + '/identity-links', {
+
+  return this.http.post(this.path + '/' + taskId + '/identity-links', {
     data: params,
     done: done
   });
 };
-
 /**
  * Removes an identity link from a task.
  * @param  {uuid}     taskId          The id of the task to remove a link from
@@ -5768,19 +5672,20 @@ Task.identityLinksAdd = function(taskId, params, done) {
  * @param  {String} [params.type]     Specifies the type of the link. Must be provided.
  * @param  {Function} done
  */
-Task.identityLinksDelete = function(taskId, params, done) {
+
+
+Task.identityLinksDelete = function (taskId, params, done) {
   if (arguments.length === 2) {
     done = arguments[1];
     params = arguments[0];
     taskId = params.id;
   }
 
-  return this.http.post(this.path +'/'+ taskId + '/identity-links/delete', {
+  return this.http.post(this.path + '/' + taskId + '/identity-links/delete', {
     data: params,
     done: done
   });
 };
-
 /**
  * Create a comment for a task.
  *
@@ -5788,45 +5693,44 @@ Task.identityLinksDelete = function(taskId, params, done) {
  * @param  {String}   message The message of the task comment to create.
  * @param  {Function} done
  */
-Task.createComment = function(taskId, message, done) {
-  return this.http.post(this.path +'/'+ taskId +'/comment/create', {
+
+
+Task.createComment = function (taskId, message, done) {
+  return this.http.post(this.path + '/' + taskId + '/comment/create', {
     data: {
       message: message
     },
     done: done
   });
 };
-
 /**
  * Creates a task
  *
  * @param  {Object}   task   is an object representation of a task
  * @param  {Function} done
  */
-Task.create = function(task, done) {
-  return this.http.post(this.path +'/create', {
+
+
+Task.create = function (task, done) {
+  return this.http.post(this.path + '/create', {
     data: task,
     done: done
   });
 };
-
-
 /**
  * Update a task
  *
  * @param  {Object}   task   is an object representation of a task
  * @param  {Function} done
  */
-Task.update = function(task, done) {
-  return this.http.put(this.path +'/'+ task.id, {
+
+
+Task.update = function (task, done) {
+  return this.http.put(this.path + '/' + task.id, {
     data: task,
     done: done
   });
-};
-
-
-
-// /**
+}; // /**
 //  * Save a task
 //  *
 //  * @see Task.create
@@ -5852,7 +5756,9 @@ Task.update = function(task, done) {
  * @param  {String}   userId
  * @param  {Function} done
  */
-Task.assignee = function(taskId, userId, done) {
+
+
+Task.assignee = function (taskId, userId, done) {
   var data = {
     userId: userId
   };
@@ -5863,14 +5769,11 @@ Task.assignee = function(taskId, userId, done) {
     done = arguments[1];
   }
 
-  return this.http.post(this.path +'/'+ taskId +'/assignee', {
+  return this.http.post(this.path + '/' + taskId + '/assignee', {
     data: data,
     done: done
   });
 };
-
-
-
 /**
  * Delegate a task to another user.
  *
@@ -5880,7 +5783,9 @@ Task.assignee = function(taskId, userId, done) {
  * @param  {String}   userId
  * @param  {Function} done
  */
-Task.delegate = function(taskId, userId, done) {
+
+
+Task.delegate = function (taskId, userId, done) {
   var data = {
     userId: userId
   };
@@ -5891,13 +5796,11 @@ Task.delegate = function(taskId, userId, done) {
     done = arguments[1];
   }
 
-  return this.http.post(this.path +'/'+ taskId +'/delegate', {
+  return this.http.post(this.path + '/' + taskId + '/delegate', {
     data: data,
     done: done
   });
 };
-
-
 /**
  * Claim a task for a specific user.
  *
@@ -5910,7 +5813,9 @@ Task.delegate = function(taskId, userId, done) {
  * @param  {String}   userId
  * @param  {Function} done
  */
-Task.claim = function(taskId, userId, done) {
+
+
+Task.claim = function (taskId, userId, done) {
   var data = {
     userId: userId
   };
@@ -5921,13 +5826,11 @@ Task.claim = function(taskId, userId, done) {
     done = arguments[1];
   }
 
-  return this.http.post(this.path +'/'+ taskId +'/claim', {
+  return this.http.post(this.path + '/' + taskId + '/claim', {
     data: data,
     done: done
   });
 };
-
-
 /**
  * Resets a task's assignee. If successful, the task is not assigned to a user.
  *
@@ -5936,17 +5839,17 @@ Task.claim = function(taskId, userId, done) {
  * @param  {String}   taskId
  * @param  {Function} done
  */
-Task.unclaim = function(taskId, done) {
+
+
+Task.unclaim = function (taskId, done) {
   if (typeof taskId !== 'string') {
     taskId = taskId.taskId;
   }
 
-  return this.http.post(this.path +'/'+ taskId +'/unclaim', {
+  return this.http.post(this.path + '/' + taskId + '/unclaim', {
     done: done
   });
 };
-
-
 /**
  * Complete a task and update process variables using a form submit.
  * There are two difference between this method and the complete method:
@@ -5961,22 +5864,24 @@ Task.unclaim = function(taskId, done) {
  * @param  {Object}   data
  * @param  {Function} done
  */
-Task.submitForm = function(data, done) {
+
+
+Task.submitForm = function (data, done) {
   done = done || noop;
+
   if (!data.id) {
     var err = new Error('Task submitForm needs a task id.');
     done(err);
     return Q.reject(err);
   }
 
-  return this.http.post(this.path +'/'+ data.id +'/submit-form', {
+  return this.http.post(this.path + '/' + data.id + '/submit-form', {
     data: {
       variables: data.variables
     },
     done: done
   });
 };
-
 /**
  * Complete a task and update process variables.
  *
@@ -5985,7 +5890,9 @@ Task.submitForm = function(data, done) {
  * @param  {Object.<String, *>} [params.variables]    Process variables which need to be updated.
  * @param  {Function} done
  */
-Task.complete = function(params, done) {
+
+
+Task.complete = function (params, done) {
   done = done || noop;
 
   if (!params.id) {
@@ -6002,16 +5909,15 @@ Task.complete = function(params, done) {
   });
 };
 
-Task.formVariables = function(data, done) {
+Task.formVariables = function (data, done) {
   done = done || noop;
   var pointer = '';
+
   if (data.key) {
-    pointer = 'key/'+ data.key;
-  }
-  else if (data.id) {
+    pointer = 'key/' + data.key;
+  } else if (data.id) {
     pointer = data.id;
-  }
-  else {
+  } else {
     var err = new Error('Task variables needs either a key or an id.');
     done(err);
     return Q.reject(err);
@@ -6021,27 +5927,27 @@ Task.formVariables = function(data, done) {
     deserializeValues: data.deserializeValues
   };
 
-  if(data.names) {
+  if (data.names) {
     queryData.variableNames = data.names.join(',');
   }
 
-  return this.http.get(this.path +'/'+ pointer +'/form-variables', {
+  return this.http.get(this.path + '/' + pointer + '/form-variables', {
     data: queryData,
     done: done
   });
 };
-
 /**
  * Retrieve the form for a single task
  * @param  {uuid}     taskId   of the task for which the form is requested
  * @param  {Function} done
  */
-Task.form = function(taskId, done) {
-  return this.http.get(this.path +'/'+ taskId + '/form', {
+
+
+Task.form = function (taskId, done) {
+  return this.http.get(this.path + '/' + taskId + '/form', {
     done: done
   });
 };
-
 /**
  * Sets a variable in the context of a given task.
  * @param {Object} [params]
@@ -6052,50 +5958,53 @@ Task.form = function(taskId, done) {
  * @param {String} [params.valueInfo]  A JSON object containing additional, value-type-dependent properties.
  * @param {Function} done
  */
-Task.localVariable = function(params, done) {
-  return this.http.put(this.path +'/'+ params.id + '/localVariables/' + params.varId, {
+
+
+Task.localVariable = function (params, done) {
+  return this.http.put(this.path + '/' + params.id + '/localVariables/' + params.varId, {
     data: params,
     done: done
   });
 };
-
 /**
  * Retrieve the local variables for a single task
  * @param  {uuid}     taskId   of the task for which the variables are requested
  * @param  {Function} done
  */
-Task.localVariables = function(taskId, done) {
+
+
+Task.localVariables = function (taskId, done) {
   return this.http.get(this.path + '/' + taskId + '/localVariables', {
     done: done
   });
 };
-
 /**
  * Updates or deletes the variables in the context of a task.
  * Updates precede deletions.
  * So, if a variable is updated AND deleted, the deletion overrides the update.
  */
-Task.modifyVariables = function(data, done) {
+
+
+Task.modifyVariables = function (data, done) {
   return this.http.post(this.path + '/' + data.id + '/localVariables', {
     data: data,
     done: done
   });
 };
-
 /**
  * Removes a local variable from a task.
  */
-Task.deleteVariable = function(data, done) {
+
+
+Task.deleteVariable = function (data, done) {
   return this.http.del(this.path + '/' + data.id + '/localVariables/' + utils.escapeUrl(data.varId), {
     done: done
   });
 };
 
-
 module.exports = Task;
 
-
-},{"../../utils":47,"./../abstract-client-resource":4,"q":53}],33:[function(require,module,exports){
+},{"../../utils":47,"./../abstract-client-resource":4,"q":63}],33:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -6112,31 +6021,32 @@ module.exports = Task;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-var utils = require('../../utils');
 
+var utils = require('../../utils');
 /**
  * No-Op callback
  */
-function noop() {}
 
+
+function noop() {}
 /**
  * Group Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Tenant = AbstractClientResource.extend();
 
+
+var Tenant = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-Tenant.path = 'tenant';
 
+Tenant.path = 'tenant';
 /**
  * Creates a tenant
  *
@@ -6145,14 +6055,13 @@ Tenant.path = 'tenant';
  * @param  {String}   tenant.name
  * @param  {Function} done
  */
-Tenant.create = function(options, done) {
-  return this.http.post(this.path +'/create', {
+
+Tenant.create = function (options, done) {
+  return this.http.post(this.path + '/create', {
     data: options,
     done: done || noop
   });
 };
-
-
 /**
  * Query for tenants using a list of parameters and retrieves the count
  *
@@ -6163,12 +6072,13 @@ Tenant.create = function(options, done) {
  * @param {String} [options.groupMember]  Only retrieve tenants where the given group id is a member of.
  * @param  {Function} done
  */
-Tenant.count = function(options, done) {
+
+
+Tenant.count = function (options, done) {
   if (arguments.length === 1) {
     done = options;
     options = {};
-  }
-  else {
+  } else {
     options = options || {};
   }
 
@@ -6177,15 +6087,15 @@ Tenant.count = function(options, done) {
     done: done || noop
   });
 };
-
-
 /**
  * Retrieves a single tenant
  *
  * @param  {String} [options.id]    The id of the tenant, can be a property (id) of an object
  * @param  {Function} done
  */
-Tenant.get = function(options, done) {
+
+
+Tenant.get = function (options, done) {
   var id;
 
   if (typeof options === 'string') {
@@ -6201,8 +6111,6 @@ Tenant.get = function(options, done) {
     done: done || noop
   });
 };
-
-
 /**
  * Query for a list of tenants using a list of parameters.
  * The size of the result set can be retrieved by using the get tenants count method
@@ -6226,7 +6134,9 @@ Tenant.get = function(options, done) {
  *
  * @param  {Function} done
  */
-Tenant.list = function(options, done) {
+
+
+Tenant.list = function (options, done) {
   if (arguments.length === 1) {
     done = options;
     options = {};
@@ -6239,8 +6149,6 @@ Tenant.list = function(options, done) {
     done: done || noop
   });
 };
-
-
 /**
  * Add a user member to a tenant
  *
@@ -6248,13 +6156,14 @@ Tenant.list = function(options, done) {
  * @param {String} [options.userId]   The id of user to add to the tenant
  * @param  {Function} done
  */
-Tenant.createUserMember = function(options, done) {
-  return this.http.put(this.path +'/' + utils.escapeUrl(options.id) + '/user-members/' + utils.escapeUrl(options.userId), {
+
+
+Tenant.createUserMember = function (options, done) {
+  return this.http.put(this.path + '/' + utils.escapeUrl(options.id) + '/user-members/' + utils.escapeUrl(options.userId), {
     data: options,
     done: done || noop
   });
 };
-
 /**
  * Add a group member to a tenant
  *
@@ -6262,13 +6171,14 @@ Tenant.createUserMember = function(options, done) {
  * @param {String} [options.groupId]   The id of group to add to the tenant
  * @param  {Function} done
  */
-Tenant.createGroupMember = function(options, done) {
-  return this.http.put(this.path +'/' + utils.escapeUrl(options.id) + '/group-members/' + utils.escapeUrl(options.groupId), {
+
+
+Tenant.createGroupMember = function (options, done) {
+  return this.http.put(this.path + '/' + utils.escapeUrl(options.id) + '/group-members/' + utils.escapeUrl(options.groupId), {
     data: options,
     done: done || noop
   });
 };
-
 /**
  * Removes a user member of a tenant
  *
@@ -6276,13 +6186,14 @@ Tenant.createGroupMember = function(options, done) {
  * @param {String} [options.userId]   The id of user to add to the tenant
  * @param  {Function} done
  */
-Tenant.deleteUserMember = function(options, done) {
-  return this.http.del(this.path +'/' + utils.escapeUrl(options.id) + '/user-members/' + utils.escapeUrl(options.userId), {
+
+
+Tenant.deleteUserMember = function (options, done) {
+  return this.http.del(this.path + '/' + utils.escapeUrl(options.id) + '/user-members/' + utils.escapeUrl(options.userId), {
     data: options,
     done: done || noop
   });
 };
-
 /**
  * Removes a group member of a Tenant
  *
@@ -6290,50 +6201,53 @@ Tenant.deleteUserMember = function(options, done) {
  * @param {String} [options.groupId]   The id of group to add to the tenant
  * @param  {Function} done
  */
-Tenant.deleteGroupMember = function(options, done) {
-  return this.http.del(this.path +'/' + utils.escapeUrl(options.id) + '/group-members/' + utils.escapeUrl(options.groupId), {
+
+
+Tenant.deleteGroupMember = function (options, done) {
+  return this.http.del(this.path + '/' + utils.escapeUrl(options.id) + '/group-members/' + utils.escapeUrl(options.groupId), {
     data: options,
     done: done || noop
   });
 };
-
 /**
  * Update a tenant
  *
  * @param  {Object}   tenant   is an object representation of a tenant
  * @param  {Function} done
  */
-Tenant.update = function(options, done) {
-  return this.http.put(this.path +'/' + utils.escapeUrl(options.id), {
+
+
+Tenant.update = function (options, done) {
+  return this.http.put(this.path + '/' + utils.escapeUrl(options.id), {
     data: options,
     done: done || noop
   });
 };
-
-
 /**
  * Delete a tenant
  *
  * @param  {Object}   tenant   is an object representation of a tenant
  * @param  {Function} done
  */
-Tenant.delete = function(options, done) {
-  return this.http.del(this.path +'/' + utils.escapeUrl(options.id), {
+
+
+Tenant["delete"] = function (options, done) {
+  return this.http.del(this.path + '/' + utils.escapeUrl(options.id), {
     data: options,
     done: done || noop
   });
 };
 
-Tenant.options = function(options, done) {
+Tenant.options = function (options, done) {
   var id;
 
   if (arguments.length === 1) {
     done = options;
     id = '';
-
   } else {
     id = typeof options === 'string' ? options : options.id;
-    if( id === undefined ) {
+
+    if (id === undefined) {
       id = '';
     }
   }
@@ -6345,6 +6259,7 @@ Tenant.options = function(options, done) {
     }
   });
 };
+
 module.exports = Tenant;
 
 },{"../../utils":47,"./../abstract-client-resource":4}],34:[function(require,module,exports){
@@ -6364,48 +6279,51 @@ module.exports = Tenant;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var Q = require('q');
-var AbstractClientResource = require('./../abstract-client-resource');
-var utils = require('../../utils');
 
+var AbstractClientResource = require('./../abstract-client-resource');
+
+var utils = require('../../utils');
 /**
  * No-Op callback
  */
-function noop() {}
 
+
+function noop() {}
 /**
  * User Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var User = AbstractClientResource.extend();
 
+
+var User = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
-User.path = 'user';
 
+User.path = 'user';
 /**
  * Check resource access
  * @param  {Object}   options
  * @param  {String}   options.id
  * @param  {Function} done
  */
-User.options = function(options, done) {
+
+User.options = function (options, done) {
   var id;
 
   if (arguments.length === 1) {
     done = options;
     id = '';
-
   } else {
     id = typeof options === 'string' ? options : options.id;
-    if( id === undefined ) {
+
+    if (id === undefined) {
       id = '';
     }
   }
@@ -6417,7 +6335,6 @@ User.options = function(options, done) {
     }
   });
 };
-
 /**
  * Creates a user
  * @param  {Object}   options
@@ -6428,18 +6345,16 @@ User.options = function(options, done) {
  * @param  {String}   [options.email]
  * @param  {Function} done
  */
-User.create = function(options, done) {
+
+
+User.create = function (options, done) {
   options = options || {};
   done = done || noop;
+  var required = ['id', 'firstName', 'lastName', 'password'];
 
-  var required = [
-    'id',
-    'firstName',
-    'lastName',
-    'password'
-  ];
   for (var r in required) {
     var name = required[r];
+
     if (!options[name]) {
       var err = new Error('Missing ' + name + ' option to create user');
       done(err);
@@ -6462,13 +6377,11 @@ User.create = function(options, done) {
     data.profile.email = options.email;
   }
 
-  return this.http.post(this.path +'/create', {
+  return this.http.post(this.path + '/create', {
     data: data,
     done: done
   });
 };
-
-
 /**
  * List users
  * @param {Object} [options]
@@ -6486,21 +6399,21 @@ User.create = function(options, done) {
  * @param {String} [options.maxResults]    Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
  * @param  {Function} done
  */
-User.list = function(options, done) {
+
+
+User.list = function (options, done) {
   if (typeof options === 'function') {
     done = options;
     options = {};
-  }
-  else {
+  } else {
     options = options || {};
   }
+
   return this.http.get(this.path, {
     data: options,
     done: done || noop
   });
 };
-
-
 /**
  * Count the amount of users
  * @param {String} [options.id]            id of the user.
@@ -6513,12 +6426,13 @@ User.list = function(options, done) {
  * @param {String} [options.memberOfGroup] users which are members of a group.
  * @param  {Function} done
  */
-User.count = function(options, done) {
+
+
+User.count = function (options, done) {
   if (arguments.length === 1) {
     done = options;
     options = {};
-  }
-  else {
+  } else {
     options = options || {};
   }
 
@@ -6527,23 +6441,20 @@ User.count = function(options, done) {
     done: done || noop
   });
 };
-
-
 /**
  * Get the profile of a user
  * @param  {Object|uuid}  options
  * @param  {uuid}         options.id
  * @param  {Function} done
  */
-User.profile = function(options, done) {
-  var id = typeof options === 'string' ? options : options.id;
 
+
+User.profile = function (options, done) {
+  var id = typeof options === 'string' ? options : options.id;
   return this.http.get(this.path + '/' + utils.escapeUrl(id) + '/profile', {
     done: done || noop
   });
 };
-
-
 /**
  * Updates the profile of a user
  * @param  {Object}   options
@@ -6553,7 +6464,9 @@ User.profile = function(options, done) {
  * @param  {String}   [options.email]
  * @param  {Function} done
  */
-User.updateProfile = function(options, done) {
+
+
+User.updateProfile = function (options, done) {
   options = options || {};
   done = done || noop;
 
@@ -6568,9 +6481,6 @@ User.updateProfile = function(options, done) {
     done: done
   });
 };
-
-
-
 /**
  * Update the credentials of a user
  * @param {Object} options
@@ -6579,7 +6489,9 @@ User.updateProfile = function(options, done) {
  * @param {String} [options.authenticatedUserPassword]  The password of the authenticated user who changes the password of the user (ie. the user with passed id as path parameter).
  * @param  {Function} done
  */
-User.updateCredentials = function(options, done) {
+
+
+User.updateCredentials = function (options, done) {
   options = options || {};
   done = done || noop;
   var err;
@@ -6609,32 +6521,30 @@ User.updateCredentials = function(options, done) {
     done: done
   });
 };
-
-
 /**
  * Delete a user
  * @param  {Object|uuid} options You can either pass an object (with at least a id property) or the id of the user to be deleted
  * @param  {uuid} options.id
  * @param  {Function} done
  */
-User.delete = function(options, done) {
-  var id = typeof options === 'string' ? options : options.id;
 
+
+User["delete"] = function (options, done) {
+  var id = typeof options === 'string' ? options : options.id;
   return this.http.del(this.path + '/' + utils.escapeUrl(id), {
     done: done || noop
   });
 };
-
-
 /**
  * Unlock a user
  * @param  {Object|uuid} options You can either pass an object (with at least a id property) or the id of the user to be unlocked
  * @param  {uuid} options.id
  * @param  {Function} done
  */
-User.unlock = function(options, done) {
-  var id = typeof options === 'string' ? options : options.id;
 
+
+User.unlock = function (options, done) {
+  var id = typeof options === 'string' ? options : options.id;
   return this.http.post(this.path + '/' + utils.escapeUrl(id) + '/unlock', {
     done: done || noop
   });
@@ -6642,7 +6552,7 @@ User.unlock = function(options, done) {
 
 module.exports = User;
 
-},{"../../utils":47,"./../abstract-client-resource":4,"q":53}],35:[function(require,module,exports){
+},{"../../utils":47,"./../abstract-client-resource":4,"q":63}],35:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -6659,28 +6569,24 @@ module.exports = User;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var AbstractClientResource = require('./../abstract-client-resource');
-
-
-
 /**
  * Variable Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
  */
-var Variable = AbstractClientResource.extend();
 
+
+var Variable = AbstractClientResource.extend();
 /**
  * Path used by the resource to perform HTTP queries
  * @type {String}
  */
+
 Variable.path = 'variable-instance';
-
-
 /**
  * Get variable instances
  *
@@ -6789,8 +6695,8 @@ Variable.path = 'variable-instance';
  *
  * @param  {RequestCallback}  done
  */
-Variable.instances = function(params, done) {
 
+Variable.instances = function (params, done) {
   var body = {};
   var query = {};
   var queryParams = ['firstResult', 'maxResults', 'deserializeValues'];
@@ -6798,8 +6704,7 @@ Variable.instances = function(params, done) {
   for (var p in params) {
     if (queryParams.indexOf(p) > -1) {
       query[p] = params[p];
-    }
-    else {
+    } else {
       body[p] = params[p];
     }
   }
@@ -6810,26 +6715,21 @@ Variable.instances = function(params, done) {
     done: done
   });
 };
-
 /**
  * Get a count of variables
  * Same parameters as instances
  */
 
-Variable.count = function(params, done) {
-  var path = this.path + '/count';
 
+Variable.count = function (params, done) {
+  var path = this.path + '/count';
   return this.http.post(path, {
     data: params,
     done: done
   });
 };
 
-
-
-
 module.exports = Variable;
-
 
 },{"./../abstract-client-resource":4}],36:[function(require,module,exports){
 /*
@@ -6848,13 +6748,11 @@ module.exports = Variable;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var Events = require('./events');
 
 function noop() {}
-
 /**
  * Abstract class for classes
  *
@@ -6871,13 +6769,11 @@ function noop() {}
  * @borrows CamSDK.Events.off                       as prototype.off
  * @borrows CamSDK.Events.trigger                   as prototype.trigger
  */
+
+
 function BaseClass() {
   this.initialize();
 }
-
-
-
-
 /**
  * Creates a new Resource Class, very much inspired from Backbone.Model.extend.
  * [Backbone helpers]{@link http://backbonejs.org/docs/backbone.html}
@@ -6887,28 +6783,34 @@ function BaseClass() {
  * @param  {Object.<String, *>} [staticProps]
  * @return {CamSDK.BaseClass}
  */
-BaseClass.extend = function(protoProps, staticProps) {
+
+
+BaseClass.extend = function (protoProps, staticProps) {
   protoProps = protoProps || {};
   staticProps = staticProps || {};
-
   var parent = this;
   var child, Surrogate, s, i;
 
   if (protoProps && Object.hasOwnProperty.call(parent, 'constructor')) {
     child = protoProps.constructor;
-  }
-  else {
-    child = function() { return parent.apply(this, arguments); };
+  } else {
+    child = function child() {
+      return parent.apply(this, arguments);
+    };
   }
 
   for (s in parent) {
     child[s] = parent[s];
   }
+
   for (s in staticProps) {
     child[s] = staticProps[s];
   }
 
-  Surrogate = function() { this.constructor = child; };
+  Surrogate = function Surrogate() {
+    this.constructor = child;
+  };
+
   Surrogate.prototype = parent.prototype;
   child.prototype = new Surrogate();
 
@@ -6918,21 +6820,16 @@ BaseClass.extend = function(protoProps, staticProps) {
 
   return child;
 };
-
-
 /**
  * Aimed to be overriden in order to initialize an instance.
  *
  * @memberof CamSDK.BaseClass.prototype
  * @method initialize
  */
+
+
 BaseClass.prototype.initialize = noop;
-
-
 Events.attach(BaseClass);
-
-
-
 module.exports = BaseClass;
 
 },{"./events":37}],37:[function(require,module,exports){
@@ -6952,9 +6849,7 @@ module.exports = BaseClass;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
-
 /**
  * Events handling utility which can be used on
  * any kind of object to provide `on`, `once`, `off`
@@ -6973,30 +6868,34 @@ module.exports = BaseClass;
  */
 
 var Events = {};
-
-
 /**
  * Converts an object into array
  * @param  {*} obj
  * @return {Array}
  */
+
 function toArray(obj) {
-  var a, arr = [];
+  var a,
+      arr = [];
+
   for (a in obj) {
     arr.push(obj[a]);
   }
+
   return arr;
 }
-
 /**
  * Returns a function that will be executed
  * at most one time, no matter how often you call it.
  * @param  {Function} func
  * @return {Function}
  */
+
+
 function once(func) {
-  var ran = false, memo;
-  return function() {
+  var ran = false,
+      memo;
+  return function () {
     if (ran) return memo;
     ran = true;
     memo = func.apply(this, arguments);
@@ -7004,68 +6903,68 @@ function once(func) {
     return memo;
   };
 }
-
-
 /**
  * Ensure an object to have the needed _events property
  * @param  {*} obj
  * @param  {String} name
  */
+
+
 function ensureEvents(obj, name) {
   obj._events = obj._events || {};
   obj._events[name] = obj._events[name] || [];
 }
-
-
 /**
  * Add the relevant Events methods to an object
  * @param  {*} obj
  */
-Events.attach = function(obj) {
-  obj.on      = this.on;
-  obj.once    = this.once;
-  obj.off     = this.off;
+
+
+Events.attach = function (obj) {
+  obj.on = this.on;
+  obj.once = this.once;
+  obj.off = this.off;
   obj.trigger = this.trigger;
   obj._events = {};
 };
-
-
 /**
  * Bind a callback to `eventName`
  * @param  {String}   eventName
  * @param  {Function} callback
  */
-Events.on = function(eventName, callback) {
+
+
+Events.on = function (eventName, callback) {
   ensureEvents(this, eventName);
 
   this._events[eventName].push(callback);
 
   return this;
 };
-
-
 /**
  * Bind a callback who will only be called once to `eventName`
  * @param  {String}   eventName
  * @param  {Function} callback
  */
-Events.once = function(eventName, callback) {
+
+
+Events.once = function (eventName, callback) {
   var self = this;
-  var cb = once(function() {
+  var cb = once(function () {
     self.off(eventName, once);
     callback.apply(this, arguments);
   });
   cb._callback = callback;
   return this.on(eventName, cb);
 };
-
-
 /**
  * Unbind one or all callbacks originally bound to `eventName`
  * @param  {String}   eventName
  * @param  {Function} [callback]
  */
-Events.off = function(eventName, callback) {
+
+
+Events.off = function (eventName, callback) {
   ensureEvents(this, eventName);
 
   if (!callback) {
@@ -7073,36 +6972,37 @@ Events.off = function(eventName, callback) {
     return this;
   }
 
-  var e, arr = [];
+  var e,
+      arr = [];
+
   for (e in this._events[eventName]) {
     if (this._events[eventName][e] !== callback) {
       arr.push(this._events[eventName][e]);
     }
   }
-  this._events[eventName] = arr;
 
+  this._events[eventName] = arr;
   return this;
 };
-
-
 /**
  * Call the functions bound to `eventName`
  * @param  {String} eventName
  * @param {...*} [params]
  */
-Events.trigger = function() {
+
+
+Events.trigger = function () {
   var args = toArray(arguments);
   var eventName = args.shift();
   ensureEvents(this, eventName);
-
   var e;
+
   for (e in this._events[eventName]) {
     this._events[eventName][e](this, args);
   }
 
   return this;
 };
-
 
 module.exports = Events;
 
@@ -7123,7 +7023,6 @@ module.exports = Events;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 /* global CamSDK, require, localStorage: false */
 
@@ -7150,15 +7049,13 @@ var constants = require('./constants');
 
 var Events = require('./../events');
 
-
 function extend(dest, add) {
   for (var key in add) {
     dest[key] = add[key];
   }
+
   return dest;
 }
-
-
 /**
  * A class to help handling embedded forms
  *
@@ -7175,239 +7072,216 @@ function extend(dest, add) {
  * @param {Object}            [options.urlParams]
  * @param {String}            [options.formUrl]
  */
+
+
 function CamundaForm(options) {
-  if(!options) {
+  if (!options) {
     throw new Error('CamundaForm need to be initialized with options.');
   }
 
-  var done = options.done = options.done || function(err) { if(err) throw err; };
+  var done = options.done = options.done || function (err) {
+    if (err) throw err;
+  };
 
   if (options.client) {
     this.client = options.client;
-  }
-  else {
+  } else {
     this.client = new CamSDK.Client(options.clientConfig || {});
   }
 
   if (!options.taskId && !options.processDefinitionId && !options.processDefinitionKey) {
-    return done(new Error('Cannot initialize Taskform: either \'taskId\' or \'processDefinitionId\' or \'processDefinitionKey\' must be provided'));
+    return done(new Error("Cannot initialize Taskform: either 'taskId' or 'processDefinitionId' or 'processDefinitionKey' must be provided"));
   }
 
   this.taskId = options.taskId;
-  if(this.taskId) {
+
+  if (this.taskId) {
     this.taskBasePath = this.client.baseUrl + '/task/' + this.taskId;
   }
+
   this.processDefinitionId = options.processDefinitionId;
   this.processDefinitionKey = options.processDefinitionKey;
-
   this.formElement = options.formElement;
   this.containerElement = options.containerElement;
   this.formUrl = options.formUrl;
 
-  if(!this.formElement && !this.containerElement) {
-    return done(new Error('CamundaForm needs to be initilized with either \'formElement\' or \'containerElement\''));
+  if (!this.formElement && !this.containerElement) {
+    return done(new Error("CamundaForm needs to be initilized with either 'formElement' or 'containerElement'"));
   }
 
-  if(!this.formElement && !this.formUrl) {
-    return done(new Error('Camunda form needs to be intialized with either \'formElement\' or \'formUrl\''));
+  if (!this.formElement && !this.formUrl) {
+    return done(new Error("Camunda form needs to be intialized with either 'formElement' or 'formUrl'"));
   }
-
   /**
    * A VariableManager instance
    * @type {VariableManager}
    */
+
+
   this.variableManager = new VariableManager({
     client: this.client
   });
-
   /**
    * An array of FormFieldHandlers
    * @type {FormFieldHandlers[]}
    */
-  this.formFieldHandlers = options.formFieldHandlers || [
-    InputFieldHandler,
-    ChoicesFieldHandler,
-    FileDownloadHandler
-  ];
 
+  this.formFieldHandlers = options.formFieldHandlers || [InputFieldHandler, ChoicesFieldHandler, FileDownloadHandler];
   this.businessKey = null;
-
   this.fields = [];
-
   this.scripts = [];
+  this.options = options; // init event support
 
-  this.options = options;
-
-  // init event support
   Events.attach(this);
-
   this.initialize(done);
 }
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.initializeHandler = function(FieldHandler) {
+
+
+CamundaForm.prototype.initializeHandler = function (FieldHandler) {
   var self = this;
   var selector = FieldHandler.selector;
-
-  $(selector, self.formElement).each(function() {
+  $(selector, self.formElement).each(function () {
     self.fields.push(new FieldHandler(this, self.variableManager));
   });
 };
-
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.initialize = function(done) {
-  done = done || function(err) { if(err) throw err; };
-  var self = this;
 
-  // check whether form needs to be loaded first
-  if(this.formUrl) {
 
+CamundaForm.prototype.initialize = function (_done) {
+  _done = _done || function (err) {
+    if (err) throw err;
+  };
+
+  var self = this; // check whether form needs to be loaded first
+
+  if (this.formUrl) {
     this.client.http.load(this.formUrl, {
       accept: '*/*',
-      done: function(err, result) {
-        if(err) {
-          return done(err);
+      done: function done(err, result) {
+        if (err) {
+          return _done(err);
         }
 
         try {
           self.renderForm(result);
-          self.initializeForm(done);
-
+          self.initializeForm(_done);
         } catch (error) {
-          done(error);
+          _done(error);
         }
       },
-      data: extend({ noCache: Date.now() }, this.options.urlParams || {})
+      data: extend({
+        noCache: Date.now()
+      }, this.options.urlParams || {})
     });
   } else {
-
-    try  {
-      this.initializeForm(done);
-
+    try {
+      this.initializeForm(_done);
     } catch (error) {
-      done(error);
+      _done(error);
     }
   }
 };
-
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.renderForm = function(formHtmlSource) {
 
+
+CamundaForm.prototype.renderForm = function (formHtmlSource) {
   // apppend the form html to the container element,
   // we also wrap the formHtmlSource to limit the risks of breaking
   // the structure of the document
-  $(this.containerElement)
-    .html('')
-    .append('<div class="injected-form-wrapper">'+formHtmlSource+'</div>');
+  $(this.containerElement).html('').append('<div class="injected-form-wrapper">' + formHtmlSource + '</div>'); // extract and validate form element
 
-  // extract and validate form element
   var formElement = this.formElement = $('form', this.containerElement);
-  if(formElement.length !== 1) {
+
+  if (formElement.length !== 1) {
     throw new Error('Form must provide exaclty one element <form ..>');
   }
-  if(!formElement.attr('name')) {
+
+  if (!formElement.attr('name')) {
     formElement.attr('name', '$$camForm');
   }
 };
-
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.initializeForm = function(done) {
-  var self = this;
 
-  // handle form scripts
-  this.initializeFormScripts();
 
-  // initialize field handlers
-  this.initializeFieldHandlers();
+CamundaForm.prototype.initializeForm = function (done) {
+  var self = this; // handle form scripts
 
-  // execute the scripts
-  this.executeFormScripts();
+  this.initializeFormScripts(); // initialize field handlers
 
-  // fire form loaded
+  this.initializeFieldHandlers(); // execute the scripts
+
+  this.executeFormScripts(); // fire form loaded
+
   this.fireEvent('form-loaded');
-
-  this.fetchVariables(function(err, result) {
+  this.fetchVariables(function (err, result) {
     if (err) {
       throw err;
-    }
+    } // merge the variables
 
-    // merge the variables
-    self.mergeVariables(result);
 
-    // retain original server values for dirty checking
-    self.storeOriginalValues(result);
+    self.mergeVariables(result); // retain original server values for dirty checking
 
-    // fire variables fetched
-    self.fireEvent('variables-fetched');
+    self.storeOriginalValues(result); // fire variables fetched
 
-    // restore variables from local storage
-    self.restore();
+    self.fireEvent('variables-fetched'); // restore variables from local storage
 
-    // fire variables-restored
-    self.fireEvent('variables-restored');
+    self.restore(); // fire variables-restored
 
-    // apply the variables to the form fields
-    self.applyVariables();
+    self.fireEvent('variables-restored'); // apply the variables to the form fields
 
-    // fire variables applied
-    self.fireEvent('variables-applied');
+    self.applyVariables(); // fire variables applied
 
-    // invoke callback
+    self.fireEvent('variables-applied'); // invoke callback
+
     done(null, self);
   });
 };
 
-CamundaForm.prototype.initializeFieldHandlers = function() {
-  for(var FieldHandler in this.formFieldHandlers) {
+CamundaForm.prototype.initializeFieldHandlers = function () {
+  for (var FieldHandler in this.formFieldHandlers) {
     this.initializeHandler(this.formFieldHandlers[FieldHandler]);
   }
 };
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.initializeFormScripts = function() {
-  var formScriptElements = $( 'script['+constants.DIRECTIVE_CAM_SCRIPT+']', this.formElement);
-  for(var i = 0; i<formScriptElements.length; i++) {
+
+
+CamundaForm.prototype.initializeFormScripts = function () {
+  var formScriptElements = $('script[' + constants.DIRECTIVE_CAM_SCRIPT + ']', this.formElement);
+
+  for (var i = 0; i < formScriptElements.length; i++) {
     this.scripts.push(formScriptElements[i].text);
   }
 };
 
-CamundaForm.prototype.executeFormScripts = function() {
-  for(var i = 0; i<this.scripts.length; i++) {
+CamundaForm.prototype.executeFormScripts = function () {
+  for (var i = 0; i < this.scripts.length; i++) {
     this.executeFormScript(this.scripts[i]);
   }
 };
 
-CamundaForm.prototype.executeFormScript = function(script) {
+CamundaForm.prototype.executeFormScript = function (script) {
   /*eslint-disable */
-  /* jshint unused: false */
-  (function(camForm) {
 
+  /* jshint unused: false */
+  (function (camForm) {
     /* jshint evil: true */
     eval(script);
     /* jshint evil: false */
-
   })(this);
   /*eslint-enable */
+
 };
-
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  *
@@ -7417,11 +7291,13 @@ CamundaForm.prototype.executeFormScript = function(script) {
  * the `store` event and set `storePrevented` to
  * something truthy.
  */
-CamundaForm.prototype.store = function(callback) {
+
+
+CamundaForm.prototype.store = function (callback) {
   var formId = this.taskId || this.processDefinitionId || this.caseInstanceId;
 
   if (!formId) {
-    if(typeof callback === 'function') {
+    if (typeof callback === 'function') {
       return callback(new Error('Cannot determine the storage ID'));
     } else {
       throw new Error('Cannot determine the storage ID');
@@ -7430,74 +7306,76 @@ CamundaForm.prototype.store = function(callback) {
 
   this.storePrevented = false;
   this.fireEvent('store');
-  if(this.storePrevented) {
+
+  if (this.storePrevented) {
     return;
   }
 
   try {
     // get values from form fields
-    this.retrieveVariables();
+    this.retrieveVariables(); // build the local storage object
 
-    // build the local storage object
-    var store = {date: Date.now(), vars: {}};
-    for(var name in this.variableManager.variables) {
-      if(this.variableManager.variables[name].type !== 'Bytes') {
+    var store = {
+      date: Date.now(),
+      vars: {}
+    };
+
+    for (var name in this.variableManager.variables) {
+      if (this.variableManager.variables[name].type !== 'Bytes') {
         store.vars[name] = this.variableManager.variables[name].value;
       }
-    }
+    } // store it
 
-    // store it
-    localStorage.setItem('camForm:'+ formId, JSON.stringify(store));
-  }
-  catch (error) {
-    if(typeof callback === 'function') {
+
+    localStorage.setItem('camForm:' + formId, JSON.stringify(store));
+  } catch (error) {
+    if (typeof callback === 'function') {
       return callback(error);
     } else {
       throw error;
     }
   }
+
   this.fireEvent('variables-stored');
-  if(typeof callback === 'function') {
+
+  if (typeof callback === 'function') {
     callback();
   }
 };
-
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  * @return {Boolean} `true` if there is something who can be restored
  */
-CamundaForm.prototype.isRestorable = function() {
+
+
+CamundaForm.prototype.isRestorable = function () {
   var formId = this.taskId || this.processDefinitionId || this.caseInstanceId;
 
   if (!formId) {
     throw new Error('Cannot determine the storage ID');
-  }
+  } // verify the presence of an entry
 
-  // verify the presence of an entry
-  if (!localStorage.getItem('camForm:'+ formId)) {
+
+  if (!localStorage.getItem('camForm:' + formId)) {
     return false;
-  }
+  } // unserialize
 
-  // unserialize
-  var stored = localStorage.getItem('camForm:'+ formId);
-  try  {
+
+  var stored = localStorage.getItem('camForm:' + formId);
+
+  try {
     stored = JSON.parse(stored);
-  }
-  catch (error) {
+  } catch (error) {
     return false;
-  }
+  } // check the content
 
-  // check the content
+
   if (!stored || !Object.keys(stored).length) {
     return false;
   }
 
   return true;
 };
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  *
@@ -7507,47 +7385,47 @@ CamundaForm.prototype.isRestorable = function() {
  * the `restore` event and set `restorePrevented` to
  * something truthy.
  */
-CamundaForm.prototype.restore = function(callback) {
+
+
+CamundaForm.prototype.restore = function (callback) {
   var stored;
   var vars = this.variableManager.variables;
   var formId = this.taskId || this.processDefinitionId || this.caseDefinitionId;
 
   if (!formId) {
-    if(typeof callback === 'function') {
+    if (typeof callback === 'function') {
       return callback(new Error('Cannot determine the storage ID'));
     } else {
       throw new Error('Cannot determine the storage ID');
     }
-  }
+  } // no need to go further if there is nothing to restore
 
 
-  // no need to go further if there is nothing to restore
   if (!this.isRestorable()) {
-    if(typeof callback === 'function') {
+    if (typeof callback === 'function') {
       return callback();
     }
+
     return;
   }
 
   try {
     // retrieve the values from localStoarge
-    stored = localStorage.getItem('camForm:'+ formId);
+    stored = localStorage.getItem('camForm:' + formId);
     stored = JSON.parse(stored).vars;
-  }
-  catch (error) {
-    if(typeof callback === 'function') {
+  } catch (error) {
+    if (typeof callback === 'function') {
       return callback(error);
     } else {
       throw error;
     }
-  }
+  } // merge the stored values on the variableManager.variables
 
-  // merge the stored values on the variableManager.variables
+
   for (var name in stored) {
     if (vars[name]) {
       vars[name].value = stored[name];
-    }
-    else {
+    } else {
       vars[name] = {
         name: name,
         value: stored[name]
@@ -7555,22 +7433,21 @@ CamundaForm.prototype.restore = function(callback) {
     }
   }
 
-  if(typeof callback === 'function') {
+  if (typeof callback === 'function') {
     callback();
   }
-
 };
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.submit = function(callback) {
-  var formId = this.taskId || this.processDefinitionId;
 
-  // fire submit event (event handler may prevent submit from being performed)
+
+CamundaForm.prototype.submit = function (callback) {
+  var formId = this.taskId || this.processDefinitionId; // fire submit event (event handler may prevent submit from being performed)
+
   this.submitPrevented = false;
   this.fireEvent('submit');
+
   if (this.submitPrevented) {
     var err = new Error('camForm submission prevented');
     this.fireEvent('submit-failed', err);
@@ -7585,36 +7462,34 @@ CamundaForm.prototype.submit = function(callback) {
   }
 
   var self = this;
-  this.transformFiles(function() {
+  this.transformFiles(function () {
     // submit the form variables
-    self.submitVariables(function(err, result) {
-      if(err) {
+    self.submitVariables(function (err, result) {
+      if (err) {
         self.fireEvent('submit-failed', err);
         return callback && callback(err);
-      }
+      } // clear the local storage for this form
 
-      // clear the local storage for this form
-      localStorage.removeItem('camForm:'+ formId);
 
+      localStorage.removeItem('camForm:' + formId);
       self.fireEvent('submit-success');
       return callback && callback(null, result);
     });
   });
-
 };
 
-CamundaForm.prototype.transformFiles = function(callback) {
+CamundaForm.prototype.transformFiles = function (callback) {
   var that = this;
   var counter = 1;
 
-  var callCallback = function() {
-    if(--counter === 0) {
+  var callCallback = function callCallback() {
+    if (--counter === 0) {
       callback();
     }
   };
 
-  var bytesToSize = function(bytes) {
-    if(bytes === 0) return '0 Byte';
+  var bytesToSize = function bytesToSize(bytes) {
+    if (bytes === 0) return '0 Byte';
     var k = 1000;
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     var i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -7623,28 +7498,31 @@ CamundaForm.prototype.transformFiles = function(callback) {
 
   for (var i in this.fields) {
     var element = this.fields[i].element[0];
-    if(element.getAttribute('type') === 'file') {
+
+    if (element.getAttribute('type') === 'file') {
       var fileVar = that.variableManager.variables[that.fields[i].variableName];
 
-      if(typeof FileReader === 'function' && element.files.length > 0) {
-        if(element.files[0].size > (parseInt(element.getAttribute('cam-max-filesize'),10) || 5000000)) {
-          throw new Error('Maximum file size of ' + bytesToSize(parseInt(element.getAttribute('cam-max-filesize'),10) || 5000000) + ' exceeded.');
+      if (typeof FileReader === 'function' && element.files.length > 0) {
+        if (element.files[0].size > (parseInt(element.getAttribute('cam-max-filesize'), 10) || 5000000)) {
+          throw new Error('Maximum file size of ' + bytesToSize(parseInt(element.getAttribute('cam-max-filesize'), 10) || 5000000) + ' exceeded.');
         }
+
         var reader = new FileReader();
         /* jshint ignore:start */
-        reader.onloadend = (function(i, element, fileVar) {
-          return function(e) {
+
+        reader.onloadend = function (i, element, fileVar) {
+          return function (e) {
             var binary = '';
-            var bytes = new Uint8Array( e.target.result );
+            var bytes = new Uint8Array(e.target.result);
             var len = bytes.byteLength;
+
             for (var j = 0; j < len; j++) {
-              binary += String.fromCharCode( bytes[ j ] );
+              binary += String.fromCharCode(bytes[j]);
             }
 
-            fileVar.value = btoa(binary);
+            fileVar.value = btoa(binary); // set file metadata as value info
 
-            // set file metadata as value info
-            if(fileVar.type.toLowerCase() === 'file') {
+            if (fileVar.type.toLowerCase() === 'file') {
               fileVar.valueInfo = {
                 filename: element.files[0].name,
                 mimeType: element.files[0].type
@@ -7653,8 +7531,10 @@ CamundaForm.prototype.transformFiles = function(callback) {
 
             callCallback();
           };
-        })(i, element, fileVar);
+        }(i, element, fileVar);
         /* jshint ignore:end */
+
+
         reader.readAsArrayBuffer(element.files[0]);
         counter++;
       } else {
@@ -7667,63 +7547,59 @@ CamundaForm.prototype.transformFiles = function(callback) {
   }
 
   callCallback();
-
 };
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.fetchVariables = function(done) {
-  done = done || function() {};
-  var names = this.variableManager.variableNames();
-  if (names.length) {
 
+
+CamundaForm.prototype.fetchVariables = function (done) {
+  done = done || function () {};
+
+  var names = this.variableManager.variableNames();
+
+  if (names.length) {
     var data = {
       names: names,
       deserializeValues: false
-    };
+    }; // pass either the taskId, processDefinitionId or processDefinitionKey
 
-    // pass either the taskId, processDefinitionId or processDefinitionKey
     if (this.taskId) {
       data.id = this.taskId;
       this.client.resource('task').formVariables(data, done);
-    }
-    else {
+    } else {
       data.id = this.processDefinitionId;
       data.key = this.processDefinitionKey;
       this.client.resource('process-definition').formVariables(data, done);
     }
-  }
-  else {
+  } else {
     done();
   }
 };
-
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.submitVariables = function(done) {
-  done = done || function() {};
+
+
+CamundaForm.prototype.submitVariables = function (done) {
+  done = done || function () {};
 
   var varManager = this.variableManager;
   var vars = varManager.variables;
-
   var variableData = {};
-  for(var v in vars) {
+
+  for (var v in vars) {
     // only submit dirty variables
     // LIMITATION: dirty checking is not performed for complex object variables
-    if(varManager.isDirty(v)) {
-      var val = vars[v].value;
-      // if variable is JSON, serialize
+    if (varManager.isDirty(v)) {
+      var val = vars[v].value; // if variable is JSON, serialize
 
-      if(varManager.isJsonVariable(v)) {
+      if (varManager.isJsonVariable(v)) {
         val = JSON.stringify(val);
-      }
+      } // if variable is Date, add timezone info
 
-      // if variable is Date, add timezone info
-      if(val && varManager.isDateVariable(v)) {
+
+      if (val && varManager.isDateVariable(v)) {
         val = moment(val, moment.ISO_8601).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
       }
 
@@ -7735,38 +7611,41 @@ CamundaForm.prototype.submitVariables = function(done) {
     }
   }
 
-  var data = { variables: variableData };
+  var data = {
+    variables: variableData
+  }; // pass either the taskId, processDefinitionId or processDefinitionKey
 
-  // pass either the taskId, processDefinitionId or processDefinitionKey
   if (this.taskId) {
     data.id = this.taskId;
     this.client.resource('task').submitForm(data, done);
-  }
-  else {
+  } else {
     var businessKey = this.businessKey || this.formElement.find('input[type="text"][cam-business-key]').val();
+
     if (businessKey) {
       data.businessKey = businessKey;
     }
+
     data.id = this.processDefinitionId;
     data.key = this.processDefinitionKey;
     this.client.resource('process-definition').submitForm(data, done);
   }
 };
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.storeOriginalValues = function(variables) {
-  for(var v in variables) {
+
+
+CamundaForm.prototype.storeOriginalValues = function (variables) {
+  for (var v in variables) {
     this.variableManager.setOriginalValue(v, variables[v].value);
   }
 };
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.mergeVariables = function(variables) {
 
+
+CamundaForm.prototype.mergeVariables = function (variables) {
   var vars = this.variableManager.variables;
 
   for (var v in variables) {
@@ -7774,94 +7653,93 @@ CamundaForm.prototype.mergeVariables = function(variables) {
       for (var p in variables[v]) {
         vars[v][p] = vars[v][p] || variables[v][p];
       }
-    }
-    else {
+    } else {
       vars[v] = variables[v];
-    }
-    // check whether the variable provides JSON payload. If true, deserialize
-    if(this.variableManager.isJsonVariable(v)) {
-      vars[v].value = JSON.parse(variables[v].value);
-    }
+    } // check whether the variable provides JSON payload. If true, deserialize
 
-    // generate content url for file and bytes variables
+
+    if (this.variableManager.isJsonVariable(v)) {
+      vars[v].value = JSON.parse(variables[v].value);
+    } // generate content url for file and bytes variables
+
+
     var type = vars[v].type;
-    if(!!this.taskBasePath && (type === 'Bytes' || type === 'File')) {
-      vars[v].contentUrl = this.taskBasePath + '/variables/'+ vars[v].name + '/data';
+
+    if (!!this.taskBasePath && (type === 'Bytes' || type === 'File')) {
+      vars[v].contentUrl = this.taskBasePath + '/variables/' + vars[v].name + '/data';
     }
 
     this.variableManager.isVariablesFetched = true;
   }
 };
-
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.applyVariables = function() {
 
+
+CamundaForm.prototype.applyVariables = function () {
   for (var i in this.fields) {
     this.fields[i].applyValue();
   }
-
 };
-
-
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.retrieveVariables = function() {
+
+
+CamundaForm.prototype.retrieveVariables = function () {
   for (var i in this.fields) {
     this.fields[i].getValue();
   }
 };
-
 /**
  * @memberof CamSDK.form.CamundaForm.prototype
  */
-CamundaForm.prototype.fireEvent = function(eventName, obj) {
+
+
+CamundaForm.prototype.fireEvent = function (eventName, obj) {
   this.trigger(eventName, obj);
 };
-
 /**
  * @memberof CamSDK.form.CamundaForm
  */
-CamundaForm.$ = $;
 
+
+CamundaForm.$ = $;
 CamundaForm.VariableManager = VariableManager;
 CamundaForm.fields = {};
 CamundaForm.fields.InputFieldHandler = InputFieldHandler;
 CamundaForm.fields.ChoicesFieldHandler = ChoicesFieldHandler;
-
 /**
  * @memberof CamSDK.form.CamundaForm
  */
-CamundaForm.cleanLocalStorage = function(timestamp) {
+
+CamundaForm.cleanLocalStorage = function (timestamp) {
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
-    if(key.indexOf('camForm:') === 0) {
+
+    if (key.indexOf('camForm:') === 0) {
       var item = JSON.parse(localStorage.getItem(key));
-      if(item.date < timestamp) {
+
+      if (item.date < timestamp) {
         localStorage.removeItem(key);
         i--;
       }
     }
   }
 };
-
-
 /**
  * @memberof CamSDK.form.CamundaForm
  * @borrows CamSDK.BaseClass.extend as extend
  * @name extend
  * @type {Function}
  */
-CamundaForm.extend = BaseClass.extend;
 
+
+CamundaForm.extend = BaseClass.extend;
 module.exports = CamundaForm;
 
-},{"./../base-class":36,"./../events":37,"./constants":39,"./controls/choices-field-handler":41,"./controls/file-download-handler":42,"./controls/input-field-handler":43,"./dom-lib":44,"./variable-manager":46,"moment":51}],39:[function(require,module,exports){
+},{"./../base-class":36,"./../events":37,"./constants":39,"./controls/choices-field-handler":41,"./controls/file-download-handler":42,"./controls/input-field-handler":43,"./dom-lib":44,"./variable-manager":46,"moment":61}],39:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -7878,16 +7756,15 @@ module.exports = CamundaForm;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 module.exports = {
-  DIRECTIVE_CAM_FORM : 'cam-form',
-  DIRECTIVE_CAM_VARIABLE_NAME : 'cam-variable-name',
-  DIRECTIVE_CAM_VARIABLE_TYPE : 'cam-variable-type',
-  DIRECTIVE_CAM_FILE_DOWNLOAD : 'cam-file-download',
-  DIRECTIVE_CAM_CHOICES : 'cam-choices',
-  DIRECTIVE_CAM_SCRIPT : 'cam-script'
+  DIRECTIVE_CAM_FORM: 'cam-form',
+  DIRECTIVE_CAM_VARIABLE_NAME: 'cam-variable-name',
+  DIRECTIVE_CAM_VARIABLE_TYPE: 'cam-variable-type',
+  DIRECTIVE_CAM_FILE_DOWNLOAD: 'cam-file-download',
+  DIRECTIVE_CAM_CHOICES: 'cam-choices',
+  DIRECTIVE_CAM_SCRIPT: 'cam-script'
 };
 
 },{}],40:[function(require,module,exports){
@@ -7907,14 +7784,13 @@ module.exports = {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var BaseClass = require('../../base-class');
+
 var $ = require('./../dom-lib');
 
 function noop() {}
-
 /**
  * An abstract class for the form field controls
  *
@@ -7923,41 +7799,38 @@ function noop() {}
  * @memberof CamSDK.form
  *
  */
+
+
 function AbstractFormField(element, variableManager) {
-  this.element = $( element );
+  this.element = $(element);
   this.variableManager = variableManager;
-
   this.variableName = null;
-
   this.initialize();
 }
-
 /**
  * @memberof CamSDK.form.AbstractFormField
  * @abstract
  * @name selector
  * @type {String}
  */
+
+
 AbstractFormField.selector = null;
-
-
 /**
  * @memberof CamSDK.form.AbstractFormField
  * @borrows CamSDK.BaseClass.extend as extend
  * @name extend
  * @type {Function}
  */
+
 AbstractFormField.extend = BaseClass.extend;
-
-
 /**
  * @memberof CamSDK.form.AbstractFormField.prototype
  * @abstract
  * @method initialize
  */
+
 AbstractFormField.prototype.initialize = noop;
-
-
 /**
  * Applies the stored value to a field element.
  *
@@ -7967,18 +7840,16 @@ AbstractFormField.prototype.initialize = noop;
  *
  * @return {CamSDK.form.AbstractFormField} Chainable method
  */
+
 AbstractFormField.prototype.applyValue = noop;
-
-
 /**
  * @memberof CamSDK.form.AbstractFormField.prototype
  * @abstract
  * @method getValue
  */
+
 AbstractFormField.prototype.getValue = noop;
-
 module.exports = AbstractFormField;
-
 
 },{"../../base-class":36,"./../dom-lib":44}],41:[function(require,module,exports){
 /*
@@ -7997,140 +7868,130 @@ module.exports = AbstractFormField;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var constants = require('./../constants'),
     AbstractFormField = require('./abstract-form-field'),
     $ = require('./../dom-lib');
-
-
 /**
  * A field control handler for choices
  * @class
  * @memberof CamSDK.form
  * @augments {CamSDK.form.AbstractFormField}
  */
+
+
 var ChoicesFieldHandler = AbstractFormField.extend(
-  /** @lends CamSDK.form.ChoicesFieldHandler.prototype */
-  {
-    /**
-     * Prepares an instance
-     */
-    initialize: function() {
-      // read variable definitions from markup
-      var variableName = this.variableName = this.element.attr(constants.DIRECTIVE_CAM_VARIABLE_NAME);
-      var variableType = this.variableType = this.element.attr(constants.DIRECTIVE_CAM_VARIABLE_TYPE);
-      var choicesVariableName = this.choicesVariableName = this.element.attr(constants.DIRECTIVE_CAM_CHOICES);
+/** @lends CamSDK.form.ChoicesFieldHandler.prototype */
+{
+  /**
+   * Prepares an instance
+   */
+  initialize: function initialize() {
+    // read variable definitions from markup
+    var variableName = this.variableName = this.element.attr(constants.DIRECTIVE_CAM_VARIABLE_NAME);
+    var variableType = this.variableType = this.element.attr(constants.DIRECTIVE_CAM_VARIABLE_TYPE);
+    var choicesVariableName = this.choicesVariableName = this.element.attr(constants.DIRECTIVE_CAM_CHOICES); // crate variable
 
-      // crate variable
-      this.variableManager.createVariable({
-        name: variableName,
-        type: variableType,
-        value: this.element.val() || null
-      });
+    this.variableManager.createVariable({
+      name: variableName,
+      type: variableType,
+      value: this.element.val() || null
+    }); // fetch choices variable
 
-      // fetch choices variable
-      if(choicesVariableName) {
-        this.variableManager.fetchVariable(choicesVariableName);
-      }
+    if (choicesVariableName) {
+      this.variableManager.fetchVariable(choicesVariableName);
+    } // remember the original value found in the element for later checks
 
-      // remember the original value found in the element for later checks
-      this.originalValue = this.element.val() || null;
 
-      this.previousValue = this.originalValue;
+    this.originalValue = this.element.val() || null;
+    this.previousValue = this.originalValue; // remember variable name
 
-      // remember variable name
-      this.variableName = variableName;
-    },
+    this.variableName = variableName;
+  },
 
-    /**
-     * Applies the stored value to a field element.
-     *
-     * @return {CamSDK.form.ChoicesFieldHandler} Chainable method.
-     */
-    applyValue: function() {
+  /**
+   * Applies the stored value to a field element.
+   *
+   * @return {CamSDK.form.ChoicesFieldHandler} Chainable method.
+   */
+  applyValue: function applyValue() {
+    var selectedIndex = this.element[0].selectedIndex; // if cam-choices variable is defined, apply options
 
-      var selectedIndex = this.element[0].selectedIndex;
-      // if cam-choices variable is defined, apply options
-      if(this.choicesVariableName) {
-        var choicesVariableValue = this.variableManager.variableValue(this.choicesVariableName);
-        if(choicesVariableValue) {
-          // array
-          if (choicesVariableValue instanceof Array) {
-            for(var i = 0; i < choicesVariableValue.length; i++) {
-              var val = choicesVariableValue[i];
-              if(!this.element.find('option[text="'+val+'"]').length) {
-                this.element.append($('<option>', {
-                  value: val,
-                  text: val
-                }));
-              }
+    if (this.choicesVariableName) {
+      var choicesVariableValue = this.variableManager.variableValue(this.choicesVariableName);
+
+      if (choicesVariableValue) {
+        // array
+        if (choicesVariableValue instanceof Array) {
+          for (var i = 0; i < choicesVariableValue.length; i++) {
+            var val = choicesVariableValue[i];
+
+            if (!this.element.find('option[text="' + val + '"]').length) {
+              this.element.append($('<option>', {
+                value: val,
+                text: val
+              }));
             }
-            // object aka map
-          } else {
-            for (var p in choicesVariableValue) {
-              if(!this.element.find('option[value="'+p+'"]').length) {
-                this.element.append($('<option>', {
-                  value: p,
-                  text: choicesVariableValue[p]
-                }));
-              }
+          } // object aka map
+
+        } else {
+          for (var p in choicesVariableValue) {
+            if (!this.element.find('option[value="' + p + '"]').length) {
+              this.element.append($('<option>', {
+                value: p,
+                text: choicesVariableValue[p]
+              }));
             }
           }
         }
       }
+    } // make sure selected index is retained
 
-      // make sure selected index is retained
-      this.element[0].selectedIndex = selectedIndex;
 
-      // select option referenced in cam-variable-name (if any)
-      this.previousValue = this.element.val() || '';
-      var variableValue = this.variableManager.variableValue(this.variableName);
-      if (variableValue !== this.previousValue) {
-        // write value to html control
-        this.element.val(variableValue);
-        this.element.trigger('camFormVariableApplied', variableValue);
-      }
+    this.element[0].selectedIndex = selectedIndex; // select option referenced in cam-variable-name (if any)
 
-      return this;
-    },
+    this.previousValue = this.element.val() || '';
+    var variableValue = this.variableManager.variableValue(this.variableName);
 
-    /**
-     * Retrieves the value from a field element and stores it
-     *
-     * @return {*} when multiple choices are possible an array of values, otherwise a single value
-     */
-    getValue: function() {
-      // read value from html control
-      var value;
-      var multiple = this.element.prop('multiple');
-
-      if (multiple) {
-        value = [];
-        this.element.find('option:selected').each(function() {
-          value.push($(this).val());
-        });
-      }
-      else {
-        value = this.element.find('option:selected').attr('value');//.val();
-      }
-
-      // write value to variable
-      this.variableManager.variableValue(this.variableName, value);
-
-      return value;
+    if (variableValue !== this.previousValue) {
+      // write value to html control
+      this.element.val(variableValue);
+      this.element.trigger('camFormVariableApplied', variableValue);
     }
 
+    return this;
   },
-  /** @lends CamSDK.form.ChoicesFieldHandler */
-  {
-    selector: 'select['+ constants.DIRECTIVE_CAM_VARIABLE_NAME +']'
 
-  });
+  /**
+   * Retrieves the value from a field element and stores it
+   *
+   * @return {*} when multiple choices are possible an array of values, otherwise a single value
+   */
+  getValue: function getValue() {
+    // read value from html control
+    var value;
+    var multiple = this.element.prop('multiple');
 
+    if (multiple) {
+      value = [];
+      this.element.find('option:selected').each(function () {
+        value.push($(this).val());
+      });
+    } else {
+      value = this.element.find('option:selected').attr('value'); //.val();
+    } // write value to variable
+
+
+    this.variableManager.variableValue(this.variableName, value);
+    return value;
+  }
+},
+/** @lends CamSDK.form.ChoicesFieldHandler */
+{
+  selector: 'select[' + constants.DIRECTIVE_CAM_VARIABLE_NAME + ']'
+});
 module.exports = ChoicesFieldHandler;
-
 
 },{"./../constants":39,"./../dom-lib":44,"./abstract-form-field":40}],42:[function(require,module,exports){
 /*
@@ -8149,56 +8010,42 @@ module.exports = ChoicesFieldHandler;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var constants = require('./../constants'),
     AbstractFormField = require('./abstract-form-field');
-
 /**
  * A field control handler for file downloads
  * @class
  * @memberof CamSDK.form
  * @augments {CamSDK.form.AbstractFormField}
  */
-var InputFieldHandler = AbstractFormField.extend(
-  {
-    /**
-     * Prepares an instance
-     */
-    initialize: function() {
 
-      this.variableName = this.element.attr(constants.DIRECTIVE_CAM_FILE_DOWNLOAD);
 
-      // fetch the variable
-      this.variableManager.fetchVariable(this.variableName);
-    },
+var InputFieldHandler = AbstractFormField.extend({
+  /**
+   * Prepares an instance
+   */
+  initialize: function initialize() {
+    this.variableName = this.element.attr(constants.DIRECTIVE_CAM_FILE_DOWNLOAD); // fetch the variable
 
-    applyValue: function() {
+    this.variableManager.fetchVariable(this.variableName);
+  },
+  applyValue: function applyValue() {
+    var variable = this.variableManager.variable(this.variableName); // set the download url of the link
 
-      var variable = this.variableManager.variable(this.variableName);
+    this.element.attr('href', variable.contentUrl); // sets the text content of the link to the filename it the textcontent is empty
 
-      // set the download url of the link
-      this.element.attr('href', variable.contentUrl);
-
-      // sets the text content of the link to the filename it the textcontent is empty
-      if(this.element.text().trim().length === 0) {
-        this.element.text(variable.valueInfo.filename);
-      }
-
-      return this;
+    if (this.element.text().trim().length === 0) {
+      this.element.text(variable.valueInfo.filename);
     }
 
-  },
-
-  {
-
-    selector: 'a['+ constants.DIRECTIVE_CAM_FILE_DOWNLOAD +']'
-
-  });
-
+    return this;
+  }
+}, {
+  selector: 'a[' + constants.DIRECTIVE_CAM_FILE_DOWNLOAD + ']'
+});
 module.exports = InputFieldHandler;
-
 
 },{"./../constants":39,"./abstract-form-field":40}],43:[function(require,module,exports){
 /*
@@ -8217,118 +8064,101 @@ module.exports = InputFieldHandler;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var constants = require('./../constants'),
     AbstractFormField = require('./abstract-form-field'),
     convertToType = require('../type-util').convertToType;
 
-var isBooleanCheckbox = function(element) {
+var isBooleanCheckbox = function isBooleanCheckbox(element) {
   return element.attr('type') === 'checkbox' && element.attr(constants.DIRECTIVE_CAM_VARIABLE_TYPE) === 'Boolean';
 };
-
 /**
  * A field control handler for simple text / string values
  * @class
  * @memberof CamSDK.form
  * @augments {CamSDK.form.AbstractFormField}
  */
+
+
 var InputFieldHandler = AbstractFormField.extend(
-  /** @lends CamSDK.form.InputFieldHandler.prototype */
-  {
-    /**
-     * Prepares an instance
-     */
-    initialize: function() {
-      // read variable definitions from markup
-      var variableName = this.element.attr(constants.DIRECTIVE_CAM_VARIABLE_NAME);
-      var variableType = this.element.attr(constants.DIRECTIVE_CAM_VARIABLE_TYPE);
+/** @lends CamSDK.form.InputFieldHandler.prototype */
+{
+  /**
+   * Prepares an instance
+   */
+  initialize: function initialize() {
+    // read variable definitions from markup
+    var variableName = this.element.attr(constants.DIRECTIVE_CAM_VARIABLE_NAME);
+    var variableType = this.element.attr(constants.DIRECTIVE_CAM_VARIABLE_TYPE); // crate variable
 
-      // crate variable
-      this.variableManager.createVariable({
-        name: variableName,
-        type: variableType
-      });
+    this.variableManager.createVariable({
+      name: variableName,
+      type: variableType
+    }); // remember the original value found in the element for later checks
 
-      // remember the original value found in the element for later checks
-      this.originalValue = this.element.val();
+    this.originalValue = this.element.val();
+    this.previousValue = this.originalValue; // remember variable name
 
-      this.previousValue = this.originalValue;
+    this.variableName = variableName;
+    this.getValue();
+  },
 
-      // remember variable name
-      this.variableName = variableName;
+  /**
+   * Applies the stored value to a field element.
+   *
+   * @return {CamSDK.form.InputFieldHandler} Chainable method
+   */
+  applyValue: function applyValue() {
+    this.previousValue = this.getValueFromHtmlControl() || '';
+    var variableValue = this.variableManager.variableValue(this.variableName);
 
-      this.getValue();
-    },
-
-    /**
-     * Applies the stored value to a field element.
-     *
-     * @return {CamSDK.form.InputFieldHandler} Chainable method
-     */
-    applyValue: function() {
-      this.previousValue = this.getValueFromHtmlControl() || '';
-
-      var variableValue = this.variableManager.variableValue(this.variableName);
-
-      if (variableValue && this.variableManager.isDateVariable(this.variableName)) {
-        var dateValue = new Date(variableValue);
-        variableValue = convertToType(dateValue, 'Date');
-      }
-
-      if (variableValue !== this.previousValue) {
-        // write value to html control
-        this.applyValueToHtmlControl(variableValue);
-        this.element.trigger('camFormVariableApplied', variableValue);
-      }
-
-      return this;
-    },
-
-    /**
-     * Retrieves the value from an <input>
-     * element and stores it in the Variable Manager
-     *
-     * @return {*}
-     */
-    getValue: function() {
-      var value = this.getValueFromHtmlControl();
-
-      // write value to variable
-      this.variableManager.variableValue(this.variableName, value);
-
-      return value;
-    },
-
-    getValueFromHtmlControl: function() {
-      if(isBooleanCheckbox(this.element)) {
-        return this.element.prop('checked');
-      } else {
-        return this.element.val();
-      }
-    },
-
-    applyValueToHtmlControl: function(variableValue) {
-      if(isBooleanCheckbox(this.element)) {
-        this.element.prop('checked', variableValue);
-      } else if(this.element[0].type !== 'file') {
-        this.element.val(variableValue);
-      }
-
+    if (variableValue && this.variableManager.isDateVariable(this.variableName)) {
+      var dateValue = new Date(variableValue);
+      variableValue = convertToType(dateValue, 'Date');
     }
 
+    if (variableValue !== this.previousValue) {
+      // write value to html control
+      this.applyValueToHtmlControl(variableValue);
+      this.element.trigger('camFormVariableApplied', variableValue);
+    }
+
+    return this;
   },
-  /** @lends CamSDK.form.InputFieldHandler */
-  {
 
-    selector: 'input['+ constants.DIRECTIVE_CAM_VARIABLE_NAME +']'+
-      ',textarea['+ constants.DIRECTIVE_CAM_VARIABLE_NAME +']'
+  /**
+   * Retrieves the value from an <input>
+   * element and stores it in the Variable Manager
+   *
+   * @return {*}
+   */
+  getValue: function getValue() {
+    var value = this.getValueFromHtmlControl(); // write value to variable
 
-  });
-
+    this.variableManager.variableValue(this.variableName, value);
+    return value;
+  },
+  getValueFromHtmlControl: function getValueFromHtmlControl() {
+    if (isBooleanCheckbox(this.element)) {
+      return this.element.prop('checked');
+    } else {
+      return this.element.val();
+    }
+  },
+  applyValueToHtmlControl: function applyValueToHtmlControl(variableValue) {
+    if (isBooleanCheckbox(this.element)) {
+      this.element.prop('checked', variableValue);
+    } else if (this.element[0].type !== 'file') {
+      this.element.val(variableValue);
+    }
+  }
+},
+/** @lends CamSDK.form.InputFieldHandler */
+{
+  selector: 'input[' + constants.DIRECTIVE_CAM_VARIABLE_NAME + ']' + ',textarea[' + constants.DIRECTIVE_CAM_VARIABLE_NAME + ']'
+});
 module.exports = InputFieldHandler;
-
 
 },{"../type-util":45,"./../constants":39,"./abstract-form-field":40}],44:[function(require,module,exports){
 (function (global){
@@ -8348,18 +8178,15 @@ module.exports = InputFieldHandler;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
-(function(factory) {
+(function (factory) {
   /* global global: false */
   factory(typeof window !== 'undefined' ? window : global);
-}(function(root) {
+})(function (root) {
   root = root || {};
-  module.exports = root.jQuery ||
-                   (root.angular ? root.angular.element : false) ||
-                   root.Zepto;
-}));
+  module.exports = root.jQuery || (root.angular ? root.angular.element : false) || root.Zepto;
+});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],45:[function(require,module,exports){
@@ -8379,24 +8206,22 @@ module.exports = InputFieldHandler;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 var INTEGER_PATTERN = /^-?[\d]+$/;
-
 var FLOAT_PATTERN = /^(0|(-?(((0|[1-9]\d*)\.\d+)|([1-9]\d*))))([eE][-+]?[0-9]+)?$/;
-
 var BOOLEAN_PATTERN = /^(true|false)$/;
-
 var DATE_PATTERN = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(|\.[0-9]{0,4})$/;
 
-var xmlParser = require('../../vendor/fast-xml-parser');
+var xmlParser = require('fast-xml-parser');
 
-var isValidXML = function(value) {
+var isValidXML = function isValidXML(value) {
   return value ? xmlParser.validate(value) : false;
 };
 
-var isValidJSON = function(value) {
+var isValidJSON = function isValidJSON(value) {
   try {
     JSON.parse(value);
     return true;
@@ -8405,53 +8230,59 @@ var isValidJSON = function(value) {
   }
 };
 
-var isType = function(value, type) {
-  switch(type) {
-  case 'Integer':
-  case 'Long':
-  case 'Short':
-    return INTEGER_PATTERN.test(value);
-  case 'Float':
-  case 'Double':
-    return FLOAT_PATTERN.test(value);
-  case 'Boolean':
-    return BOOLEAN_PATTERN.test(value);
-  case 'Date':
-    return DATE_PATTERN.test(dateToString(value));
-  case 'Xml':
-    return isValidXML(value);
-  case 'Json':
-    return isValidJSON(value);
-  }
-};
-
-var convertToType = function(value, type) {
-
-  if(typeof value === 'string') {
-    value = value.trim();
-  }
-
-  if(type === 'String' || type === 'Bytes' || type === 'File') {
-    return value;
-  } else if (isType(value, type)) {
-    switch(type) {
+var isType = function isType(value, type) {
+  switch (type) {
     case 'Integer':
     case 'Long':
     case 'Short':
-      return parseInt(value, 10);
+      return INTEGER_PATTERN.test(value);
+
     case 'Float':
     case 'Double':
-      return parseFloat(value);
+      return FLOAT_PATTERN.test(value);
+
     case 'Boolean':
-      return 'true' === value;
+      return BOOLEAN_PATTERN.test(value);
+
     case 'Date':
-      return dateToString(value);
-    }
-  } else {
-    throw new Error('Value \''+value+'\' is not of type '+type);
+      return DATE_PATTERN.test(dateToString(value));
+
+    case 'Xml':
+      return isValidXML(value);
+
+    case 'Json':
+      return isValidJSON(value);
   }
 };
 
+var convertToType = function convertToType(value, type) {
+  if (typeof value === 'string') {
+    value = value.trim();
+  }
+
+  if (type === 'String' || type === 'Bytes' || type === 'File') {
+    return value;
+  } else if (isType(value, type)) {
+    switch (type) {
+      case 'Integer':
+      case 'Long':
+      case 'Short':
+        return parseInt(value, 10);
+
+      case 'Float':
+      case 'Double':
+        return parseFloat(value);
+
+      case 'Boolean':
+        return 'true' === value;
+
+      case 'Date':
+        return dateToString(value);
+    }
+  } else {
+    throw new Error("Value '" + value + "' is not of type " + type);
+  }
+};
 /**
  * This reformates the date into a ISO8601 conform string which will mirror the selected date in local format.
  * TODO: Remove this when it is fixed by angularjs
@@ -8459,34 +8290,33 @@ var convertToType = function(value, type) {
  * @see https://app.camunda.com/jira/browse/CAM-4746
  *
  */
-var pad = function(number) {
-  return ( number < 10 ) ?  '0' + number : number;
+
+
+var pad = function pad(number) {
+  return number < 10 ? '0' + number : number;
 };
 
-var dateToString = function(date) {
-  if( typeof date === 'object' && typeof date.getFullYear === 'function' ) {
-    var year    = date.getFullYear(),
-        month   = pad( date.getMonth() + 1 ),
-        day     = pad( date.getDate() ),
-        hour    = pad( date.getHours() ),
-        min = pad( date.getMinutes() ),
-        sec = pad( date.getSeconds() );
-
+var dateToString = function dateToString(date) {
+  if (_typeof(date) === 'object' && typeof date.getFullYear === 'function') {
+    var year = date.getFullYear(),
+        month = pad(date.getMonth() + 1),
+        day = pad(date.getDate()),
+        hour = pad(date.getHours()),
+        min = pad(date.getMinutes()),
+        sec = pad(date.getSeconds());
     return year + '-' + month + '-' + day + 'T' + hour + ':' + min + ':' + sec;
-
   } else {
     return date;
-
   }
 };
 
 module.exports = {
-  convertToType : convertToType,
-  isType : isType,
-  dateToString : dateToString
+  convertToType: convertToType,
+  isType: isType,
+  dateToString: dateToString
 };
 
-},{"../../vendor/fast-xml-parser":55}],46:[function(require,module,exports){
+},{"fast-xml-parser":55}],46:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -8503,12 +8333,11 @@ module.exports = {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 var moment = require('moment');
-var convertToType = require('./type-util').convertToType;
 
+var convertToType = require('./type-util').convertToType;
 /**
  * @class
  * the variable manager is responsible for managing access to variables.
@@ -8523,95 +8352,91 @@ var convertToType = require('./type-util').convertToType;
  *
  *
  */
+
+
 function VariableManager() {
-
   /** @member object containing the form fields. Initially empty. */
-  this.variables = { };
-
+  this.variables = {};
   /** @member boolean indicating whether the variables are fetched */
-  this.isVariablesFetched = false;
 
+  this.isVariablesFetched = false;
 }
 
-VariableManager.prototype.fetchVariable = function(variable) {
-  if(this.isVariablesFetched) {
+VariableManager.prototype.fetchVariable = function (variable) {
+  if (this.isVariablesFetched) {
     throw new Error('Illegal State: cannot call fetchVariable(), variables already fetched.');
   }
-  this.createVariable({ name: variable });
+
+  this.createVariable({
+    name: variable
+  });
 };
 
-VariableManager.prototype.createVariable = function(variable) {
-  if(!this.variables[variable.name]) {
+VariableManager.prototype.createVariable = function (variable) {
+  if (!this.variables[variable.name]) {
     this.variables[variable.name] = variable;
   } else {
-    throw new Error('Cannot add variable with name '+variable.name+': already exists.');
+    throw new Error('Cannot add variable with name ' + variable.name + ': already exists.');
   }
 };
 
-VariableManager.prototype.destroyVariable = function(variableName) {
-  if(this.variables[variableName]) {
+VariableManager.prototype.destroyVariable = function (variableName) {
+  if (this.variables[variableName]) {
     delete this.variables[variableName];
   } else {
-    throw new Error('Cannot remove variable with name '+variableName+': variable does not exist.');
+    throw new Error('Cannot remove variable with name ' + variableName + ': variable does not exist.');
   }
 };
 
-VariableManager.prototype.setOriginalValue = function(variableName, value) {
-  if(this.variables[variableName]) {
+VariableManager.prototype.setOriginalValue = function (variableName, value) {
+  if (this.variables[variableName]) {
     this.variables[variableName].originalValue = value;
   } else {
-    throw new Error('Cannot set original value of variable with name '+variableName+': variable does not exist.');
+    throw new Error('Cannot set original value of variable with name ' + variableName + ': variable does not exist.');
   }
-
 };
 
-VariableManager.prototype.variable = function(variableName) {
+VariableManager.prototype.variable = function (variableName) {
   return this.variables[variableName];
 };
 
-VariableManager.prototype.variableValue = function(variableName, value) {
-
+VariableManager.prototype.variableValue = function (variableName, value) {
   var variable = this.variable(variableName);
 
-  if(typeof value === 'undefined' || value === null) {
+  if (typeof value === 'undefined' || value === null) {
     value = null;
-
-  } else if(value === '' && variable.type !== 'String') {
+  } else if (value === '' && variable.type !== 'String') {
     // convert empty string to null for all types except String
     value = null;
-
-  } else if(typeof value === 'string' && variable.type !== 'String') {
+  } else if (typeof value === 'string' && variable.type !== 'String') {
     // convert string value into model value
     value = convertToType(value, variable.type);
-
   }
 
-  if(arguments.length === 2) {
+  if (arguments.length === 2) {
     variable.value = value;
   }
 
   return variable.value;
 };
 
-VariableManager.prototype.isDirty = function(name) {
+VariableManager.prototype.isDirty = function (name) {
   var variable = this.variable(name);
-  if(this.isJsonVariable(name)) {
+
+  if (this.isJsonVariable(name)) {
     return variable.originalValue !== JSON.stringify(variable.value);
-  }
-  else if (this.isDateVariable(name) && variable.originalValue && variable.value) {
+  } else if (this.isDateVariable(name) && variable.originalValue && variable.value) {
     // check, if it is the same moment
     return !moment(variable.originalValue, moment.ISO_8601).isSame(variable.value);
-  }
-  else {
+  } else {
     return variable.originalValue !== variable.value || variable.type === 'Object';
   }
 };
 
-VariableManager.prototype.isJsonVariable = function(name) {
+VariableManager.prototype.isJsonVariable = function (name) {
   var variable = this.variable(name);
   var type = variable.type;
-
-  var supportedTypes = [ 'Object', 'json', 'Json' ];
+  var supportedTypes = ['Object', 'json', 'Json'];
   var idx = supportedTypes.indexOf(type);
 
   if (idx === 0) {
@@ -8621,19 +8446,19 @@ VariableManager.prototype.isJsonVariable = function(name) {
   return idx !== -1;
 };
 
-VariableManager.prototype.isDateVariable = function(name) {
+VariableManager.prototype.isDateVariable = function (name) {
   var variable = this.variable(name);
   return variable.type === 'Date';
 };
 
-VariableManager.prototype.variableNames = function() {
+VariableManager.prototype.variableNames = function () {
   // since we support IE 8+ (http://kangax.github.io/compat-table/es5/)
   return Object.keys(this.variables);
 };
 
 module.exports = VariableManager;
 
-},{"./type-util":45,"moment":51}],47:[function(require,module,exports){
+},{"./type-util":45,"moment":61}],47:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -8650,19 +8475,20 @@ module.exports = VariableManager;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
-
-
 /**
  * @exports CamSDK.utils
  */
-var utils = module.exports = {'typeUtils' : require('./forms/type-util')};
 
-utils.solveHALEmbedded = function(results) {
+var utils = module.exports = {
+  typeUtils: require('./forms/type-util')
+};
 
+utils.solveHALEmbedded = function (results) {
   function isId(str) {
-    if (str.slice(-2) !== 'Id') { return false; }
+    if (str.slice(-2) !== 'Id') {
+      return false;
+    }
 
     var prop = str.slice(0, -2);
     var embedded = results._embedded;
@@ -8682,18 +8508,20 @@ utils.solveHALEmbedded = function(results) {
   }
 
   var _embeddedRessources = Object.keys(results._embedded || {});
+
   for (var r in _embeddedRessources) {
     var name = _embeddedRessources[r];
 
     for (var i in results._embedded[name]) {
       results._embedded[name][i]._embedded = results._embedded[name][i]._embedded || {};
-
       var properties = keys(results._embedded[name][i]);
 
       for (var p in properties) {
         var prop = properties[p];
+
         if (results._embedded[name][i][prop]) {
           var embedded = results._embedded[prop.slice(0, -2)];
+
           for (var e in embedded) {
             if (embedded[e].id === results._embedded[name][i][prop]) {
               results._embedded[name][i]._embedded[prop.slice(0, -2)] = [embedded[e]];
@@ -8705,38 +8533,39 @@ utils.solveHALEmbedded = function(results) {
   }
 
   return results;
-};
-
-
-// the 2 folowing functions were borrowed from async.js
+}; // the 2 folowing functions were borrowed from async.js
 // https://github.com/caolan/async/blob/master/lib/async.js
 
+
 function _eachSeries(arr, iterator, callback) {
-  callback = callback || function() {};
+  callback = callback || function () {};
+
   if (!arr.length) {
     return callback();
   }
+
   var completed = 0;
-  var iterate = function() {
-    iterator(arr[completed], function(err) {
+
+  var iterate = function iterate() {
+    iterator(arr[completed], function (err) {
       if (err) {
         callback(err);
-        callback = function() {};
-      }
-      else {
+
+        callback = function callback() {};
+      } else {
         completed += 1;
+
         if (completed >= arr.length) {
           callback();
-        }
-        else {
+        } else {
           iterate();
         }
       }
     });
   };
+
   iterate();
 }
-
 /**
  * Executes functions in serie
  *
@@ -8757,189 +8586,158 @@ function _eachSeries(arr, iterator, callback) {
  *   // result will be { a: 1, b: undefined }
  * });
  */
-utils.series = function(tasks, callback) {
-  callback = callback || function() {};
+
+
+utils.series = function (tasks, callback) {
+  callback = callback || function () {};
 
   var results = {};
-  _eachSeries(Object.keys(tasks), function(k, callback) {
-    tasks[k](function(err) {
+
+  _eachSeries(Object.keys(tasks), function (k, callback) {
+    tasks[k](function (err) {
       var args = Array.prototype.slice.call(arguments, 1);
+
       if (args.length <= 1) {
         args = args[0];
       }
+
       results[k] = args;
       callback(err);
     });
-  }, function(err) {
+  }, function (err) {
     callback(err, results);
   });
 };
-
 /**
  * Escapes url string
  *
  * @param {string} string
  * @returns {string}
  */
-utils.escapeUrl = function(string) {
-  return encodeURIComponent(string)
-    .replace(/\//g, '%2F')
-    .replace(/%2F/g, '%252F')
-    .replace(/\*/g, '%2A')
-    .replace(/%5C/g, '%255C');
+
+
+utils.escapeUrl = function (string) {
+  return encodeURIComponent(string).replace(/\//g, '%2F').replace(/%2F/g, '%252F').replace(/\*/g, '%2A').replace(/%5C/g, '%255C');
 };
 
 },{"./forms/type-util":45}],48:[function(require,module,exports){
-'use strict'
+'use strict';
 
-exports.byteLength = byteLength
-exports.toByteArray = toByteArray
-exports.fromByteArray = fromByteArray
+exports.byteLength = byteLength;
+exports.toByteArray = toByteArray;
+exports.fromByteArray = fromByteArray;
+var lookup = [];
+var revLookup = [];
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
-var lookup = []
-var revLookup = []
-var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
-
-var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 for (var i = 0, len = code.length; i < len; ++i) {
-  lookup[i] = code[i]
-  revLookup[code.charCodeAt(i)] = i
-}
-
-// Support decoding URL-safe base64 strings, as Node.js does.
+  lookup[i] = code[i];
+  revLookup[code.charCodeAt(i)] = i;
+} // Support decoding URL-safe base64 strings, as Node.js does.
 // See: https://en.wikipedia.org/wiki/Base64#URL_applications
-revLookup['-'.charCodeAt(0)] = 62
-revLookup['_'.charCodeAt(0)] = 63
 
-function getLens (b64) {
-  var len = b64.length
+
+revLookup['-'.charCodeAt(0)] = 62;
+revLookup['_'.charCodeAt(0)] = 63;
+
+function getLens(b64) {
+  var len = b64.length;
 
   if (len % 4 > 0) {
-    throw new Error('Invalid string. Length must be a multiple of 4')
-  }
-
-  // Trim off extra bytes after placeholder bytes are found
+    throw new Error('Invalid string. Length must be a multiple of 4');
+  } // Trim off extra bytes after placeholder bytes are found
   // See: https://github.com/beatgammit/base64-js/issues/42
-  var validLen = b64.indexOf('=')
-  if (validLen === -1) validLen = len
 
-  var placeHoldersLen = validLen === len
-    ? 0
-    : 4 - (validLen % 4)
 
-  return [validLen, placeHoldersLen]
+  var validLen = b64.indexOf('=');
+  if (validLen === -1) validLen = len;
+  var placeHoldersLen = validLen === len ? 0 : 4 - validLen % 4;
+  return [validLen, placeHoldersLen];
+} // base64 is 4/3 + up to two characters of the original data
+
+
+function byteLength(b64) {
+  var lens = getLens(b64);
+  var validLen = lens[0];
+  var placeHoldersLen = lens[1];
+  return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
 }
 
-// base64 is 4/3 + up to two characters of the original data
-function byteLength (b64) {
-  var lens = getLens(b64)
-  var validLen = lens[0]
-  var placeHoldersLen = lens[1]
-  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+function _byteLength(b64, validLen, placeHoldersLen) {
+  return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
 }
 
-function _byteLength (b64, validLen, placeHoldersLen) {
-  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-}
+function toByteArray(b64) {
+  var tmp;
+  var lens = getLens(b64);
+  var validLen = lens[0];
+  var placeHoldersLen = lens[1];
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen));
+  var curByte = 0; // if there are placeholders, only get up to the last complete 4 chars
 
-function toByteArray (b64) {
-  var tmp
-  var lens = getLens(b64)
-  var validLen = lens[0]
-  var placeHoldersLen = lens[1]
-
-  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
-
-  var curByte = 0
-
-  // if there are placeholders, only get up to the last complete 4 chars
-  var len = placeHoldersLen > 0
-    ? validLen - 4
-    : validLen
+  var len = placeHoldersLen > 0 ? validLen - 4 : validLen;
 
   for (var i = 0; i < len; i += 4) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 18) |
-      (revLookup[b64.charCodeAt(i + 1)] << 12) |
-      (revLookup[b64.charCodeAt(i + 2)] << 6) |
-      revLookup[b64.charCodeAt(i + 3)]
-    arr[curByte++] = (tmp >> 16) & 0xFF
-    arr[curByte++] = (tmp >> 8) & 0xFF
-    arr[curByte++] = tmp & 0xFF
+    tmp = revLookup[b64.charCodeAt(i)] << 18 | revLookup[b64.charCodeAt(i + 1)] << 12 | revLookup[b64.charCodeAt(i + 2)] << 6 | revLookup[b64.charCodeAt(i + 3)];
+    arr[curByte++] = tmp >> 16 & 0xFF;
+    arr[curByte++] = tmp >> 8 & 0xFF;
+    arr[curByte++] = tmp & 0xFF;
   }
 
   if (placeHoldersLen === 2) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 2) |
-      (revLookup[b64.charCodeAt(i + 1)] >> 4)
-    arr[curByte++] = tmp & 0xFF
+    tmp = revLookup[b64.charCodeAt(i)] << 2 | revLookup[b64.charCodeAt(i + 1)] >> 4;
+    arr[curByte++] = tmp & 0xFF;
   }
 
   if (placeHoldersLen === 1) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 10) |
-      (revLookup[b64.charCodeAt(i + 1)] << 4) |
-      (revLookup[b64.charCodeAt(i + 2)] >> 2)
-    arr[curByte++] = (tmp >> 8) & 0xFF
-    arr[curByte++] = tmp & 0xFF
+    tmp = revLookup[b64.charCodeAt(i)] << 10 | revLookup[b64.charCodeAt(i + 1)] << 4 | revLookup[b64.charCodeAt(i + 2)] >> 2;
+    arr[curByte++] = tmp >> 8 & 0xFF;
+    arr[curByte++] = tmp & 0xFF;
   }
 
-  return arr
+  return arr;
 }
 
-function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] +
-    lookup[num >> 12 & 0x3F] +
-    lookup[num >> 6 & 0x3F] +
-    lookup[num & 0x3F]
+function tripletToBase64(num) {
+  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F];
 }
 
-function encodeChunk (uint8, start, end) {
-  var tmp
-  var output = []
+function encodeChunk(uint8, start, end) {
+  var tmp;
+  var output = [];
+
   for (var i = start; i < end; i += 3) {
-    tmp =
-      ((uint8[i] << 16) & 0xFF0000) +
-      ((uint8[i + 1] << 8) & 0xFF00) +
-      (uint8[i + 2] & 0xFF)
-    output.push(tripletToBase64(tmp))
+    tmp = (uint8[i] << 16 & 0xFF0000) + (uint8[i + 1] << 8 & 0xFF00) + (uint8[i + 2] & 0xFF);
+    output.push(tripletToBase64(tmp));
   }
-  return output.join('')
+
+  return output.join('');
 }
 
-function fromByteArray (uint8) {
-  var tmp
-  var len = uint8.length
-  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-  var parts = []
-  var maxChunkLength = 16383 // must be multiple of 3
+function fromByteArray(uint8) {
+  var tmp;
+  var len = uint8.length;
+  var extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
 
+  var parts = [];
+  var maxChunkLength = 16383; // must be multiple of 3
   // go through the array every three bytes, we'll deal with trailing stuff later
+
   for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(
-      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
-    ))
-  }
+    parts.push(encodeChunk(uint8, i, i + maxChunkLength > len2 ? len2 : i + maxChunkLength));
+  } // pad the end with zeros, but make sure to not forget the extra bytes
 
-  // pad the end with zeros, but make sure to not forget the extra bytes
+
   if (extraBytes === 1) {
-    tmp = uint8[len - 1]
-    parts.push(
-      lookup[tmp >> 2] +
-      lookup[(tmp << 4) & 0x3F] +
-      '=='
-    )
+    tmp = uint8[len - 1];
+    parts.push(lookup[tmp >> 2] + lookup[tmp << 4 & 0x3F] + '==');
   } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
-    parts.push(
-      lookup[tmp >> 10] +
-      lookup[(tmp >> 4) & 0x3F] +
-      lookup[(tmp << 2) & 0x3F] +
-      '='
-    )
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1];
+    parts.push(lookup[tmp >> 10] + lookup[tmp >> 4 & 0x3F] + lookup[tmp << 2 & 0x3F] + '=');
   }
 
-  return parts.join('')
+  return parts.join('');
 }
 
 },{}],49:[function(require,module,exports){
@@ -8950,20 +8748,21 @@ function fromByteArray (uint8) {
  * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
  */
+
 /* eslint-disable no-proto */
+'use strict';
 
-'use strict'
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var base64 = require('base64-js')
-var ieee754 = require('ieee754')
+var base64 = require('base64-js');
 
-exports.Buffer = Buffer
-exports.SlowBuffer = SlowBuffer
-exports.INSPECT_MAX_BYTES = 50
+var ieee754 = require('ieee754');
 
-var K_MAX_LENGTH = 0x7fffffff
-exports.kMaxLength = K_MAX_LENGTH
-
+exports.Buffer = Buffer;
+exports.SlowBuffer = SlowBuffer;
+exports.INSPECT_MAX_BYTES = 50;
+var K_MAX_LENGTH = 0x7fffffff;
+exports.kMaxLength = K_MAX_LENGTH;
 /**
  * If `Buffer.TYPED_ARRAY_SUPPORT`:
  *   === true    Use Uint8Array implementation (fastest)
@@ -8978,53 +8777,54 @@ exports.kMaxLength = K_MAX_LENGTH
  * (See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438). IE 10 lacks support
  * for __proto__ and has a buggy typed array implementation.
  */
-Buffer.TYPED_ARRAY_SUPPORT = typedArraySupport()
 
-if (!Buffer.TYPED_ARRAY_SUPPORT && typeof console !== 'undefined' &&
-    typeof console.error === 'function') {
-  console.error(
-    'This browser lacks typed array (Uint8Array) support which is required by ' +
-    '`buffer` v5.x. Use `buffer` v4.x if you require old browser support.'
-  )
+Buffer.TYPED_ARRAY_SUPPORT = typedArraySupport();
+
+if (!Buffer.TYPED_ARRAY_SUPPORT && typeof console !== 'undefined' && typeof console.error === 'function') {
+  console.error('This browser lacks typed array (Uint8Array) support which is required by ' + '`buffer` v5.x. Use `buffer` v4.x if you require old browser support.');
 }
 
-function typedArraySupport () {
+function typedArraySupport() {
   // Can typed array instances can be augmented?
   try {
-    var arr = new Uint8Array(1)
-    arr.__proto__ = { __proto__: Uint8Array.prototype, foo: function () { return 42 } }
-    return arr.foo() === 42
+    var arr = new Uint8Array(1);
+    arr.__proto__ = {
+      __proto__: Uint8Array.prototype,
+      foo: function foo() {
+        return 42;
+      }
+    };
+    return arr.foo() === 42;
   } catch (e) {
-    return false
+    return false;
   }
 }
 
 Object.defineProperty(Buffer.prototype, 'parent', {
   enumerable: true,
-  get: function () {
-    if (!Buffer.isBuffer(this)) return undefined
-    return this.buffer
+  get: function get() {
+    if (!Buffer.isBuffer(this)) return undefined;
+    return this.buffer;
   }
-})
-
+});
 Object.defineProperty(Buffer.prototype, 'offset', {
   enumerable: true,
-  get: function () {
-    if (!Buffer.isBuffer(this)) return undefined
-    return this.byteOffset
+  get: function get() {
+    if (!Buffer.isBuffer(this)) return undefined;
+    return this.byteOffset;
   }
-})
+});
 
-function createBuffer (length) {
+function createBuffer(length) {
   if (length > K_MAX_LENGTH) {
-    throw new RangeError('The value "' + length + '" is invalid for option "size"')
-  }
-  // Return an augmented `Uint8Array` instance
-  var buf = new Uint8Array(length)
-  buf.__proto__ = Buffer.prototype
-  return buf
-}
+    throw new RangeError('The value "' + length + '" is invalid for option "size"');
+  } // Return an augmented `Uint8Array` instance
 
+
+  var buf = new Uint8Array(length);
+  buf.__proto__ = Buffer.prototype;
+  return buf;
+}
 /**
  * The Buffer constructor returns instances of `Uint8Array` that have their
  * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
@@ -9035,80 +8835,68 @@ function createBuffer (length) {
  * The `Uint8Array` prototype remains unmodified.
  */
 
-function Buffer (arg, encodingOrOffset, length) {
+
+function Buffer(arg, encodingOrOffset, length) {
   // Common case.
   if (typeof arg === 'number') {
     if (typeof encodingOrOffset === 'string') {
-      throw new TypeError(
-        'The "string" argument must be of type string. Received type number'
-      )
+      throw new TypeError('The "string" argument must be of type string. Received type number');
     }
-    return allocUnsafe(arg)
-  }
-  return from(arg, encodingOrOffset, length)
-}
 
-// Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
-if (typeof Symbol !== 'undefined' && Symbol.species != null &&
-    Buffer[Symbol.species] === Buffer) {
+    return allocUnsafe(arg);
+  }
+
+  return from(arg, encodingOrOffset, length);
+} // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+
+
+if (typeof Symbol !== 'undefined' && Symbol.species != null && Buffer[Symbol.species] === Buffer) {
   Object.defineProperty(Buffer, Symbol.species, {
     value: null,
     configurable: true,
     enumerable: false,
     writable: false
-  })
+  });
 }
 
-Buffer.poolSize = 8192 // not used by this implementation
+Buffer.poolSize = 8192; // not used by this implementation
 
-function from (value, encodingOrOffset, length) {
+function from(value, encodingOrOffset, length) {
   if (typeof value === 'string') {
-    return fromString(value, encodingOrOffset)
+    return fromString(value, encodingOrOffset);
   }
 
   if (ArrayBuffer.isView(value)) {
-    return fromArrayLike(value)
+    return fromArrayLike(value);
   }
 
   if (value == null) {
-    throw TypeError(
-      'The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' +
-      'or Array-like Object. Received type ' + (typeof value)
-    )
+    throw TypeError('The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' + 'or Array-like Object. Received type ' + _typeof(value));
   }
 
-  if (isInstance(value, ArrayBuffer) ||
-      (value && isInstance(value.buffer, ArrayBuffer))) {
-    return fromArrayBuffer(value, encodingOrOffset, length)
+  if (isInstance(value, ArrayBuffer) || value && isInstance(value.buffer, ArrayBuffer)) {
+    return fromArrayBuffer(value, encodingOrOffset, length);
   }
 
   if (typeof value === 'number') {
-    throw new TypeError(
-      'The "value" argument must not be of type number. Received type number'
-    )
+    throw new TypeError('The "value" argument must not be of type number. Received type number');
   }
 
-  var valueOf = value.valueOf && value.valueOf()
+  var valueOf = value.valueOf && value.valueOf();
+
   if (valueOf != null && valueOf !== value) {
-    return Buffer.from(valueOf, encodingOrOffset, length)
+    return Buffer.from(valueOf, encodingOrOffset, length);
   }
 
-  var b = fromObject(value)
-  if (b) return b
+  var b = fromObject(value);
+  if (b) return b;
 
-  if (typeof Symbol !== 'undefined' && Symbol.toPrimitive != null &&
-      typeof value[Symbol.toPrimitive] === 'function') {
-    return Buffer.from(
-      value[Symbol.toPrimitive]('string'), encodingOrOffset, length
-    )
+  if (typeof Symbol !== 'undefined' && Symbol.toPrimitive != null && typeof value[Symbol.toPrimitive] === 'function') {
+    return Buffer.from(value[Symbol.toPrimitive]('string'), encodingOrOffset, length);
   }
 
-  throw new TypeError(
-    'The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' +
-    'or Array-like Object. Received type ' + (typeof value)
-  )
+  throw new TypeError('The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' + 'or Array-like Object. Received type ' + _typeof(value));
 }
-
 /**
  * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
  * if value is a number.
@@ -9117,196 +8905,205 @@ function from (value, encodingOrOffset, length) {
  * Buffer.from(buffer)
  * Buffer.from(arrayBuffer[, byteOffset[, length]])
  **/
+
+
 Buffer.from = function (value, encodingOrOffset, length) {
-  return from(value, encodingOrOffset, length)
-}
-
-// Note: Change prototype *after* Buffer.from is defined to workaround Chrome bug:
+  return from(value, encodingOrOffset, length);
+}; // Note: Change prototype *after* Buffer.from is defined to workaround Chrome bug:
 // https://github.com/feross/buffer/pull/148
-Buffer.prototype.__proto__ = Uint8Array.prototype
-Buffer.__proto__ = Uint8Array
 
-function assertSize (size) {
+
+Buffer.prototype.__proto__ = Uint8Array.prototype;
+Buffer.__proto__ = Uint8Array;
+
+function assertSize(size) {
   if (typeof size !== 'number') {
-    throw new TypeError('"size" argument must be of type number')
+    throw new TypeError('"size" argument must be of type number');
   } else if (size < 0) {
-    throw new RangeError('The value "' + size + '" is invalid for option "size"')
+    throw new RangeError('The value "' + size + '" is invalid for option "size"');
   }
 }
 
-function alloc (size, fill, encoding) {
-  assertSize(size)
+function alloc(size, fill, encoding) {
+  assertSize(size);
+
   if (size <= 0) {
-    return createBuffer(size)
+    return createBuffer(size);
   }
+
   if (fill !== undefined) {
     // Only pay attention to encoding if it's a string. This
     // prevents accidentally sending in a number that would
     // be interpretted as a start offset.
-    return typeof encoding === 'string'
-      ? createBuffer(size).fill(fill, encoding)
-      : createBuffer(size).fill(fill)
+    return typeof encoding === 'string' ? createBuffer(size).fill(fill, encoding) : createBuffer(size).fill(fill);
   }
-  return createBuffer(size)
-}
 
+  return createBuffer(size);
+}
 /**
  * Creates a new filled Buffer instance.
  * alloc(size[, fill[, encoding]])
  **/
+
+
 Buffer.alloc = function (size, fill, encoding) {
-  return alloc(size, fill, encoding)
-}
+  return alloc(size, fill, encoding);
+};
 
-function allocUnsafe (size) {
-  assertSize(size)
-  return createBuffer(size < 0 ? 0 : checked(size) | 0)
+function allocUnsafe(size) {
+  assertSize(size);
+  return createBuffer(size < 0 ? 0 : checked(size) | 0);
 }
-
 /**
  * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
  * */
+
+
 Buffer.allocUnsafe = function (size) {
-  return allocUnsafe(size)
-}
+  return allocUnsafe(size);
+};
 /**
  * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
  */
-Buffer.allocUnsafeSlow = function (size) {
-  return allocUnsafe(size)
-}
 
-function fromString (string, encoding) {
+
+Buffer.allocUnsafeSlow = function (size) {
+  return allocUnsafe(size);
+};
+
+function fromString(string, encoding) {
   if (typeof encoding !== 'string' || encoding === '') {
-    encoding = 'utf8'
+    encoding = 'utf8';
   }
 
   if (!Buffer.isEncoding(encoding)) {
-    throw new TypeError('Unknown encoding: ' + encoding)
+    throw new TypeError('Unknown encoding: ' + encoding);
   }
 
-  var length = byteLength(string, encoding) | 0
-  var buf = createBuffer(length)
-
-  var actual = buf.write(string, encoding)
+  var length = byteLength(string, encoding) | 0;
+  var buf = createBuffer(length);
+  var actual = buf.write(string, encoding);
 
   if (actual !== length) {
     // Writing a hex string, for example, that contains invalid characters will
     // cause everything after the first invalid character to be ignored. (e.g.
     // 'abxxcd' will be treated as 'ab')
-    buf = buf.slice(0, actual)
+    buf = buf.slice(0, actual);
   }
 
-  return buf
+  return buf;
 }
 
-function fromArrayLike (array) {
-  var length = array.length < 0 ? 0 : checked(array.length) | 0
-  var buf = createBuffer(length)
+function fromArrayLike(array) {
+  var length = array.length < 0 ? 0 : checked(array.length) | 0;
+  var buf = createBuffer(length);
+
   for (var i = 0; i < length; i += 1) {
-    buf[i] = array[i] & 255
+    buf[i] = array[i] & 255;
   }
-  return buf
+
+  return buf;
 }
 
-function fromArrayBuffer (array, byteOffset, length) {
+function fromArrayBuffer(array, byteOffset, length) {
   if (byteOffset < 0 || array.byteLength < byteOffset) {
-    throw new RangeError('"offset" is outside of buffer bounds')
+    throw new RangeError('"offset" is outside of buffer bounds');
   }
 
   if (array.byteLength < byteOffset + (length || 0)) {
-    throw new RangeError('"length" is outside of buffer bounds')
+    throw new RangeError('"length" is outside of buffer bounds');
   }
 
-  var buf
+  var buf;
+
   if (byteOffset === undefined && length === undefined) {
-    buf = new Uint8Array(array)
+    buf = new Uint8Array(array);
   } else if (length === undefined) {
-    buf = new Uint8Array(array, byteOffset)
+    buf = new Uint8Array(array, byteOffset);
   } else {
-    buf = new Uint8Array(array, byteOffset, length)
-  }
+    buf = new Uint8Array(array, byteOffset, length);
+  } // Return an augmented `Uint8Array` instance
 
-  // Return an augmented `Uint8Array` instance
-  buf.__proto__ = Buffer.prototype
-  return buf
+
+  buf.__proto__ = Buffer.prototype;
+  return buf;
 }
 
-function fromObject (obj) {
+function fromObject(obj) {
   if (Buffer.isBuffer(obj)) {
-    var len = checked(obj.length) | 0
-    var buf = createBuffer(len)
+    var len = checked(obj.length) | 0;
+    var buf = createBuffer(len);
 
     if (buf.length === 0) {
-      return buf
+      return buf;
     }
 
-    obj.copy(buf, 0, 0, len)
-    return buf
+    obj.copy(buf, 0, 0, len);
+    return buf;
   }
 
   if (obj.length !== undefined) {
     if (typeof obj.length !== 'number' || numberIsNaN(obj.length)) {
-      return createBuffer(0)
+      return createBuffer(0);
     }
-    return fromArrayLike(obj)
+
+    return fromArrayLike(obj);
   }
 
   if (obj.type === 'Buffer' && Array.isArray(obj.data)) {
-    return fromArrayLike(obj.data)
+    return fromArrayLike(obj.data);
   }
 }
 
-function checked (length) {
+function checked(length) {
   // Note: cannot use `length < K_MAX_LENGTH` here because that fails when
   // length is NaN (which is otherwise coerced to zero.)
   if (length >= K_MAX_LENGTH) {
-    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
-                         'size: 0x' + K_MAX_LENGTH.toString(16) + ' bytes')
+    throw new RangeError('Attempt to allocate Buffer larger than maximum ' + 'size: 0x' + K_MAX_LENGTH.toString(16) + ' bytes');
   }
-  return length | 0
+
+  return length | 0;
 }
 
-function SlowBuffer (length) {
-  if (+length != length) { // eslint-disable-line eqeqeq
-    length = 0
+function SlowBuffer(length) {
+  if (+length != length) {
+    // eslint-disable-line eqeqeq
+    length = 0;
   }
-  return Buffer.alloc(+length)
+
+  return Buffer.alloc(+length);
 }
 
-Buffer.isBuffer = function isBuffer (b) {
-  return b != null && b._isBuffer === true &&
-    b !== Buffer.prototype // so Buffer.isBuffer(Buffer.prototype) will be false
-}
+Buffer.isBuffer = function isBuffer(b) {
+  return b != null && b._isBuffer === true && b !== Buffer.prototype; // so Buffer.isBuffer(Buffer.prototype) will be false
+};
 
-Buffer.compare = function compare (a, b) {
-  if (isInstance(a, Uint8Array)) a = Buffer.from(a, a.offset, a.byteLength)
-  if (isInstance(b, Uint8Array)) b = Buffer.from(b, b.offset, b.byteLength)
+Buffer.compare = function compare(a, b) {
+  if (isInstance(a, Uint8Array)) a = Buffer.from(a, a.offset, a.byteLength);
+  if (isInstance(b, Uint8Array)) b = Buffer.from(b, b.offset, b.byteLength);
+
   if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
-    throw new TypeError(
-      'The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array'
-    )
+    throw new TypeError('The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array');
   }
 
-  if (a === b) return 0
-
-  var x = a.length
-  var y = b.length
+  if (a === b) return 0;
+  var x = a.length;
+  var y = b.length;
 
   for (var i = 0, len = Math.min(x, y); i < len; ++i) {
     if (a[i] !== b[i]) {
-      x = a[i]
-      y = b[i]
-      break
+      x = a[i];
+      y = b[i];
+      break;
     }
   }
 
-  if (x < y) return -1
-  if (y < x) return 1
-  return 0
-}
+  if (x < y) return -1;
+  if (y < x) return 1;
+  return 0;
+};
 
-Buffer.isEncoding = function isEncoding (encoding) {
+Buffer.isEncoding = function isEncoding(encoding) {
   switch (String(encoding).toLowerCase()) {
     case 'hex':
     case 'utf8':
@@ -9319,304 +9116,324 @@ Buffer.isEncoding = function isEncoding (encoding) {
     case 'ucs-2':
     case 'utf16le':
     case 'utf-16le':
-      return true
-    default:
-      return false
-  }
-}
+      return true;
 
-Buffer.concat = function concat (list, length) {
+    default:
+      return false;
+  }
+};
+
+Buffer.concat = function concat(list, length) {
   if (!Array.isArray(list)) {
-    throw new TypeError('"list" argument must be an Array of Buffers')
+    throw new TypeError('"list" argument must be an Array of Buffers');
   }
 
   if (list.length === 0) {
-    return Buffer.alloc(0)
+    return Buffer.alloc(0);
   }
 
-  var i
+  var i;
+
   if (length === undefined) {
-    length = 0
+    length = 0;
+
     for (i = 0; i < list.length; ++i) {
-      length += list[i].length
+      length += list[i].length;
     }
   }
 
-  var buffer = Buffer.allocUnsafe(length)
-  var pos = 0
+  var buffer = Buffer.allocUnsafe(length);
+  var pos = 0;
+
   for (i = 0; i < list.length; ++i) {
-    var buf = list[i]
+    var buf = list[i];
+
     if (isInstance(buf, Uint8Array)) {
-      buf = Buffer.from(buf)
+      buf = Buffer.from(buf);
     }
+
     if (!Buffer.isBuffer(buf)) {
-      throw new TypeError('"list" argument must be an Array of Buffers')
+      throw new TypeError('"list" argument must be an Array of Buffers');
     }
-    buf.copy(buffer, pos)
-    pos += buf.length
-  }
-  return buffer
-}
 
-function byteLength (string, encoding) {
+    buf.copy(buffer, pos);
+    pos += buf.length;
+  }
+
+  return buffer;
+};
+
+function byteLength(string, encoding) {
   if (Buffer.isBuffer(string)) {
-    return string.length
+    return string.length;
   }
+
   if (ArrayBuffer.isView(string) || isInstance(string, ArrayBuffer)) {
-    return string.byteLength
+    return string.byteLength;
   }
+
   if (typeof string !== 'string') {
-    throw new TypeError(
-      'The "string" argument must be one of type string, Buffer, or ArrayBuffer. ' +
-      'Received type ' + typeof string
-    )
+    throw new TypeError('The "string" argument must be one of type string, Buffer, or ArrayBuffer. ' + 'Received type ' + _typeof(string));
   }
 
-  var len = string.length
-  var mustMatch = (arguments.length > 2 && arguments[2] === true)
-  if (!mustMatch && len === 0) return 0
+  var len = string.length;
+  var mustMatch = arguments.length > 2 && arguments[2] === true;
+  if (!mustMatch && len === 0) return 0; // Use a for loop to avoid recursion
 
-  // Use a for loop to avoid recursion
-  var loweredCase = false
+  var loweredCase = false;
+
   for (;;) {
     switch (encoding) {
       case 'ascii':
       case 'latin1':
       case 'binary':
-        return len
+        return len;
+
       case 'utf8':
       case 'utf-8':
-        return utf8ToBytes(string).length
+        return utf8ToBytes(string).length;
+
       case 'ucs2':
       case 'ucs-2':
       case 'utf16le':
       case 'utf-16le':
-        return len * 2
+        return len * 2;
+
       case 'hex':
-        return len >>> 1
+        return len >>> 1;
+
       case 'base64':
-        return base64ToBytes(string).length
+        return base64ToBytes(string).length;
+
       default:
         if (loweredCase) {
-          return mustMatch ? -1 : utf8ToBytes(string).length // assume utf8
+          return mustMatch ? -1 : utf8ToBytes(string).length; // assume utf8
         }
-        encoding = ('' + encoding).toLowerCase()
-        loweredCase = true
+
+        encoding = ('' + encoding).toLowerCase();
+        loweredCase = true;
     }
   }
 }
-Buffer.byteLength = byteLength
 
-function slowToString (encoding, start, end) {
-  var loweredCase = false
+Buffer.byteLength = byteLength;
 
-  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+function slowToString(encoding, start, end) {
+  var loweredCase = false; // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
   // property of a typed array.
-
   // This behaves neither like String nor Uint8Array in that we set start/end
   // to their upper/lower bounds if the value passed is out of range.
   // undefined is handled specially as per ECMA-262 6th Edition,
   // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+
   if (start === undefined || start < 0) {
-    start = 0
-  }
-  // Return early if start > this.length. Done here to prevent potential uint32
+    start = 0;
+  } // Return early if start > this.length. Done here to prevent potential uint32
   // coercion fail below.
+
+
   if (start > this.length) {
-    return ''
+    return '';
   }
 
   if (end === undefined || end > this.length) {
-    end = this.length
+    end = this.length;
   }
 
   if (end <= 0) {
-    return ''
-  }
+    return '';
+  } // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
 
-  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
-  end >>>= 0
-  start >>>= 0
+
+  end >>>= 0;
+  start >>>= 0;
 
   if (end <= start) {
-    return ''
+    return '';
   }
 
-  if (!encoding) encoding = 'utf8'
+  if (!encoding) encoding = 'utf8';
 
   while (true) {
     switch (encoding) {
       case 'hex':
-        return hexSlice(this, start, end)
+        return hexSlice(this, start, end);
 
       case 'utf8':
       case 'utf-8':
-        return utf8Slice(this, start, end)
+        return utf8Slice(this, start, end);
 
       case 'ascii':
-        return asciiSlice(this, start, end)
+        return asciiSlice(this, start, end);
 
       case 'latin1':
       case 'binary':
-        return latin1Slice(this, start, end)
+        return latin1Slice(this, start, end);
 
       case 'base64':
-        return base64Slice(this, start, end)
+        return base64Slice(this, start, end);
 
       case 'ucs2':
       case 'ucs-2':
       case 'utf16le':
       case 'utf-16le':
-        return utf16leSlice(this, start, end)
+        return utf16leSlice(this, start, end);
 
       default:
-        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
-        encoding = (encoding + '').toLowerCase()
-        loweredCase = true
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding);
+        encoding = (encoding + '').toLowerCase();
+        loweredCase = true;
     }
   }
-}
-
-// This property is used by `Buffer.isBuffer` (and the `is-buffer` npm package)
+} // This property is used by `Buffer.isBuffer` (and the `is-buffer` npm package)
 // to detect a Buffer instance. It's not possible to use `instanceof Buffer`
 // reliably in a browserify context because there could be multiple different
 // copies of the 'buffer' package in use. This method works even for Buffer
 // instances that were created from another copy of the `buffer` package.
 // See: https://github.com/feross/buffer/issues/154
-Buffer.prototype._isBuffer = true
 
-function swap (b, n, m) {
-  var i = b[n]
-  b[n] = b[m]
-  b[m] = i
+
+Buffer.prototype._isBuffer = true;
+
+function swap(b, n, m) {
+  var i = b[n];
+  b[n] = b[m];
+  b[m] = i;
 }
 
-Buffer.prototype.swap16 = function swap16 () {
-  var len = this.length
+Buffer.prototype.swap16 = function swap16() {
+  var len = this.length;
+
   if (len % 2 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 16-bits')
+    throw new RangeError('Buffer size must be a multiple of 16-bits');
   }
+
   for (var i = 0; i < len; i += 2) {
-    swap(this, i, i + 1)
+    swap(this, i, i + 1);
   }
-  return this
-}
 
-Buffer.prototype.swap32 = function swap32 () {
-  var len = this.length
+  return this;
+};
+
+Buffer.prototype.swap32 = function swap32() {
+  var len = this.length;
+
   if (len % 4 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 32-bits')
+    throw new RangeError('Buffer size must be a multiple of 32-bits');
   }
+
   for (var i = 0; i < len; i += 4) {
-    swap(this, i, i + 3)
-    swap(this, i + 1, i + 2)
+    swap(this, i, i + 3);
+    swap(this, i + 1, i + 2);
   }
-  return this
-}
 
-Buffer.prototype.swap64 = function swap64 () {
-  var len = this.length
+  return this;
+};
+
+Buffer.prototype.swap64 = function swap64() {
+  var len = this.length;
+
   if (len % 8 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 64-bits')
+    throw new RangeError('Buffer size must be a multiple of 64-bits');
   }
+
   for (var i = 0; i < len; i += 8) {
-    swap(this, i, i + 7)
-    swap(this, i + 1, i + 6)
-    swap(this, i + 2, i + 5)
-    swap(this, i + 3, i + 4)
+    swap(this, i, i + 7);
+    swap(this, i + 1, i + 6);
+    swap(this, i + 2, i + 5);
+    swap(this, i + 3, i + 4);
   }
-  return this
-}
 
-Buffer.prototype.toString = function toString () {
-  var length = this.length
-  if (length === 0) return ''
-  if (arguments.length === 0) return utf8Slice(this, 0, length)
-  return slowToString.apply(this, arguments)
-}
+  return this;
+};
 
-Buffer.prototype.toLocaleString = Buffer.prototype.toString
+Buffer.prototype.toString = function toString() {
+  var length = this.length;
+  if (length === 0) return '';
+  if (arguments.length === 0) return utf8Slice(this, 0, length);
+  return slowToString.apply(this, arguments);
+};
 
-Buffer.prototype.equals = function equals (b) {
-  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
-  if (this === b) return true
-  return Buffer.compare(this, b) === 0
-}
+Buffer.prototype.toLocaleString = Buffer.prototype.toString;
 
-Buffer.prototype.inspect = function inspect () {
-  var str = ''
-  var max = exports.INSPECT_MAX_BYTES
-  str = this.toString('hex', 0, max).replace(/(.{2})/g, '$1 ').trim()
-  if (this.length > max) str += ' ... '
-  return '<Buffer ' + str + '>'
-}
+Buffer.prototype.equals = function equals(b) {
+  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer');
+  if (this === b) return true;
+  return Buffer.compare(this, b) === 0;
+};
 
-Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+Buffer.prototype.inspect = function inspect() {
+  var str = '';
+  var max = exports.INSPECT_MAX_BYTES;
+  str = this.toString('hex', 0, max).replace(/(.{2})/g, '$1 ').trim();
+  if (this.length > max) str += ' ... ';
+  return '<Buffer ' + str + '>';
+};
+
+Buffer.prototype.compare = function compare(target, start, end, thisStart, thisEnd) {
   if (isInstance(target, Uint8Array)) {
-    target = Buffer.from(target, target.offset, target.byteLength)
+    target = Buffer.from(target, target.offset, target.byteLength);
   }
+
   if (!Buffer.isBuffer(target)) {
-    throw new TypeError(
-      'The "target" argument must be one of type Buffer or Uint8Array. ' +
-      'Received type ' + (typeof target)
-    )
+    throw new TypeError('The "target" argument must be one of type Buffer or Uint8Array. ' + 'Received type ' + _typeof(target));
   }
 
   if (start === undefined) {
-    start = 0
+    start = 0;
   }
+
   if (end === undefined) {
-    end = target ? target.length : 0
+    end = target ? target.length : 0;
   }
+
   if (thisStart === undefined) {
-    thisStart = 0
+    thisStart = 0;
   }
+
   if (thisEnd === undefined) {
-    thisEnd = this.length
+    thisEnd = this.length;
   }
 
   if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
-    throw new RangeError('out of range index')
+    throw new RangeError('out of range index');
   }
 
   if (thisStart >= thisEnd && start >= end) {
-    return 0
+    return 0;
   }
+
   if (thisStart >= thisEnd) {
-    return -1
+    return -1;
   }
+
   if (start >= end) {
-    return 1
+    return 1;
   }
 
-  start >>>= 0
-  end >>>= 0
-  thisStart >>>= 0
-  thisEnd >>>= 0
-
-  if (this === target) return 0
-
-  var x = thisEnd - thisStart
-  var y = end - start
-  var len = Math.min(x, y)
-
-  var thisCopy = this.slice(thisStart, thisEnd)
-  var targetCopy = target.slice(start, end)
+  start >>>= 0;
+  end >>>= 0;
+  thisStart >>>= 0;
+  thisEnd >>>= 0;
+  if (this === target) return 0;
+  var x = thisEnd - thisStart;
+  var y = end - start;
+  var len = Math.min(x, y);
+  var thisCopy = this.slice(thisStart, thisEnd);
+  var targetCopy = target.slice(start, end);
 
   for (var i = 0; i < len; ++i) {
     if (thisCopy[i] !== targetCopy[i]) {
-      x = thisCopy[i]
-      y = targetCopy[i]
-      break
+      x = thisCopy[i];
+      y = targetCopy[i];
+      break;
     }
   }
 
-  if (x < y) return -1
-  if (y < x) return 1
-  return 0
-}
-
-// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+  if (x < y) return -1;
+  if (y < x) return 1;
+  return 0;
+}; // Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
 // OR the last index of `val` in `buffer` at offset <= `byteOffset`.
 //
 // Arguments:
@@ -9625,8562 +9442,1548 @@ Buffer.prototype.compare = function compare (target, start, end, thisStart, this
 // - byteOffset - an index into `buffer`; will be clamped to an int32
 // - encoding - an optional encoding, relevant is val is a string
 // - dir - true for indexOf, false for lastIndexOf
-function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
-  // Empty buffer means no match
-  if (buffer.length === 0) return -1
 
-  // Normalize byteOffset
+
+function bidirectionalIndexOf(buffer, val, byteOffset, encoding, dir) {
+  // Empty buffer means no match
+  if (buffer.length === 0) return -1; // Normalize byteOffset
+
   if (typeof byteOffset === 'string') {
-    encoding = byteOffset
-    byteOffset = 0
+    encoding = byteOffset;
+    byteOffset = 0;
   } else if (byteOffset > 0x7fffffff) {
-    byteOffset = 0x7fffffff
+    byteOffset = 0x7fffffff;
   } else if (byteOffset < -0x80000000) {
-    byteOffset = -0x80000000
+    byteOffset = -0x80000000;
   }
-  byteOffset = +byteOffset // Coerce to Number.
+
+  byteOffset = +byteOffset; // Coerce to Number.
+
   if (numberIsNaN(byteOffset)) {
     // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
-    byteOffset = dir ? 0 : (buffer.length - 1)
-  }
+    byteOffset = dir ? 0 : buffer.length - 1;
+  } // Normalize byteOffset: negative offsets start from the end of the buffer
 
-  // Normalize byteOffset: negative offsets start from the end of the buffer
-  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset;
+
   if (byteOffset >= buffer.length) {
-    if (dir) return -1
-    else byteOffset = buffer.length - 1
+    if (dir) return -1;else byteOffset = buffer.length - 1;
   } else if (byteOffset < 0) {
-    if (dir) byteOffset = 0
-    else return -1
-  }
+    if (dir) byteOffset = 0;else return -1;
+  } // Normalize val
 
-  // Normalize val
+
   if (typeof val === 'string') {
-    val = Buffer.from(val, encoding)
-  }
+    val = Buffer.from(val, encoding);
+  } // Finally, search either indexOf (if dir is true) or lastIndexOf
 
-  // Finally, search either indexOf (if dir is true) or lastIndexOf
+
   if (Buffer.isBuffer(val)) {
     // Special case: looking for empty string/buffer always fails
     if (val.length === 0) {
-      return -1
+      return -1;
     }
-    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+
+    return arrayIndexOf(buffer, val, byteOffset, encoding, dir);
   } else if (typeof val === 'number') {
-    val = val & 0xFF // Search for a byte value [0-255]
+    val = val & 0xFF; // Search for a byte value [0-255]
+
     if (typeof Uint8Array.prototype.indexOf === 'function') {
       if (dir) {
-        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset);
       } else {
-        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset);
       }
     }
-    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+
+    return arrayIndexOf(buffer, [val], byteOffset, encoding, dir);
   }
 
-  throw new TypeError('val must be string, number or Buffer')
+  throw new TypeError('val must be string, number or Buffer');
 }
 
-function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
-  var indexSize = 1
-  var arrLength = arr.length
-  var valLength = val.length
+function arrayIndexOf(arr, val, byteOffset, encoding, dir) {
+  var indexSize = 1;
+  var arrLength = arr.length;
+  var valLength = val.length;
 
   if (encoding !== undefined) {
-    encoding = String(encoding).toLowerCase()
-    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
-        encoding === 'utf16le' || encoding === 'utf-16le') {
+    encoding = String(encoding).toLowerCase();
+
+    if (encoding === 'ucs2' || encoding === 'ucs-2' || encoding === 'utf16le' || encoding === 'utf-16le') {
       if (arr.length < 2 || val.length < 2) {
-        return -1
+        return -1;
       }
-      indexSize = 2
-      arrLength /= 2
-      valLength /= 2
-      byteOffset /= 2
+
+      indexSize = 2;
+      arrLength /= 2;
+      valLength /= 2;
+      byteOffset /= 2;
     }
   }
 
-  function read (buf, i) {
+  function read(buf, i) {
     if (indexSize === 1) {
-      return buf[i]
+      return buf[i];
     } else {
-      return buf.readUInt16BE(i * indexSize)
+      return buf.readUInt16BE(i * indexSize);
     }
   }
 
-  var i
+  var i;
+
   if (dir) {
-    var foundIndex = -1
+    var foundIndex = -1;
+
     for (i = byteOffset; i < arrLength; i++) {
       if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
-        if (foundIndex === -1) foundIndex = i
-        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+        if (foundIndex === -1) foundIndex = i;
+        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize;
       } else {
-        if (foundIndex !== -1) i -= i - foundIndex
-        foundIndex = -1
+        if (foundIndex !== -1) i -= i - foundIndex;
+        foundIndex = -1;
       }
     }
   } else {
-    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength;
+
     for (i = byteOffset; i >= 0; i--) {
-      var found = true
+      var found = true;
+
       for (var j = 0; j < valLength; j++) {
         if (read(arr, i + j) !== read(val, j)) {
-          found = false
-          break
+          found = false;
+          break;
         }
       }
-      if (found) return i
+
+      if (found) return i;
     }
   }
 
-  return -1
+  return -1;
 }
 
-Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
-  return this.indexOf(val, byteOffset, encoding) !== -1
-}
+Buffer.prototype.includes = function includes(val, byteOffset, encoding) {
+  return this.indexOf(val, byteOffset, encoding) !== -1;
+};
 
-Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
-  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
-}
+Buffer.prototype.indexOf = function indexOf(val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, true);
+};
 
-Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
-  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
-}
+Buffer.prototype.lastIndexOf = function lastIndexOf(val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, false);
+};
 
-function hexWrite (buf, string, offset, length) {
-  offset = Number(offset) || 0
-  var remaining = buf.length - offset
+function hexWrite(buf, string, offset, length) {
+  offset = Number(offset) || 0;
+  var remaining = buf.length - offset;
+
   if (!length) {
-    length = remaining
+    length = remaining;
   } else {
-    length = Number(length)
+    length = Number(length);
+
     if (length > remaining) {
-      length = remaining
+      length = remaining;
     }
   }
 
-  var strLen = string.length
+  var strLen = string.length;
 
   if (length > strLen / 2) {
-    length = strLen / 2
+    length = strLen / 2;
   }
+
   for (var i = 0; i < length; ++i) {
-    var parsed = parseInt(string.substr(i * 2, 2), 16)
-    if (numberIsNaN(parsed)) return i
-    buf[offset + i] = parsed
+    var parsed = parseInt(string.substr(i * 2, 2), 16);
+    if (numberIsNaN(parsed)) return i;
+    buf[offset + i] = parsed;
   }
-  return i
+
+  return i;
 }
 
-function utf8Write (buf, string, offset, length) {
-  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+function utf8Write(buf, string, offset, length) {
+  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length);
 }
 
-function asciiWrite (buf, string, offset, length) {
-  return blitBuffer(asciiToBytes(string), buf, offset, length)
+function asciiWrite(buf, string, offset, length) {
+  return blitBuffer(asciiToBytes(string), buf, offset, length);
 }
 
-function latin1Write (buf, string, offset, length) {
-  return asciiWrite(buf, string, offset, length)
+function latin1Write(buf, string, offset, length) {
+  return asciiWrite(buf, string, offset, length);
 }
 
-function base64Write (buf, string, offset, length) {
-  return blitBuffer(base64ToBytes(string), buf, offset, length)
+function base64Write(buf, string, offset, length) {
+  return blitBuffer(base64ToBytes(string), buf, offset, length);
 }
 
-function ucs2Write (buf, string, offset, length) {
-  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+function ucs2Write(buf, string, offset, length) {
+  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length);
 }
 
-Buffer.prototype.write = function write (string, offset, length, encoding) {
+Buffer.prototype.write = function write(string, offset, length, encoding) {
   // Buffer#write(string)
   if (offset === undefined) {
-    encoding = 'utf8'
-    length = this.length
-    offset = 0
-  // Buffer#write(string, encoding)
+    encoding = 'utf8';
+    length = this.length;
+    offset = 0; // Buffer#write(string, encoding)
   } else if (length === undefined && typeof offset === 'string') {
-    encoding = offset
-    length = this.length
-    offset = 0
-  // Buffer#write(string, offset[, length][, encoding])
+    encoding = offset;
+    length = this.length;
+    offset = 0; // Buffer#write(string, offset[, length][, encoding])
   } else if (isFinite(offset)) {
-    offset = offset >>> 0
+    offset = offset >>> 0;
+
     if (isFinite(length)) {
-      length = length >>> 0
-      if (encoding === undefined) encoding = 'utf8'
+      length = length >>> 0;
+      if (encoding === undefined) encoding = 'utf8';
     } else {
-      encoding = length
-      length = undefined
+      encoding = length;
+      length = undefined;
     }
   } else {
-    throw new Error(
-      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
-    )
+    throw new Error('Buffer.write(string, encoding, offset[, length]) is no longer supported');
   }
 
-  var remaining = this.length - offset
-  if (length === undefined || length > remaining) length = remaining
+  var remaining = this.length - offset;
+  if (length === undefined || length > remaining) length = remaining;
 
-  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
-    throw new RangeError('Attempt to write outside buffer bounds')
+  if (string.length > 0 && (length < 0 || offset < 0) || offset > this.length) {
+    throw new RangeError('Attempt to write outside buffer bounds');
   }
 
-  if (!encoding) encoding = 'utf8'
+  if (!encoding) encoding = 'utf8';
+  var loweredCase = false;
 
-  var loweredCase = false
   for (;;) {
     switch (encoding) {
       case 'hex':
-        return hexWrite(this, string, offset, length)
+        return hexWrite(this, string, offset, length);
 
       case 'utf8':
       case 'utf-8':
-        return utf8Write(this, string, offset, length)
+        return utf8Write(this, string, offset, length);
 
       case 'ascii':
-        return asciiWrite(this, string, offset, length)
+        return asciiWrite(this, string, offset, length);
 
       case 'latin1':
       case 'binary':
-        return latin1Write(this, string, offset, length)
+        return latin1Write(this, string, offset, length);
 
       case 'base64':
         // Warning: maxLength not taken into account in base64Write
-        return base64Write(this, string, offset, length)
+        return base64Write(this, string, offset, length);
 
       case 'ucs2':
       case 'ucs-2':
       case 'utf16le':
       case 'utf-16le':
-        return ucs2Write(this, string, offset, length)
+        return ucs2Write(this, string, offset, length);
 
       default:
-        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
-        encoding = ('' + encoding).toLowerCase()
-        loweredCase = true
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding);
+        encoding = ('' + encoding).toLowerCase();
+        loweredCase = true;
     }
   }
-}
+};
 
-Buffer.prototype.toJSON = function toJSON () {
+Buffer.prototype.toJSON = function toJSON() {
   return {
     type: 'Buffer',
     data: Array.prototype.slice.call(this._arr || this, 0)
-  }
-}
+  };
+};
 
-function base64Slice (buf, start, end) {
+function base64Slice(buf, start, end) {
   if (start === 0 && end === buf.length) {
-    return base64.fromByteArray(buf)
+    return base64.fromByteArray(buf);
   } else {
-    return base64.fromByteArray(buf.slice(start, end))
+    return base64.fromByteArray(buf.slice(start, end));
   }
 }
 
-function utf8Slice (buf, start, end) {
-  end = Math.min(buf.length, end)
-  var res = []
+function utf8Slice(buf, start, end) {
+  end = Math.min(buf.length, end);
+  var res = [];
+  var i = start;
 
-  var i = start
   while (i < end) {
-    var firstByte = buf[i]
-    var codePoint = null
-    var bytesPerSequence = (firstByte > 0xEF) ? 4
-      : (firstByte > 0xDF) ? 3
-        : (firstByte > 0xBF) ? 2
-          : 1
+    var firstByte = buf[i];
+    var codePoint = null;
+    var bytesPerSequence = firstByte > 0xEF ? 4 : firstByte > 0xDF ? 3 : firstByte > 0xBF ? 2 : 1;
 
     if (i + bytesPerSequence <= end) {
-      var secondByte, thirdByte, fourthByte, tempCodePoint
+      var secondByte, thirdByte, fourthByte, tempCodePoint;
 
       switch (bytesPerSequence) {
         case 1:
           if (firstByte < 0x80) {
-            codePoint = firstByte
+            codePoint = firstByte;
           }
-          break
+
+          break;
+
         case 2:
-          secondByte = buf[i + 1]
+          secondByte = buf[i + 1];
+
           if ((secondByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+            tempCodePoint = (firstByte & 0x1F) << 0x6 | secondByte & 0x3F;
+
             if (tempCodePoint > 0x7F) {
-              codePoint = tempCodePoint
+              codePoint = tempCodePoint;
             }
           }
-          break
+
+          break;
+
         case 3:
-          secondByte = buf[i + 1]
-          thirdByte = buf[i + 2]
+          secondByte = buf[i + 1];
+          thirdByte = buf[i + 2];
+
           if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | thirdByte & 0x3F;
+
             if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
-              codePoint = tempCodePoint
+              codePoint = tempCodePoint;
             }
           }
-          break
+
+          break;
+
         case 4:
-          secondByte = buf[i + 1]
-          thirdByte = buf[i + 2]
-          fourthByte = buf[i + 3]
+          secondByte = buf[i + 1];
+          thirdByte = buf[i + 2];
+          fourthByte = buf[i + 3];
+
           if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | fourthByte & 0x3F;
+
             if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
-              codePoint = tempCodePoint
+              codePoint = tempCodePoint;
             }
           }
+
       }
     }
 
     if (codePoint === null) {
       // we did not generate a valid codePoint so insert a
       // replacement char (U+FFFD) and advance only 1 byte
-      codePoint = 0xFFFD
-      bytesPerSequence = 1
+      codePoint = 0xFFFD;
+      bytesPerSequence = 1;
     } else if (codePoint > 0xFFFF) {
       // encode to utf16 (surrogate pair dance)
-      codePoint -= 0x10000
-      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
-      codePoint = 0xDC00 | codePoint & 0x3FF
+      codePoint -= 0x10000;
+      res.push(codePoint >>> 10 & 0x3FF | 0xD800);
+      codePoint = 0xDC00 | codePoint & 0x3FF;
     }
 
-    res.push(codePoint)
-    i += bytesPerSequence
+    res.push(codePoint);
+    i += bytesPerSequence;
   }
 
-  return decodeCodePointsArray(res)
-}
-
-// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+  return decodeCodePointsArray(res);
+} // Based on http://stackoverflow.com/a/22747272/680742, the browser with
 // the lowest limit is Chrome, with 0x10000 args.
 // We go 1 magnitude less, for safety
-var MAX_ARGUMENTS_LENGTH = 0x1000
 
-function decodeCodePointsArray (codePoints) {
-  var len = codePoints.length
+
+var MAX_ARGUMENTS_LENGTH = 0x1000;
+
+function decodeCodePointsArray(codePoints) {
+  var len = codePoints.length;
+
   if (len <= MAX_ARGUMENTS_LENGTH) {
-    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
-  }
+    return String.fromCharCode.apply(String, codePoints); // avoid extra slice()
+  } // Decode in chunks to avoid "call stack size exceeded".
 
-  // Decode in chunks to avoid "call stack size exceeded".
-  var res = ''
-  var i = 0
+
+  var res = '';
+  var i = 0;
+
   while (i < len) {
-    res += String.fromCharCode.apply(
-      String,
-      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
-    )
+    res += String.fromCharCode.apply(String, codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH));
   }
-  return res
+
+  return res;
 }
 
-function asciiSlice (buf, start, end) {
-  var ret = ''
-  end = Math.min(buf.length, end)
+function asciiSlice(buf, start, end) {
+  var ret = '';
+  end = Math.min(buf.length, end);
 
   for (var i = start; i < end; ++i) {
-    ret += String.fromCharCode(buf[i] & 0x7F)
+    ret += String.fromCharCode(buf[i] & 0x7F);
   }
-  return ret
+
+  return ret;
 }
 
-function latin1Slice (buf, start, end) {
-  var ret = ''
-  end = Math.min(buf.length, end)
+function latin1Slice(buf, start, end) {
+  var ret = '';
+  end = Math.min(buf.length, end);
 
   for (var i = start; i < end; ++i) {
-    ret += String.fromCharCode(buf[i])
+    ret += String.fromCharCode(buf[i]);
   }
-  return ret
+
+  return ret;
 }
 
-function hexSlice (buf, start, end) {
-  var len = buf.length
+function hexSlice(buf, start, end) {
+  var len = buf.length;
+  if (!start || start < 0) start = 0;
+  if (!end || end < 0 || end > len) end = len;
+  var out = '';
 
-  if (!start || start < 0) start = 0
-  if (!end || end < 0 || end > len) end = len
-
-  var out = ''
   for (var i = start; i < end; ++i) {
-    out += toHex(buf[i])
+    out += toHex(buf[i]);
   }
-  return out
+
+  return out;
 }
 
-function utf16leSlice (buf, start, end) {
-  var bytes = buf.slice(start, end)
-  var res = ''
+function utf16leSlice(buf, start, end) {
+  var bytes = buf.slice(start, end);
+  var res = '';
+
   for (var i = 0; i < bytes.length; i += 2) {
-    res += String.fromCharCode(bytes[i] + (bytes[i + 1] * 256))
+    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256);
   }
-  return res
+
+  return res;
 }
 
-Buffer.prototype.slice = function slice (start, end) {
-  var len = this.length
-  start = ~~start
-  end = end === undefined ? len : ~~end
+Buffer.prototype.slice = function slice(start, end) {
+  var len = this.length;
+  start = ~~start;
+  end = end === undefined ? len : ~~end;
 
   if (start < 0) {
-    start += len
-    if (start < 0) start = 0
+    start += len;
+    if (start < 0) start = 0;
   } else if (start > len) {
-    start = len
+    start = len;
   }
 
   if (end < 0) {
-    end += len
-    if (end < 0) end = 0
+    end += len;
+    if (end < 0) end = 0;
   } else if (end > len) {
-    end = len
+    end = len;
   }
 
-  if (end < start) end = start
+  if (end < start) end = start;
+  var newBuf = this.subarray(start, end); // Return an augmented `Uint8Array` instance
 
-  var newBuf = this.subarray(start, end)
-  // Return an augmented `Uint8Array` instance
-  newBuf.__proto__ = Buffer.prototype
-  return newBuf
-}
-
+  newBuf.__proto__ = Buffer.prototype;
+  return newBuf;
+};
 /*
  * Need to make sure that buffer isn't trying to write out of bounds.
  */
-function checkOffset (offset, ext, length) {
-  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
-  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+
+
+function checkOffset(offset, ext, length) {
+  if (offset % 1 !== 0 || offset < 0) throw new RangeError('offset is not uint');
+  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length');
 }
 
-Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
+Buffer.prototype.readUIntLE = function readUIntLE(offset, byteLength, noAssert) {
+  offset = offset >>> 0;
+  byteLength = byteLength >>> 0;
+  if (!noAssert) checkOffset(offset, byteLength, this.length);
+  var val = this[offset];
+  var mul = 1;
+  var i = 0;
 
-  var val = this[offset]
-  var mul = 1
-  var i = 0
   while (++i < byteLength && (mul *= 0x100)) {
-    val += this[offset + i] * mul
+    val += this[offset + i] * mul;
   }
 
-  return val
-}
+  return val;
+};
 
-Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
+Buffer.prototype.readUIntBE = function readUIntBE(offset, byteLength, noAssert) {
+  offset = offset >>> 0;
+  byteLength = byteLength >>> 0;
+
   if (!noAssert) {
-    checkOffset(offset, byteLength, this.length)
+    checkOffset(offset, byteLength, this.length);
   }
 
-  var val = this[offset + --byteLength]
-  var mul = 1
+  var val = this[offset + --byteLength];
+  var mul = 1;
+
   while (byteLength > 0 && (mul *= 0x100)) {
-    val += this[offset + --byteLength] * mul
+    val += this[offset + --byteLength] * mul;
   }
 
-  return val
-}
+  return val;
+};
 
-Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 1, this.length)
-  return this[offset]
-}
+Buffer.prototype.readUInt8 = function readUInt8(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 1, this.length);
+  return this[offset];
+};
 
-Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  return this[offset] | (this[offset + 1] << 8)
-}
+Buffer.prototype.readUInt16LE = function readUInt16LE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 2, this.length);
+  return this[offset] | this[offset + 1] << 8;
+};
 
-Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  return (this[offset] << 8) | this[offset + 1]
-}
+Buffer.prototype.readUInt16BE = function readUInt16BE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 2, this.length);
+  return this[offset] << 8 | this[offset + 1];
+};
 
-Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
+Buffer.prototype.readUInt32LE = function readUInt32LE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 4, this.length);
+  return (this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16) + this[offset + 3] * 0x1000000;
+};
 
-  return ((this[offset]) |
-      (this[offset + 1] << 8) |
-      (this[offset + 2] << 16)) +
-      (this[offset + 3] * 0x1000000)
-}
+Buffer.prototype.readUInt32BE = function readUInt32BE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 4, this.length);
+  return this[offset] * 0x1000000 + (this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3]);
+};
 
-Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
+Buffer.prototype.readIntLE = function readIntLE(offset, byteLength, noAssert) {
+  offset = offset >>> 0;
+  byteLength = byteLength >>> 0;
+  if (!noAssert) checkOffset(offset, byteLength, this.length);
+  var val = this[offset];
+  var mul = 1;
+  var i = 0;
 
-  return (this[offset] * 0x1000000) +
-    ((this[offset + 1] << 16) |
-    (this[offset + 2] << 8) |
-    this[offset + 3])
-}
-
-Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var val = this[offset]
-  var mul = 1
-  var i = 0
   while (++i < byteLength && (mul *= 0x100)) {
-    val += this[offset + i] * mul
+    val += this[offset + i] * mul;
   }
-  mul *= 0x80
 
-  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+  mul *= 0x80;
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength);
+  return val;
+};
 
-  return val
-}
+Buffer.prototype.readIntBE = function readIntBE(offset, byteLength, noAssert) {
+  offset = offset >>> 0;
+  byteLength = byteLength >>> 0;
+  if (!noAssert) checkOffset(offset, byteLength, this.length);
+  var i = byteLength;
+  var mul = 1;
+  var val = this[offset + --i];
 
-Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var i = byteLength
-  var mul = 1
-  var val = this[offset + --i]
   while (i > 0 && (mul *= 0x100)) {
-    val += this[offset + --i] * mul
+    val += this[offset + --i] * mul;
   }
-  mul *= 0x80
 
-  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+  mul *= 0x80;
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength);
+  return val;
+};
 
-  return val
+Buffer.prototype.readInt8 = function readInt8(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 1, this.length);
+  if (!(this[offset] & 0x80)) return this[offset];
+  return (0xff - this[offset] + 1) * -1;
+};
+
+Buffer.prototype.readInt16LE = function readInt16LE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 2, this.length);
+  var val = this[offset] | this[offset + 1] << 8;
+  return val & 0x8000 ? val | 0xFFFF0000 : val;
+};
+
+Buffer.prototype.readInt16BE = function readInt16BE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 2, this.length);
+  var val = this[offset + 1] | this[offset] << 8;
+  return val & 0x8000 ? val | 0xFFFF0000 : val;
+};
+
+Buffer.prototype.readInt32LE = function readInt32LE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 4, this.length);
+  return this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16 | this[offset + 3] << 24;
+};
+
+Buffer.prototype.readInt32BE = function readInt32BE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 4, this.length);
+  return this[offset] << 24 | this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3];
+};
+
+Buffer.prototype.readFloatLE = function readFloatLE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 4, this.length);
+  return ieee754.read(this, offset, true, 23, 4);
+};
+
+Buffer.prototype.readFloatBE = function readFloatBE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 4, this.length);
+  return ieee754.read(this, offset, false, 23, 4);
+};
+
+Buffer.prototype.readDoubleLE = function readDoubleLE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 8, this.length);
+  return ieee754.read(this, offset, true, 52, 8);
+};
+
+Buffer.prototype.readDoubleBE = function readDoubleBE(offset, noAssert) {
+  offset = offset >>> 0;
+  if (!noAssert) checkOffset(offset, 8, this.length);
+  return ieee754.read(this, offset, false, 52, 8);
+};
+
+function checkInt(buf, value, offset, ext, max, min) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance');
+  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds');
+  if (offset + ext > buf.length) throw new RangeError('Index out of range');
 }
 
-Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 1, this.length)
-  if (!(this[offset] & 0x80)) return (this[offset])
-  return ((0xff - this[offset] + 1) * -1)
-}
+Buffer.prototype.writeUIntLE = function writeUIntLE(value, offset, byteLength, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  byteLength = byteLength >>> 0;
 
-Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  var val = this[offset] | (this[offset + 1] << 8)
-  return (val & 0x8000) ? val | 0xFFFF0000 : val
-}
-
-Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  var val = this[offset + 1] | (this[offset] << 8)
-  return (val & 0x8000) ? val | 0xFFFF0000 : val
-}
-
-Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset]) |
-    (this[offset + 1] << 8) |
-    (this[offset + 2] << 16) |
-    (this[offset + 3] << 24)
-}
-
-Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset] << 24) |
-    (this[offset + 1] << 16) |
-    (this[offset + 2] << 8) |
-    (this[offset + 3])
-}
-
-Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-  return ieee754.read(this, offset, true, 23, 4)
-}
-
-Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-  return ieee754.read(this, offset, false, 23, 4)
-}
-
-Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 8, this.length)
-  return ieee754.read(this, offset, true, 52, 8)
-}
-
-Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 8, this.length)
-  return ieee754.read(this, offset, false, 52, 8)
-}
-
-function checkInt (buf, value, offset, ext, max, min) {
-  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
-  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
-  if (offset + ext > buf.length) throw new RangeError('Index out of range')
-}
-
-Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
   if (!noAssert) {
-    var maxBytes = Math.pow(2, 8 * byteLength) - 1
-    checkInt(this, value, offset, byteLength, maxBytes, 0)
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1;
+    checkInt(this, value, offset, byteLength, maxBytes, 0);
   }
 
-  var mul = 1
-  var i = 0
-  this[offset] = value & 0xFF
+  var mul = 1;
+  var i = 0;
+  this[offset] = value & 0xFF;
+
   while (++i < byteLength && (mul *= 0x100)) {
-    this[offset + i] = (value / mul) & 0xFF
+    this[offset + i] = value / mul & 0xFF;
   }
 
-  return offset + byteLength
-}
+  return offset + byteLength;
+};
 
-Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
+Buffer.prototype.writeUIntBE = function writeUIntBE(value, offset, byteLength, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  byteLength = byteLength >>> 0;
+
   if (!noAssert) {
-    var maxBytes = Math.pow(2, 8 * byteLength) - 1
-    checkInt(this, value, offset, byteLength, maxBytes, 0)
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1;
+    checkInt(this, value, offset, byteLength, maxBytes, 0);
   }
 
-  var i = byteLength - 1
-  var mul = 1
-  this[offset + i] = value & 0xFF
+  var i = byteLength - 1;
+  var mul = 1;
+  this[offset + i] = value & 0xFF;
+
   while (--i >= 0 && (mul *= 0x100)) {
-    this[offset + i] = (value / mul) & 0xFF
+    this[offset + i] = value / mul & 0xFF;
   }
 
-  return offset + byteLength
-}
+  return offset + byteLength;
+};
 
-Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
-  this[offset] = (value & 0xff)
-  return offset + 1
-}
+Buffer.prototype.writeUInt8 = function writeUInt8(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0);
+  this[offset] = value & 0xff;
+  return offset + 1;
+};
 
-Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
-  this[offset] = (value & 0xff)
-  this[offset + 1] = (value >>> 8)
-  return offset + 2
-}
+Buffer.prototype.writeUInt16LE = function writeUInt16LE(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0);
+  this[offset] = value & 0xff;
+  this[offset + 1] = value >>> 8;
+  return offset + 2;
+};
 
-Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
-  this[offset] = (value >>> 8)
-  this[offset + 1] = (value & 0xff)
-  return offset + 2
-}
+Buffer.prototype.writeUInt16BE = function writeUInt16BE(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0);
+  this[offset] = value >>> 8;
+  this[offset + 1] = value & 0xff;
+  return offset + 2;
+};
 
-Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
-  this[offset + 3] = (value >>> 24)
-  this[offset + 2] = (value >>> 16)
-  this[offset + 1] = (value >>> 8)
-  this[offset] = (value & 0xff)
-  return offset + 4
-}
+Buffer.prototype.writeUInt32LE = function writeUInt32LE(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0);
+  this[offset + 3] = value >>> 24;
+  this[offset + 2] = value >>> 16;
+  this[offset + 1] = value >>> 8;
+  this[offset] = value & 0xff;
+  return offset + 4;
+};
 
-Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
-  this[offset] = (value >>> 24)
-  this[offset + 1] = (value >>> 16)
-  this[offset + 2] = (value >>> 8)
-  this[offset + 3] = (value & 0xff)
-  return offset + 4
-}
+Buffer.prototype.writeUInt32BE = function writeUInt32BE(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0);
+  this[offset] = value >>> 24;
+  this[offset + 1] = value >>> 16;
+  this[offset + 2] = value >>> 8;
+  this[offset + 3] = value & 0xff;
+  return offset + 4;
+};
 
-Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset >>> 0
+Buffer.prototype.writeIntLE = function writeIntLE(value, offset, byteLength, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+
   if (!noAssert) {
-    var limit = Math.pow(2, (8 * byteLength) - 1)
-
-    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+    var limit = Math.pow(2, 8 * byteLength - 1);
+    checkInt(this, value, offset, byteLength, limit - 1, -limit);
   }
 
-  var i = 0
-  var mul = 1
-  var sub = 0
-  this[offset] = value & 0xFF
+  var i = 0;
+  var mul = 1;
+  var sub = 0;
+  this[offset] = value & 0xFF;
+
   while (++i < byteLength && (mul *= 0x100)) {
     if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
-      sub = 1
+      sub = 1;
     }
-    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+
+    this[offset + i] = (value / mul >> 0) - sub & 0xFF;
   }
 
-  return offset + byteLength
-}
+  return offset + byteLength;
+};
 
-Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset >>> 0
+Buffer.prototype.writeIntBE = function writeIntBE(value, offset, byteLength, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+
   if (!noAssert) {
-    var limit = Math.pow(2, (8 * byteLength) - 1)
-
-    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+    var limit = Math.pow(2, 8 * byteLength - 1);
+    checkInt(this, value, offset, byteLength, limit - 1, -limit);
   }
 
-  var i = byteLength - 1
-  var mul = 1
-  var sub = 0
-  this[offset + i] = value & 0xFF
+  var i = byteLength - 1;
+  var mul = 1;
+  var sub = 0;
+  this[offset + i] = value & 0xFF;
+
   while (--i >= 0 && (mul *= 0x100)) {
     if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
-      sub = 1
+      sub = 1;
     }
-    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+
+    this[offset + i] = (value / mul >> 0) - sub & 0xFF;
   }
 
-  return offset + byteLength
+  return offset + byteLength;
+};
+
+Buffer.prototype.writeInt8 = function writeInt8(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80);
+  if (value < 0) value = 0xff + value + 1;
+  this[offset] = value & 0xff;
+  return offset + 1;
+};
+
+Buffer.prototype.writeInt16LE = function writeInt16LE(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000);
+  this[offset] = value & 0xff;
+  this[offset + 1] = value >>> 8;
+  return offset + 2;
+};
+
+Buffer.prototype.writeInt16BE = function writeInt16BE(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000);
+  this[offset] = value >>> 8;
+  this[offset + 1] = value & 0xff;
+  return offset + 2;
+};
+
+Buffer.prototype.writeInt32LE = function writeInt32LE(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000);
+  this[offset] = value & 0xff;
+  this[offset + 1] = value >>> 8;
+  this[offset + 2] = value >>> 16;
+  this[offset + 3] = value >>> 24;
+  return offset + 4;
+};
+
+Buffer.prototype.writeInt32BE = function writeInt32BE(value, offset, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000);
+  if (value < 0) value = 0xffffffff + value + 1;
+  this[offset] = value >>> 24;
+  this[offset + 1] = value >>> 16;
+  this[offset + 2] = value >>> 8;
+  this[offset + 3] = value & 0xff;
+  return offset + 4;
+};
+
+function checkIEEE754(buf, value, offset, ext, max, min) {
+  if (offset + ext > buf.length) throw new RangeError('Index out of range');
+  if (offset < 0) throw new RangeError('Index out of range');
 }
 
-Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
-  if (value < 0) value = 0xff + value + 1
-  this[offset] = (value & 0xff)
-  return offset + 1
-}
+function writeFloat(buf, value, offset, littleEndian, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
 
-Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-  this[offset] = (value & 0xff)
-  this[offset + 1] = (value >>> 8)
-  return offset + 2
-}
-
-Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-  this[offset] = (value >>> 8)
-  this[offset + 1] = (value & 0xff)
-  return offset + 2
-}
-
-Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-  this[offset] = (value & 0xff)
-  this[offset + 1] = (value >>> 8)
-  this[offset + 2] = (value >>> 16)
-  this[offset + 3] = (value >>> 24)
-  return offset + 4
-}
-
-Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-  if (value < 0) value = 0xffffffff + value + 1
-  this[offset] = (value >>> 24)
-  this[offset + 1] = (value >>> 16)
-  this[offset + 2] = (value >>> 8)
-  this[offset + 3] = (value & 0xff)
-  return offset + 4
-}
-
-function checkIEEE754 (buf, value, offset, ext, max, min) {
-  if (offset + ext > buf.length) throw new RangeError('Index out of range')
-  if (offset < 0) throw new RangeError('Index out of range')
-}
-
-function writeFloat (buf, value, offset, littleEndian, noAssert) {
-  value = +value
-  offset = offset >>> 0
   if (!noAssert) {
-    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38);
   }
-  ieee754.write(buf, value, offset, littleEndian, 23, 4)
-  return offset + 4
+
+  ieee754.write(buf, value, offset, littleEndian, 23, 4);
+  return offset + 4;
 }
 
-Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
-  return writeFloat(this, value, offset, true, noAssert)
-}
+Buffer.prototype.writeFloatLE = function writeFloatLE(value, offset, noAssert) {
+  return writeFloat(this, value, offset, true, noAssert);
+};
 
-Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
-  return writeFloat(this, value, offset, false, noAssert)
-}
+Buffer.prototype.writeFloatBE = function writeFloatBE(value, offset, noAssert) {
+  return writeFloat(this, value, offset, false, noAssert);
+};
 
-function writeDouble (buf, value, offset, littleEndian, noAssert) {
-  value = +value
-  offset = offset >>> 0
+function writeDouble(buf, value, offset, littleEndian, noAssert) {
+  value = +value;
+  offset = offset >>> 0;
+
   if (!noAssert) {
-    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308);
   }
-  ieee754.write(buf, value, offset, littleEndian, 52, 8)
-  return offset + 8
+
+  ieee754.write(buf, value, offset, littleEndian, 52, 8);
+  return offset + 8;
 }
 
-Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
-  return writeDouble(this, value, offset, true, noAssert)
-}
+Buffer.prototype.writeDoubleLE = function writeDoubleLE(value, offset, noAssert) {
+  return writeDouble(this, value, offset, true, noAssert);
+};
 
-Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
-  return writeDouble(this, value, offset, false, noAssert)
-}
+Buffer.prototype.writeDoubleBE = function writeDoubleBE(value, offset, noAssert) {
+  return writeDouble(this, value, offset, false, noAssert);
+}; // copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
 
-// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
-Buffer.prototype.copy = function copy (target, targetStart, start, end) {
-  if (!Buffer.isBuffer(target)) throw new TypeError('argument should be a Buffer')
-  if (!start) start = 0
-  if (!end && end !== 0) end = this.length
-  if (targetStart >= target.length) targetStart = target.length
-  if (!targetStart) targetStart = 0
-  if (end > 0 && end < start) end = start
 
-  // Copy 0 bytes; we're done
-  if (end === start) return 0
-  if (target.length === 0 || this.length === 0) return 0
+Buffer.prototype.copy = function copy(target, targetStart, start, end) {
+  if (!Buffer.isBuffer(target)) throw new TypeError('argument should be a Buffer');
+  if (!start) start = 0;
+  if (!end && end !== 0) end = this.length;
+  if (targetStart >= target.length) targetStart = target.length;
+  if (!targetStart) targetStart = 0;
+  if (end > 0 && end < start) end = start; // Copy 0 bytes; we're done
 
-  // Fatal error conditions
+  if (end === start) return 0;
+  if (target.length === 0 || this.length === 0) return 0; // Fatal error conditions
+
   if (targetStart < 0) {
-    throw new RangeError('targetStart out of bounds')
+    throw new RangeError('targetStart out of bounds');
   }
-  if (start < 0 || start >= this.length) throw new RangeError('Index out of range')
-  if (end < 0) throw new RangeError('sourceEnd out of bounds')
 
-  // Are we oob?
-  if (end > this.length) end = this.length
+  if (start < 0 || start >= this.length) throw new RangeError('Index out of range');
+  if (end < 0) throw new RangeError('sourceEnd out of bounds'); // Are we oob?
+
+  if (end > this.length) end = this.length;
+
   if (target.length - targetStart < end - start) {
-    end = target.length - targetStart + start
+    end = target.length - targetStart + start;
   }
 
-  var len = end - start
+  var len = end - start;
 
   if (this === target && typeof Uint8Array.prototype.copyWithin === 'function') {
     // Use built-in when available, missing from IE11
-    this.copyWithin(targetStart, start, end)
+    this.copyWithin(targetStart, start, end);
   } else if (this === target && start < targetStart && targetStart < end) {
     // descending copy from end
     for (var i = len - 1; i >= 0; --i) {
-      target[i + targetStart] = this[i + start]
+      target[i + targetStart] = this[i + start];
     }
   } else {
-    Uint8Array.prototype.set.call(
-      target,
-      this.subarray(start, end),
-      targetStart
-    )
+    Uint8Array.prototype.set.call(target, this.subarray(start, end), targetStart);
   }
 
-  return len
-}
-
-// Usage:
+  return len;
+}; // Usage:
 //    buffer.fill(number[, offset[, end]])
 //    buffer.fill(buffer[, offset[, end]])
 //    buffer.fill(string[, offset[, end]][, encoding])
-Buffer.prototype.fill = function fill (val, start, end, encoding) {
+
+
+Buffer.prototype.fill = function fill(val, start, end, encoding) {
   // Handle string cases:
   if (typeof val === 'string') {
     if (typeof start === 'string') {
-      encoding = start
-      start = 0
-      end = this.length
+      encoding = start;
+      start = 0;
+      end = this.length;
     } else if (typeof end === 'string') {
-      encoding = end
-      end = this.length
+      encoding = end;
+      end = this.length;
     }
+
     if (encoding !== undefined && typeof encoding !== 'string') {
-      throw new TypeError('encoding must be a string')
+      throw new TypeError('encoding must be a string');
     }
+
     if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
-      throw new TypeError('Unknown encoding: ' + encoding)
+      throw new TypeError('Unknown encoding: ' + encoding);
     }
+
     if (val.length === 1) {
-      var code = val.charCodeAt(0)
-      if ((encoding === 'utf8' && code < 128) ||
-          encoding === 'latin1') {
+      var code = val.charCodeAt(0);
+
+      if (encoding === 'utf8' && code < 128 || encoding === 'latin1') {
         // Fast path: If `val` fits into a single byte, use that numeric value.
-        val = code
+        val = code;
       }
     }
   } else if (typeof val === 'number') {
-    val = val & 255
-  }
+    val = val & 255;
+  } // Invalid ranges are not set to a default, so can range check early.
 
-  // Invalid ranges are not set to a default, so can range check early.
+
   if (start < 0 || this.length < start || this.length < end) {
-    throw new RangeError('Out of range index')
+    throw new RangeError('Out of range index');
   }
 
   if (end <= start) {
-    return this
+    return this;
   }
 
-  start = start >>> 0
-  end = end === undefined ? this.length : end >>> 0
+  start = start >>> 0;
+  end = end === undefined ? this.length : end >>> 0;
+  if (!val) val = 0;
+  var i;
 
-  if (!val) val = 0
-
-  var i
   if (typeof val === 'number') {
     for (i = start; i < end; ++i) {
-      this[i] = val
+      this[i] = val;
     }
   } else {
-    var bytes = Buffer.isBuffer(val)
-      ? val
-      : Buffer.from(val, encoding)
-    var len = bytes.length
+    var bytes = Buffer.isBuffer(val) ? val : Buffer.from(val, encoding);
+    var len = bytes.length;
+
     if (len === 0) {
-      throw new TypeError('The value "' + val +
-        '" is invalid for argument "value"')
+      throw new TypeError('The value "' + val + '" is invalid for argument "value"');
     }
+
     for (i = 0; i < end - start; ++i) {
-      this[i + start] = bytes[i % len]
+      this[i + start] = bytes[i % len];
     }
   }
 
-  return this
-}
-
-// HELPER FUNCTIONS
+  return this;
+}; // HELPER FUNCTIONS
 // ================
 
-var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g
 
-function base64clean (str) {
+var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g;
+
+function base64clean(str) {
   // Node takes equal signs as end of the Base64 encoding
-  str = str.split('=')[0]
-  // Node strips out invalid characters like \n and \t from the string, base64-js does not
-  str = str.trim().replace(INVALID_BASE64_RE, '')
-  // Node converts strings with length < 2 to ''
-  if (str.length < 2) return ''
-  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+  str = str.split('=')[0]; // Node strips out invalid characters like \n and \t from the string, base64-js does not
+
+  str = str.trim().replace(INVALID_BASE64_RE, ''); // Node converts strings with length < 2 to ''
+
+  if (str.length < 2) return ''; // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+
   while (str.length % 4 !== 0) {
-    str = str + '='
+    str = str + '=';
   }
-  return str
+
+  return str;
 }
 
-function toHex (n) {
-  if (n < 16) return '0' + n.toString(16)
-  return n.toString(16)
+function toHex(n) {
+  if (n < 16) return '0' + n.toString(16);
+  return n.toString(16);
 }
 
-function utf8ToBytes (string, units) {
-  units = units || Infinity
-  var codePoint
-  var length = string.length
-  var leadSurrogate = null
-  var bytes = []
+function utf8ToBytes(string, units) {
+  units = units || Infinity;
+  var codePoint;
+  var length = string.length;
+  var leadSurrogate = null;
+  var bytes = [];
 
   for (var i = 0; i < length; ++i) {
-    codePoint = string.charCodeAt(i)
+    codePoint = string.charCodeAt(i); // is surrogate component
 
-    // is surrogate component
     if (codePoint > 0xD7FF && codePoint < 0xE000) {
       // last char was a lead
       if (!leadSurrogate) {
         // no lead yet
         if (codePoint > 0xDBFF) {
           // unexpected trail
-          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-          continue
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD);
+          continue;
         } else if (i + 1 === length) {
           // unpaired lead
-          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-          continue
-        }
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD);
+          continue;
+        } // valid lead
 
-        // valid lead
-        leadSurrogate = codePoint
 
-        continue
-      }
+        leadSurrogate = codePoint;
+        continue;
+      } // 2 leads in a row
 
-      // 2 leads in a row
+
       if (codePoint < 0xDC00) {
-        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-        leadSurrogate = codePoint
-        continue
-      }
+        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD);
+        leadSurrogate = codePoint;
+        continue;
+      } // valid surrogate pair
 
-      // valid surrogate pair
-      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+
+      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000;
     } else if (leadSurrogate) {
       // valid bmp char, but last char was a lead
-      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD);
     }
 
-    leadSurrogate = null
+    leadSurrogate = null; // encode utf8
 
-    // encode utf8
     if (codePoint < 0x80) {
-      if ((units -= 1) < 0) break
-      bytes.push(codePoint)
+      if ((units -= 1) < 0) break;
+      bytes.push(codePoint);
     } else if (codePoint < 0x800) {
-      if ((units -= 2) < 0) break
-      bytes.push(
-        codePoint >> 0x6 | 0xC0,
-        codePoint & 0x3F | 0x80
-      )
+      if ((units -= 2) < 0) break;
+      bytes.push(codePoint >> 0x6 | 0xC0, codePoint & 0x3F | 0x80);
     } else if (codePoint < 0x10000) {
-      if ((units -= 3) < 0) break
-      bytes.push(
-        codePoint >> 0xC | 0xE0,
-        codePoint >> 0x6 & 0x3F | 0x80,
-        codePoint & 0x3F | 0x80
-      )
+      if ((units -= 3) < 0) break;
+      bytes.push(codePoint >> 0xC | 0xE0, codePoint >> 0x6 & 0x3F | 0x80, codePoint & 0x3F | 0x80);
     } else if (codePoint < 0x110000) {
-      if ((units -= 4) < 0) break
-      bytes.push(
-        codePoint >> 0x12 | 0xF0,
-        codePoint >> 0xC & 0x3F | 0x80,
-        codePoint >> 0x6 & 0x3F | 0x80,
-        codePoint & 0x3F | 0x80
-      )
+      if ((units -= 4) < 0) break;
+      bytes.push(codePoint >> 0x12 | 0xF0, codePoint >> 0xC & 0x3F | 0x80, codePoint >> 0x6 & 0x3F | 0x80, codePoint & 0x3F | 0x80);
     } else {
-      throw new Error('Invalid code point')
+      throw new Error('Invalid code point');
     }
   }
 
-  return bytes
+  return bytes;
 }
 
-function asciiToBytes (str) {
-  var byteArray = []
+function asciiToBytes(str) {
+  var byteArray = [];
+
   for (var i = 0; i < str.length; ++i) {
     // Node's code seems to be doing this and not & 0x7F..
-    byteArray.push(str.charCodeAt(i) & 0xFF)
+    byteArray.push(str.charCodeAt(i) & 0xFF);
   }
-  return byteArray
+
+  return byteArray;
 }
 
-function utf16leToBytes (str, units) {
-  var c, hi, lo
-  var byteArray = []
+function utf16leToBytes(str, units) {
+  var c, hi, lo;
+  var byteArray = [];
+
   for (var i = 0; i < str.length; ++i) {
-    if ((units -= 2) < 0) break
-
-    c = str.charCodeAt(i)
-    hi = c >> 8
-    lo = c % 256
-    byteArray.push(lo)
-    byteArray.push(hi)
+    if ((units -= 2) < 0) break;
+    c = str.charCodeAt(i);
+    hi = c >> 8;
+    lo = c % 256;
+    byteArray.push(lo);
+    byteArray.push(hi);
   }
 
-  return byteArray
+  return byteArray;
 }
 
-function base64ToBytes (str) {
-  return base64.toByteArray(base64clean(str))
+function base64ToBytes(str) {
+  return base64.toByteArray(base64clean(str));
 }
 
-function blitBuffer (src, dst, offset, length) {
+function blitBuffer(src, dst, offset, length) {
   for (var i = 0; i < length; ++i) {
-    if ((i + offset >= dst.length) || (i >= src.length)) break
-    dst[i + offset] = src[i]
+    if (i + offset >= dst.length || i >= src.length) break;
+    dst[i + offset] = src[i];
   }
-  return i
-}
 
-// ArrayBuffer or Uint8Array objects from other contexts (i.e. iframes) do not pass
+  return i;
+} // ArrayBuffer or Uint8Array objects from other contexts (i.e. iframes) do not pass
 // the `instanceof` check but they should be treated as of that type.
 // See: https://github.com/feross/buffer/issues/166
-function isInstance (obj, type) {
-  return obj instanceof type ||
-    (obj != null && obj.constructor != null && obj.constructor.name != null &&
-      obj.constructor.name === type.name)
+
+
+function isInstance(obj, type) {
+  return obj instanceof type || obj != null && obj.constructor != null && obj.constructor.name != null && obj.constructor.name === type.name;
 }
-function numberIsNaN (obj) {
+
+function numberIsNaN(obj) {
   // For IE11 support
-  return obj !== obj // eslint-disable-line no-self-compare
+  return obj !== obj; // eslint-disable-line no-self-compare
 }
 
 }).call(this,require("buffer").Buffer)
-},{"base64-js":48,"buffer":49,"ieee754":50}],50:[function(require,module,exports){
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = (nBytes * 8) - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = (nBytes * 8) - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = ((value * c) - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-},{}],51:[function(require,module,exports){
-//! moment.js
-
-;(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    global.moment = factory()
-}(this, (function () { 'use strict';
-
-    var hookCallback;
-
-    function hooks () {
-        return hookCallback.apply(null, arguments);
-    }
-
-    // This is done to register the method called with moment()
-    // without creating circular dependencies.
-    function setHookCallback (callback) {
-        hookCallback = callback;
-    }
-
-    function isArray(input) {
-        return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
-    }
-
-    function isObject(input) {
-        // IE8 will treat undefined and null as object if it wasn't for
-        // input != null
-        return input != null && Object.prototype.toString.call(input) === '[object Object]';
-    }
-
-    function isObjectEmpty(obj) {
-        if (Object.getOwnPropertyNames) {
-            return (Object.getOwnPropertyNames(obj).length === 0);
-        } else {
-            var k;
-            for (k in obj) {
-                if (obj.hasOwnProperty(k)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    function isUndefined(input) {
-        return input === void 0;
-    }
-
-    function isNumber(input) {
-        return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
-    }
-
-    function isDate(input) {
-        return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
-    }
-
-    function map(arr, fn) {
-        var res = [], i;
-        for (i = 0; i < arr.length; ++i) {
-            res.push(fn(arr[i], i));
-        }
-        return res;
-    }
-
-    function hasOwnProp(a, b) {
-        return Object.prototype.hasOwnProperty.call(a, b);
-    }
-
-    function extend(a, b) {
-        for (var i in b) {
-            if (hasOwnProp(b, i)) {
-                a[i] = b[i];
-            }
-        }
-
-        if (hasOwnProp(b, 'toString')) {
-            a.toString = b.toString;
-        }
-
-        if (hasOwnProp(b, 'valueOf')) {
-            a.valueOf = b.valueOf;
-        }
-
-        return a;
-    }
-
-    function createUTC (input, format, locale, strict) {
-        return createLocalOrUTC(input, format, locale, strict, true).utc();
-    }
-
-    function defaultParsingFlags() {
-        // We need to deep clone this object.
-        return {
-            empty           : false,
-            unusedTokens    : [],
-            unusedInput     : [],
-            overflow        : -2,
-            charsLeftOver   : 0,
-            nullInput       : false,
-            invalidMonth    : null,
-            invalidFormat   : false,
-            userInvalidated : false,
-            iso             : false,
-            parsedDateParts : [],
-            meridiem        : null,
-            rfc2822         : false,
-            weekdayMismatch : false
-        };
-    }
-
-    function getParsingFlags(m) {
-        if (m._pf == null) {
-            m._pf = defaultParsingFlags();
-        }
-        return m._pf;
-    }
-
-    var some;
-    if (Array.prototype.some) {
-        some = Array.prototype.some;
-    } else {
-        some = function (fun) {
-            var t = Object(this);
-            var len = t.length >>> 0;
-
-            for (var i = 0; i < len; i++) {
-                if (i in t && fun.call(this, t[i], i, t)) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-    }
-
-    function isValid(m) {
-        if (m._isValid == null) {
-            var flags = getParsingFlags(m);
-            var parsedParts = some.call(flags.parsedDateParts, function (i) {
-                return i != null;
-            });
-            var isNowValid = !isNaN(m._d.getTime()) &&
-                flags.overflow < 0 &&
-                !flags.empty &&
-                !flags.invalidMonth &&
-                !flags.invalidWeekday &&
-                !flags.weekdayMismatch &&
-                !flags.nullInput &&
-                !flags.invalidFormat &&
-                !flags.userInvalidated &&
-                (!flags.meridiem || (flags.meridiem && parsedParts));
-
-            if (m._strict) {
-                isNowValid = isNowValid &&
-                    flags.charsLeftOver === 0 &&
-                    flags.unusedTokens.length === 0 &&
-                    flags.bigHour === undefined;
-            }
-
-            if (Object.isFrozen == null || !Object.isFrozen(m)) {
-                m._isValid = isNowValid;
-            }
-            else {
-                return isNowValid;
-            }
-        }
-        return m._isValid;
-    }
-
-    function createInvalid (flags) {
-        var m = createUTC(NaN);
-        if (flags != null) {
-            extend(getParsingFlags(m), flags);
-        }
-        else {
-            getParsingFlags(m).userInvalidated = true;
-        }
-
-        return m;
-    }
-
-    // Plugins that add properties should also add the key here (null value),
-    // so we can properly clone ourselves.
-    var momentProperties = hooks.momentProperties = [];
-
-    function copyConfig(to, from) {
-        var i, prop, val;
-
-        if (!isUndefined(from._isAMomentObject)) {
-            to._isAMomentObject = from._isAMomentObject;
-        }
-        if (!isUndefined(from._i)) {
-            to._i = from._i;
-        }
-        if (!isUndefined(from._f)) {
-            to._f = from._f;
-        }
-        if (!isUndefined(from._l)) {
-            to._l = from._l;
-        }
-        if (!isUndefined(from._strict)) {
-            to._strict = from._strict;
-        }
-        if (!isUndefined(from._tzm)) {
-            to._tzm = from._tzm;
-        }
-        if (!isUndefined(from._isUTC)) {
-            to._isUTC = from._isUTC;
-        }
-        if (!isUndefined(from._offset)) {
-            to._offset = from._offset;
-        }
-        if (!isUndefined(from._pf)) {
-            to._pf = getParsingFlags(from);
-        }
-        if (!isUndefined(from._locale)) {
-            to._locale = from._locale;
-        }
-
-        if (momentProperties.length > 0) {
-            for (i = 0; i < momentProperties.length; i++) {
-                prop = momentProperties[i];
-                val = from[prop];
-                if (!isUndefined(val)) {
-                    to[prop] = val;
-                }
-            }
-        }
-
-        return to;
-    }
-
-    var updateInProgress = false;
-
-    // Moment prototype object
-    function Moment(config) {
-        copyConfig(this, config);
-        this._d = new Date(config._d != null ? config._d.getTime() : NaN);
-        if (!this.isValid()) {
-            this._d = new Date(NaN);
-        }
-        // Prevent infinite loop in case updateOffset creates new moment
-        // objects.
-        if (updateInProgress === false) {
-            updateInProgress = true;
-            hooks.updateOffset(this);
-            updateInProgress = false;
-        }
-    }
-
-    function isMoment (obj) {
-        return obj instanceof Moment || (obj != null && obj._isAMomentObject != null);
-    }
-
-    function absFloor (number) {
-        if (number < 0) {
-            // -0 -> 0
-            return Math.ceil(number) || 0;
-        } else {
-            return Math.floor(number);
-        }
-    }
-
-    function toInt(argumentForCoercion) {
-        var coercedNumber = +argumentForCoercion,
-            value = 0;
-
-        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
-            value = absFloor(coercedNumber);
-        }
-
-        return value;
-    }
-
-    // compare two arrays, return the number of differences
-    function compareArrays(array1, array2, dontConvert) {
-        var len = Math.min(array1.length, array2.length),
-            lengthDiff = Math.abs(array1.length - array2.length),
-            diffs = 0,
-            i;
-        for (i = 0; i < len; i++) {
-            if ((dontConvert && array1[i] !== array2[i]) ||
-                (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))) {
-                diffs++;
-            }
-        }
-        return diffs + lengthDiff;
-    }
-
-    function warn(msg) {
-        if (hooks.suppressDeprecationWarnings === false &&
-                (typeof console !==  'undefined') && console.warn) {
-            console.warn('Deprecation warning: ' + msg);
-        }
-    }
-
-    function deprecate(msg, fn) {
-        var firstTime = true;
-
-        return extend(function () {
-            if (hooks.deprecationHandler != null) {
-                hooks.deprecationHandler(null, msg);
-            }
-            if (firstTime) {
-                var args = [];
-                var arg;
-                for (var i = 0; i < arguments.length; i++) {
-                    arg = '';
-                    if (typeof arguments[i] === 'object') {
-                        arg += '\n[' + i + '] ';
-                        for (var key in arguments[0]) {
-                            arg += key + ': ' + arguments[0][key] + ', ';
-                        }
-                        arg = arg.slice(0, -2); // Remove trailing comma and space
-                    } else {
-                        arg = arguments[i];
-                    }
-                    args.push(arg);
-                }
-                warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + (new Error()).stack);
-                firstTime = false;
-            }
-            return fn.apply(this, arguments);
-        }, fn);
-    }
-
-    var deprecations = {};
-
-    function deprecateSimple(name, msg) {
-        if (hooks.deprecationHandler != null) {
-            hooks.deprecationHandler(name, msg);
-        }
-        if (!deprecations[name]) {
-            warn(msg);
-            deprecations[name] = true;
-        }
-    }
-
-    hooks.suppressDeprecationWarnings = false;
-    hooks.deprecationHandler = null;
-
-    function isFunction(input) {
-        return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
-    }
-
-    function set (config) {
-        var prop, i;
-        for (i in config) {
-            prop = config[i];
-            if (isFunction(prop)) {
-                this[i] = prop;
-            } else {
-                this['_' + i] = prop;
-            }
-        }
-        this._config = config;
-        // Lenient ordinal parsing accepts just a number in addition to
-        // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
-        // TODO: Remove "ordinalParse" fallback in next major release.
-        this._dayOfMonthOrdinalParseLenient = new RegExp(
-            (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
-                '|' + (/\d{1,2}/).source);
-    }
-
-    function mergeConfigs(parentConfig, childConfig) {
-        var res = extend({}, parentConfig), prop;
-        for (prop in childConfig) {
-            if (hasOwnProp(childConfig, prop)) {
-                if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
-                    res[prop] = {};
-                    extend(res[prop], parentConfig[prop]);
-                    extend(res[prop], childConfig[prop]);
-                } else if (childConfig[prop] != null) {
-                    res[prop] = childConfig[prop];
-                } else {
-                    delete res[prop];
-                }
-            }
-        }
-        for (prop in parentConfig) {
-            if (hasOwnProp(parentConfig, prop) &&
-                    !hasOwnProp(childConfig, prop) &&
-                    isObject(parentConfig[prop])) {
-                // make sure changes to properties don't modify parent config
-                res[prop] = extend({}, res[prop]);
-            }
-        }
-        return res;
-    }
-
-    function Locale(config) {
-        if (config != null) {
-            this.set(config);
-        }
-    }
-
-    var keys;
-
-    if (Object.keys) {
-        keys = Object.keys;
-    } else {
-        keys = function (obj) {
-            var i, res = [];
-            for (i in obj) {
-                if (hasOwnProp(obj, i)) {
-                    res.push(i);
-                }
-            }
-            return res;
-        };
-    }
-
-    var defaultCalendar = {
-        sameDay : '[Today at] LT',
-        nextDay : '[Tomorrow at] LT',
-        nextWeek : 'dddd [at] LT',
-        lastDay : '[Yesterday at] LT',
-        lastWeek : '[Last] dddd [at] LT',
-        sameElse : 'L'
-    };
-
-    function calendar (key, mom, now) {
-        var output = this._calendar[key] || this._calendar['sameElse'];
-        return isFunction(output) ? output.call(mom, now) : output;
-    }
-
-    var defaultLongDateFormat = {
-        LTS  : 'h:mm:ss A',
-        LT   : 'h:mm A',
-        L    : 'MM/DD/YYYY',
-        LL   : 'MMMM D, YYYY',
-        LLL  : 'MMMM D, YYYY h:mm A',
-        LLLL : 'dddd, MMMM D, YYYY h:mm A'
-    };
-
-    function longDateFormat (key) {
-        var format = this._longDateFormat[key],
-            formatUpper = this._longDateFormat[key.toUpperCase()];
-
-        if (format || !formatUpper) {
-            return format;
-        }
-
-        this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
-            return val.slice(1);
-        });
-
-        return this._longDateFormat[key];
-    }
-
-    var defaultInvalidDate = 'Invalid date';
-
-    function invalidDate () {
-        return this._invalidDate;
-    }
-
-    var defaultOrdinal = '%d';
-    var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
-
-    function ordinal (number) {
-        return this._ordinal.replace('%d', number);
-    }
-
-    var defaultRelativeTime = {
-        future : 'in %s',
-        past   : '%s ago',
-        s  : 'a few seconds',
-        ss : '%d seconds',
-        m  : 'a minute',
-        mm : '%d minutes',
-        h  : 'an hour',
-        hh : '%d hours',
-        d  : 'a day',
-        dd : '%d days',
-        M  : 'a month',
-        MM : '%d months',
-        y  : 'a year',
-        yy : '%d years'
-    };
-
-    function relativeTime (number, withoutSuffix, string, isFuture) {
-        var output = this._relativeTime[string];
-        return (isFunction(output)) ?
-            output(number, withoutSuffix, string, isFuture) :
-            output.replace(/%d/i, number);
-    }
-
-    function pastFuture (diff, output) {
-        var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
-        return isFunction(format) ? format(output) : format.replace(/%s/i, output);
-    }
-
-    var aliases = {};
-
-    function addUnitAlias (unit, shorthand) {
-        var lowerCase = unit.toLowerCase();
-        aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
-    }
-
-    function normalizeUnits(units) {
-        return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
-    }
-
-    function normalizeObjectUnits(inputObject) {
-        var normalizedInput = {},
-            normalizedProp,
-            prop;
-
-        for (prop in inputObject) {
-            if (hasOwnProp(inputObject, prop)) {
-                normalizedProp = normalizeUnits(prop);
-                if (normalizedProp) {
-                    normalizedInput[normalizedProp] = inputObject[prop];
-                }
-            }
-        }
-
-        return normalizedInput;
-    }
-
-    var priorities = {};
-
-    function addUnitPriority(unit, priority) {
-        priorities[unit] = priority;
-    }
-
-    function getPrioritizedUnits(unitsObj) {
-        var units = [];
-        for (var u in unitsObj) {
-            units.push({unit: u, priority: priorities[u]});
-        }
-        units.sort(function (a, b) {
-            return a.priority - b.priority;
-        });
-        return units;
-    }
-
-    function zeroFill(number, targetLength, forceSign) {
-        var absNumber = '' + Math.abs(number),
-            zerosToFill = targetLength - absNumber.length,
-            sign = number >= 0;
-        return (sign ? (forceSign ? '+' : '') : '-') +
-            Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
-    }
-
-    var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
-
-    var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
-
-    var formatFunctions = {};
-
-    var formatTokenFunctions = {};
-
-    // token:    'M'
-    // padded:   ['MM', 2]
-    // ordinal:  'Mo'
-    // callback: function () { this.month() + 1 }
-    function addFormatToken (token, padded, ordinal, callback) {
-        var func = callback;
-        if (typeof callback === 'string') {
-            func = function () {
-                return this[callback]();
-            };
-        }
-        if (token) {
-            formatTokenFunctions[token] = func;
-        }
-        if (padded) {
-            formatTokenFunctions[padded[0]] = function () {
-                return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
-            };
-        }
-        if (ordinal) {
-            formatTokenFunctions[ordinal] = function () {
-                return this.localeData().ordinal(func.apply(this, arguments), token);
-            };
-        }
-    }
-
-    function removeFormattingTokens(input) {
-        if (input.match(/\[[\s\S]/)) {
-            return input.replace(/^\[|\]$/g, '');
-        }
-        return input.replace(/\\/g, '');
-    }
-
-    function makeFormatFunction(format) {
-        var array = format.match(formattingTokens), i, length;
-
-        for (i = 0, length = array.length; i < length; i++) {
-            if (formatTokenFunctions[array[i]]) {
-                array[i] = formatTokenFunctions[array[i]];
-            } else {
-                array[i] = removeFormattingTokens(array[i]);
-            }
-        }
-
-        return function (mom) {
-            var output = '', i;
-            for (i = 0; i < length; i++) {
-                output += isFunction(array[i]) ? array[i].call(mom, format) : array[i];
-            }
-            return output;
-        };
-    }
-
-    // format date using native date object
-    function formatMoment(m, format) {
-        if (!m.isValid()) {
-            return m.localeData().invalidDate();
-        }
-
-        format = expandFormat(format, m.localeData());
-        formatFunctions[format] = formatFunctions[format] || makeFormatFunction(format);
-
-        return formatFunctions[format](m);
-    }
-
-    function expandFormat(format, locale) {
-        var i = 5;
-
-        function replaceLongDateFormatTokens(input) {
-            return locale.longDateFormat(input) || input;
-        }
-
-        localFormattingTokens.lastIndex = 0;
-        while (i >= 0 && localFormattingTokens.test(format)) {
-            format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
-            localFormattingTokens.lastIndex = 0;
-            i -= 1;
-        }
-
-        return format;
-    }
-
-    var match1         = /\d/;            //       0 - 9
-    var match2         = /\d\d/;          //      00 - 99
-    var match3         = /\d{3}/;         //     000 - 999
-    var match4         = /\d{4}/;         //    0000 - 9999
-    var match6         = /[+-]?\d{6}/;    // -999999 - 999999
-    var match1to2      = /\d\d?/;         //       0 - 99
-    var match3to4      = /\d\d\d\d?/;     //     999 - 9999
-    var match5to6      = /\d\d\d\d\d\d?/; //   99999 - 999999
-    var match1to3      = /\d{1,3}/;       //       0 - 999
-    var match1to4      = /\d{1,4}/;       //       0 - 9999
-    var match1to6      = /[+-]?\d{1,6}/;  // -999999 - 999999
-
-    var matchUnsigned  = /\d+/;           //       0 - inf
-    var matchSigned    = /[+-]?\d+/;      //    -inf - inf
-
-    var matchOffset    = /Z|[+-]\d\d:?\d\d/gi; // +00:00 -00:00 +0000 -0000 or Z
-    var matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi; // +00 -00 +00:00 -00:00 +0000 -0000 or Z
-
-    var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
-
-    // any word (or two) characters or numbers including two/three word month in arabic.
-    // includes scottish gaelic two word and hyphenated months
-    var matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i;
-
-    var regexes = {};
-
-    function addRegexToken (token, regex, strictRegex) {
-        regexes[token] = isFunction(regex) ? regex : function (isStrict, localeData) {
-            return (isStrict && strictRegex) ? strictRegex : regex;
-        };
-    }
-
-    function getParseRegexForToken (token, config) {
-        if (!hasOwnProp(regexes, token)) {
-            return new RegExp(unescapeFormat(token));
-        }
-
-        return regexes[token](config._strict, config._locale);
-    }
-
-    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
-    function unescapeFormat(s) {
-        return regexEscape(s.replace('\\', '').replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
-            return p1 || p2 || p3 || p4;
-        }));
-    }
-
-    function regexEscape(s) {
-        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    }
-
-    var tokens = {};
-
-    function addParseToken (token, callback) {
-        var i, func = callback;
-        if (typeof token === 'string') {
-            token = [token];
-        }
-        if (isNumber(callback)) {
-            func = function (input, array) {
-                array[callback] = toInt(input);
-            };
-        }
-        for (i = 0; i < token.length; i++) {
-            tokens[token[i]] = func;
-        }
-    }
-
-    function addWeekParseToken (token, callback) {
-        addParseToken(token, function (input, array, config, token) {
-            config._w = config._w || {};
-            callback(input, config._w, config, token);
-        });
-    }
-
-    function addTimeToArrayFromToken(token, input, config) {
-        if (input != null && hasOwnProp(tokens, token)) {
-            tokens[token](input, config._a, config, token);
-        }
-    }
-
-    var YEAR = 0;
-    var MONTH = 1;
-    var DATE = 2;
-    var HOUR = 3;
-    var MINUTE = 4;
-    var SECOND = 5;
-    var MILLISECOND = 6;
-    var WEEK = 7;
-    var WEEKDAY = 8;
-
-    // FORMATTING
-
-    addFormatToken('Y', 0, 0, function () {
-        var y = this.year();
-        return y <= 9999 ? '' + y : '+' + y;
-    });
-
-    addFormatToken(0, ['YY', 2], 0, function () {
-        return this.year() % 100;
-    });
-
-    addFormatToken(0, ['YYYY',   4],       0, 'year');
-    addFormatToken(0, ['YYYYY',  5],       0, 'year');
-    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
-
-    // ALIASES
-
-    addUnitAlias('year', 'y');
-
-    // PRIORITIES
-
-    addUnitPriority('year', 1);
-
-    // PARSING
-
-    addRegexToken('Y',      matchSigned);
-    addRegexToken('YY',     match1to2, match2);
-    addRegexToken('YYYY',   match1to4, match4);
-    addRegexToken('YYYYY',  match1to6, match6);
-    addRegexToken('YYYYYY', match1to6, match6);
-
-    addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-    addParseToken('YYYY', function (input, array) {
-        array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-    });
-    addParseToken('YY', function (input, array) {
-        array[YEAR] = hooks.parseTwoDigitYear(input);
-    });
-    addParseToken('Y', function (input, array) {
-        array[YEAR] = parseInt(input, 10);
-    });
-
-    // HELPERS
-
-    function daysInYear(year) {
-        return isLeapYear(year) ? 366 : 365;
-    }
-
-    function isLeapYear(year) {
-        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-    }
-
-    // HOOKS
-
-    hooks.parseTwoDigitYear = function (input) {
-        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-    };
-
-    // MOMENTS
-
-    var getSetYear = makeGetSet('FullYear', true);
-
-    function getIsLeapYear () {
-        return isLeapYear(this.year());
-    }
-
-    function makeGetSet (unit, keepTime) {
-        return function (value) {
-            if (value != null) {
-                set$1(this, unit, value);
-                hooks.updateOffset(this, keepTime);
-                return this;
-            } else {
-                return get(this, unit);
-            }
-        };
-    }
-
-    function get (mom, unit) {
-        return mom.isValid() ?
-            mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
-    }
-
-    function set$1 (mom, unit, value) {
-        if (mom.isValid() && !isNaN(value)) {
-            if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
-                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
-            }
-            else {
-                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-            }
-        }
-    }
-
-    // MOMENTS
-
-    function stringGet (units) {
-        units = normalizeUnits(units);
-        if (isFunction(this[units])) {
-            return this[units]();
-        }
-        return this;
-    }
-
-
-    function stringSet (units, value) {
-        if (typeof units === 'object') {
-            units = normalizeObjectUnits(units);
-            var prioritized = getPrioritizedUnits(units);
-            for (var i = 0; i < prioritized.length; i++) {
-                this[prioritized[i].unit](units[prioritized[i].unit]);
-            }
-        } else {
-            units = normalizeUnits(units);
-            if (isFunction(this[units])) {
-                return this[units](value);
-            }
-        }
-        return this;
-    }
-
-    function mod(n, x) {
-        return ((n % x) + x) % x;
-    }
-
-    var indexOf;
-
-    if (Array.prototype.indexOf) {
-        indexOf = Array.prototype.indexOf;
-    } else {
-        indexOf = function (o) {
-            // I know
-            var i;
-            for (i = 0; i < this.length; ++i) {
-                if (this[i] === o) {
-                    return i;
-                }
-            }
-            return -1;
-        };
-    }
-
-    function daysInMonth(year, month) {
-        if (isNaN(year) || isNaN(month)) {
-            return NaN;
-        }
-        var modMonth = mod(month, 12);
-        year += (month - modMonth) / 12;
-        return modMonth === 1 ? (isLeapYear(year) ? 29 : 28) : (31 - modMonth % 7 % 2);
-    }
-
-    // FORMATTING
-
-    addFormatToken('M', ['MM', 2], 'Mo', function () {
-        return this.month() + 1;
-    });
-
-    addFormatToken('MMM', 0, 0, function (format) {
-        return this.localeData().monthsShort(this, format);
-    });
-
-    addFormatToken('MMMM', 0, 0, function (format) {
-        return this.localeData().months(this, format);
-    });
-
-    // ALIASES
-
-    addUnitAlias('month', 'M');
-
-    // PRIORITY
-
-    addUnitPriority('month', 8);
-
-    // PARSING
-
-    addRegexToken('M',    match1to2);
-    addRegexToken('MM',   match1to2, match2);
-    addRegexToken('MMM',  function (isStrict, locale) {
-        return locale.monthsShortRegex(isStrict);
-    });
-    addRegexToken('MMMM', function (isStrict, locale) {
-        return locale.monthsRegex(isStrict);
-    });
-
-    addParseToken(['M', 'MM'], function (input, array) {
-        array[MONTH] = toInt(input) - 1;
-    });
-
-    addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
-        var month = config._locale.monthsParse(input, token, config._strict);
-        // if we didn't find a month name, mark the date as invalid.
-        if (month != null) {
-            array[MONTH] = month;
-        } else {
-            getParsingFlags(config).invalidMonth = input;
-        }
-    });
-
-    // LOCALES
-
-    var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
-    var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
-    function localeMonths (m, format) {
-        if (!m) {
-            return isArray(this._months) ? this._months :
-                this._months['standalone'];
-        }
-        return isArray(this._months) ? this._months[m.month()] :
-            this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
-    }
-
-    var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
-    function localeMonthsShort (m, format) {
-        if (!m) {
-            return isArray(this._monthsShort) ? this._monthsShort :
-                this._monthsShort['standalone'];
-        }
-        return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
-            this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
-    }
-
-    function handleStrictParse(monthName, format, strict) {
-        var i, ii, mom, llc = monthName.toLocaleLowerCase();
-        if (!this._monthsParse) {
-            // this is not used
-            this._monthsParse = [];
-            this._longMonthsParse = [];
-            this._shortMonthsParse = [];
-            for (i = 0; i < 12; ++i) {
-                mom = createUTC([2000, i]);
-                this._shortMonthsParse[i] = this.monthsShort(mom, '').toLocaleLowerCase();
-                this._longMonthsParse[i] = this.months(mom, '').toLocaleLowerCase();
-            }
-        }
-
-        if (strict) {
-            if (format === 'MMM') {
-                ii = indexOf.call(this._shortMonthsParse, llc);
-                return ii !== -1 ? ii : null;
-            } else {
-                ii = indexOf.call(this._longMonthsParse, llc);
-                return ii !== -1 ? ii : null;
-            }
-        } else {
-            if (format === 'MMM') {
-                ii = indexOf.call(this._shortMonthsParse, llc);
-                if (ii !== -1) {
-                    return ii;
-                }
-                ii = indexOf.call(this._longMonthsParse, llc);
-                return ii !== -1 ? ii : null;
-            } else {
-                ii = indexOf.call(this._longMonthsParse, llc);
-                if (ii !== -1) {
-                    return ii;
-                }
-                ii = indexOf.call(this._shortMonthsParse, llc);
-                return ii !== -1 ? ii : null;
-            }
-        }
-    }
-
-    function localeMonthsParse (monthName, format, strict) {
-        var i, mom, regex;
-
-        if (this._monthsParseExact) {
-            return handleStrictParse.call(this, monthName, format, strict);
-        }
-
-        if (!this._monthsParse) {
-            this._monthsParse = [];
-            this._longMonthsParse = [];
-            this._shortMonthsParse = [];
-        }
-
-        // TODO: add sorting
-        // Sorting makes sure if one month (or abbr) is a prefix of another
-        // see sorting in computeMonthsParse
-        for (i = 0; i < 12; i++) {
-            // make the regex if we don't have it already
-            mom = createUTC([2000, i]);
-            if (strict && !this._longMonthsParse[i]) {
-                this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
-                this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
-            }
-            if (!strict && !this._monthsParse[i]) {
-                regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
-                this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
-            }
-            // test the regex
-            if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
-                return i;
-            } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
-                return i;
-            } else if (!strict && this._monthsParse[i].test(monthName)) {
-                return i;
-            }
-        }
-    }
-
-    // MOMENTS
-
-    function setMonth (mom, value) {
-        var dayOfMonth;
-
-        if (!mom.isValid()) {
-            // No op
-            return mom;
-        }
-
-        if (typeof value === 'string') {
-            if (/^\d+$/.test(value)) {
-                value = toInt(value);
-            } else {
-                value = mom.localeData().monthsParse(value);
-                // TODO: Another silent failure?
-                if (!isNumber(value)) {
-                    return mom;
-                }
-            }
-        }
-
-        dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
-        return mom;
-    }
-
-    function getSetMonth (value) {
-        if (value != null) {
-            setMonth(this, value);
-            hooks.updateOffset(this, true);
-            return this;
-        } else {
-            return get(this, 'Month');
-        }
-    }
-
-    function getDaysInMonth () {
-        return daysInMonth(this.year(), this.month());
-    }
-
-    var defaultMonthsShortRegex = matchWord;
-    function monthsShortRegex (isStrict) {
-        if (this._monthsParseExact) {
-            if (!hasOwnProp(this, '_monthsRegex')) {
-                computeMonthsParse.call(this);
-            }
-            if (isStrict) {
-                return this._monthsShortStrictRegex;
-            } else {
-                return this._monthsShortRegex;
-            }
-        } else {
-            if (!hasOwnProp(this, '_monthsShortRegex')) {
-                this._monthsShortRegex = defaultMonthsShortRegex;
-            }
-            return this._monthsShortStrictRegex && isStrict ?
-                this._monthsShortStrictRegex : this._monthsShortRegex;
-        }
-    }
-
-    var defaultMonthsRegex = matchWord;
-    function monthsRegex (isStrict) {
-        if (this._monthsParseExact) {
-            if (!hasOwnProp(this, '_monthsRegex')) {
-                computeMonthsParse.call(this);
-            }
-            if (isStrict) {
-                return this._monthsStrictRegex;
-            } else {
-                return this._monthsRegex;
-            }
-        } else {
-            if (!hasOwnProp(this, '_monthsRegex')) {
-                this._monthsRegex = defaultMonthsRegex;
-            }
-            return this._monthsStrictRegex && isStrict ?
-                this._monthsStrictRegex : this._monthsRegex;
-        }
-    }
-
-    function computeMonthsParse () {
-        function cmpLenRev(a, b) {
-            return b.length - a.length;
-        }
-
-        var shortPieces = [], longPieces = [], mixedPieces = [],
-            i, mom;
-        for (i = 0; i < 12; i++) {
-            // make the regex if we don't have it already
-            mom = createUTC([2000, i]);
-            shortPieces.push(this.monthsShort(mom, ''));
-            longPieces.push(this.months(mom, ''));
-            mixedPieces.push(this.months(mom, ''));
-            mixedPieces.push(this.monthsShort(mom, ''));
-        }
-        // Sorting makes sure if one month (or abbr) is a prefix of another it
-        // will match the longer piece.
-        shortPieces.sort(cmpLenRev);
-        longPieces.sort(cmpLenRev);
-        mixedPieces.sort(cmpLenRev);
-        for (i = 0; i < 12; i++) {
-            shortPieces[i] = regexEscape(shortPieces[i]);
-            longPieces[i] = regexEscape(longPieces[i]);
-        }
-        for (i = 0; i < 24; i++) {
-            mixedPieces[i] = regexEscape(mixedPieces[i]);
-        }
-
-        this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
-        this._monthsShortRegex = this._monthsRegex;
-        this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
-        this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
-    }
-
-    function createDate (y, m, d, h, M, s, ms) {
-        // can't just apply() to create a date:
-        // https://stackoverflow.com/q/181348
-        var date;
-        // the date constructor remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0) {
-            // preserve leap years using a full 400 year cycle, then reset
-            date = new Date(y + 400, m, d, h, M, s, ms);
-            if (isFinite(date.getFullYear())) {
-                date.setFullYear(y);
-            }
-        } else {
-            date = new Date(y, m, d, h, M, s, ms);
-        }
-
-        return date;
-    }
-
-    function createUTCDate (y) {
-        var date;
-        // the Date.UTC function remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0) {
-            var args = Array.prototype.slice.call(arguments);
-            // preserve leap years using a full 400 year cycle, then reset
-            args[0] = y + 400;
-            date = new Date(Date.UTC.apply(null, args));
-            if (isFinite(date.getUTCFullYear())) {
-                date.setUTCFullYear(y);
-            }
-        } else {
-            date = new Date(Date.UTC.apply(null, arguments));
-        }
-
-        return date;
-    }
-
-    // start-of-first-week - start-of-year
-    function firstWeekOffset(year, dow, doy) {
-        var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
-            fwd = 7 + dow - doy,
-            // first-week day local weekday -- which local weekday is fwd
-            fwdlw = (7 + createUTCDate(year, 0, fwd).getUTCDay() - dow) % 7;
-
-        return -fwdlw + fwd - 1;
-    }
-
-    // https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
-    function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
-        var localWeekday = (7 + weekday - dow) % 7,
-            weekOffset = firstWeekOffset(year, dow, doy),
-            dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset,
-            resYear, resDayOfYear;
-
-        if (dayOfYear <= 0) {
-            resYear = year - 1;
-            resDayOfYear = daysInYear(resYear) + dayOfYear;
-        } else if (dayOfYear > daysInYear(year)) {
-            resYear = year + 1;
-            resDayOfYear = dayOfYear - daysInYear(year);
-        } else {
-            resYear = year;
-            resDayOfYear = dayOfYear;
-        }
-
-        return {
-            year: resYear,
-            dayOfYear: resDayOfYear
-        };
-    }
-
-    function weekOfYear(mom, dow, doy) {
-        var weekOffset = firstWeekOffset(mom.year(), dow, doy),
-            week = Math.floor((mom.dayOfYear() - weekOffset - 1) / 7) + 1,
-            resWeek, resYear;
-
-        if (week < 1) {
-            resYear = mom.year() - 1;
-            resWeek = week + weeksInYear(resYear, dow, doy);
-        } else if (week > weeksInYear(mom.year(), dow, doy)) {
-            resWeek = week - weeksInYear(mom.year(), dow, doy);
-            resYear = mom.year() + 1;
-        } else {
-            resYear = mom.year();
-            resWeek = week;
-        }
-
-        return {
-            week: resWeek,
-            year: resYear
-        };
-    }
-
-    function weeksInYear(year, dow, doy) {
-        var weekOffset = firstWeekOffset(year, dow, doy),
-            weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
-        return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
-    }
-
-    // FORMATTING
-
-    addFormatToken('w', ['ww', 2], 'wo', 'week');
-    addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
-
-    // ALIASES
-
-    addUnitAlias('week', 'w');
-    addUnitAlias('isoWeek', 'W');
-
-    // PRIORITIES
-
-    addUnitPriority('week', 5);
-    addUnitPriority('isoWeek', 5);
-
-    // PARSING
-
-    addRegexToken('w',  match1to2);
-    addRegexToken('ww', match1to2, match2);
-    addRegexToken('W',  match1to2);
-    addRegexToken('WW', match1to2, match2);
-
-    addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
-        week[token.substr(0, 1)] = toInt(input);
-    });
-
-    // HELPERS
-
-    // LOCALES
-
-    function localeWeek (mom) {
-        return weekOfYear(mom, this._week.dow, this._week.doy).week;
-    }
-
-    var defaultLocaleWeek = {
-        dow : 0, // Sunday is the first day of the week.
-        doy : 6  // The week that contains Jan 6th is the first week of the year.
-    };
-
-    function localeFirstDayOfWeek () {
-        return this._week.dow;
-    }
-
-    function localeFirstDayOfYear () {
-        return this._week.doy;
-    }
-
-    // MOMENTS
-
-    function getSetWeek (input) {
-        var week = this.localeData().week(this);
-        return input == null ? week : this.add((input - week) * 7, 'd');
-    }
-
-    function getSetISOWeek (input) {
-        var week = weekOfYear(this, 1, 4).week;
-        return input == null ? week : this.add((input - week) * 7, 'd');
-    }
-
-    // FORMATTING
-
-    addFormatToken('d', 0, 'do', 'day');
-
-    addFormatToken('dd', 0, 0, function (format) {
-        return this.localeData().weekdaysMin(this, format);
-    });
-
-    addFormatToken('ddd', 0, 0, function (format) {
-        return this.localeData().weekdaysShort(this, format);
-    });
-
-    addFormatToken('dddd', 0, 0, function (format) {
-        return this.localeData().weekdays(this, format);
-    });
-
-    addFormatToken('e', 0, 0, 'weekday');
-    addFormatToken('E', 0, 0, 'isoWeekday');
-
-    // ALIASES
-
-    addUnitAlias('day', 'd');
-    addUnitAlias('weekday', 'e');
-    addUnitAlias('isoWeekday', 'E');
-
-    // PRIORITY
-    addUnitPriority('day', 11);
-    addUnitPriority('weekday', 11);
-    addUnitPriority('isoWeekday', 11);
-
-    // PARSING
-
-    addRegexToken('d',    match1to2);
-    addRegexToken('e',    match1to2);
-    addRegexToken('E',    match1to2);
-    addRegexToken('dd',   function (isStrict, locale) {
-        return locale.weekdaysMinRegex(isStrict);
-    });
-    addRegexToken('ddd',   function (isStrict, locale) {
-        return locale.weekdaysShortRegex(isStrict);
-    });
-    addRegexToken('dddd',   function (isStrict, locale) {
-        return locale.weekdaysRegex(isStrict);
-    });
-
-    addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
-        var weekday = config._locale.weekdaysParse(input, token, config._strict);
-        // if we didn't get a weekday name, mark the date as invalid
-        if (weekday != null) {
-            week.d = weekday;
-        } else {
-            getParsingFlags(config).invalidWeekday = input;
-        }
-    });
-
-    addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
-        week[token] = toInt(input);
-    });
-
-    // HELPERS
-
-    function parseWeekday(input, locale) {
-        if (typeof input !== 'string') {
-            return input;
-        }
-
-        if (!isNaN(input)) {
-            return parseInt(input, 10);
-        }
-
-        input = locale.weekdaysParse(input);
-        if (typeof input === 'number') {
-            return input;
-        }
-
-        return null;
-    }
-
-    function parseIsoWeekday(input, locale) {
-        if (typeof input === 'string') {
-            return locale.weekdaysParse(input) % 7 || 7;
-        }
-        return isNaN(input) ? null : input;
-    }
-
-    // LOCALES
-    function shiftWeekdays (ws, n) {
-        return ws.slice(n, 7).concat(ws.slice(0, n));
-    }
-
-    var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
-    function localeWeekdays (m, format) {
-        var weekdays = isArray(this._weekdays) ? this._weekdays :
-            this._weekdays[(m && m !== true && this._weekdays.isFormat.test(format)) ? 'format' : 'standalone'];
-        return (m === true) ? shiftWeekdays(weekdays, this._week.dow)
-            : (m) ? weekdays[m.day()] : weekdays;
-    }
-
-    var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
-    function localeWeekdaysShort (m) {
-        return (m === true) ? shiftWeekdays(this._weekdaysShort, this._week.dow)
-            : (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
-    }
-
-    var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
-    function localeWeekdaysMin (m) {
-        return (m === true) ? shiftWeekdays(this._weekdaysMin, this._week.dow)
-            : (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
-    }
-
-    function handleStrictParse$1(weekdayName, format, strict) {
-        var i, ii, mom, llc = weekdayName.toLocaleLowerCase();
-        if (!this._weekdaysParse) {
-            this._weekdaysParse = [];
-            this._shortWeekdaysParse = [];
-            this._minWeekdaysParse = [];
-
-            for (i = 0; i < 7; ++i) {
-                mom = createUTC([2000, 1]).day(i);
-                this._minWeekdaysParse[i] = this.weekdaysMin(mom, '').toLocaleLowerCase();
-                this._shortWeekdaysParse[i] = this.weekdaysShort(mom, '').toLocaleLowerCase();
-                this._weekdaysParse[i] = this.weekdays(mom, '').toLocaleLowerCase();
-            }
-        }
-
-        if (strict) {
-            if (format === 'dddd') {
-                ii = indexOf.call(this._weekdaysParse, llc);
-                return ii !== -1 ? ii : null;
-            } else if (format === 'ddd') {
-                ii = indexOf.call(this._shortWeekdaysParse, llc);
-                return ii !== -1 ? ii : null;
-            } else {
-                ii = indexOf.call(this._minWeekdaysParse, llc);
-                return ii !== -1 ? ii : null;
-            }
-        } else {
-            if (format === 'dddd') {
-                ii = indexOf.call(this._weekdaysParse, llc);
-                if (ii !== -1) {
-                    return ii;
-                }
-                ii = indexOf.call(this._shortWeekdaysParse, llc);
-                if (ii !== -1) {
-                    return ii;
-                }
-                ii = indexOf.call(this._minWeekdaysParse, llc);
-                return ii !== -1 ? ii : null;
-            } else if (format === 'ddd') {
-                ii = indexOf.call(this._shortWeekdaysParse, llc);
-                if (ii !== -1) {
-                    return ii;
-                }
-                ii = indexOf.call(this._weekdaysParse, llc);
-                if (ii !== -1) {
-                    return ii;
-                }
-                ii = indexOf.call(this._minWeekdaysParse, llc);
-                return ii !== -1 ? ii : null;
-            } else {
-                ii = indexOf.call(this._minWeekdaysParse, llc);
-                if (ii !== -1) {
-                    return ii;
-                }
-                ii = indexOf.call(this._weekdaysParse, llc);
-                if (ii !== -1) {
-                    return ii;
-                }
-                ii = indexOf.call(this._shortWeekdaysParse, llc);
-                return ii !== -1 ? ii : null;
-            }
-        }
-    }
-
-    function localeWeekdaysParse (weekdayName, format, strict) {
-        var i, mom, regex;
-
-        if (this._weekdaysParseExact) {
-            return handleStrictParse$1.call(this, weekdayName, format, strict);
-        }
-
-        if (!this._weekdaysParse) {
-            this._weekdaysParse = [];
-            this._minWeekdaysParse = [];
-            this._shortWeekdaysParse = [];
-            this._fullWeekdaysParse = [];
-        }
-
-        for (i = 0; i < 7; i++) {
-            // make the regex if we don't have it already
-
-            mom = createUTC([2000, 1]).day(i);
-            if (strict && !this._fullWeekdaysParse[i]) {
-                this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\\.?') + '$', 'i');
-                this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\\.?') + '$', 'i');
-                this._minWeekdaysParse[i] = new RegExp('^' + this.weekdaysMin(mom, '').replace('.', '\\.?') + '$', 'i');
-            }
-            if (!this._weekdaysParse[i]) {
-                regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
-                this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
-            }
-            // test the regex
-            if (strict && format === 'dddd' && this._fullWeekdaysParse[i].test(weekdayName)) {
-                return i;
-            } else if (strict && format === 'ddd' && this._shortWeekdaysParse[i].test(weekdayName)) {
-                return i;
-            } else if (strict && format === 'dd' && this._minWeekdaysParse[i].test(weekdayName)) {
-                return i;
-            } else if (!strict && this._weekdaysParse[i].test(weekdayName)) {
-                return i;
-            }
-        }
-    }
-
-    // MOMENTS
-
-    function getSetDayOfWeek (input) {
-        if (!this.isValid()) {
-            return input != null ? this : NaN;
-        }
-        var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
-        if (input != null) {
-            input = parseWeekday(input, this.localeData());
-            return this.add(input - day, 'd');
-        } else {
-            return day;
-        }
-    }
-
-    function getSetLocaleDayOfWeek (input) {
-        if (!this.isValid()) {
-            return input != null ? this : NaN;
-        }
-        var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
-        return input == null ? weekday : this.add(input - weekday, 'd');
-    }
-
-    function getSetISODayOfWeek (input) {
-        if (!this.isValid()) {
-            return input != null ? this : NaN;
-        }
-
-        // behaves the same as moment#day except
-        // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
-        // as a setter, sunday should belong to the previous week.
-
-        if (input != null) {
-            var weekday = parseIsoWeekday(input, this.localeData());
-            return this.day(this.day() % 7 ? weekday : weekday - 7);
-        } else {
-            return this.day() || 7;
-        }
-    }
-
-    var defaultWeekdaysRegex = matchWord;
-    function weekdaysRegex (isStrict) {
-        if (this._weekdaysParseExact) {
-            if (!hasOwnProp(this, '_weekdaysRegex')) {
-                computeWeekdaysParse.call(this);
-            }
-            if (isStrict) {
-                return this._weekdaysStrictRegex;
-            } else {
-                return this._weekdaysRegex;
-            }
-        } else {
-            if (!hasOwnProp(this, '_weekdaysRegex')) {
-                this._weekdaysRegex = defaultWeekdaysRegex;
-            }
-            return this._weekdaysStrictRegex && isStrict ?
-                this._weekdaysStrictRegex : this._weekdaysRegex;
-        }
-    }
-
-    var defaultWeekdaysShortRegex = matchWord;
-    function weekdaysShortRegex (isStrict) {
-        if (this._weekdaysParseExact) {
-            if (!hasOwnProp(this, '_weekdaysRegex')) {
-                computeWeekdaysParse.call(this);
-            }
-            if (isStrict) {
-                return this._weekdaysShortStrictRegex;
-            } else {
-                return this._weekdaysShortRegex;
-            }
-        } else {
-            if (!hasOwnProp(this, '_weekdaysShortRegex')) {
-                this._weekdaysShortRegex = defaultWeekdaysShortRegex;
-            }
-            return this._weekdaysShortStrictRegex && isStrict ?
-                this._weekdaysShortStrictRegex : this._weekdaysShortRegex;
-        }
-    }
-
-    var defaultWeekdaysMinRegex = matchWord;
-    function weekdaysMinRegex (isStrict) {
-        if (this._weekdaysParseExact) {
-            if (!hasOwnProp(this, '_weekdaysRegex')) {
-                computeWeekdaysParse.call(this);
-            }
-            if (isStrict) {
-                return this._weekdaysMinStrictRegex;
-            } else {
-                return this._weekdaysMinRegex;
-            }
-        } else {
-            if (!hasOwnProp(this, '_weekdaysMinRegex')) {
-                this._weekdaysMinRegex = defaultWeekdaysMinRegex;
-            }
-            return this._weekdaysMinStrictRegex && isStrict ?
-                this._weekdaysMinStrictRegex : this._weekdaysMinRegex;
-        }
-    }
-
-
-    function computeWeekdaysParse () {
-        function cmpLenRev(a, b) {
-            return b.length - a.length;
-        }
-
-        var minPieces = [], shortPieces = [], longPieces = [], mixedPieces = [],
-            i, mom, minp, shortp, longp;
-        for (i = 0; i < 7; i++) {
-            // make the regex if we don't have it already
-            mom = createUTC([2000, 1]).day(i);
-            minp = this.weekdaysMin(mom, '');
-            shortp = this.weekdaysShort(mom, '');
-            longp = this.weekdays(mom, '');
-            minPieces.push(minp);
-            shortPieces.push(shortp);
-            longPieces.push(longp);
-            mixedPieces.push(minp);
-            mixedPieces.push(shortp);
-            mixedPieces.push(longp);
-        }
-        // Sorting makes sure if one weekday (or abbr) is a prefix of another it
-        // will match the longer piece.
-        minPieces.sort(cmpLenRev);
-        shortPieces.sort(cmpLenRev);
-        longPieces.sort(cmpLenRev);
-        mixedPieces.sort(cmpLenRev);
-        for (i = 0; i < 7; i++) {
-            shortPieces[i] = regexEscape(shortPieces[i]);
-            longPieces[i] = regexEscape(longPieces[i]);
-            mixedPieces[i] = regexEscape(mixedPieces[i]);
-        }
-
-        this._weekdaysRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
-        this._weekdaysShortRegex = this._weekdaysRegex;
-        this._weekdaysMinRegex = this._weekdaysRegex;
-
-        this._weekdaysStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
-        this._weekdaysShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
-        this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
-    }
-
-    // FORMATTING
-
-    function hFormat() {
-        return this.hours() % 12 || 12;
-    }
-
-    function kFormat() {
-        return this.hours() || 24;
-    }
-
-    addFormatToken('H', ['HH', 2], 0, 'hour');
-    addFormatToken('h', ['hh', 2], 0, hFormat);
-    addFormatToken('k', ['kk', 2], 0, kFormat);
-
-    addFormatToken('hmm', 0, 0, function () {
-        return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2);
-    });
-
-    addFormatToken('hmmss', 0, 0, function () {
-        return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2) +
-            zeroFill(this.seconds(), 2);
-    });
-
-    addFormatToken('Hmm', 0, 0, function () {
-        return '' + this.hours() + zeroFill(this.minutes(), 2);
-    });
-
-    addFormatToken('Hmmss', 0, 0, function () {
-        return '' + this.hours() + zeroFill(this.minutes(), 2) +
-            zeroFill(this.seconds(), 2);
-    });
-
-    function meridiem (token, lowercase) {
-        addFormatToken(token, 0, 0, function () {
-            return this.localeData().meridiem(this.hours(), this.minutes(), lowercase);
-        });
-    }
-
-    meridiem('a', true);
-    meridiem('A', false);
-
-    // ALIASES
-
-    addUnitAlias('hour', 'h');
-
-    // PRIORITY
-    addUnitPriority('hour', 13);
-
-    // PARSING
-
-    function matchMeridiem (isStrict, locale) {
-        return locale._meridiemParse;
-    }
-
-    addRegexToken('a',  matchMeridiem);
-    addRegexToken('A',  matchMeridiem);
-    addRegexToken('H',  match1to2);
-    addRegexToken('h',  match1to2);
-    addRegexToken('k',  match1to2);
-    addRegexToken('HH', match1to2, match2);
-    addRegexToken('hh', match1to2, match2);
-    addRegexToken('kk', match1to2, match2);
-
-    addRegexToken('hmm', match3to4);
-    addRegexToken('hmmss', match5to6);
-    addRegexToken('Hmm', match3to4);
-    addRegexToken('Hmmss', match5to6);
-
-    addParseToken(['H', 'HH'], HOUR);
-    addParseToken(['k', 'kk'], function (input, array, config) {
-        var kInput = toInt(input);
-        array[HOUR] = kInput === 24 ? 0 : kInput;
-    });
-    addParseToken(['a', 'A'], function (input, array, config) {
-        config._isPm = config._locale.isPM(input);
-        config._meridiem = input;
-    });
-    addParseToken(['h', 'hh'], function (input, array, config) {
-        array[HOUR] = toInt(input);
-        getParsingFlags(config).bigHour = true;
-    });
-    addParseToken('hmm', function (input, array, config) {
-        var pos = input.length - 2;
-        array[HOUR] = toInt(input.substr(0, pos));
-        array[MINUTE] = toInt(input.substr(pos));
-        getParsingFlags(config).bigHour = true;
-    });
-    addParseToken('hmmss', function (input, array, config) {
-        var pos1 = input.length - 4;
-        var pos2 = input.length - 2;
-        array[HOUR] = toInt(input.substr(0, pos1));
-        array[MINUTE] = toInt(input.substr(pos1, 2));
-        array[SECOND] = toInt(input.substr(pos2));
-        getParsingFlags(config).bigHour = true;
-    });
-    addParseToken('Hmm', function (input, array, config) {
-        var pos = input.length - 2;
-        array[HOUR] = toInt(input.substr(0, pos));
-        array[MINUTE] = toInt(input.substr(pos));
-    });
-    addParseToken('Hmmss', function (input, array, config) {
-        var pos1 = input.length - 4;
-        var pos2 = input.length - 2;
-        array[HOUR] = toInt(input.substr(0, pos1));
-        array[MINUTE] = toInt(input.substr(pos1, 2));
-        array[SECOND] = toInt(input.substr(pos2));
-    });
-
-    // LOCALES
-
-    function localeIsPM (input) {
-        // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
-        // Using charAt should be more compatible.
-        return ((input + '').toLowerCase().charAt(0) === 'p');
-    }
-
-    var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
-    function localeMeridiem (hours, minutes, isLower) {
-        if (hours > 11) {
-            return isLower ? 'pm' : 'PM';
-        } else {
-            return isLower ? 'am' : 'AM';
-        }
-    }
-
-
-    // MOMENTS
-
-    // Setting the hour should keep the time, because the user explicitly
-    // specified which hour they want. So trying to maintain the same hour (in
-    // a new timezone) makes sense. Adding/subtracting hours does not follow
-    // this rule.
-    var getSetHour = makeGetSet('Hours', true);
-
-    var baseConfig = {
-        calendar: defaultCalendar,
-        longDateFormat: defaultLongDateFormat,
-        invalidDate: defaultInvalidDate,
-        ordinal: defaultOrdinal,
-        dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
-        relativeTime: defaultRelativeTime,
-
-        months: defaultLocaleMonths,
-        monthsShort: defaultLocaleMonthsShort,
-
-        week: defaultLocaleWeek,
-
-        weekdays: defaultLocaleWeekdays,
-        weekdaysMin: defaultLocaleWeekdaysMin,
-        weekdaysShort: defaultLocaleWeekdaysShort,
-
-        meridiemParse: defaultLocaleMeridiemParse
-    };
-
-    // internal storage for locale config files
-    var locales = {};
-    var localeFamilies = {};
-    var globalLocale;
-
-    function normalizeLocale(key) {
-        return key ? key.toLowerCase().replace('_', '-') : key;
-    }
-
-    // pick the locale from the array
-    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
-    // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
-    function chooseLocale(names) {
-        var i = 0, j, next, locale, split;
-
-        while (i < names.length) {
-            split = normalizeLocale(names[i]).split('-');
-            j = split.length;
-            next = normalizeLocale(names[i + 1]);
-            next = next ? next.split('-') : null;
-            while (j > 0) {
-                locale = loadLocale(split.slice(0, j).join('-'));
-                if (locale) {
-                    return locale;
-                }
-                if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
-                    //the next array item is better than a shallower substring of this one
-                    break;
-                }
-                j--;
-            }
-            i++;
-        }
-        return globalLocale;
-    }
-
-    function loadLocale(name) {
-        var oldLocale = null;
-        // TODO: Find a better way to register and load all the locales in Node
-        if (!locales[name] && (typeof module !== 'undefined') &&
-                module && module.exports) {
-            try {
-                oldLocale = globalLocale._abbr;
-                var aliasedRequire = require;
-                aliasedRequire('./locale/' + name);
-                getSetGlobalLocale(oldLocale);
-            } catch (e) {}
-        }
-        return locales[name];
-    }
-
-    // This function will load locale and then set the global locale.  If
-    // no arguments are passed in, it will simply return the current global
-    // locale key.
-    function getSetGlobalLocale (key, values) {
-        var data;
-        if (key) {
-            if (isUndefined(values)) {
-                data = getLocale(key);
-            }
-            else {
-                data = defineLocale(key, values);
-            }
-
-            if (data) {
-                // moment.duration._locale = moment._locale = data;
-                globalLocale = data;
-            }
-            else {
-                if ((typeof console !==  'undefined') && console.warn) {
-                    //warn user if arguments are passed but the locale could not be set
-                    console.warn('Locale ' + key +  ' not found. Did you forget to load it?');
-                }
-            }
-        }
-
-        return globalLocale._abbr;
-    }
-
-    function defineLocale (name, config) {
-        if (config !== null) {
-            var locale, parentConfig = baseConfig;
-            config.abbr = name;
-            if (locales[name] != null) {
-                deprecateSimple('defineLocaleOverride',
-                        'use moment.updateLocale(localeName, config) to change ' +
-                        'an existing locale. moment.defineLocale(localeName, ' +
-                        'config) should only be used for creating a new locale ' +
-                        'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.');
-                parentConfig = locales[name]._config;
-            } else if (config.parentLocale != null) {
-                if (locales[config.parentLocale] != null) {
-                    parentConfig = locales[config.parentLocale]._config;
-                } else {
-                    locale = loadLocale(config.parentLocale);
-                    if (locale != null) {
-                        parentConfig = locale._config;
-                    } else {
-                        if (!localeFamilies[config.parentLocale]) {
-                            localeFamilies[config.parentLocale] = [];
-                        }
-                        localeFamilies[config.parentLocale].push({
-                            name: name,
-                            config: config
-                        });
-                        return null;
-                    }
-                }
-            }
-            locales[name] = new Locale(mergeConfigs(parentConfig, config));
-
-            if (localeFamilies[name]) {
-                localeFamilies[name].forEach(function (x) {
-                    defineLocale(x.name, x.config);
-                });
-            }
-
-            // backwards compat for now: also set the locale
-            // make sure we set the locale AFTER all child locales have been
-            // created, so we won't end up with the child locale set.
-            getSetGlobalLocale(name);
-
-
-            return locales[name];
-        } else {
-            // useful for testing
-            delete locales[name];
-            return null;
-        }
-    }
-
-    function updateLocale(name, config) {
-        if (config != null) {
-            var locale, tmpLocale, parentConfig = baseConfig;
-            // MERGE
-            tmpLocale = loadLocale(name);
-            if (tmpLocale != null) {
-                parentConfig = tmpLocale._config;
-            }
-            config = mergeConfigs(parentConfig, config);
-            locale = new Locale(config);
-            locale.parentLocale = locales[name];
-            locales[name] = locale;
-
-            // backwards compat for now: also set the locale
-            getSetGlobalLocale(name);
-        } else {
-            // pass null for config to unupdate, useful for tests
-            if (locales[name] != null) {
-                if (locales[name].parentLocale != null) {
-                    locales[name] = locales[name].parentLocale;
-                } else if (locales[name] != null) {
-                    delete locales[name];
-                }
-            }
-        }
-        return locales[name];
-    }
-
-    // returns locale data
-    function getLocale (key) {
-        var locale;
-
-        if (key && key._locale && key._locale._abbr) {
-            key = key._locale._abbr;
-        }
-
-        if (!key) {
-            return globalLocale;
-        }
-
-        if (!isArray(key)) {
-            //short-circuit everything else
-            locale = loadLocale(key);
-            if (locale) {
-                return locale;
-            }
-            key = [key];
-        }
-
-        return chooseLocale(key);
-    }
-
-    function listLocales() {
-        return keys(locales);
-    }
-
-    function checkOverflow (m) {
-        var overflow;
-        var a = m._a;
-
-        if (a && getParsingFlags(m).overflow === -2) {
-            overflow =
-                a[MONTH]       < 0 || a[MONTH]       > 11  ? MONTH :
-                a[DATE]        < 1 || a[DATE]        > daysInMonth(a[YEAR], a[MONTH]) ? DATE :
-                a[HOUR]        < 0 || a[HOUR]        > 24 || (a[HOUR] === 24 && (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0)) ? HOUR :
-                a[MINUTE]      < 0 || a[MINUTE]      > 59  ? MINUTE :
-                a[SECOND]      < 0 || a[SECOND]      > 59  ? SECOND :
-                a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND :
-                -1;
-
-            if (getParsingFlags(m)._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
-                overflow = DATE;
-            }
-            if (getParsingFlags(m)._overflowWeeks && overflow === -1) {
-                overflow = WEEK;
-            }
-            if (getParsingFlags(m)._overflowWeekday && overflow === -1) {
-                overflow = WEEKDAY;
-            }
-
-            getParsingFlags(m).overflow = overflow;
-        }
-
-        return m;
-    }
-
-    // Pick the first defined of two or three arguments.
-    function defaults(a, b, c) {
-        if (a != null) {
-            return a;
-        }
-        if (b != null) {
-            return b;
-        }
-        return c;
-    }
-
-    function currentDateArray(config) {
-        // hooks is actually the exported moment object
-        var nowValue = new Date(hooks.now());
-        if (config._useUTC) {
-            return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
-        }
-        return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
-    }
-
-    // convert an array to a date.
-    // the array should mirror the parameters below
-    // note: all values past the year are optional and will default to the lowest possible value.
-    // [year, month, day , hour, minute, second, millisecond]
-    function configFromArray (config) {
-        var i, date, input = [], currentDate, expectedWeekday, yearToUse;
-
-        if (config._d) {
-            return;
-        }
-
-        currentDate = currentDateArray(config);
-
-        //compute day of the year from weeks and weekdays
-        if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
-            dayOfYearFromWeekInfo(config);
-        }
-
-        //if the day of the year is set, figure out what it is
-        if (config._dayOfYear != null) {
-            yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
-
-            if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
-                getParsingFlags(config)._overflowDayOfYear = true;
-            }
-
-            date = createUTCDate(yearToUse, 0, config._dayOfYear);
-            config._a[MONTH] = date.getUTCMonth();
-            config._a[DATE] = date.getUTCDate();
-        }
-
-        // Default to current date.
-        // * if no year, month, day of month are given, default to today
-        // * if day of month is given, default month and year
-        // * if month is given, default only year
-        // * if year is given, don't default anything
-        for (i = 0; i < 3 && config._a[i] == null; ++i) {
-            config._a[i] = input[i] = currentDate[i];
-        }
-
-        // Zero out whatever was not defaulted, including time
-        for (; i < 7; i++) {
-            config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
-        }
-
-        // Check for 24:00:00.000
-        if (config._a[HOUR] === 24 &&
-                config._a[MINUTE] === 0 &&
-                config._a[SECOND] === 0 &&
-                config._a[MILLISECOND] === 0) {
-            config._nextDay = true;
-            config._a[HOUR] = 0;
-        }
-
-        config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
-        expectedWeekday = config._useUTC ? config._d.getUTCDay() : config._d.getDay();
-
-        // Apply timezone offset from input. The actual utcOffset can be changed
-        // with parseZone.
-        if (config._tzm != null) {
-            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-        }
-
-        if (config._nextDay) {
-            config._a[HOUR] = 24;
-        }
-
-        // check for mismatching day of week
-        if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== expectedWeekday) {
-            getParsingFlags(config).weekdayMismatch = true;
-        }
-    }
-
-    function dayOfYearFromWeekInfo(config) {
-        var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
-
-        w = config._w;
-        if (w.GG != null || w.W != null || w.E != null) {
-            dow = 1;
-            doy = 4;
-
-            // TODO: We need to take the current isoWeekYear, but that depends on
-            // how we interpret now (local, utc, fixed offset). So create
-            // a now version of current config (take local/utc/offset flags, and
-            // create now).
-            weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
-            week = defaults(w.W, 1);
-            weekday = defaults(w.E, 1);
-            if (weekday < 1 || weekday > 7) {
-                weekdayOverflow = true;
-            }
-        } else {
-            dow = config._locale._week.dow;
-            doy = config._locale._week.doy;
-
-            var curWeek = weekOfYear(createLocal(), dow, doy);
-
-            weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
-
-            // Default to current week.
-            week = defaults(w.w, curWeek.week);
-
-            if (w.d != null) {
-                // weekday -- low day numbers are considered next week
-                weekday = w.d;
-                if (weekday < 0 || weekday > 6) {
-                    weekdayOverflow = true;
-                }
-            } else if (w.e != null) {
-                // local weekday -- counting starts from beginning of week
-                weekday = w.e + dow;
-                if (w.e < 0 || w.e > 6) {
-                    weekdayOverflow = true;
-                }
-            } else {
-                // default to beginning of week
-                weekday = dow;
-            }
-        }
-        if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
-            getParsingFlags(config)._overflowWeeks = true;
-        } else if (weekdayOverflow != null) {
-            getParsingFlags(config)._overflowWeekday = true;
-        } else {
-            temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
-            config._a[YEAR] = temp.year;
-            config._dayOfYear = temp.dayOfYear;
-        }
-    }
-
-    // iso 8601 regex
-    // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
-    var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
-    var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
-
-    var tzRegex = /Z|[+-]\d\d(?::?\d\d)?/;
-
-    var isoDates = [
-        ['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/],
-        ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/],
-        ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/],
-        ['GGGG-[W]WW', /\d{4}-W\d\d/, false],
-        ['YYYY-DDD', /\d{4}-\d{3}/],
-        ['YYYY-MM', /\d{4}-\d\d/, false],
-        ['YYYYYYMMDD', /[+-]\d{10}/],
-        ['YYYYMMDD', /\d{8}/],
-        // YYYYMM is NOT allowed by the standard
-        ['GGGG[W]WWE', /\d{4}W\d{3}/],
-        ['GGGG[W]WW', /\d{4}W\d{2}/, false],
-        ['YYYYDDD', /\d{7}/]
-    ];
-
-    // iso time formats and regexes
-    var isoTimes = [
-        ['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/],
-        ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/],
-        ['HH:mm:ss', /\d\d:\d\d:\d\d/],
-        ['HH:mm', /\d\d:\d\d/],
-        ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/],
-        ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/],
-        ['HHmmss', /\d\d\d\d\d\d/],
-        ['HHmm', /\d\d\d\d/],
-        ['HH', /\d\d/]
-    ];
-
-    var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i;
-
-    // date from iso format
-    function configFromISO(config) {
-        var i, l,
-            string = config._i,
-            match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
-            allowTime, dateFormat, timeFormat, tzFormat;
-
-        if (match) {
-            getParsingFlags(config).iso = true;
-
-            for (i = 0, l = isoDates.length; i < l; i++) {
-                if (isoDates[i][1].exec(match[1])) {
-                    dateFormat = isoDates[i][0];
-                    allowTime = isoDates[i][2] !== false;
-                    break;
-                }
-            }
-            if (dateFormat == null) {
-                config._isValid = false;
-                return;
-            }
-            if (match[3]) {
-                for (i = 0, l = isoTimes.length; i < l; i++) {
-                    if (isoTimes[i][1].exec(match[3])) {
-                        // match[2] should be 'T' or space
-                        timeFormat = (match[2] || ' ') + isoTimes[i][0];
-                        break;
-                    }
-                }
-                if (timeFormat == null) {
-                    config._isValid = false;
-                    return;
-                }
-            }
-            if (!allowTime && timeFormat != null) {
-                config._isValid = false;
-                return;
-            }
-            if (match[4]) {
-                if (tzRegex.exec(match[4])) {
-                    tzFormat = 'Z';
-                } else {
-                    config._isValid = false;
-                    return;
-                }
-            }
-            config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
-            configFromStringAndFormat(config);
-        } else {
-            config._isValid = false;
-        }
-    }
-
-    // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
-    var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
-
-    function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
-        var result = [
-            untruncateYear(yearStr),
-            defaultLocaleMonthsShort.indexOf(monthStr),
-            parseInt(dayStr, 10),
-            parseInt(hourStr, 10),
-            parseInt(minuteStr, 10)
-        ];
-
-        if (secondStr) {
-            result.push(parseInt(secondStr, 10));
-        }
-
-        return result;
-    }
-
-    function untruncateYear(yearStr) {
-        var year = parseInt(yearStr, 10);
-        if (year <= 49) {
-            return 2000 + year;
-        } else if (year <= 999) {
-            return 1900 + year;
-        }
-        return year;
-    }
-
-    function preprocessRFC2822(s) {
-        // Remove comments and folding whitespace and replace multiple-spaces with a single space
-        return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    }
-
-    function checkWeekday(weekdayStr, parsedInput, config) {
-        if (weekdayStr) {
-            // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
-            var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
-                weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
-            if (weekdayProvided !== weekdayActual) {
-                getParsingFlags(config).weekdayMismatch = true;
-                config._isValid = false;
-                return false;
-            }
-        }
-        return true;
-    }
-
-    var obsOffsets = {
-        UT: 0,
-        GMT: 0,
-        EDT: -4 * 60,
-        EST: -5 * 60,
-        CDT: -5 * 60,
-        CST: -6 * 60,
-        MDT: -6 * 60,
-        MST: -7 * 60,
-        PDT: -7 * 60,
-        PST: -8 * 60
-    };
-
-    function calculateOffset(obsOffset, militaryOffset, numOffset) {
-        if (obsOffset) {
-            return obsOffsets[obsOffset];
-        } else if (militaryOffset) {
-            // the only allowed military tz is Z
-            return 0;
-        } else {
-            var hm = parseInt(numOffset, 10);
-            var m = hm % 100, h = (hm - m) / 100;
-            return h * 60 + m;
-        }
-    }
-
-    // date and time from ref 2822 format
-    function configFromRFC2822(config) {
-        var match = rfc2822.exec(preprocessRFC2822(config._i));
-        if (match) {
-            var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
-            if (!checkWeekday(match[1], parsedArray, config)) {
-                return;
-            }
-
-            config._a = parsedArray;
-            config._tzm = calculateOffset(match[8], match[9], match[10]);
-
-            config._d = createUTCDate.apply(null, config._a);
-            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-
-            getParsingFlags(config).rfc2822 = true;
-        } else {
-            config._isValid = false;
-        }
-    }
-
-    // date from iso format or fallback
-    function configFromString(config) {
-        var matched = aspNetJsonRegex.exec(config._i);
-
-        if (matched !== null) {
-            config._d = new Date(+matched[1]);
-            return;
-        }
-
-        configFromISO(config);
-        if (config._isValid === false) {
-            delete config._isValid;
-        } else {
-            return;
-        }
-
-        configFromRFC2822(config);
-        if (config._isValid === false) {
-            delete config._isValid;
-        } else {
-            return;
-        }
-
-        // Final attempt, use Input Fallback
-        hooks.createFromInputFallback(config);
-    }
-
-    hooks.createFromInputFallback = deprecate(
-        'value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' +
-        'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' +
-        'discouraged and will be removed in an upcoming major release. Please refer to ' +
-        'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
-        function (config) {
-            config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
-        }
-    );
-
-    // constant that refers to the ISO standard
-    hooks.ISO_8601 = function () {};
-
-    // constant that refers to the RFC 2822 form
-    hooks.RFC_2822 = function () {};
-
-    // date from string and format string
-    function configFromStringAndFormat(config) {
-        // TODO: Move this to another part of the creation flow to prevent circular deps
-        if (config._f === hooks.ISO_8601) {
-            configFromISO(config);
-            return;
-        }
-        if (config._f === hooks.RFC_2822) {
-            configFromRFC2822(config);
-            return;
-        }
-        config._a = [];
-        getParsingFlags(config).empty = true;
-
-        // This array is used to make a Date, either with `new Date` or `Date.UTC`
-        var string = '' + config._i,
-            i, parsedInput, tokens, token, skipped,
-            stringLength = string.length,
-            totalParsedInputLength = 0;
-
-        tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
-
-        for (i = 0; i < tokens.length; i++) {
-            token = tokens[i];
-            parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
-            // console.log('token', token, 'parsedInput', parsedInput,
-            //         'regex', getParseRegexForToken(token, config));
-            if (parsedInput) {
-                skipped = string.substr(0, string.indexOf(parsedInput));
-                if (skipped.length > 0) {
-                    getParsingFlags(config).unusedInput.push(skipped);
-                }
-                string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
-                totalParsedInputLength += parsedInput.length;
-            }
-            // don't parse if it's not a known token
-            if (formatTokenFunctions[token]) {
-                if (parsedInput) {
-                    getParsingFlags(config).empty = false;
-                }
-                else {
-                    getParsingFlags(config).unusedTokens.push(token);
-                }
-                addTimeToArrayFromToken(token, parsedInput, config);
-            }
-            else if (config._strict && !parsedInput) {
-                getParsingFlags(config).unusedTokens.push(token);
-            }
-        }
-
-        // add remaining unparsed input length to the string
-        getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
-        if (string.length > 0) {
-            getParsingFlags(config).unusedInput.push(string);
-        }
-
-        // clear _12h flag if hour is <= 12
-        if (config._a[HOUR] <= 12 &&
-            getParsingFlags(config).bigHour === true &&
-            config._a[HOUR] > 0) {
-            getParsingFlags(config).bigHour = undefined;
-        }
-
-        getParsingFlags(config).parsedDateParts = config._a.slice(0);
-        getParsingFlags(config).meridiem = config._meridiem;
-        // handle meridiem
-        config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
-
-        configFromArray(config);
-        checkOverflow(config);
-    }
-
-
-    function meridiemFixWrap (locale, hour, meridiem) {
-        var isPm;
-
-        if (meridiem == null) {
-            // nothing to do
-            return hour;
-        }
-        if (locale.meridiemHour != null) {
-            return locale.meridiemHour(hour, meridiem);
-        } else if (locale.isPM != null) {
-            // Fallback
-            isPm = locale.isPM(meridiem);
-            if (isPm && hour < 12) {
-                hour += 12;
-            }
-            if (!isPm && hour === 12) {
-                hour = 0;
-            }
-            return hour;
-        } else {
-            // this is not supposed to happen
-            return hour;
-        }
-    }
-
-    // date from string and array of format strings
-    function configFromStringAndArray(config) {
-        var tempConfig,
-            bestMoment,
-
-            scoreToBeat,
-            i,
-            currentScore;
-
-        if (config._f.length === 0) {
-            getParsingFlags(config).invalidFormat = true;
-            config._d = new Date(NaN);
-            return;
-        }
-
-        for (i = 0; i < config._f.length; i++) {
-            currentScore = 0;
-            tempConfig = copyConfig({}, config);
-            if (config._useUTC != null) {
-                tempConfig._useUTC = config._useUTC;
-            }
-            tempConfig._f = config._f[i];
-            configFromStringAndFormat(tempConfig);
-
-            if (!isValid(tempConfig)) {
-                continue;
-            }
-
-            // if there is any input that was not parsed add a penalty for that format
-            currentScore += getParsingFlags(tempConfig).charsLeftOver;
-
-            //or tokens
-            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
-
-            getParsingFlags(tempConfig).score = currentScore;
-
-            if (scoreToBeat == null || currentScore < scoreToBeat) {
-                scoreToBeat = currentScore;
-                bestMoment = tempConfig;
-            }
-        }
-
-        extend(config, bestMoment || tempConfig);
-    }
-
-    function configFromObject(config) {
-        if (config._d) {
-            return;
-        }
-
-        var i = normalizeObjectUnits(config._i);
-        config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
-            return obj && parseInt(obj, 10);
-        });
-
-        configFromArray(config);
-    }
-
-    function createFromConfig (config) {
-        var res = new Moment(checkOverflow(prepareConfig(config)));
-        if (res._nextDay) {
-            // Adding is smart enough around DST
-            res.add(1, 'd');
-            res._nextDay = undefined;
-        }
-
-        return res;
-    }
-
-    function prepareConfig (config) {
-        var input = config._i,
-            format = config._f;
-
-        config._locale = config._locale || getLocale(config._l);
-
-        if (input === null || (format === undefined && input === '')) {
-            return createInvalid({nullInput: true});
-        }
-
-        if (typeof input === 'string') {
-            config._i = input = config._locale.preparse(input);
-        }
-
-        if (isMoment(input)) {
-            return new Moment(checkOverflow(input));
-        } else if (isDate(input)) {
-            config._d = input;
-        } else if (isArray(format)) {
-            configFromStringAndArray(config);
-        } else if (format) {
-            configFromStringAndFormat(config);
-        }  else {
-            configFromInput(config);
-        }
-
-        if (!isValid(config)) {
-            config._d = null;
-        }
-
-        return config;
-    }
-
-    function configFromInput(config) {
-        var input = config._i;
-        if (isUndefined(input)) {
-            config._d = new Date(hooks.now());
-        } else if (isDate(input)) {
-            config._d = new Date(input.valueOf());
-        } else if (typeof input === 'string') {
-            configFromString(config);
-        } else if (isArray(input)) {
-            config._a = map(input.slice(0), function (obj) {
-                return parseInt(obj, 10);
-            });
-            configFromArray(config);
-        } else if (isObject(input)) {
-            configFromObject(config);
-        } else if (isNumber(input)) {
-            // from milliseconds
-            config._d = new Date(input);
-        } else {
-            hooks.createFromInputFallback(config);
-        }
-    }
-
-    function createLocalOrUTC (input, format, locale, strict, isUTC) {
-        var c = {};
-
-        if (locale === true || locale === false) {
-            strict = locale;
-            locale = undefined;
-        }
-
-        if ((isObject(input) && isObjectEmpty(input)) ||
-                (isArray(input) && input.length === 0)) {
-            input = undefined;
-        }
-        // object construction must be done this way.
-        // https://github.com/moment/moment/issues/1423
-        c._isAMomentObject = true;
-        c._useUTC = c._isUTC = isUTC;
-        c._l = locale;
-        c._i = input;
-        c._f = format;
-        c._strict = strict;
-
-        return createFromConfig(c);
-    }
-
-    function createLocal (input, format, locale, strict) {
-        return createLocalOrUTC(input, format, locale, strict, false);
-    }
-
-    var prototypeMin = deprecate(
-        'moment().min is deprecated, use moment.max instead. http://momentjs.com/guides/#/warnings/min-max/',
-        function () {
-            var other = createLocal.apply(null, arguments);
-            if (this.isValid() && other.isValid()) {
-                return other < this ? this : other;
-            } else {
-                return createInvalid();
-            }
-        }
-    );
-
-    var prototypeMax = deprecate(
-        'moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/',
-        function () {
-            var other = createLocal.apply(null, arguments);
-            if (this.isValid() && other.isValid()) {
-                return other > this ? this : other;
-            } else {
-                return createInvalid();
-            }
-        }
-    );
-
-    // Pick a moment m from moments so that m[fn](other) is true for all
-    // other. This relies on the function fn to be transitive.
-    //
-    // moments should either be an array of moment objects or an array, whose
-    // first element is an array of moment objects.
-    function pickBy(fn, moments) {
-        var res, i;
-        if (moments.length === 1 && isArray(moments[0])) {
-            moments = moments[0];
-        }
-        if (!moments.length) {
-            return createLocal();
-        }
-        res = moments[0];
-        for (i = 1; i < moments.length; ++i) {
-            if (!moments[i].isValid() || moments[i][fn](res)) {
-                res = moments[i];
-            }
-        }
-        return res;
-    }
-
-    // TODO: Use [].sort instead?
-    function min () {
-        var args = [].slice.call(arguments, 0);
-
-        return pickBy('isBefore', args);
-    }
-
-    function max () {
-        var args = [].slice.call(arguments, 0);
-
-        return pickBy('isAfter', args);
-    }
-
-    var now = function () {
-        return Date.now ? Date.now() : +(new Date());
-    };
-
-    var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', 'millisecond'];
-
-    function isDurationValid(m) {
-        for (var key in m) {
-            if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
-                return false;
-            }
-        }
-
-        var unitHasDecimal = false;
-        for (var i = 0; i < ordering.length; ++i) {
-            if (m[ordering[i]]) {
-                if (unitHasDecimal) {
-                    return false; // only allow non-integers for smallest unit
-                }
-                if (parseFloat(m[ordering[i]]) !== toInt(m[ordering[i]])) {
-                    unitHasDecimal = true;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    function isValid$1() {
-        return this._isValid;
-    }
-
-    function createInvalid$1() {
-        return createDuration(NaN);
-    }
-
-    function Duration (duration) {
-        var normalizedInput = normalizeObjectUnits(duration),
-            years = normalizedInput.year || 0,
-            quarters = normalizedInput.quarter || 0,
-            months = normalizedInput.month || 0,
-            weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
-            days = normalizedInput.day || 0,
-            hours = normalizedInput.hour || 0,
-            minutes = normalizedInput.minute || 0,
-            seconds = normalizedInput.second || 0,
-            milliseconds = normalizedInput.millisecond || 0;
-
-        this._isValid = isDurationValid(normalizedInput);
-
-        // representation for dateAddRemove
-        this._milliseconds = +milliseconds +
-            seconds * 1e3 + // 1000
-            minutes * 6e4 + // 1000 * 60
-            hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
-        // Because of dateAddRemove treats 24 hours as different from a
-        // day when working around DST, we need to store them separately
-        this._days = +days +
-            weeks * 7;
-        // It is impossible to translate months into days without knowing
-        // which months you are are talking about, so we have to store
-        // it separately.
-        this._months = +months +
-            quarters * 3 +
-            years * 12;
-
-        this._data = {};
-
-        this._locale = getLocale();
-
-        this._bubble();
-    }
-
-    function isDuration (obj) {
-        return obj instanceof Duration;
-    }
-
-    function absRound (number) {
-        if (number < 0) {
-            return Math.round(-1 * number) * -1;
-        } else {
-            return Math.round(number);
-        }
-    }
-
-    // FORMATTING
-
-    function offset (token, separator) {
-        addFormatToken(token, 0, 0, function () {
-            var offset = this.utcOffset();
-            var sign = '+';
-            if (offset < 0) {
-                offset = -offset;
-                sign = '-';
-            }
-            return sign + zeroFill(~~(offset / 60), 2) + separator + zeroFill(~~(offset) % 60, 2);
-        });
-    }
-
-    offset('Z', ':');
-    offset('ZZ', '');
-
-    // PARSING
-
-    addRegexToken('Z',  matchShortOffset);
-    addRegexToken('ZZ', matchShortOffset);
-    addParseToken(['Z', 'ZZ'], function (input, array, config) {
-        config._useUTC = true;
-        config._tzm = offsetFromString(matchShortOffset, input);
-    });
-
-    // HELPERS
-
-    // timezone chunker
-    // '+10:00' > ['10',  '00']
-    // '-1530'  > ['-15', '30']
-    var chunkOffset = /([\+\-]|\d\d)/gi;
-
-    function offsetFromString(matcher, string) {
-        var matches = (string || '').match(matcher);
-
-        if (matches === null) {
-            return null;
-        }
-
-        var chunk   = matches[matches.length - 1] || [];
-        var parts   = (chunk + '').match(chunkOffset) || ['-', 0, 0];
-        var minutes = +(parts[1] * 60) + toInt(parts[2]);
-
-        return minutes === 0 ?
-          0 :
-          parts[0] === '+' ? minutes : -minutes;
-    }
-
-    // Return a moment from input, that is local/utc/zone equivalent to model.
-    function cloneWithOffset(input, model) {
-        var res, diff;
-        if (model._isUTC) {
-            res = model.clone();
-            diff = (isMoment(input) || isDate(input) ? input.valueOf() : createLocal(input).valueOf()) - res.valueOf();
-            // Use low-level api, because this fn is low-level api.
-            res._d.setTime(res._d.valueOf() + diff);
-            hooks.updateOffset(res, false);
-            return res;
-        } else {
-            return createLocal(input).local();
-        }
-    }
-
-    function getDateOffset (m) {
-        // On Firefox.24 Date#getTimezoneOffset returns a floating point.
-        // https://github.com/moment/moment/pull/1871
-        return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
-    }
-
-    // HOOKS
-
-    // This function will be called whenever a moment is mutated.
-    // It is intended to keep the offset in sync with the timezone.
-    hooks.updateOffset = function () {};
-
-    // MOMENTS
-
-    // keepLocalTime = true means only change the timezone, without
-    // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
-    // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
-    // +0200, so we adjust the time as needed, to be valid.
-    //
-    // Keeping the time actually adds/subtracts (one hour)
-    // from the actual represented time. That is why we call updateOffset
-    // a second time. In case it wants us to change the offset again
-    // _changeInProgress == true case, then we have to adjust, because
-    // there is no such time in the given timezone.
-    function getSetOffset (input, keepLocalTime, keepMinutes) {
-        var offset = this._offset || 0,
-            localAdjust;
-        if (!this.isValid()) {
-            return input != null ? this : NaN;
-        }
-        if (input != null) {
-            if (typeof input === 'string') {
-                input = offsetFromString(matchShortOffset, input);
-                if (input === null) {
-                    return this;
-                }
-            } else if (Math.abs(input) < 16 && !keepMinutes) {
-                input = input * 60;
-            }
-            if (!this._isUTC && keepLocalTime) {
-                localAdjust = getDateOffset(this);
-            }
-            this._offset = input;
-            this._isUTC = true;
-            if (localAdjust != null) {
-                this.add(localAdjust, 'm');
-            }
-            if (offset !== input) {
-                if (!keepLocalTime || this._changeInProgress) {
-                    addSubtract(this, createDuration(input - offset, 'm'), 1, false);
-                } else if (!this._changeInProgress) {
-                    this._changeInProgress = true;
-                    hooks.updateOffset(this, true);
-                    this._changeInProgress = null;
-                }
-            }
-            return this;
-        } else {
-            return this._isUTC ? offset : getDateOffset(this);
-        }
-    }
-
-    function getSetZone (input, keepLocalTime) {
-        if (input != null) {
-            if (typeof input !== 'string') {
-                input = -input;
-            }
-
-            this.utcOffset(input, keepLocalTime);
-
-            return this;
-        } else {
-            return -this.utcOffset();
-        }
-    }
-
-    function setOffsetToUTC (keepLocalTime) {
-        return this.utcOffset(0, keepLocalTime);
-    }
-
-    function setOffsetToLocal (keepLocalTime) {
-        if (this._isUTC) {
-            this.utcOffset(0, keepLocalTime);
-            this._isUTC = false;
-
-            if (keepLocalTime) {
-                this.subtract(getDateOffset(this), 'm');
-            }
-        }
-        return this;
-    }
-
-    function setOffsetToParsedOffset () {
-        if (this._tzm != null) {
-            this.utcOffset(this._tzm, false, true);
-        } else if (typeof this._i === 'string') {
-            var tZone = offsetFromString(matchOffset, this._i);
-            if (tZone != null) {
-                this.utcOffset(tZone);
-            }
-            else {
-                this.utcOffset(0, true);
-            }
-        }
-        return this;
-    }
-
-    function hasAlignedHourOffset (input) {
-        if (!this.isValid()) {
-            return false;
-        }
-        input = input ? createLocal(input).utcOffset() : 0;
-
-        return (this.utcOffset() - input) % 60 === 0;
-    }
-
-    function isDaylightSavingTime () {
-        return (
-            this.utcOffset() > this.clone().month(0).utcOffset() ||
-            this.utcOffset() > this.clone().month(5).utcOffset()
-        );
-    }
-
-    function isDaylightSavingTimeShifted () {
-        if (!isUndefined(this._isDSTShifted)) {
-            return this._isDSTShifted;
-        }
-
-        var c = {};
-
-        copyConfig(c, this);
-        c = prepareConfig(c);
-
-        if (c._a) {
-            var other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
-            this._isDSTShifted = this.isValid() &&
-                compareArrays(c._a, other.toArray()) > 0;
-        } else {
-            this._isDSTShifted = false;
-        }
-
-        return this._isDSTShifted;
-    }
-
-    function isLocal () {
-        return this.isValid() ? !this._isUTC : false;
-    }
-
-    function isUtcOffset () {
-        return this.isValid() ? this._isUTC : false;
-    }
-
-    function isUtc () {
-        return this.isValid() ? this._isUTC && this._offset === 0 : false;
-    }
-
-    // ASP.NET json date format regex
-    var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
-
-    // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
-    // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
-    // and further modified to allow for strings containing both week and day
-    var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
-
-    function createDuration (input, key) {
-        var duration = input,
-            // matching against regexp is expensive, do it on demand
-            match = null,
-            sign,
-            ret,
-            diffRes;
-
-        if (isDuration(input)) {
-            duration = {
-                ms : input._milliseconds,
-                d  : input._days,
-                M  : input._months
-            };
-        } else if (isNumber(input)) {
-            duration = {};
-            if (key) {
-                duration[key] = input;
-            } else {
-                duration.milliseconds = input;
-            }
-        } else if (!!(match = aspNetRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : 1;
-            duration = {
-                y  : 0,
-                d  : toInt(match[DATE])                         * sign,
-                h  : toInt(match[HOUR])                         * sign,
-                m  : toInt(match[MINUTE])                       * sign,
-                s  : toInt(match[SECOND])                       * sign,
-                ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
-            };
-        } else if (!!(match = isoRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : 1;
-            duration = {
-                y : parseIso(match[2], sign),
-                M : parseIso(match[3], sign),
-                w : parseIso(match[4], sign),
-                d : parseIso(match[5], sign),
-                h : parseIso(match[6], sign),
-                m : parseIso(match[7], sign),
-                s : parseIso(match[8], sign)
-            };
-        } else if (duration == null) {// checks for null or undefined
-            duration = {};
-        } else if (typeof duration === 'object' && ('from' in duration || 'to' in duration)) {
-            diffRes = momentsDifference(createLocal(duration.from), createLocal(duration.to));
-
-            duration = {};
-            duration.ms = diffRes.milliseconds;
-            duration.M = diffRes.months;
-        }
-
-        ret = new Duration(duration);
-
-        if (isDuration(input) && hasOwnProp(input, '_locale')) {
-            ret._locale = input._locale;
-        }
-
-        return ret;
-    }
-
-    createDuration.fn = Duration.prototype;
-    createDuration.invalid = createInvalid$1;
-
-    function parseIso (inp, sign) {
-        // We'd normally use ~~inp for this, but unfortunately it also
-        // converts floats to ints.
-        // inp may be undefined, so careful calling replace on it.
-        var res = inp && parseFloat(inp.replace(',', '.'));
-        // apply sign while we're at it
-        return (isNaN(res) ? 0 : res) * sign;
-    }
-
-    function positiveMomentsDifference(base, other) {
-        var res = {};
-
-        res.months = other.month() - base.month() +
-            (other.year() - base.year()) * 12;
-        if (base.clone().add(res.months, 'M').isAfter(other)) {
-            --res.months;
-        }
-
-        res.milliseconds = +other - +(base.clone().add(res.months, 'M'));
-
-        return res;
-    }
-
-    function momentsDifference(base, other) {
-        var res;
-        if (!(base.isValid() && other.isValid())) {
-            return {milliseconds: 0, months: 0};
-        }
-
-        other = cloneWithOffset(other, base);
-        if (base.isBefore(other)) {
-            res = positiveMomentsDifference(base, other);
-        } else {
-            res = positiveMomentsDifference(other, base);
-            res.milliseconds = -res.milliseconds;
-            res.months = -res.months;
-        }
-
-        return res;
-    }
-
-    // TODO: remove 'name' arg after deprecation is removed
-    function createAdder(direction, name) {
-        return function (val, period) {
-            var dur, tmp;
-            //invert the arguments, but complain about it
-            if (period !== null && !isNaN(+period)) {
-                deprecateSimple(name, 'moment().' + name  + '(period, number) is deprecated. Please use moment().' + name + '(number, period). ' +
-                'See http://momentjs.com/guides/#/warnings/add-inverted-param/ for more info.');
-                tmp = val; val = period; period = tmp;
-            }
-
-            val = typeof val === 'string' ? +val : val;
-            dur = createDuration(val, period);
-            addSubtract(this, dur, direction);
-            return this;
-        };
-    }
-
-    function addSubtract (mom, duration, isAdding, updateOffset) {
-        var milliseconds = duration._milliseconds,
-            days = absRound(duration._days),
-            months = absRound(duration._months);
-
-        if (!mom.isValid()) {
-            // No op
-            return;
-        }
-
-        updateOffset = updateOffset == null ? true : updateOffset;
-
-        if (months) {
-            setMonth(mom, get(mom, 'Month') + months * isAdding);
-        }
-        if (days) {
-            set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
-        }
-        if (milliseconds) {
-            mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
-        }
-        if (updateOffset) {
-            hooks.updateOffset(mom, days || months);
-        }
-    }
-
-    var add      = createAdder(1, 'add');
-    var subtract = createAdder(-1, 'subtract');
-
-    function getCalendarFormat(myMoment, now) {
-        var diff = myMoment.diff(now, 'days', true);
-        return diff < -6 ? 'sameElse' :
-                diff < -1 ? 'lastWeek' :
-                diff < 0 ? 'lastDay' :
-                diff < 1 ? 'sameDay' :
-                diff < 2 ? 'nextDay' :
-                diff < 7 ? 'nextWeek' : 'sameElse';
-    }
-
-    function calendar$1 (time, formats) {
-        // We want to compare the start of today, vs this.
-        // Getting start-of-today depends on whether we're local/utc/offset or not.
-        var now = time || createLocal(),
-            sod = cloneWithOffset(now, this).startOf('day'),
-            format = hooks.calendarFormat(this, sod) || 'sameElse';
-
-        var output = formats && (isFunction(formats[format]) ? formats[format].call(this, now) : formats[format]);
-
-        return this.format(output || this.localeData().calendar(format, this, createLocal(now)));
-    }
-
-    function clone () {
-        return new Moment(this);
-    }
-
-    function isAfter (input, units) {
-        var localInput = isMoment(input) ? input : createLocal(input);
-        if (!(this.isValid() && localInput.isValid())) {
-            return false;
-        }
-        units = normalizeUnits(units) || 'millisecond';
-        if (units === 'millisecond') {
-            return this.valueOf() > localInput.valueOf();
-        } else {
-            return localInput.valueOf() < this.clone().startOf(units).valueOf();
-        }
-    }
-
-    function isBefore (input, units) {
-        var localInput = isMoment(input) ? input : createLocal(input);
-        if (!(this.isValid() && localInput.isValid())) {
-            return false;
-        }
-        units = normalizeUnits(units) || 'millisecond';
-        if (units === 'millisecond') {
-            return this.valueOf() < localInput.valueOf();
-        } else {
-            return this.clone().endOf(units).valueOf() < localInput.valueOf();
-        }
-    }
-
-    function isBetween (from, to, units, inclusivity) {
-        var localFrom = isMoment(from) ? from : createLocal(from),
-            localTo = isMoment(to) ? to : createLocal(to);
-        if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
-            return false;
-        }
-        inclusivity = inclusivity || '()';
-        return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) &&
-            (inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
-    }
-
-    function isSame (input, units) {
-        var localInput = isMoment(input) ? input : createLocal(input),
-            inputMs;
-        if (!(this.isValid() && localInput.isValid())) {
-            return false;
-        }
-        units = normalizeUnits(units) || 'millisecond';
-        if (units === 'millisecond') {
-            return this.valueOf() === localInput.valueOf();
-        } else {
-            inputMs = localInput.valueOf();
-            return this.clone().startOf(units).valueOf() <= inputMs && inputMs <= this.clone().endOf(units).valueOf();
-        }
-    }
-
-    function isSameOrAfter (input, units) {
-        return this.isSame(input, units) || this.isAfter(input, units);
-    }
-
-    function isSameOrBefore (input, units) {
-        return this.isSame(input, units) || this.isBefore(input, units);
-    }
-
-    function diff (input, units, asFloat) {
-        var that,
-            zoneDelta,
-            output;
-
-        if (!this.isValid()) {
-            return NaN;
-        }
-
-        that = cloneWithOffset(input, this);
-
-        if (!that.isValid()) {
-            return NaN;
-        }
-
-        zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4;
-
-        units = normalizeUnits(units);
-
-        switch (units) {
-            case 'year': output = monthDiff(this, that) / 12; break;
-            case 'month': output = monthDiff(this, that); break;
-            case 'quarter': output = monthDiff(this, that) / 3; break;
-            case 'second': output = (this - that) / 1e3; break; // 1000
-            case 'minute': output = (this - that) / 6e4; break; // 1000 * 60
-            case 'hour': output = (this - that) / 36e5; break; // 1000 * 60 * 60
-            case 'day': output = (this - that - zoneDelta) / 864e5; break; // 1000 * 60 * 60 * 24, negate dst
-            case 'week': output = (this - that - zoneDelta) / 6048e5; break; // 1000 * 60 * 60 * 24 * 7, negate dst
-            default: output = this - that;
-        }
-
-        return asFloat ? output : absFloor(output);
-    }
-
-    function monthDiff (a, b) {
-        // difference in months
-        var wholeMonthDiff = ((b.year() - a.year()) * 12) + (b.month() - a.month()),
-            // b is in (anchor - 1 month, anchor + 1 month)
-            anchor = a.clone().add(wholeMonthDiff, 'months'),
-            anchor2, adjust;
-
-        if (b - anchor < 0) {
-            anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
-            // linear across the month
-            adjust = (b - anchor) / (anchor - anchor2);
-        } else {
-            anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
-            // linear across the month
-            adjust = (b - anchor) / (anchor2 - anchor);
-        }
-
-        //check for negative zero, return zero if negative zero
-        return -(wholeMonthDiff + adjust) || 0;
-    }
-
-    hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
-    hooks.defaultFormatUtc = 'YYYY-MM-DDTHH:mm:ss[Z]';
-
-    function toString () {
-        return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
-    }
-
-    function toISOString(keepOffset) {
-        if (!this.isValid()) {
-            return null;
-        }
-        var utc = keepOffset !== true;
-        var m = utc ? this.clone().utc() : this;
-        if (m.year() < 0 || m.year() > 9999) {
-            return formatMoment(m, utc ? 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYYYY-MM-DD[T]HH:mm:ss.SSSZ');
-        }
-        if (isFunction(Date.prototype.toISOString)) {
-            // native implementation is ~50x faster, use it when we can
-            if (utc) {
-                return this.toDate().toISOString();
-            } else {
-                return new Date(this.valueOf() + this.utcOffset() * 60 * 1000).toISOString().replace('Z', formatMoment(m, 'Z'));
-            }
-        }
-        return formatMoment(m, utc ? 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYY-MM-DD[T]HH:mm:ss.SSSZ');
-    }
-
-    /**
-     * Return a human readable representation of a moment that can
-     * also be evaluated to get a new moment which is the same
-     *
-     * @link https://nodejs.org/dist/latest/docs/api/util.html#util_custom_inspect_function_on_objects
-     */
-    function inspect () {
-        if (!this.isValid()) {
-            return 'moment.invalid(/* ' + this._i + ' */)';
-        }
-        var func = 'moment';
-        var zone = '';
-        if (!this.isLocal()) {
-            func = this.utcOffset() === 0 ? 'moment.utc' : 'moment.parseZone';
-            zone = 'Z';
-        }
-        var prefix = '[' + func + '("]';
-        var year = (0 <= this.year() && this.year() <= 9999) ? 'YYYY' : 'YYYYYY';
-        var datetime = '-MM-DD[T]HH:mm:ss.SSS';
-        var suffix = zone + '[")]';
-
-        return this.format(prefix + year + datetime + suffix);
-    }
-
-    function format (inputString) {
-        if (!inputString) {
-            inputString = this.isUtc() ? hooks.defaultFormatUtc : hooks.defaultFormat;
-        }
-        var output = formatMoment(this, inputString);
-        return this.localeData().postformat(output);
-    }
-
-    function from (time, withoutSuffix) {
-        if (this.isValid() &&
-                ((isMoment(time) && time.isValid()) ||
-                 createLocal(time).isValid())) {
-            return createDuration({to: this, from: time}).locale(this.locale()).humanize(!withoutSuffix);
-        } else {
-            return this.localeData().invalidDate();
-        }
-    }
-
-    function fromNow (withoutSuffix) {
-        return this.from(createLocal(), withoutSuffix);
-    }
-
-    function to (time, withoutSuffix) {
-        if (this.isValid() &&
-                ((isMoment(time) && time.isValid()) ||
-                 createLocal(time).isValid())) {
-            return createDuration({from: this, to: time}).locale(this.locale()).humanize(!withoutSuffix);
-        } else {
-            return this.localeData().invalidDate();
-        }
-    }
-
-    function toNow (withoutSuffix) {
-        return this.to(createLocal(), withoutSuffix);
-    }
-
-    // If passed a locale key, it will set the locale for this
-    // instance.  Otherwise, it will return the locale configuration
-    // variables for this instance.
-    function locale (key) {
-        var newLocaleData;
-
-        if (key === undefined) {
-            return this._locale._abbr;
-        } else {
-            newLocaleData = getLocale(key);
-            if (newLocaleData != null) {
-                this._locale = newLocaleData;
-            }
-            return this;
-        }
-    }
-
-    var lang = deprecate(
-        'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
-        function (key) {
-            if (key === undefined) {
-                return this.localeData();
-            } else {
-                return this.locale(key);
-            }
-        }
-    );
-
-    function localeData () {
-        return this._locale;
-    }
-
-    var MS_PER_SECOND = 1000;
-    var MS_PER_MINUTE = 60 * MS_PER_SECOND;
-    var MS_PER_HOUR = 60 * MS_PER_MINUTE;
-    var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
-
-    // actual modulo - handles negative numbers (for dates before 1970):
-    function mod$1(dividend, divisor) {
-        return (dividend % divisor + divisor) % divisor;
-    }
-
-    function localStartOfDate(y, m, d) {
-        // the date constructor remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0) {
-            // preserve leap years using a full 400 year cycle, then reset
-            return new Date(y + 400, m, d) - MS_PER_400_YEARS;
-        } else {
-            return new Date(y, m, d).valueOf();
-        }
-    }
-
-    function utcStartOfDate(y, m, d) {
-        // Date.UTC remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0) {
-            // preserve leap years using a full 400 year cycle, then reset
-            return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
-        } else {
-            return Date.UTC(y, m, d);
-        }
-    }
-
-    function startOf (units) {
-        var time;
-        units = normalizeUnits(units);
-        if (units === undefined || units === 'millisecond' || !this.isValid()) {
-            return this;
-        }
-
-        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
-
-        switch (units) {
-            case 'year':
-                time = startOfDate(this.year(), 0, 1);
-                break;
-            case 'quarter':
-                time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
-                break;
-            case 'month':
-                time = startOfDate(this.year(), this.month(), 1);
-                break;
-            case 'week':
-                time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
-                break;
-            case 'isoWeek':
-                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
-                break;
-            case 'day':
-            case 'date':
-                time = startOfDate(this.year(), this.month(), this.date());
-                break;
-            case 'hour':
-                time = this._d.valueOf();
-                time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
-                break;
-            case 'minute':
-                time = this._d.valueOf();
-                time -= mod$1(time, MS_PER_MINUTE);
-                break;
-            case 'second':
-                time = this._d.valueOf();
-                time -= mod$1(time, MS_PER_SECOND);
-                break;
-        }
-
-        this._d.setTime(time);
-        hooks.updateOffset(this, true);
-        return this;
-    }
-
-    function endOf (units) {
-        var time;
-        units = normalizeUnits(units);
-        if (units === undefined || units === 'millisecond' || !this.isValid()) {
-            return this;
-        }
-
-        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
-
-        switch (units) {
-            case 'year':
-                time = startOfDate(this.year() + 1, 0, 1) - 1;
-                break;
-            case 'quarter':
-                time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
-                break;
-            case 'month':
-                time = startOfDate(this.year(), this.month() + 1, 1) - 1;
-                break;
-            case 'week':
-                time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
-                break;
-            case 'isoWeek':
-                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
-                break;
-            case 'day':
-            case 'date':
-                time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
-                break;
-            case 'hour':
-                time = this._d.valueOf();
-                time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
-                break;
-            case 'minute':
-                time = this._d.valueOf();
-                time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
-                break;
-            case 'second':
-                time = this._d.valueOf();
-                time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
-                break;
-        }
-
-        this._d.setTime(time);
-        hooks.updateOffset(this, true);
-        return this;
-    }
-
-    function valueOf () {
-        return this._d.valueOf() - ((this._offset || 0) * 60000);
-    }
-
-    function unix () {
-        return Math.floor(this.valueOf() / 1000);
-    }
-
-    function toDate () {
-        return new Date(this.valueOf());
-    }
-
-    function toArray () {
-        var m = this;
-        return [m.year(), m.month(), m.date(), m.hour(), m.minute(), m.second(), m.millisecond()];
-    }
-
-    function toObject () {
-        var m = this;
-        return {
-            years: m.year(),
-            months: m.month(),
-            date: m.date(),
-            hours: m.hours(),
-            minutes: m.minutes(),
-            seconds: m.seconds(),
-            milliseconds: m.milliseconds()
-        };
-    }
-
-    function toJSON () {
-        // new Date(NaN).toJSON() === null
-        return this.isValid() ? this.toISOString() : null;
-    }
-
-    function isValid$2 () {
-        return isValid(this);
-    }
-
-    function parsingFlags () {
-        return extend({}, getParsingFlags(this));
-    }
-
-    function invalidAt () {
-        return getParsingFlags(this).overflow;
-    }
-
-    function creationData() {
-        return {
-            input: this._i,
-            format: this._f,
-            locale: this._locale,
-            isUTC: this._isUTC,
-            strict: this._strict
-        };
-    }
-
-    // FORMATTING
-
-    addFormatToken(0, ['gg', 2], 0, function () {
-        return this.weekYear() % 100;
-    });
-
-    addFormatToken(0, ['GG', 2], 0, function () {
-        return this.isoWeekYear() % 100;
-    });
-
-    function addWeekYearFormatToken (token, getter) {
-        addFormatToken(0, [token, token.length], 0, getter);
-    }
-
-    addWeekYearFormatToken('gggg',     'weekYear');
-    addWeekYearFormatToken('ggggg',    'weekYear');
-    addWeekYearFormatToken('GGGG',  'isoWeekYear');
-    addWeekYearFormatToken('GGGGG', 'isoWeekYear');
-
-    // ALIASES
-
-    addUnitAlias('weekYear', 'gg');
-    addUnitAlias('isoWeekYear', 'GG');
-
-    // PRIORITY
-
-    addUnitPriority('weekYear', 1);
-    addUnitPriority('isoWeekYear', 1);
-
-
-    // PARSING
-
-    addRegexToken('G',      matchSigned);
-    addRegexToken('g',      matchSigned);
-    addRegexToken('GG',     match1to2, match2);
-    addRegexToken('gg',     match1to2, match2);
-    addRegexToken('GGGG',   match1to4, match4);
-    addRegexToken('gggg',   match1to4, match4);
-    addRegexToken('GGGGG',  match1to6, match6);
-    addRegexToken('ggggg',  match1to6, match6);
-
-    addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, config, token) {
-        week[token.substr(0, 2)] = toInt(input);
-    });
-
-    addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
-        week[token] = hooks.parseTwoDigitYear(input);
-    });
-
-    // MOMENTS
-
-    function getSetWeekYear (input) {
-        return getSetWeekYearHelper.call(this,
-                input,
-                this.week(),
-                this.weekday(),
-                this.localeData()._week.dow,
-                this.localeData()._week.doy);
-    }
-
-    function getSetISOWeekYear (input) {
-        return getSetWeekYearHelper.call(this,
-                input, this.isoWeek(), this.isoWeekday(), 1, 4);
-    }
-
-    function getISOWeeksInYear () {
-        return weeksInYear(this.year(), 1, 4);
-    }
-
-    function getWeeksInYear () {
-        var weekInfo = this.localeData()._week;
-        return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
-    }
-
-    function getSetWeekYearHelper(input, week, weekday, dow, doy) {
-        var weeksTarget;
-        if (input == null) {
-            return weekOfYear(this, dow, doy).year;
-        } else {
-            weeksTarget = weeksInYear(input, dow, doy);
-            if (week > weeksTarget) {
-                week = weeksTarget;
-            }
-            return setWeekAll.call(this, input, week, weekday, dow, doy);
-        }
-    }
-
-    function setWeekAll(weekYear, week, weekday, dow, doy) {
-        var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
-            date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
-
-        this.year(date.getUTCFullYear());
-        this.month(date.getUTCMonth());
-        this.date(date.getUTCDate());
-        return this;
-    }
-
-    // FORMATTING
-
-    addFormatToken('Q', 0, 'Qo', 'quarter');
-
-    // ALIASES
-
-    addUnitAlias('quarter', 'Q');
-
-    // PRIORITY
-
-    addUnitPriority('quarter', 7);
-
-    // PARSING
-
-    addRegexToken('Q', match1);
-    addParseToken('Q', function (input, array) {
-        array[MONTH] = (toInt(input) - 1) * 3;
-    });
-
-    // MOMENTS
-
-    function getSetQuarter (input) {
-        return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
-    }
-
-    // FORMATTING
-
-    addFormatToken('D', ['DD', 2], 'Do', 'date');
-
-    // ALIASES
-
-    addUnitAlias('date', 'D');
-
-    // PRIORITY
-    addUnitPriority('date', 9);
-
-    // PARSING
-
-    addRegexToken('D',  match1to2);
-    addRegexToken('DD', match1to2, match2);
-    addRegexToken('Do', function (isStrict, locale) {
-        // TODO: Remove "ordinalParse" fallback in next major release.
-        return isStrict ?
-          (locale._dayOfMonthOrdinalParse || locale._ordinalParse) :
-          locale._dayOfMonthOrdinalParseLenient;
-    });
-
-    addParseToken(['D', 'DD'], DATE);
-    addParseToken('Do', function (input, array) {
-        array[DATE] = toInt(input.match(match1to2)[0]);
-    });
-
-    // MOMENTS
-
-    var getSetDayOfMonth = makeGetSet('Date', true);
-
-    // FORMATTING
-
-    addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
-
-    // ALIASES
-
-    addUnitAlias('dayOfYear', 'DDD');
-
-    // PRIORITY
-    addUnitPriority('dayOfYear', 4);
-
-    // PARSING
-
-    addRegexToken('DDD',  match1to3);
-    addRegexToken('DDDD', match3);
-    addParseToken(['DDD', 'DDDD'], function (input, array, config) {
-        config._dayOfYear = toInt(input);
-    });
-
-    // HELPERS
-
-    // MOMENTS
-
-    function getSetDayOfYear (input) {
-        var dayOfYear = Math.round((this.clone().startOf('day') - this.clone().startOf('year')) / 864e5) + 1;
-        return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
-    }
-
-    // FORMATTING
-
-    addFormatToken('m', ['mm', 2], 0, 'minute');
-
-    // ALIASES
-
-    addUnitAlias('minute', 'm');
-
-    // PRIORITY
-
-    addUnitPriority('minute', 14);
-
-    // PARSING
-
-    addRegexToken('m',  match1to2);
-    addRegexToken('mm', match1to2, match2);
-    addParseToken(['m', 'mm'], MINUTE);
-
-    // MOMENTS
-
-    var getSetMinute = makeGetSet('Minutes', false);
-
-    // FORMATTING
-
-    addFormatToken('s', ['ss', 2], 0, 'second');
-
-    // ALIASES
-
-    addUnitAlias('second', 's');
-
-    // PRIORITY
-
-    addUnitPriority('second', 15);
-
-    // PARSING
-
-    addRegexToken('s',  match1to2);
-    addRegexToken('ss', match1to2, match2);
-    addParseToken(['s', 'ss'], SECOND);
-
-    // MOMENTS
-
-    var getSetSecond = makeGetSet('Seconds', false);
-
-    // FORMATTING
-
-    addFormatToken('S', 0, 0, function () {
-        return ~~(this.millisecond() / 100);
-    });
-
-    addFormatToken(0, ['SS', 2], 0, function () {
-        return ~~(this.millisecond() / 10);
-    });
-
-    addFormatToken(0, ['SSS', 3], 0, 'millisecond');
-    addFormatToken(0, ['SSSS', 4], 0, function () {
-        return this.millisecond() * 10;
-    });
-    addFormatToken(0, ['SSSSS', 5], 0, function () {
-        return this.millisecond() * 100;
-    });
-    addFormatToken(0, ['SSSSSS', 6], 0, function () {
-        return this.millisecond() * 1000;
-    });
-    addFormatToken(0, ['SSSSSSS', 7], 0, function () {
-        return this.millisecond() * 10000;
-    });
-    addFormatToken(0, ['SSSSSSSS', 8], 0, function () {
-        return this.millisecond() * 100000;
-    });
-    addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
-        return this.millisecond() * 1000000;
-    });
-
-
-    // ALIASES
-
-    addUnitAlias('millisecond', 'ms');
-
-    // PRIORITY
-
-    addUnitPriority('millisecond', 16);
-
-    // PARSING
-
-    addRegexToken('S',    match1to3, match1);
-    addRegexToken('SS',   match1to3, match2);
-    addRegexToken('SSS',  match1to3, match3);
-
-    var token;
-    for (token = 'SSSS'; token.length <= 9; token += 'S') {
-        addRegexToken(token, matchUnsigned);
-    }
-
-    function parseMs(input, array) {
-        array[MILLISECOND] = toInt(('0.' + input) * 1000);
-    }
-
-    for (token = 'S'; token.length <= 9; token += 'S') {
-        addParseToken(token, parseMs);
-    }
-    // MOMENTS
-
-    var getSetMillisecond = makeGetSet('Milliseconds', false);
-
-    // FORMATTING
-
-    addFormatToken('z',  0, 0, 'zoneAbbr');
-    addFormatToken('zz', 0, 0, 'zoneName');
-
-    // MOMENTS
-
-    function getZoneAbbr () {
-        return this._isUTC ? 'UTC' : '';
-    }
-
-    function getZoneName () {
-        return this._isUTC ? 'Coordinated Universal Time' : '';
-    }
-
-    var proto = Moment.prototype;
-
-    proto.add               = add;
-    proto.calendar          = calendar$1;
-    proto.clone             = clone;
-    proto.diff              = diff;
-    proto.endOf             = endOf;
-    proto.format            = format;
-    proto.from              = from;
-    proto.fromNow           = fromNow;
-    proto.to                = to;
-    proto.toNow             = toNow;
-    proto.get               = stringGet;
-    proto.invalidAt         = invalidAt;
-    proto.isAfter           = isAfter;
-    proto.isBefore          = isBefore;
-    proto.isBetween         = isBetween;
-    proto.isSame            = isSame;
-    proto.isSameOrAfter     = isSameOrAfter;
-    proto.isSameOrBefore    = isSameOrBefore;
-    proto.isValid           = isValid$2;
-    proto.lang              = lang;
-    proto.locale            = locale;
-    proto.localeData        = localeData;
-    proto.max               = prototypeMax;
-    proto.min               = prototypeMin;
-    proto.parsingFlags      = parsingFlags;
-    proto.set               = stringSet;
-    proto.startOf           = startOf;
-    proto.subtract          = subtract;
-    proto.toArray           = toArray;
-    proto.toObject          = toObject;
-    proto.toDate            = toDate;
-    proto.toISOString       = toISOString;
-    proto.inspect           = inspect;
-    proto.toJSON            = toJSON;
-    proto.toString          = toString;
-    proto.unix              = unix;
-    proto.valueOf           = valueOf;
-    proto.creationData      = creationData;
-    proto.year       = getSetYear;
-    proto.isLeapYear = getIsLeapYear;
-    proto.weekYear    = getSetWeekYear;
-    proto.isoWeekYear = getSetISOWeekYear;
-    proto.quarter = proto.quarters = getSetQuarter;
-    proto.month       = getSetMonth;
-    proto.daysInMonth = getDaysInMonth;
-    proto.week           = proto.weeks        = getSetWeek;
-    proto.isoWeek        = proto.isoWeeks     = getSetISOWeek;
-    proto.weeksInYear    = getWeeksInYear;
-    proto.isoWeeksInYear = getISOWeeksInYear;
-    proto.date       = getSetDayOfMonth;
-    proto.day        = proto.days             = getSetDayOfWeek;
-    proto.weekday    = getSetLocaleDayOfWeek;
-    proto.isoWeekday = getSetISODayOfWeek;
-    proto.dayOfYear  = getSetDayOfYear;
-    proto.hour = proto.hours = getSetHour;
-    proto.minute = proto.minutes = getSetMinute;
-    proto.second = proto.seconds = getSetSecond;
-    proto.millisecond = proto.milliseconds = getSetMillisecond;
-    proto.utcOffset            = getSetOffset;
-    proto.utc                  = setOffsetToUTC;
-    proto.local                = setOffsetToLocal;
-    proto.parseZone            = setOffsetToParsedOffset;
-    proto.hasAlignedHourOffset = hasAlignedHourOffset;
-    proto.isDST                = isDaylightSavingTime;
-    proto.isLocal              = isLocal;
-    proto.isUtcOffset          = isUtcOffset;
-    proto.isUtc                = isUtc;
-    proto.isUTC                = isUtc;
-    proto.zoneAbbr = getZoneAbbr;
-    proto.zoneName = getZoneName;
-    proto.dates  = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
-    proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
-    proto.years  = deprecate('years accessor is deprecated. Use year instead', getSetYear);
-    proto.zone   = deprecate('moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/', getSetZone);
-    proto.isDSTShifted = deprecate('isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information', isDaylightSavingTimeShifted);
-
-    function createUnix (input) {
-        return createLocal(input * 1000);
-    }
-
-    function createInZone () {
-        return createLocal.apply(null, arguments).parseZone();
-    }
-
-    function preParsePostFormat (string) {
-        return string;
-    }
-
-    var proto$1 = Locale.prototype;
-
-    proto$1.calendar        = calendar;
-    proto$1.longDateFormat  = longDateFormat;
-    proto$1.invalidDate     = invalidDate;
-    proto$1.ordinal         = ordinal;
-    proto$1.preparse        = preParsePostFormat;
-    proto$1.postformat      = preParsePostFormat;
-    proto$1.relativeTime    = relativeTime;
-    proto$1.pastFuture      = pastFuture;
-    proto$1.set             = set;
-
-    proto$1.months            =        localeMonths;
-    proto$1.monthsShort       =        localeMonthsShort;
-    proto$1.monthsParse       =        localeMonthsParse;
-    proto$1.monthsRegex       = monthsRegex;
-    proto$1.monthsShortRegex  = monthsShortRegex;
-    proto$1.week = localeWeek;
-    proto$1.firstDayOfYear = localeFirstDayOfYear;
-    proto$1.firstDayOfWeek = localeFirstDayOfWeek;
-
-    proto$1.weekdays       =        localeWeekdays;
-    proto$1.weekdaysMin    =        localeWeekdaysMin;
-    proto$1.weekdaysShort  =        localeWeekdaysShort;
-    proto$1.weekdaysParse  =        localeWeekdaysParse;
-
-    proto$1.weekdaysRegex       =        weekdaysRegex;
-    proto$1.weekdaysShortRegex  =        weekdaysShortRegex;
-    proto$1.weekdaysMinRegex    =        weekdaysMinRegex;
-
-    proto$1.isPM = localeIsPM;
-    proto$1.meridiem = localeMeridiem;
-
-    function get$1 (format, index, field, setter) {
-        var locale = getLocale();
-        var utc = createUTC().set(setter, index);
-        return locale[field](utc, format);
-    }
-
-    function listMonthsImpl (format, index, field) {
-        if (isNumber(format)) {
-            index = format;
-            format = undefined;
-        }
-
-        format = format || '';
-
-        if (index != null) {
-            return get$1(format, index, field, 'month');
-        }
-
-        var i;
-        var out = [];
-        for (i = 0; i < 12; i++) {
-            out[i] = get$1(format, i, field, 'month');
-        }
-        return out;
-    }
-
-    // ()
-    // (5)
-    // (fmt, 5)
-    // (fmt)
-    // (true)
-    // (true, 5)
-    // (true, fmt, 5)
-    // (true, fmt)
-    function listWeekdaysImpl (localeSorted, format, index, field) {
-        if (typeof localeSorted === 'boolean') {
-            if (isNumber(format)) {
-                index = format;
-                format = undefined;
-            }
-
-            format = format || '';
-        } else {
-            format = localeSorted;
-            index = format;
-            localeSorted = false;
-
-            if (isNumber(format)) {
-                index = format;
-                format = undefined;
-            }
-
-            format = format || '';
-        }
-
-        var locale = getLocale(),
-            shift = localeSorted ? locale._week.dow : 0;
-
-        if (index != null) {
-            return get$1(format, (index + shift) % 7, field, 'day');
-        }
-
-        var i;
-        var out = [];
-        for (i = 0; i < 7; i++) {
-            out[i] = get$1(format, (i + shift) % 7, field, 'day');
-        }
-        return out;
-    }
-
-    function listMonths (format, index) {
-        return listMonthsImpl(format, index, 'months');
-    }
-
-    function listMonthsShort (format, index) {
-        return listMonthsImpl(format, index, 'monthsShort');
-    }
-
-    function listWeekdays (localeSorted, format, index) {
-        return listWeekdaysImpl(localeSorted, format, index, 'weekdays');
-    }
-
-    function listWeekdaysShort (localeSorted, format, index) {
-        return listWeekdaysImpl(localeSorted, format, index, 'weekdaysShort');
-    }
-
-    function listWeekdaysMin (localeSorted, format, index) {
-        return listWeekdaysImpl(localeSorted, format, index, 'weekdaysMin');
-    }
-
-    getSetGlobalLocale('en', {
-        dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
-        ordinal : function (number) {
-            var b = number % 10,
-                output = (toInt(number % 100 / 10) === 1) ? 'th' :
-                (b === 1) ? 'st' :
-                (b === 2) ? 'nd' :
-                (b === 3) ? 'rd' : 'th';
-            return number + output;
-        }
-    });
-
-    // Side effect imports
-
-    hooks.lang = deprecate('moment.lang is deprecated. Use moment.locale instead.', getSetGlobalLocale);
-    hooks.langData = deprecate('moment.langData is deprecated. Use moment.localeData instead.', getLocale);
-
-    var mathAbs = Math.abs;
-
-    function abs () {
-        var data           = this._data;
-
-        this._milliseconds = mathAbs(this._milliseconds);
-        this._days         = mathAbs(this._days);
-        this._months       = mathAbs(this._months);
-
-        data.milliseconds  = mathAbs(data.milliseconds);
-        data.seconds       = mathAbs(data.seconds);
-        data.minutes       = mathAbs(data.minutes);
-        data.hours         = mathAbs(data.hours);
-        data.months        = mathAbs(data.months);
-        data.years         = mathAbs(data.years);
-
-        return this;
-    }
-
-    function addSubtract$1 (duration, input, value, direction) {
-        var other = createDuration(input, value);
-
-        duration._milliseconds += direction * other._milliseconds;
-        duration._days         += direction * other._days;
-        duration._months       += direction * other._months;
-
-        return duration._bubble();
-    }
-
-    // supports only 2.0-style add(1, 's') or add(duration)
-    function add$1 (input, value) {
-        return addSubtract$1(this, input, value, 1);
-    }
-
-    // supports only 2.0-style subtract(1, 's') or subtract(duration)
-    function subtract$1 (input, value) {
-        return addSubtract$1(this, input, value, -1);
-    }
-
-    function absCeil (number) {
-        if (number < 0) {
-            return Math.floor(number);
-        } else {
-            return Math.ceil(number);
-        }
-    }
-
-    function bubble () {
-        var milliseconds = this._milliseconds;
-        var days         = this._days;
-        var months       = this._months;
-        var data         = this._data;
-        var seconds, minutes, hours, years, monthsFromDays;
-
-        // if we have a mix of positive and negative values, bubble down first
-        // check: https://github.com/moment/moment/issues/2166
-        if (!((milliseconds >= 0 && days >= 0 && months >= 0) ||
-                (milliseconds <= 0 && days <= 0 && months <= 0))) {
-            milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
-            days = 0;
-            months = 0;
-        }
-
-        // The following code bubbles up values, see the tests for
-        // examples of what that means.
-        data.milliseconds = milliseconds % 1000;
-
-        seconds           = absFloor(milliseconds / 1000);
-        data.seconds      = seconds % 60;
-
-        minutes           = absFloor(seconds / 60);
-        data.minutes      = minutes % 60;
-
-        hours             = absFloor(minutes / 60);
-        data.hours        = hours % 24;
-
-        days += absFloor(hours / 24);
-
-        // convert days to months
-        monthsFromDays = absFloor(daysToMonths(days));
-        months += monthsFromDays;
-        days -= absCeil(monthsToDays(monthsFromDays));
-
-        // 12 months -> 1 year
-        years = absFloor(months / 12);
-        months %= 12;
-
-        data.days   = days;
-        data.months = months;
-        data.years  = years;
-
-        return this;
-    }
-
-    function daysToMonths (days) {
-        // 400 years have 146097 days (taking into account leap year rules)
-        // 400 years have 12 months === 4800
-        return days * 4800 / 146097;
-    }
-
-    function monthsToDays (months) {
-        // the reverse of daysToMonths
-        return months * 146097 / 4800;
-    }
-
-    function as (units) {
-        if (!this.isValid()) {
-            return NaN;
-        }
-        var days;
-        var months;
-        var milliseconds = this._milliseconds;
-
-        units = normalizeUnits(units);
-
-        if (units === 'month' || units === 'quarter' || units === 'year') {
-            days = this._days + milliseconds / 864e5;
-            months = this._months + daysToMonths(days);
-            switch (units) {
-                case 'month':   return months;
-                case 'quarter': return months / 3;
-                case 'year':    return months / 12;
-            }
-        } else {
-            // handle milliseconds separately because of floating point math errors (issue #1867)
-            days = this._days + Math.round(monthsToDays(this._months));
-            switch (units) {
-                case 'week'   : return days / 7     + milliseconds / 6048e5;
-                case 'day'    : return days         + milliseconds / 864e5;
-                case 'hour'   : return days * 24    + milliseconds / 36e5;
-                case 'minute' : return days * 1440  + milliseconds / 6e4;
-                case 'second' : return days * 86400 + milliseconds / 1000;
-                // Math.floor prevents floating point math errors here
-                case 'millisecond': return Math.floor(days * 864e5) + milliseconds;
-                default: throw new Error('Unknown unit ' + units);
-            }
-        }
-    }
-
-    // TODO: Use this.as('ms')?
-    function valueOf$1 () {
-        if (!this.isValid()) {
-            return NaN;
-        }
-        return (
-            this._milliseconds +
-            this._days * 864e5 +
-            (this._months % 12) * 2592e6 +
-            toInt(this._months / 12) * 31536e6
-        );
-    }
-
-    function makeAs (alias) {
-        return function () {
-            return this.as(alias);
-        };
-    }
-
-    var asMilliseconds = makeAs('ms');
-    var asSeconds      = makeAs('s');
-    var asMinutes      = makeAs('m');
-    var asHours        = makeAs('h');
-    var asDays         = makeAs('d');
-    var asWeeks        = makeAs('w');
-    var asMonths       = makeAs('M');
-    var asQuarters     = makeAs('Q');
-    var asYears        = makeAs('y');
-
-    function clone$1 () {
-        return createDuration(this);
-    }
-
-    function get$2 (units) {
-        units = normalizeUnits(units);
-        return this.isValid() ? this[units + 's']() : NaN;
-    }
-
-    function makeGetter(name) {
-        return function () {
-            return this.isValid() ? this._data[name] : NaN;
-        };
-    }
-
-    var milliseconds = makeGetter('milliseconds');
-    var seconds      = makeGetter('seconds');
-    var minutes      = makeGetter('minutes');
-    var hours        = makeGetter('hours');
-    var days         = makeGetter('days');
-    var months       = makeGetter('months');
-    var years        = makeGetter('years');
-
-    function weeks () {
-        return absFloor(this.days() / 7);
-    }
-
-    var round = Math.round;
-    var thresholds = {
-        ss: 44,         // a few seconds to seconds
-        s : 45,         // seconds to minute
-        m : 45,         // minutes to hour
-        h : 22,         // hours to day
-        d : 26,         // days to month
-        M : 11          // months to year
-    };
-
-    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
-    function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
-        return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
-    }
-
-    function relativeTime$1 (posNegDuration, withoutSuffix, locale) {
-        var duration = createDuration(posNegDuration).abs();
-        var seconds  = round(duration.as('s'));
-        var minutes  = round(duration.as('m'));
-        var hours    = round(duration.as('h'));
-        var days     = round(duration.as('d'));
-        var months   = round(duration.as('M'));
-        var years    = round(duration.as('y'));
-
-        var a = seconds <= thresholds.ss && ['s', seconds]  ||
-                seconds < thresholds.s   && ['ss', seconds] ||
-                minutes <= 1             && ['m']           ||
-                minutes < thresholds.m   && ['mm', minutes] ||
-                hours   <= 1             && ['h']           ||
-                hours   < thresholds.h   && ['hh', hours]   ||
-                days    <= 1             && ['d']           ||
-                days    < thresholds.d   && ['dd', days]    ||
-                months  <= 1             && ['M']           ||
-                months  < thresholds.M   && ['MM', months]  ||
-                years   <= 1             && ['y']           || ['yy', years];
-
-        a[2] = withoutSuffix;
-        a[3] = +posNegDuration > 0;
-        a[4] = locale;
-        return substituteTimeAgo.apply(null, a);
-    }
-
-    // This function allows you to set the rounding function for relative time strings
-    function getSetRelativeTimeRounding (roundingFunction) {
-        if (roundingFunction === undefined) {
-            return round;
-        }
-        if (typeof(roundingFunction) === 'function') {
-            round = roundingFunction;
-            return true;
-        }
-        return false;
-    }
-
-    // This function allows you to set a threshold for relative time strings
-    function getSetRelativeTimeThreshold (threshold, limit) {
-        if (thresholds[threshold] === undefined) {
-            return false;
-        }
-        if (limit === undefined) {
-            return thresholds[threshold];
-        }
-        thresholds[threshold] = limit;
-        if (threshold === 's') {
-            thresholds.ss = limit - 1;
-        }
-        return true;
-    }
-
-    function humanize (withSuffix) {
-        if (!this.isValid()) {
-            return this.localeData().invalidDate();
-        }
-
-        var locale = this.localeData();
-        var output = relativeTime$1(this, !withSuffix, locale);
-
-        if (withSuffix) {
-            output = locale.pastFuture(+this, output);
-        }
-
-        return locale.postformat(output);
-    }
-
-    var abs$1 = Math.abs;
-
-    function sign(x) {
-        return ((x > 0) - (x < 0)) || +x;
-    }
-
-    function toISOString$1() {
-        // for ISO strings we do not use the normal bubbling rules:
-        //  * milliseconds bubble up until they become hours
-        //  * days do not bubble at all
-        //  * months bubble up until they become years
-        // This is because there is no context-free conversion between hours and days
-        // (think of clock changes)
-        // and also not between days and months (28-31 days per month)
-        if (!this.isValid()) {
-            return this.localeData().invalidDate();
-        }
-
-        var seconds = abs$1(this._milliseconds) / 1000;
-        var days         = abs$1(this._days);
-        var months       = abs$1(this._months);
-        var minutes, hours, years;
-
-        // 3600 seconds -> 60 minutes -> 1 hour
-        minutes           = absFloor(seconds / 60);
-        hours             = absFloor(minutes / 60);
-        seconds %= 60;
-        minutes %= 60;
-
-        // 12 months -> 1 year
-        years  = absFloor(months / 12);
-        months %= 12;
-
-
-        // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
-        var Y = years;
-        var M = months;
-        var D = days;
-        var h = hours;
-        var m = minutes;
-        var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
-        var total = this.asSeconds();
-
-        if (!total) {
-            // this is the same as C#'s (Noda) and python (isodate)...
-            // but not other JS (goog.date)
-            return 'P0D';
-        }
-
-        var totalSign = total < 0 ? '-' : '';
-        var ymSign = sign(this._months) !== sign(total) ? '-' : '';
-        var daysSign = sign(this._days) !== sign(total) ? '-' : '';
-        var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
-
-        return totalSign + 'P' +
-            (Y ? ymSign + Y + 'Y' : '') +
-            (M ? ymSign + M + 'M' : '') +
-            (D ? daysSign + D + 'D' : '') +
-            ((h || m || s) ? 'T' : '') +
-            (h ? hmsSign + h + 'H' : '') +
-            (m ? hmsSign + m + 'M' : '') +
-            (s ? hmsSign + s + 'S' : '');
-    }
-
-    var proto$2 = Duration.prototype;
-
-    proto$2.isValid        = isValid$1;
-    proto$2.abs            = abs;
-    proto$2.add            = add$1;
-    proto$2.subtract       = subtract$1;
-    proto$2.as             = as;
-    proto$2.asMilliseconds = asMilliseconds;
-    proto$2.asSeconds      = asSeconds;
-    proto$2.asMinutes      = asMinutes;
-    proto$2.asHours        = asHours;
-    proto$2.asDays         = asDays;
-    proto$2.asWeeks        = asWeeks;
-    proto$2.asMonths       = asMonths;
-    proto$2.asQuarters     = asQuarters;
-    proto$2.asYears        = asYears;
-    proto$2.valueOf        = valueOf$1;
-    proto$2._bubble        = bubble;
-    proto$2.clone          = clone$1;
-    proto$2.get            = get$2;
-    proto$2.milliseconds   = milliseconds;
-    proto$2.seconds        = seconds;
-    proto$2.minutes        = minutes;
-    proto$2.hours          = hours;
-    proto$2.days           = days;
-    proto$2.weeks          = weeks;
-    proto$2.months         = months;
-    proto$2.years          = years;
-    proto$2.humanize       = humanize;
-    proto$2.toISOString    = toISOString$1;
-    proto$2.toString       = toISOString$1;
-    proto$2.toJSON         = toISOString$1;
-    proto$2.locale         = locale;
-    proto$2.localeData     = localeData;
-
-    proto$2.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', toISOString$1);
-    proto$2.lang = lang;
-
-    // Side effect imports
-
-    // FORMATTING
-
-    addFormatToken('X', 0, 0, 'unix');
-    addFormatToken('x', 0, 0, 'valueOf');
-
-    // PARSING
-
-    addRegexToken('x', matchSigned);
-    addRegexToken('X', matchTimestamp);
-    addParseToken('X', function (input, array, config) {
-        config._d = new Date(parseFloat(input, 10) * 1000);
-    });
-    addParseToken('x', function (input, array, config) {
-        config._d = new Date(toInt(input));
-    });
-
-    // Side effect imports
-
-
-    hooks.version = '2.24.0';
-
-    setHookCallback(createLocal);
-
-    hooks.fn                    = proto;
-    hooks.min                   = min;
-    hooks.max                   = max;
-    hooks.now                   = now;
-    hooks.utc                   = createUTC;
-    hooks.unix                  = createUnix;
-    hooks.months                = listMonths;
-    hooks.isDate                = isDate;
-    hooks.locale                = getSetGlobalLocale;
-    hooks.invalid               = createInvalid;
-    hooks.duration              = createDuration;
-    hooks.isMoment              = isMoment;
-    hooks.weekdays              = listWeekdays;
-    hooks.parseZone             = createInZone;
-    hooks.localeData            = getLocale;
-    hooks.isDuration            = isDuration;
-    hooks.monthsShort           = listMonthsShort;
-    hooks.weekdaysMin           = listWeekdaysMin;
-    hooks.defineLocale          = defineLocale;
-    hooks.updateLocale          = updateLocale;
-    hooks.locales               = listLocales;
-    hooks.weekdaysShort         = listWeekdaysShort;
-    hooks.normalizeUnits        = normalizeUnits;
-    hooks.relativeTimeRounding  = getSetRelativeTimeRounding;
-    hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
-    hooks.calendarFormat        = getCalendarFormat;
-    hooks.prototype             = proto;
-
-    // currently HTML5 input type only supports 24-hour formats
-    hooks.HTML5_FMT = {
-        DATETIME_LOCAL: 'YYYY-MM-DDTHH:mm',             // <input type="datetime-local" />
-        DATETIME_LOCAL_SECONDS: 'YYYY-MM-DDTHH:mm:ss',  // <input type="datetime-local" step="1" />
-        DATETIME_LOCAL_MS: 'YYYY-MM-DDTHH:mm:ss.SSS',   // <input type="datetime-local" step="0.001" />
-        DATE: 'YYYY-MM-DD',                             // <input type="date" />
-        TIME: 'HH:mm',                                  // <input type="time" />
-        TIME_SECONDS: 'HH:mm:ss',                       // <input type="time" step="1" />
-        TIME_MS: 'HH:mm:ss.SSS',                        // <input type="time" step="0.001" />
-        WEEK: 'GGGG-[W]WW',                             // <input type="week" />
-        MONTH: 'YYYY-MM'                                // <input type="month" />
-    };
-
-    return hooks;
-
-})));
-
-},{}],52:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],53:[function(require,module,exports){
-(function (process,setImmediate){
-// vim:ts=4:sts=4:sw=4:
-/*!
- *
- * Copyright 2009-2017 Kris Kowal under the terms of the MIT
- * license found at https://github.com/kriskowal/q/blob/v1/LICENSE
- *
- * With parts by Tyler Close
- * Copyright 2007-2009 Tyler Close under the terms of the MIT X license found
- * at http://www.opensource.org/licenses/mit-license.html
- * Forked at ref_send.js version: 2009-05-11
- *
- * With parts by Mark Miller
- * Copyright (C) 2011 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
-(function (definition) {
-    "use strict";
-
-    // This file will function properly as a <script> tag, or a module
-    // using CommonJS and NodeJS or RequireJS module formats.  In
-    // Common/Node/RequireJS, the module exports the Q API and when
-    // executed as a simple <script>, it creates a Q global instead.
-
-    // Montage Require
-    if (typeof bootstrap === "function") {
-        bootstrap("promise", definition);
-
-    // CommonJS
-    } else if (typeof exports === "object" && typeof module === "object") {
-        module.exports = definition();
-
-    // RequireJS
-    } else if (typeof define === "function" && define.amd) {
-        define(definition);
-
-    // SES (Secure EcmaScript)
-    } else if (typeof ses !== "undefined") {
-        if (!ses.ok()) {
-            return;
-        } else {
-            ses.makeQ = definition;
-        }
-
-    // <script>
-    } else if (typeof window !== "undefined" || typeof self !== "undefined") {
-        // Prefer window over self for add-on scripts. Use self for
-        // non-windowed contexts.
-        var global = typeof window !== "undefined" ? window : self;
-
-        // Get the `window` object, save the previous Q global
-        // and initialize Q as a global.
-        var previousQ = global.Q;
-        global.Q = definition();
-
-        // Add a noConflict function so Q can be removed from the
-        // global namespace.
-        global.Q.noConflict = function () {
-            global.Q = previousQ;
-            return this;
-        };
-
-    } else {
-        throw new Error("This environment was not anticipated by Q. Please file a bug.");
-    }
-
-})(function () {
+},{"base64-js":48,"buffer":49,"ieee754":60}],50:[function(require,module,exports){
 "use strict";
 
-var hasStacks = false;
-try {
-    throw new Error();
-} catch (e) {
-    hasStacks = !!e.stack;
-}
-
-// All code after this point will be filtered from stack traces reported
-// by Q.
-var qStartingLine = captureLine();
-var qFileName;
-
-// shims
-
-// used for fallback in "allResolved"
-var noop = function () {};
-
-// Use the fastest possible means to execute a task in a future turn
-// of the event loop.
-var nextTick =(function () {
-    // linked list of tasks (single, with head node)
-    var head = {task: void 0, next: null};
-    var tail = head;
-    var flushing = false;
-    var requestTick = void 0;
-    var isNodeJS = false;
-    // queue for late tasks, used by unhandled rejection tracking
-    var laterQueue = [];
-
-    function flush() {
-        /* jshint loopfunc: true */
-        var task, domain;
-
-        while (head.next) {
-            head = head.next;
-            task = head.task;
-            head.task = void 0;
-            domain = head.domain;
-
-            if (domain) {
-                head.domain = void 0;
-                domain.enter();
-            }
-            runSingle(task, domain);
-
-        }
-        while (laterQueue.length) {
-            task = laterQueue.pop();
-            runSingle(task);
-        }
-        flushing = false;
-    }
-    // runs a single function in the async queue
-    function runSingle(task, domain) {
-        try {
-            task();
-
-        } catch (e) {
-            if (isNodeJS) {
-                // In node, uncaught exceptions are considered fatal errors.
-                // Re-throw them synchronously to interrupt flushing!
-
-                // Ensure continuation if the uncaught exception is suppressed
-                // listening "uncaughtException" events (as domains does).
-                // Continue in next event to avoid tick recursion.
-                if (domain) {
-                    domain.exit();
-                }
-                setTimeout(flush, 0);
-                if (domain) {
-                    domain.enter();
-                }
-
-                throw e;
-
-            } else {
-                // In browsers, uncaught exceptions are not fatal.
-                // Re-throw them asynchronously to avoid slow-downs.
-                setTimeout(function () {
-                    throw e;
-                }, 0);
-            }
-        }
-
-        if (domain) {
-            domain.exit();
-        }
-    }
-
-    nextTick = function (task) {
-        tail = tail.next = {
-            task: task,
-            domain: isNodeJS && process.domain,
-            next: null
-        };
-
-        if (!flushing) {
-            flushing = true;
-            requestTick();
-        }
-    };
-
-    if (typeof process === "object" &&
-        process.toString() === "[object process]" && process.nextTick) {
-        // Ensure Q is in a real Node environment, with a `process.nextTick`.
-        // To see through fake Node environments:
-        // * Mocha test runner - exposes a `process` global without a `nextTick`
-        // * Browserify - exposes a `process.nexTick` function that uses
-        //   `setTimeout`. In this case `setImmediate` is preferred because
-        //    it is faster. Browserify's `process.toString()` yields
-        //   "[object Object]", while in a real Node environment
-        //   `process.toString()` yields "[object process]".
-        isNodeJS = true;
-
-        requestTick = function () {
-            process.nextTick(flush);
-        };
-
-    } else if (typeof setImmediate === "function") {
-        // In IE10, Node.js 0.9+, or https://github.com/NobleJS/setImmediate
-        if (typeof window !== "undefined") {
-            requestTick = setImmediate.bind(window, flush);
-        } else {
-            requestTick = function () {
-                setImmediate(flush);
-            };
-        }
-
-    } else if (typeof MessageChannel !== "undefined") {
-        // modern browsers
-        // http://www.nonblocking.io/2011/06/windownexttick.html
-        var channel = new MessageChannel();
-        // At least Safari Version 6.0.5 (8536.30.1) intermittently cannot create
-        // working message ports the first time a page loads.
-        channel.port1.onmessage = function () {
-            requestTick = requestPortTick;
-            channel.port1.onmessage = flush;
-            flush();
-        };
-        var requestPortTick = function () {
-            // Opera requires us to provide a message payload, regardless of
-            // whether we use it.
-            channel.port2.postMessage(0);
-        };
-        requestTick = function () {
-            setTimeout(flush, 0);
-            requestPortTick();
-        };
-
-    } else {
-        // old browsers
-        requestTick = function () {
-            setTimeout(flush, 0);
-        };
-    }
-    // runs a task after all other tasks have been run
-    // this is useful for unhandled rejection tracking that needs to happen
-    // after all `then`d tasks have been run.
-    nextTick.runAfter = function (task) {
-        laterQueue.push(task);
-        if (!flushing) {
-            flushing = true;
-            requestTick();
-        }
-    };
-    return nextTick;
-})();
-
-// Attempt to make generics safe in the face of downstream
-// modifications.
-// There is no situation where this is necessary.
-// If you need a security guarantee, these primordials need to be
-// deeply frozen anyway, and if you don’t need a security guarantee,
-// this is just plain paranoid.
-// However, this **might** have the nice side-effect of reducing the size of
-// the minified code by reducing x.call() to merely x()
-// See Mark Miller’s explanation of what this does.
-// http://wiki.ecmascript.org/doku.php?id=conventions:safe_meta_programming
-var call = Function.call;
-function uncurryThis(f) {
-    return function () {
-        return call.apply(f, arguments);
-    };
-}
-// This is equivalent, but slower:
-// uncurryThis = Function_bind.bind(Function_bind.call);
-// http://jsperf.com/uncurrythis
-
-var array_slice = uncurryThis(Array.prototype.slice);
-
-var array_reduce = uncurryThis(
-    Array.prototype.reduce || function (callback, basis) {
-        var index = 0,
-            length = this.length;
-        // concerning the initial value, if one is not provided
-        if (arguments.length === 1) {
-            // seek to the first value in the array, accounting
-            // for the possibility that is is a sparse array
-            do {
-                if (index in this) {
-                    basis = this[index++];
-                    break;
-                }
-                if (++index >= length) {
-                    throw new TypeError();
-                }
-            } while (1);
-        }
-        // reduce
-        for (; index < length; index++) {
-            // account for the possibility that the array is sparse
-            if (index in this) {
-                basis = callback(basis, this[index], index);
-            }
-        }
-        return basis;
-    }
-);
-
-var array_indexOf = uncurryThis(
-    Array.prototype.indexOf || function (value) {
-        // not a very good shim, but good enough for our one use of it
-        for (var i = 0; i < this.length; i++) {
-            if (this[i] === value) {
-                return i;
-            }
-        }
-        return -1;
-    }
-);
-
-var array_map = uncurryThis(
-    Array.prototype.map || function (callback, thisp) {
-        var self = this;
-        var collect = [];
-        array_reduce(self, function (undefined, value, index) {
-            collect.push(callback.call(thisp, value, index, self));
-        }, void 0);
-        return collect;
-    }
-);
-
-var object_create = Object.create || function (prototype) {
-    function Type() { }
-    Type.prototype = prototype;
-    return new Type();
-};
-
-var object_defineProperty = Object.defineProperty || function (obj, prop, descriptor) {
-    obj[prop] = descriptor.value;
-    return obj;
-};
-
-var object_hasOwnProperty = uncurryThis(Object.prototype.hasOwnProperty);
-
-var object_keys = Object.keys || function (object) {
-    var keys = [];
-    for (var key in object) {
-        if (object_hasOwnProperty(object, key)) {
-            keys.push(key);
-        }
-    }
-    return keys;
-};
-
-var object_toString = uncurryThis(Object.prototype.toString);
-
-function isObject(value) {
-    return value === Object(value);
-}
-
-// generator related shims
-
-// FIXME: Remove this function once ES6 generators are in SpiderMonkey.
-function isStopIteration(exception) {
-    return (
-        object_toString(exception) === "[object StopIteration]" ||
-        exception instanceof QReturnValue
-    );
-}
-
-// FIXME: Remove this helper and Q.return once ES6 generators are in
-// SpiderMonkey.
-var QReturnValue;
-if (typeof ReturnValue !== "undefined") {
-    QReturnValue = ReturnValue;
-} else {
-    QReturnValue = function (value) {
-        this.value = value;
-    };
-}
-
-// long stack traces
-
-var STACK_JUMP_SEPARATOR = "From previous event:";
-
-function makeStackTraceLong(error, promise) {
-    // If possible, transform the error stack trace by removing Node and Q
-    // cruft, then concatenating with the stack trace of `promise`. See #57.
-    if (hasStacks &&
-        promise.stack &&
-        typeof error === "object" &&
-        error !== null &&
-        error.stack
-    ) {
-        var stacks = [];
-        for (var p = promise; !!p; p = p.source) {
-            if (p.stack && (!error.__minimumStackCounter__ || error.__minimumStackCounter__ > p.stackCounter)) {
-                object_defineProperty(error, "__minimumStackCounter__", {value: p.stackCounter, configurable: true});
-                stacks.unshift(p.stack);
-            }
-        }
-        stacks.unshift(error.stack);
-
-        var concatedStacks = stacks.join("\n" + STACK_JUMP_SEPARATOR + "\n");
-        var stack = filterStackString(concatedStacks);
-        object_defineProperty(error, "stack", {value: stack, configurable: true});
-    }
-}
-
-function filterStackString(stackString) {
-    var lines = stackString.split("\n");
-    var desiredLines = [];
-    for (var i = 0; i < lines.length; ++i) {
-        var line = lines[i];
-
-        if (!isInternalFrame(line) && !isNodeFrame(line) && line) {
-            desiredLines.push(line);
-        }
-    }
-    return desiredLines.join("\n");
-}
-
-function isNodeFrame(stackLine) {
-    return stackLine.indexOf("(module.js:") !== -1 ||
-           stackLine.indexOf("(node.js:") !== -1;
-}
-
-function getFileNameAndLineNumber(stackLine) {
-    // Named functions: "at functionName (filename:lineNumber:columnNumber)"
-    // In IE10 function name can have spaces ("Anonymous function") O_o
-    var attempt1 = /at .+ \((.+):(\d+):(?:\d+)\)$/.exec(stackLine);
-    if (attempt1) {
-        return [attempt1[1], Number(attempt1[2])];
-    }
-
-    // Anonymous functions: "at filename:lineNumber:columnNumber"
-    var attempt2 = /at ([^ ]+):(\d+):(?:\d+)$/.exec(stackLine);
-    if (attempt2) {
-        return [attempt2[1], Number(attempt2[2])];
-    }
-
-    // Firefox style: "function@filename:lineNumber or @filename:lineNumber"
-    var attempt3 = /.*@(.+):(\d+)$/.exec(stackLine);
-    if (attempt3) {
-        return [attempt3[1], Number(attempt3[2])];
-    }
-}
-
-function isInternalFrame(stackLine) {
-    var fileNameAndLineNumber = getFileNameAndLineNumber(stackLine);
-
-    if (!fileNameAndLineNumber) {
-        return false;
-    }
-
-    var fileName = fileNameAndLineNumber[0];
-    var lineNumber = fileNameAndLineNumber[1];
-
-    return fileName === qFileName &&
-        lineNumber >= qStartingLine &&
-        lineNumber <= qEndingLine;
-}
-
-// discover own file name and line number range for filtering stack
-// traces
-function captureLine() {
-    if (!hasStacks) {
-        return;
-    }
-
-    try {
-        throw new Error();
-    } catch (e) {
-        var lines = e.stack.split("\n");
-        var firstLine = lines[0].indexOf("@") > 0 ? lines[1] : lines[2];
-        var fileNameAndLineNumber = getFileNameAndLineNumber(firstLine);
-        if (!fileNameAndLineNumber) {
-            return;
-        }
-
-        qFileName = fileNameAndLineNumber[0];
-        return fileNameAndLineNumber[1];
-    }
-}
-
-function deprecate(callback, name, alternative) {
-    return function () {
-        if (typeof console !== "undefined" &&
-            typeof console.warn === "function") {
-            console.warn(name + " is deprecated, use " + alternative +
-                         " instead.", new Error("").stack);
-        }
-        return callback.apply(callback, arguments);
-    };
-}
-
-// end of shims
-// beginning of real work
-
 /**
- * Constructs a promise for an immediate reference, passes promises through, or
- * coerces promises from different systems.
- * @param value immediate reference or promise
+ * Expose `Emitter`.
  */
-function Q(value) {
-    // If the object is already a Promise, return it directly.  This enables
-    // the resolve function to both be used to created references from objects,
-    // but to tolerably coerce non-promises to promises.
-    if (value instanceof Promise) {
-        return value;
-    }
-
-    // assimilate thenables
-    if (isPromiseAlike(value)) {
-        return coerce(value);
-    } else {
-        return fulfill(value);
-    }
+if (typeof module !== 'undefined') {
+  module.exports = Emitter;
 }
-Q.resolve = Q;
-
 /**
- * Performs a task in a future turn of the event loop.
- * @param {Function} task
- */
-Q.nextTick = nextTick;
-
-/**
- * Controls whether or not long stack traces will be on
- */
-Q.longStackSupport = false;
-
-/**
- * The counter is used to determine the stopping point for building
- * long stack traces. In makeStackTraceLong we walk backwards through
- * the linked list of promises, only stacks which were created before
- * the rejection are concatenated.
- */
-var longStackCounter = 1;
-
-// enable long stacks if Q_DEBUG is set
-if (typeof process === "object" && process && process.env && process.env.Q_DEBUG) {
-    Q.longStackSupport = true;
-}
-
-/**
- * Constructs a {promise, resolve, reject} object.
+ * Initialize a new `Emitter`.
  *
- * `resolve` is a callback to invoke with a more resolved value for the
- * promise. To fulfill the promise, invoke `resolve` with any value that is
- * not a thenable. To reject the promise, invoke `resolve` with a rejected
- * thenable, or invoke `reject` with the reason directly. To resolve the
- * promise to another thenable, thus putting it in the same state, invoke
- * `resolve` with that other thenable.
+ * @api public
  */
-Q.defer = defer;
-function defer() {
-    // if "messages" is an "Array", that indicates that the promise has not yet
-    // been resolved.  If it is "undefined", it has been resolved.  Each
-    // element of the messages array is itself an array of complete arguments to
-    // forward to the resolved promise.  We coerce the resolution value to a
-    // promise using the `resolve` function because it handles both fully
-    // non-thenable values and other thenables gracefully.
-    var messages = [], progressListeners = [], resolvedPromise;
 
-    var deferred = object_create(defer.prototype);
-    var promise = object_create(Promise.prototype);
 
-    promise.promiseDispatch = function (resolve, op, operands) {
-        var args = array_slice(arguments);
-        if (messages) {
-            messages.push(args);
-            if (op === "when" && operands[1]) { // progress operand
-                progressListeners.push(operands[1]);
-            }
-        } else {
-            Q.nextTick(function () {
-                resolvedPromise.promiseDispatch.apply(resolvedPromise, args);
-            });
-        }
-    };
-
-    // XXX deprecated
-    promise.valueOf = function () {
-        if (messages) {
-            return promise;
-        }
-        var nearerValue = nearer(resolvedPromise);
-        if (isPromise(nearerValue)) {
-            resolvedPromise = nearerValue; // shorten chain
-        }
-        return nearerValue;
-    };
-
-    promise.inspect = function () {
-        if (!resolvedPromise) {
-            return { state: "pending" };
-        }
-        return resolvedPromise.inspect();
-    };
-
-    if (Q.longStackSupport && hasStacks) {
-        try {
-            throw new Error();
-        } catch (e) {
-            // NOTE: don't try to use `Error.captureStackTrace` or transfer the
-            // accessor around; that causes memory leaks as per GH-111. Just
-            // reify the stack trace as a string ASAP.
-            //
-            // At the same time, cut off the first line; it's always just
-            // "[object Promise]\n", as per the `toString`.
-            promise.stack = e.stack.substring(e.stack.indexOf("\n") + 1);
-            promise.stackCounter = longStackCounter++;
-        }
-    }
-
-    // NOTE: we do the checks for `resolvedPromise` in each method, instead of
-    // consolidating them into `become`, since otherwise we'd create new
-    // promises with the lines `become(whatever(value))`. See e.g. GH-252.
-
-    function become(newPromise) {
-        resolvedPromise = newPromise;
-
-        if (Q.longStackSupport && hasStacks) {
-            // Only hold a reference to the new promise if long stacks
-            // are enabled to reduce memory usage
-            promise.source = newPromise;
-        }
-
-        array_reduce(messages, function (undefined, message) {
-            Q.nextTick(function () {
-                newPromise.promiseDispatch.apply(newPromise, message);
-            });
-        }, void 0);
-
-        messages = void 0;
-        progressListeners = void 0;
-    }
-
-    deferred.promise = promise;
-    deferred.resolve = function (value) {
-        if (resolvedPromise) {
-            return;
-        }
-
-        become(Q(value));
-    };
-
-    deferred.fulfill = function (value) {
-        if (resolvedPromise) {
-            return;
-        }
-
-        become(fulfill(value));
-    };
-    deferred.reject = function (reason) {
-        if (resolvedPromise) {
-            return;
-        }
-
-        become(reject(reason));
-    };
-    deferred.notify = function (progress) {
-        if (resolvedPromise) {
-            return;
-        }
-
-        array_reduce(progressListeners, function (undefined, progressListener) {
-            Q.nextTick(function () {
-                progressListener(progress);
-            });
-        }, void 0);
-    };
-
-    return deferred;
+function Emitter(obj) {
+  if (obj) return mixin(obj);
 }
 
+;
 /**
- * Creates a Node-style callback that will resolve or reject the deferred
- * promise.
- * @returns a nodeback
+ * Mixin the emitter properties.
+ *
+ * @param {Object} obj
+ * @return {Object}
+ * @api private
  */
-defer.prototype.makeNodeResolver = function () {
-    var self = this;
-    return function (error, value) {
-        if (error) {
-            self.reject(error);
-        } else if (arguments.length > 2) {
-            self.resolve(array_slice(arguments, 1));
-        } else {
-            self.resolve(value);
-        }
-    };
-};
 
-/**
- * @param resolver {Function} a function that returns nothing and accepts
- * the resolve, reject, and notify functions for a deferred.
- * @returns a promise that may be resolved with the given resolve and reject
- * functions, or rejected by a thrown exception in resolver
- */
-Q.Promise = promise; // ES6
-Q.promise = promise;
-function promise(resolver) {
-    if (typeof resolver !== "function") {
-        throw new TypeError("resolver must be a function.");
-    }
-    var deferred = defer();
-    try {
-        resolver(deferred.resolve, deferred.reject, deferred.notify);
-    } catch (reason) {
-        deferred.reject(reason);
-    }
-    return deferred.promise;
+function mixin(obj) {
+  for (var key in Emitter.prototype) {
+    obj[key] = Emitter.prototype[key];
+  }
+
+  return obj;
 }
+/**
+ * Listen on the given `event` with `fn`.
+ *
+ * @param {String} event
+ * @param {Function} fn
+ * @return {Emitter}
+ * @api public
+ */
 
-promise.race = race; // ES6
-promise.all = all; // ES6
-promise.reject = reject; // ES6
-promise.resolve = Q; // ES6
 
-// XXX experimental.  This method is a way to denote that a local value is
-// serializable and should be immediately dispatched to a remote upon request,
-// instead of passing a reference.
-Q.passByCopy = function (object) {
-    //freeze(object);
-    //passByCopies.set(object, true);
-    return object;
+Emitter.prototype.on = Emitter.prototype.addEventListener = function (event, fn) {
+  this._callbacks = this._callbacks || {};
+  (this._callbacks['$' + event] = this._callbacks['$' + event] || []).push(fn);
+  return this;
 };
+/**
+ * Adds an `event` listener that will be invoked a single
+ * time then automatically removed.
+ *
+ * @param {String} event
+ * @param {Function} fn
+ * @return {Emitter}
+ * @api public
+ */
 
-Promise.prototype.passByCopy = function () {
-    //freeze(object);
-    //passByCopies.set(object, true);
+
+Emitter.prototype.once = function (event, fn) {
+  function on() {
+    this.off(event, on);
+    fn.apply(this, arguments);
+  }
+
+  on.fn = fn;
+  this.on(event, on);
+  return this;
+};
+/**
+ * Remove the given callback for `event` or all
+ * registered callbacks.
+ *
+ * @param {String} event
+ * @param {Function} fn
+ * @return {Emitter}
+ * @api public
+ */
+
+
+Emitter.prototype.off = Emitter.prototype.removeListener = Emitter.prototype.removeAllListeners = Emitter.prototype.removeEventListener = function (event, fn) {
+  this._callbacks = this._callbacks || {}; // all
+
+  if (0 == arguments.length) {
+    this._callbacks = {};
     return this;
-};
+  } // specific event
 
-/**
- * If two promises eventually fulfill to the same value, promises that value,
- * but otherwise rejects.
- * @param x {Any*}
- * @param y {Any*}
- * @returns {Any*} a promise for x and y if they are the same, but a rejection
- * otherwise.
- *
- */
-Q.join = function (x, y) {
-    return Q(x).join(y);
-};
 
-Promise.prototype.join = function (that) {
-    return Q([this, that]).spread(function (x, y) {
-        if (x === y) {
-            // TODO: "===" should be Object.is or equiv
-            return x;
-        } else {
-            throw new Error("Q can't join: not the same: " + x + " " + y);
-        }
-    });
-};
+  var callbacks = this._callbacks['$' + event];
+  if (!callbacks) return this; // remove all handlers
 
-/**
- * Returns a promise for the first of an array of promises to become settled.
- * @param answers {Array[Any*]} promises to race
- * @returns {Any*} the first promise to be settled
- */
-Q.race = race;
-function race(answerPs) {
-    return promise(function (resolve, reject) {
-        // Switch to this once we can assume at least ES5
-        // answerPs.forEach(function (answerP) {
-        //     Q(answerP).then(resolve, reject);
-        // });
-        // Use this in the meantime
-        for (var i = 0, len = answerPs.length; i < len; i++) {
-            Q(answerPs[i]).then(resolve, reject);
-        }
-    });
-}
+  if (1 == arguments.length) {
+    delete this._callbacks['$' + event];
+    return this;
+  } // remove specific handler
 
-Promise.prototype.race = function () {
-    return this.then(Q.race);
-};
 
-/**
- * Constructs a Promise with a promise descriptor object and optional fallback
- * function.  The descriptor contains methods like when(rejected), get(name),
- * set(name, value), post(name, args), and delete(name), which all
- * return either a value, a promise for a value, or a rejection.  The fallback
- * accepts the operation name, a resolver, and any further arguments that would
- * have been forwarded to the appropriate method above had a method been
- * provided with the proper name.  The API makes no guarantees about the nature
- * of the returned object, apart from that it is usable whereever promises are
- * bought and sold.
- */
-Q.makePromise = Promise;
-function Promise(descriptor, fallback, inspect) {
-    if (fallback === void 0) {
-        fallback = function (op) {
-            return reject(new Error(
-                "Promise does not support operation: " + op
-            ));
-        };
+  var cb;
+
+  for (var i = 0; i < callbacks.length; i++) {
+    cb = callbacks[i];
+
+    if (cb === fn || cb.fn === fn) {
+      callbacks.splice(i, 1);
+      break;
     }
-    if (inspect === void 0) {
-        inspect = function () {
-            return {state: "unknown"};
-        };
-    }
+  } // Remove event specific arrays for event types that no
+  // one is subscribed for to avoid memory leak.
 
-    var promise = object_create(Promise.prototype);
 
-    promise.promiseDispatch = function (resolve, op, args) {
-        var result;
-        try {
-            if (descriptor[op]) {
-                result = descriptor[op].apply(promise, args);
-            } else {
-                result = fallback.call(promise, op, args);
-            }
-        } catch (exception) {
-            result = reject(exception);
-        }
-        if (resolve) {
-            resolve(result);
-        }
-    };
-
-    promise.inspect = inspect;
-
-    // XXX deprecated `valueOf` and `exception` support
-    if (inspect) {
-        var inspected = inspect();
-        if (inspected.state === "rejected") {
-            promise.exception = inspected.reason;
-        }
-
-        promise.valueOf = function () {
-            var inspected = inspect();
-            if (inspected.state === "pending" ||
-                inspected.state === "rejected") {
-                return promise;
-            }
-            return inspected.value;
-        };
-    }
-
-    return promise;
-}
-
-Promise.prototype.toString = function () {
-    return "[object Promise]";
-};
-
-Promise.prototype.then = function (fulfilled, rejected, progressed) {
-    var self = this;
-    var deferred = defer();
-    var done = false;   // ensure the untrusted promise makes at most a
-                        // single call to one of the callbacks
-
-    function _fulfilled(value) {
-        try {
-            return typeof fulfilled === "function" ? fulfilled(value) : value;
-        } catch (exception) {
-            return reject(exception);
-        }
-    }
-
-    function _rejected(exception) {
-        if (typeof rejected === "function") {
-            makeStackTraceLong(exception, self);
-            try {
-                return rejected(exception);
-            } catch (newException) {
-                return reject(newException);
-            }
-        }
-        return reject(exception);
-    }
-
-    function _progressed(value) {
-        return typeof progressed === "function" ? progressed(value) : value;
-    }
-
-    Q.nextTick(function () {
-        self.promiseDispatch(function (value) {
-            if (done) {
-                return;
-            }
-            done = true;
-
-            deferred.resolve(_fulfilled(value));
-        }, "when", [function (exception) {
-            if (done) {
-                return;
-            }
-            done = true;
-
-            deferred.resolve(_rejected(exception));
-        }]);
-    });
-
-    // Progress propagator need to be attached in the current tick.
-    self.promiseDispatch(void 0, "when", [void 0, function (value) {
-        var newValue;
-        var threw = false;
-        try {
-            newValue = _progressed(value);
-        } catch (e) {
-            threw = true;
-            if (Q.onerror) {
-                Q.onerror(e);
-            } else {
-                throw e;
-            }
-        }
-
-        if (!threw) {
-            deferred.notify(newValue);
-        }
-    }]);
-
-    return deferred.promise;
-};
-
-Q.tap = function (promise, callback) {
-    return Q(promise).tap(callback);
-};
-
-/**
- * Works almost like "finally", but not called for rejections.
- * Original resolution value is passed through callback unaffected.
- * Callback may return a promise that will be awaited for.
- * @param {Function} callback
- * @returns {Q.Promise}
- * @example
- * doSomething()
- *   .then(...)
- *   .tap(console.log)
- *   .then(...);
- */
-Promise.prototype.tap = function (callback) {
-    callback = Q(callback);
-
-    return this.then(function (value) {
-        return callback.fcall(value).thenResolve(value);
-    });
-};
-
-/**
- * Registers an observer on a promise.
- *
- * Guarantees:
- *
- * 1. that fulfilled and rejected will be called only once.
- * 2. that either the fulfilled callback or the rejected callback will be
- *    called, but not both.
- * 3. that fulfilled and rejected will not be called in this turn.
- *
- * @param value      promise or immediate reference to observe
- * @param fulfilled  function to be called with the fulfilled value
- * @param rejected   function to be called with the rejection exception
- * @param progressed function to be called on any progress notifications
- * @return promise for the return value from the invoked callback
- */
-Q.when = when;
-function when(value, fulfilled, rejected, progressed) {
-    return Q(value).then(fulfilled, rejected, progressed);
-}
-
-Promise.prototype.thenResolve = function (value) {
-    return this.then(function () { return value; });
-};
-
-Q.thenResolve = function (promise, value) {
-    return Q(promise).thenResolve(value);
-};
-
-Promise.prototype.thenReject = function (reason) {
-    return this.then(function () { throw reason; });
-};
-
-Q.thenReject = function (promise, reason) {
-    return Q(promise).thenReject(reason);
-};
-
-/**
- * If an object is not a promise, it is as "near" as possible.
- * If a promise is rejected, it is as "near" as possible too.
- * If it’s a fulfilled promise, the fulfillment value is nearer.
- * If it’s a deferred promise and the deferred has been resolved, the
- * resolution is "nearer".
- * @param object
- * @returns most resolved (nearest) form of the object
- */
-
-// XXX should we re-do this?
-Q.nearer = nearer;
-function nearer(value) {
-    if (isPromise(value)) {
-        var inspected = value.inspect();
-        if (inspected.state === "fulfilled") {
-            return inspected.value;
-        }
-    }
-    return value;
-}
-
-/**
- * @returns whether the given object is a promise.
- * Otherwise it is a fulfilled value.
- */
-Q.isPromise = isPromise;
-function isPromise(object) {
-    return object instanceof Promise;
-}
-
-Q.isPromiseAlike = isPromiseAlike;
-function isPromiseAlike(object) {
-    return isObject(object) && typeof object.then === "function";
-}
-
-/**
- * @returns whether the given object is a pending promise, meaning not
- * fulfilled or rejected.
- */
-Q.isPending = isPending;
-function isPending(object) {
-    return isPromise(object) && object.inspect().state === "pending";
-}
-
-Promise.prototype.isPending = function () {
-    return this.inspect().state === "pending";
-};
-
-/**
- * @returns whether the given object is a value or fulfilled
- * promise.
- */
-Q.isFulfilled = isFulfilled;
-function isFulfilled(object) {
-    return !isPromise(object) || object.inspect().state === "fulfilled";
-}
-
-Promise.prototype.isFulfilled = function () {
-    return this.inspect().state === "fulfilled";
-};
-
-/**
- * @returns whether the given object is a rejected promise.
- */
-Q.isRejected = isRejected;
-function isRejected(object) {
-    return isPromise(object) && object.inspect().state === "rejected";
-}
-
-Promise.prototype.isRejected = function () {
-    return this.inspect().state === "rejected";
-};
-
-//// BEGIN UNHANDLED REJECTION TRACKING
-
-// This promise library consumes exceptions thrown in handlers so they can be
-// handled by a subsequent promise.  The exceptions get added to this array when
-// they are created, and removed when they are handled.  Note that in ES6 or
-// shimmed environments, this would naturally be a `Set`.
-var unhandledReasons = [];
-var unhandledRejections = [];
-var reportedUnhandledRejections = [];
-var trackUnhandledRejections = true;
-
-function resetUnhandledRejections() {
-    unhandledReasons.length = 0;
-    unhandledRejections.length = 0;
-
-    if (!trackUnhandledRejections) {
-        trackUnhandledRejections = true;
-    }
-}
-
-function trackRejection(promise, reason) {
-    if (!trackUnhandledRejections) {
-        return;
-    }
-    if (typeof process === "object" && typeof process.emit === "function") {
-        Q.nextTick.runAfter(function () {
-            if (array_indexOf(unhandledRejections, promise) !== -1) {
-                process.emit("unhandledRejection", reason, promise);
-                reportedUnhandledRejections.push(promise);
-            }
-        });
-    }
-
-    unhandledRejections.push(promise);
-    if (reason && typeof reason.stack !== "undefined") {
-        unhandledReasons.push(reason.stack);
-    } else {
-        unhandledReasons.push("(no stack) " + reason);
-    }
-}
-
-function untrackRejection(promise) {
-    if (!trackUnhandledRejections) {
-        return;
-    }
-
-    var at = array_indexOf(unhandledRejections, promise);
-    if (at !== -1) {
-        if (typeof process === "object" && typeof process.emit === "function") {
-            Q.nextTick.runAfter(function () {
-                var atReport = array_indexOf(reportedUnhandledRejections, promise);
-                if (atReport !== -1) {
-                    process.emit("rejectionHandled", unhandledReasons[at], promise);
-                    reportedUnhandledRejections.splice(atReport, 1);
-                }
-            });
-        }
-        unhandledRejections.splice(at, 1);
-        unhandledReasons.splice(at, 1);
-    }
-}
-
-Q.resetUnhandledRejections = resetUnhandledRejections;
-
-Q.getUnhandledReasons = function () {
-    // Make a copy so that consumers can't interfere with our internal state.
-    return unhandledReasons.slice();
-};
-
-Q.stopUnhandledRejectionTracking = function () {
-    resetUnhandledRejections();
-    trackUnhandledRejections = false;
-};
-
-resetUnhandledRejections();
-
-//// END UNHANDLED REJECTION TRACKING
-
-/**
- * Constructs a rejected promise.
- * @param reason value describing the failure
- */
-Q.reject = reject;
-function reject(reason) {
-    var rejection = Promise({
-        "when": function (rejected) {
-            // note that the error has been handled
-            if (rejected) {
-                untrackRejection(this);
-            }
-            return rejected ? rejected(reason) : this;
-        }
-    }, function fallback() {
-        return this;
-    }, function inspect() {
-        return { state: "rejected", reason: reason };
-    });
-
-    // Note that the reason has not been handled.
-    trackRejection(rejection, reason);
-
-    return rejection;
-}
-
-/**
- * Constructs a fulfilled promise for an immediate reference.
- * @param value immediate reference
- */
-Q.fulfill = fulfill;
-function fulfill(value) {
-    return Promise({
-        "when": function () {
-            return value;
-        },
-        "get": function (name) {
-            return value[name];
-        },
-        "set": function (name, rhs) {
-            value[name] = rhs;
-        },
-        "delete": function (name) {
-            delete value[name];
-        },
-        "post": function (name, args) {
-            // Mark Miller proposes that post with no name should apply a
-            // promised function.
-            if (name === null || name === void 0) {
-                return value.apply(void 0, args);
-            } else {
-                return value[name].apply(value, args);
-            }
-        },
-        "apply": function (thisp, args) {
-            return value.apply(thisp, args);
-        },
-        "keys": function () {
-            return object_keys(value);
-        }
-    }, void 0, function inspect() {
-        return { state: "fulfilled", value: value };
-    });
-}
-
-/**
- * Converts thenables to Q promises.
- * @param promise thenable promise
- * @returns a Q promise
- */
-function coerce(promise) {
-    var deferred = defer();
-    Q.nextTick(function () {
-        try {
-            promise.then(deferred.resolve, deferred.reject, deferred.notify);
-        } catch (exception) {
-            deferred.reject(exception);
-        }
-    });
-    return deferred.promise;
-}
-
-/**
- * Annotates an object such that it will never be
- * transferred away from this process over any promise
- * communication channel.
- * @param object
- * @returns promise a wrapping of that object that
- * additionally responds to the "isDef" message
- * without a rejection.
- */
-Q.master = master;
-function master(object) {
-    return Promise({
-        "isDef": function () {}
-    }, function fallback(op, args) {
-        return dispatch(object, op, args);
-    }, function () {
-        return Q(object).inspect();
-    });
-}
-
-/**
- * Spreads the values of a promised array of arguments into the
- * fulfillment callback.
- * @param fulfilled callback that receives variadic arguments from the
- * promised array
- * @param rejected callback that receives the exception if the promise
- * is rejected.
- * @returns a promise for the return value or thrown exception of
- * either callback.
- */
-Q.spread = spread;
-function spread(value, fulfilled, rejected) {
-    return Q(value).spread(fulfilled, rejected);
-}
-
-Promise.prototype.spread = function (fulfilled, rejected) {
-    return this.all().then(function (array) {
-        return fulfilled.apply(void 0, array);
-    }, rejected);
-};
-
-/**
- * The async function is a decorator for generator functions, turning
- * them into asynchronous generators.  Although generators are only part
- * of the newest ECMAScript 6 drafts, this code does not cause syntax
- * errors in older engines.  This code should continue to work and will
- * in fact improve over time as the language improves.
- *
- * ES6 generators are currently part of V8 version 3.19 with the
- * --harmony-generators runtime flag enabled.  SpiderMonkey has had them
- * for longer, but under an older Python-inspired form.  This function
- * works on both kinds of generators.
- *
- * Decorates a generator function such that:
- *  - it may yield promises
- *  - execution will continue when that promise is fulfilled
- *  - the value of the yield expression will be the fulfilled value
- *  - it returns a promise for the return value (when the generator
- *    stops iterating)
- *  - the decorated function returns a promise for the return value
- *    of the generator or the first rejected promise among those
- *    yielded.
- *  - if an error is thrown in the generator, it propagates through
- *    every following yield until it is caught, or until it escapes
- *    the generator function altogether, and is translated into a
- *    rejection for the promise returned by the decorated generator.
- */
-Q.async = async;
-function async(makeGenerator) {
-    return function () {
-        // when verb is "send", arg is a value
-        // when verb is "throw", arg is an exception
-        function continuer(verb, arg) {
-            var result;
-
-            // Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
-            // engine that has a deployed base of browsers that support generators.
-            // However, SM's generators use the Python-inspired semantics of
-            // outdated ES6 drafts.  We would like to support ES6, but we'd also
-            // like to make it possible to use generators in deployed browsers, so
-            // we also support Python-style generators.  At some point we can remove
-            // this block.
-
-            if (typeof StopIteration === "undefined") {
-                // ES6 Generators
-                try {
-                    result = generator[verb](arg);
-                } catch (exception) {
-                    return reject(exception);
-                }
-                if (result.done) {
-                    return Q(result.value);
-                } else {
-                    return when(result.value, callback, errback);
-                }
-            } else {
-                // SpiderMonkey Generators
-                // FIXME: Remove this case when SM does ES6 generators.
-                try {
-                    result = generator[verb](arg);
-                } catch (exception) {
-                    if (isStopIteration(exception)) {
-                        return Q(exception.value);
-                    } else {
-                        return reject(exception);
-                    }
-                }
-                return when(result, callback, errback);
-            }
-        }
-        var generator = makeGenerator.apply(this, arguments);
-        var callback = continuer.bind(continuer, "next");
-        var errback = continuer.bind(continuer, "throw");
-        return callback();
-    };
-}
-
-/**
- * The spawn function is a small wrapper around async that immediately
- * calls the generator and also ends the promise chain, so that any
- * unhandled errors are thrown instead of forwarded to the error
- * handler. This is useful because it's extremely common to run
- * generators at the top-level to work with libraries.
- */
-Q.spawn = spawn;
-function spawn(makeGenerator) {
-    Q.done(Q.async(makeGenerator)());
-}
-
-// FIXME: Remove this interface once ES6 generators are in SpiderMonkey.
-/**
- * Throws a ReturnValue exception to stop an asynchronous generator.
- *
- * This interface is a stop-gap measure to support generator return
- * values in older Firefox/SpiderMonkey.  In browsers that support ES6
- * generators like Chromium 29, just use "return" in your generator
- * functions.
- *
- * @param value the return value for the surrounding generator
- * @throws ReturnValue exception with the value.
- * @example
- * // ES6 style
- * Q.async(function* () {
- *      var foo = yield getFooPromise();
- *      var bar = yield getBarPromise();
- *      return foo + bar;
- * })
- * // Older SpiderMonkey style
- * Q.async(function () {
- *      var foo = yield getFooPromise();
- *      var bar = yield getBarPromise();
- *      Q.return(foo + bar);
- * })
- */
-Q["return"] = _return;
-function _return(value) {
-    throw new QReturnValue(value);
-}
-
-/**
- * The promised function decorator ensures that any promise arguments
- * are settled and passed as values (`this` is also settled and passed
- * as a value).  It will also ensure that the result of a function is
- * always a promise.
- *
- * @example
- * var add = Q.promised(function (a, b) {
- *     return a + b;
- * });
- * add(Q(a), Q(B));
- *
- * @param {function} callback The function to decorate
- * @returns {function} a function that has been decorated.
- */
-Q.promised = promised;
-function promised(callback) {
-    return function () {
-        return spread([this, all(arguments)], function (self, args) {
-            return callback.apply(self, args);
-        });
-    };
-}
-
-/**
- * sends a message to a value in a future turn
- * @param object* the recipient
- * @param op the name of the message operation, e.g., "when",
- * @param args further arguments to be forwarded to the operation
- * @returns result {Promise} a promise for the result of the operation
- */
-Q.dispatch = dispatch;
-function dispatch(object, op, args) {
-    return Q(object).dispatch(op, args);
-}
-
-Promise.prototype.dispatch = function (op, args) {
-    var self = this;
-    var deferred = defer();
-    Q.nextTick(function () {
-        self.promiseDispatch(deferred.resolve, op, args);
-    });
-    return deferred.promise;
-};
-
-/**
- * Gets the value of a property in a future turn.
- * @param object    promise or immediate reference for target object
- * @param name      name of property to get
- * @return promise for the property value
- */
-Q.get = function (object, key) {
-    return Q(object).dispatch("get", [key]);
-};
-
-Promise.prototype.get = function (key) {
-    return this.dispatch("get", [key]);
-};
-
-/**
- * Sets the value of a property in a future turn.
- * @param object    promise or immediate reference for object object
- * @param name      name of property to set
- * @param value     new value of property
- * @return promise for the return value
- */
-Q.set = function (object, key, value) {
-    return Q(object).dispatch("set", [key, value]);
-};
-
-Promise.prototype.set = function (key, value) {
-    return this.dispatch("set", [key, value]);
-};
-
-/**
- * Deletes a property in a future turn.
- * @param object    promise or immediate reference for target object
- * @param name      name of property to delete
- * @return promise for the return value
- */
-Q.del = // XXX legacy
-Q["delete"] = function (object, key) {
-    return Q(object).dispatch("delete", [key]);
-};
-
-Promise.prototype.del = // XXX legacy
-Promise.prototype["delete"] = function (key) {
-    return this.dispatch("delete", [key]);
-};
-
-/**
- * Invokes a method in a future turn.
- * @param object    promise or immediate reference for target object
- * @param name      name of method to invoke
- * @param value     a value to post, typically an array of
- *                  invocation arguments for promises that
- *                  are ultimately backed with `resolve` values,
- *                  as opposed to those backed with URLs
- *                  wherein the posted value can be any
- *                  JSON serializable object.
- * @return promise for the return value
- */
-// bound locally because it is used by other methods
-Q.mapply = // XXX As proposed by "Redsandro"
-Q.post = function (object, name, args) {
-    return Q(object).dispatch("post", [name, args]);
-};
-
-Promise.prototype.mapply = // XXX As proposed by "Redsandro"
-Promise.prototype.post = function (name, args) {
-    return this.dispatch("post", [name, args]);
-};
-
-/**
- * Invokes a method in a future turn.
- * @param object    promise or immediate reference for target object
- * @param name      name of method to invoke
- * @param ...args   array of invocation arguments
- * @return promise for the return value
- */
-Q.send = // XXX Mark Miller's proposed parlance
-Q.mcall = // XXX As proposed by "Redsandro"
-Q.invoke = function (object, name /*...args*/) {
-    return Q(object).dispatch("post", [name, array_slice(arguments, 2)]);
-};
-
-Promise.prototype.send = // XXX Mark Miller's proposed parlance
-Promise.prototype.mcall = // XXX As proposed by "Redsandro"
-Promise.prototype.invoke = function (name /*...args*/) {
-    return this.dispatch("post", [name, array_slice(arguments, 1)]);
-};
-
-/**
- * Applies the promised function in a future turn.
- * @param object    promise or immediate reference for target function
- * @param args      array of application arguments
- */
-Q.fapply = function (object, args) {
-    return Q(object).dispatch("apply", [void 0, args]);
-};
-
-Promise.prototype.fapply = function (args) {
-    return this.dispatch("apply", [void 0, args]);
-};
-
-/**
- * Calls the promised function in a future turn.
- * @param object    promise or immediate reference for target function
- * @param ...args   array of application arguments
- */
-Q["try"] =
-Q.fcall = function (object /* ...args*/) {
-    return Q(object).dispatch("apply", [void 0, array_slice(arguments, 1)]);
-};
-
-Promise.prototype.fcall = function (/*...args*/) {
-    return this.dispatch("apply", [void 0, array_slice(arguments)]);
-};
-
-/**
- * Binds the promised function, transforming return values into a fulfilled
- * promise and thrown errors into a rejected one.
- * @param object    promise or immediate reference for target function
- * @param ...args   array of application arguments
- */
-Q.fbind = function (object /*...args*/) {
-    var promise = Q(object);
-    var args = array_slice(arguments, 1);
-    return function fbound() {
-        return promise.dispatch("apply", [
-            this,
-            args.concat(array_slice(arguments))
-        ]);
-    };
-};
-Promise.prototype.fbind = function (/*...args*/) {
-    var promise = this;
-    var args = array_slice(arguments);
-    return function fbound() {
-        return promise.dispatch("apply", [
-            this,
-            args.concat(array_slice(arguments))
-        ]);
-    };
-};
-
-/**
- * Requests the names of the owned properties of a promised
- * object in a future turn.
- * @param object    promise or immediate reference for target object
- * @return promise for the keys of the eventually settled object
- */
-Q.keys = function (object) {
-    return Q(object).dispatch("keys", []);
-};
-
-Promise.prototype.keys = function () {
-    return this.dispatch("keys", []);
-};
-
-/**
- * Turns an array of promises into a promise for an array.  If any of
- * the promises gets rejected, the whole array is rejected immediately.
- * @param {Array*} an array (or promise for an array) of values (or
- * promises for values)
- * @returns a promise for an array of the corresponding values
- */
-// By Mark Miller
-// http://wiki.ecmascript.org/doku.php?id=strawman:concurrency&rev=1308776521#allfulfilled
-Q.all = all;
-function all(promises) {
-    return when(promises, function (promises) {
-        var pendingCount = 0;
-        var deferred = defer();
-        array_reduce(promises, function (undefined, promise, index) {
-            var snapshot;
-            if (
-                isPromise(promise) &&
-                (snapshot = promise.inspect()).state === "fulfilled"
-            ) {
-                promises[index] = snapshot.value;
-            } else {
-                ++pendingCount;
-                when(
-                    promise,
-                    function (value) {
-                        promises[index] = value;
-                        if (--pendingCount === 0) {
-                            deferred.resolve(promises);
-                        }
-                    },
-                    deferred.reject,
-                    function (progress) {
-                        deferred.notify({ index: index, value: progress });
-                    }
-                );
-            }
-        }, void 0);
-        if (pendingCount === 0) {
-            deferred.resolve(promises);
-        }
-        return deferred.promise;
-    });
-}
-
-Promise.prototype.all = function () {
-    return all(this);
-};
-
-/**
- * Returns the first resolved promise of an array. Prior rejected promises are
- * ignored.  Rejects only if all promises are rejected.
- * @param {Array*} an array containing values or promises for values
- * @returns a promise fulfilled with the value of the first resolved promise,
- * or a rejected promise if all promises are rejected.
- */
-Q.any = any;
-
-function any(promises) {
-    if (promises.length === 0) {
-        return Q.resolve();
-    }
-
-    var deferred = Q.defer();
-    var pendingCount = 0;
-    array_reduce(promises, function (prev, current, index) {
-        var promise = promises[index];
-
-        pendingCount++;
-
-        when(promise, onFulfilled, onRejected, onProgress);
-        function onFulfilled(result) {
-            deferred.resolve(result);
-        }
-        function onRejected(err) {
-            pendingCount--;
-            if (pendingCount === 0) {
-                var rejection = err || new Error("" + err);
-
-                rejection.message = ("Q can't get fulfillment value from any promise, all " +
-                    "promises were rejected. Last error message: " + rejection.message);
-
-                deferred.reject(rejection);
-            }
-        }
-        function onProgress(progress) {
-            deferred.notify({
-                index: index,
-                value: progress
-            });
-        }
-    }, undefined);
-
-    return deferred.promise;
-}
-
-Promise.prototype.any = function () {
-    return any(this);
-};
-
-/**
- * Waits for all promises to be settled, either fulfilled or
- * rejected.  This is distinct from `all` since that would stop
- * waiting at the first rejection.  The promise returned by
- * `allResolved` will never be rejected.
- * @param promises a promise for an array (or an array) of promises
- * (or values)
- * @return a promise for an array of promises
- */
-Q.allResolved = deprecate(allResolved, "allResolved", "allSettled");
-function allResolved(promises) {
-    return when(promises, function (promises) {
-        promises = array_map(promises, Q);
-        return when(all(array_map(promises, function (promise) {
-            return when(promise, noop, noop);
-        })), function () {
-            return promises;
-        });
-    });
-}
-
-Promise.prototype.allResolved = function () {
-    return allResolved(this);
-};
-
-/**
- * @see Promise#allSettled
- */
-Q.allSettled = allSettled;
-function allSettled(promises) {
-    return Q(promises).allSettled();
-}
-
-/**
- * Turns an array of promises into a promise for an array of their states (as
- * returned by `inspect`) when they have all settled.
- * @param {Array[Any*]} values an array (or promise for an array) of values (or
- * promises for values)
- * @returns {Array[State]} an array of states for the respective values.
- */
-Promise.prototype.allSettled = function () {
-    return this.then(function (promises) {
-        return all(array_map(promises, function (promise) {
-            promise = Q(promise);
-            function regardless() {
-                return promise.inspect();
-            }
-            return promise.then(regardless, regardless);
-        }));
-    });
-};
-
-/**
- * Captures the failure of a promise, giving an oportunity to recover
- * with a callback.  If the given promise is fulfilled, the returned
- * promise is fulfilled.
- * @param {Any*} promise for something
- * @param {Function} callback to fulfill the returned promise if the
- * given promise is rejected
- * @returns a promise for the return value of the callback
- */
-Q.fail = // XXX legacy
-Q["catch"] = function (object, rejected) {
-    return Q(object).then(void 0, rejected);
-};
-
-Promise.prototype.fail = // XXX legacy
-Promise.prototype["catch"] = function (rejected) {
-    return this.then(void 0, rejected);
-};
-
-/**
- * Attaches a listener that can respond to progress notifications from a
- * promise's originating deferred. This listener receives the exact arguments
- * passed to ``deferred.notify``.
- * @param {Any*} promise for something
- * @param {Function} callback to receive any progress notifications
- * @returns the given promise, unchanged
- */
-Q.progress = progress;
-function progress(object, progressed) {
-    return Q(object).then(void 0, void 0, progressed);
-}
-
-Promise.prototype.progress = function (progressed) {
-    return this.then(void 0, void 0, progressed);
-};
-
-/**
- * Provides an opportunity to observe the settling of a promise,
- * regardless of whether the promise is fulfilled or rejected.  Forwards
- * the resolution to the returned promise when the callback is done.
- * The callback can return a promise to defer completion.
- * @param {Any*} promise
- * @param {Function} callback to observe the resolution of the given
- * promise, takes no arguments.
- * @returns a promise for the resolution of the given promise when
- * ``fin`` is done.
- */
-Q.fin = // XXX legacy
-Q["finally"] = function (object, callback) {
-    return Q(object)["finally"](callback);
-};
-
-Promise.prototype.fin = // XXX legacy
-Promise.prototype["finally"] = function (callback) {
-    if (!callback || typeof callback.apply !== "function") {
-        throw new Error("Q can't apply finally callback");
-    }
-    callback = Q(callback);
-    return this.then(function (value) {
-        return callback.fcall().then(function () {
-            return value;
-        });
-    }, function (reason) {
-        // TODO attempt to recycle the rejection with "this".
-        return callback.fcall().then(function () {
-            throw reason;
-        });
-    });
-};
-
-/**
- * Terminates a chain of promises, forcing rejections to be
- * thrown as exceptions.
- * @param {Any*} promise at the end of a chain of promises
- * @returns nothing
- */
-Q.done = function (object, fulfilled, rejected, progress) {
-    return Q(object).done(fulfilled, rejected, progress);
-};
-
-Promise.prototype.done = function (fulfilled, rejected, progress) {
-    var onUnhandledError = function (error) {
-        // forward to a future turn so that ``when``
-        // does not catch it and turn it into a rejection.
-        Q.nextTick(function () {
-            makeStackTraceLong(error, promise);
-            if (Q.onerror) {
-                Q.onerror(error);
-            } else {
-                throw error;
-            }
-        });
-    };
-
-    // Avoid unnecessary `nextTick`ing via an unnecessary `when`.
-    var promise = fulfilled || rejected || progress ?
-        this.then(fulfilled, rejected, progress) :
-        this;
-
-    if (typeof process === "object" && process && process.domain) {
-        onUnhandledError = process.domain.bind(onUnhandledError);
-    }
-
-    promise.then(void 0, onUnhandledError);
-};
-
-/**
- * Causes a promise to be rejected if it does not get fulfilled before
- * some milliseconds time out.
- * @param {Any*} promise
- * @param {Number} milliseconds timeout
- * @param {Any*} custom error message or Error object (optional)
- * @returns a promise for the resolution of the given promise if it is
- * fulfilled before the timeout, otherwise rejected.
- */
-Q.timeout = function (object, ms, error) {
-    return Q(object).timeout(ms, error);
-};
-
-Promise.prototype.timeout = function (ms, error) {
-    var deferred = defer();
-    var timeoutId = setTimeout(function () {
-        if (!error || "string" === typeof error) {
-            error = new Error(error || "Timed out after " + ms + " ms");
-            error.code = "ETIMEDOUT";
-        }
-        deferred.reject(error);
-    }, ms);
-
-    this.then(function (value) {
-        clearTimeout(timeoutId);
-        deferred.resolve(value);
-    }, function (exception) {
-        clearTimeout(timeoutId);
-        deferred.reject(exception);
-    }, deferred.notify);
-
-    return deferred.promise;
-};
-
-/**
- * Returns a promise for the given value (or promised value), some
- * milliseconds after it resolved. Passes rejections immediately.
- * @param {Any*} promise
- * @param {Number} milliseconds
- * @returns a promise for the resolution of the given promise after milliseconds
- * time has elapsed since the resolution of the given promise.
- * If the given promise rejects, that is passed immediately.
- */
-Q.delay = function (object, timeout) {
-    if (timeout === void 0) {
-        timeout = object;
-        object = void 0;
-    }
-    return Q(object).delay(timeout);
-};
-
-Promise.prototype.delay = function (timeout) {
-    return this.then(function (value) {
-        var deferred = defer();
-        setTimeout(function () {
-            deferred.resolve(value);
-        }, timeout);
-        return deferred.promise;
-    });
-};
-
-/**
- * Passes a continuation to a Node function, which is called with the given
- * arguments provided as an array, and returns a promise.
- *
- *      Q.nfapply(FS.readFile, [__filename])
- *      .then(function (content) {
- *      })
- *
- */
-Q.nfapply = function (callback, args) {
-    return Q(callback).nfapply(args);
-};
-
-Promise.prototype.nfapply = function (args) {
-    var deferred = defer();
-    var nodeArgs = array_slice(args);
-    nodeArgs.push(deferred.makeNodeResolver());
-    this.fapply(nodeArgs).fail(deferred.reject);
-    return deferred.promise;
-};
-
-/**
- * Passes a continuation to a Node function, which is called with the given
- * arguments provided individually, and returns a promise.
- * @example
- * Q.nfcall(FS.readFile, __filename)
- * .then(function (content) {
- * })
- *
- */
-Q.nfcall = function (callback /*...args*/) {
-    var args = array_slice(arguments, 1);
-    return Q(callback).nfapply(args);
-};
-
-Promise.prototype.nfcall = function (/*...args*/) {
-    var nodeArgs = array_slice(arguments);
-    var deferred = defer();
-    nodeArgs.push(deferred.makeNodeResolver());
-    this.fapply(nodeArgs).fail(deferred.reject);
-    return deferred.promise;
-};
-
-/**
- * Wraps a NodeJS continuation passing function and returns an equivalent
- * version that returns a promise.
- * @example
- * Q.nfbind(FS.readFile, __filename)("utf-8")
- * .then(console.log)
- * .done()
- */
-Q.nfbind =
-Q.denodeify = function (callback /*...args*/) {
-    if (callback === undefined) {
-        throw new Error("Q can't wrap an undefined function");
-    }
-    var baseArgs = array_slice(arguments, 1);
-    return function () {
-        var nodeArgs = baseArgs.concat(array_slice(arguments));
-        var deferred = defer();
-        nodeArgs.push(deferred.makeNodeResolver());
-        Q(callback).fapply(nodeArgs).fail(deferred.reject);
-        return deferred.promise;
-    };
-};
-
-Promise.prototype.nfbind =
-Promise.prototype.denodeify = function (/*...args*/) {
-    var args = array_slice(arguments);
-    args.unshift(this);
-    return Q.denodeify.apply(void 0, args);
-};
-
-Q.nbind = function (callback, thisp /*...args*/) {
-    var baseArgs = array_slice(arguments, 2);
-    return function () {
-        var nodeArgs = baseArgs.concat(array_slice(arguments));
-        var deferred = defer();
-        nodeArgs.push(deferred.makeNodeResolver());
-        function bound() {
-            return callback.apply(thisp, arguments);
-        }
-        Q(bound).fapply(nodeArgs).fail(deferred.reject);
-        return deferred.promise;
-    };
-};
-
-Promise.prototype.nbind = function (/*thisp, ...args*/) {
-    var args = array_slice(arguments, 0);
-    args.unshift(this);
-    return Q.nbind.apply(void 0, args);
-};
-
-/**
- * Calls a method of a Node-style object that accepts a Node-style
- * callback with a given array of arguments, plus a provided callback.
- * @param object an object that has the named method
- * @param {String} name name of the method of object
- * @param {Array} args arguments to pass to the method; the callback
- * will be provided by Q and appended to these arguments.
- * @returns a promise for the value or error
- */
-Q.nmapply = // XXX As proposed by "Redsandro"
-Q.npost = function (object, name, args) {
-    return Q(object).npost(name, args);
-};
-
-Promise.prototype.nmapply = // XXX As proposed by "Redsandro"
-Promise.prototype.npost = function (name, args) {
-    var nodeArgs = array_slice(args || []);
-    var deferred = defer();
-    nodeArgs.push(deferred.makeNodeResolver());
-    this.dispatch("post", [name, nodeArgs]).fail(deferred.reject);
-    return deferred.promise;
-};
-
-/**
- * Calls a method of a Node-style object that accepts a Node-style
- * callback, forwarding the given variadic arguments, plus a provided
- * callback argument.
- * @param object an object that has the named method
- * @param {String} name name of the method of object
- * @param ...args arguments to pass to the method; the callback will
- * be provided by Q and appended to these arguments.
- * @returns a promise for the value or error
- */
-Q.nsend = // XXX Based on Mark Miller's proposed "send"
-Q.nmcall = // XXX Based on "Redsandro's" proposal
-Q.ninvoke = function (object, name /*...args*/) {
-    var nodeArgs = array_slice(arguments, 2);
-    var deferred = defer();
-    nodeArgs.push(deferred.makeNodeResolver());
-    Q(object).dispatch("post", [name, nodeArgs]).fail(deferred.reject);
-    return deferred.promise;
-};
-
-Promise.prototype.nsend = // XXX Based on Mark Miller's proposed "send"
-Promise.prototype.nmcall = // XXX Based on "Redsandro's" proposal
-Promise.prototype.ninvoke = function (name /*...args*/) {
-    var nodeArgs = array_slice(arguments, 1);
-    var deferred = defer();
-    nodeArgs.push(deferred.makeNodeResolver());
-    this.dispatch("post", [name, nodeArgs]).fail(deferred.reject);
-    return deferred.promise;
-};
-
-/**
- * If a function would like to support both Node continuation-passing-style and
- * promise-returning-style, it can end its internal promise chain with
- * `nodeify(nodeback)`, forwarding the optional nodeback argument.  If the user
- * elects to use a nodeback, the result will be sent there.  If they do not
- * pass a nodeback, they will receive the result promise.
- * @param object a result (or a promise for a result)
- * @param {Function} nodeback a Node.js-style callback
- * @returns either the promise or nothing
- */
-Q.nodeify = nodeify;
-function nodeify(object, nodeback) {
-    return Q(object).nodeify(nodeback);
-}
-
-Promise.prototype.nodeify = function (nodeback) {
-    if (nodeback) {
-        this.then(function (value) {
-            Q.nextTick(function () {
-                nodeback(null, value);
-            });
-        }, function (error) {
-            Q.nextTick(function () {
-                nodeback(error);
-            });
-        });
-    } else {
-        return this;
-    }
-};
-
-Q.noConflict = function() {
-    throw new Error("Q.noConflict only works when Q is used as a global");
-};
-
-// All code before this point will be filtered from stack traces.
-var qEndingLine = captureLine();
-
-return Q;
-
-});
-
-}).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":52,"timers":54}],54:[function(require,module,exports){
-(function (setImmediate,clearImmediate){
-var nextTick = require('process/browser.js').nextTick;
-var apply = Function.prototype.apply;
-var slice = Array.prototype.slice;
-var immediateIds = {};
-var nextImmediateId = 0;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) { timeout.close(); };
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
+  if (callbacks.length === 0) {
+    delete this._callbacks['$' + event];
   }
+
+  return this;
 };
-
-// That's not how node.js implements it but the exposed api is the same.
-exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
-  var id = nextImmediateId++;
-  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
-
-  immediateIds[id] = true;
-
-  nextTick(function onNextTick() {
-    if (immediateIds[id]) {
-      // fn.call() is faster so we optimize for the common use-case
-      // @see http://jsperf.com/call-apply-segu
-      if (args) {
-        fn.apply(null, args);
-      } else {
-        fn.call(null);
-      }
-      // Prevent ids from leaking
-      exports.clearImmediate(id);
-    }
-  });
-
-  return id;
-};
-
-exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
-  delete immediateIds[id];
-};
-}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":52,"timers":54}],55:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var util = createCommonjsModule(function (module, exports) {
-
-  var getAllMatches = function getAllMatches(string, regex) {
-    var matches = [];
-    var match = regex.exec(string);
-
-    while (match) {
-      var allmatches = [];
-      var len = match.length;
-
-      for (var index = 0; index < len; index++) {
-        allmatches.push(match[index]);
-      }
-
-      matches.push(allmatches);
-      match = regex.exec(string);
-    }
-
-    return matches;
-  };
-
-  var doesMatch = function doesMatch(string, regex) {
-    var match = regex.exec(string);
-    return !(match === null || typeof match === 'undefined');
-  };
-
-  var doesNotMatch = function doesNotMatch(string, regex) {
-    return !doesMatch(string, regex);
-  };
-
-  exports.isExist = function (v) {
-    return typeof v !== 'undefined';
-  };
-
-  exports.isEmptyObject = function (obj) {
-    return Object.keys(obj).length === 0;
-  };
-  /**
-   * Copy all the properties of a into b.
-   * @param {*} target
-   * @param {*} a
-   */
+/**
+ * Emit `event` with the given args.
+ *
+ * @param {String} event
+ * @param {Mixed} ...
+ * @return {Emitter}
+ */
 
 
-  exports.merge = function (target, a) {
-    if (a) {
-      var keys = Object.keys(a); // will return an array of own properties
+Emitter.prototype.emit = function (event) {
+  this._callbacks = this._callbacks || {};
+  var args = new Array(arguments.length - 1),
+      callbacks = this._callbacks['$' + event];
 
-      var len = keys.length; //don't make it inline
+  for (var i = 1; i < arguments.length; i++) {
+    args[i - 1] = arguments[i];
+  }
 
-      for (var i = 0; i < len; i++) {
-        target[keys[i]] = a[keys[i]];
-      }
-    }
-  };
-  /* exports.merge =function (b,a){
-    return Object.assign(b,a);
-  } */
+  if (callbacks) {
+    callbacks = callbacks.slice(0);
 
-
-  exports.getValue = function (v) {
-    if (exports.isExist(v)) {
-      return v;
-    } else {
-      return '';
-    }
-  }; // const fakeCall = function(a) {return a;};
-  // const fakeCallNoReturn = function() {};
-
-
-  exports.buildOptions = function (options, defaultOptions, props) {
-    var newOptions = {};
-
-    if (!options) {
-      return defaultOptions; //if there are not options
-    }
-
-    for (var i = 0; i < props.length; i++) {
-      if (options[props[i]] !== undefined) {
-        newOptions[props[i]] = options[props[i]];
-      } else {
-        newOptions[props[i]] = defaultOptions[props[i]];
-      }
-    }
-
-    return newOptions;
-  };
-
-  exports.doesMatch = doesMatch;
-  exports.doesNotMatch = doesNotMatch;
-  exports.getAllMatches = getAllMatches;
-});
-var util_1 = util.isExist;
-var util_2 = util.isEmptyObject;
-var util_3 = util.merge;
-var util_4 = util.getValue;
-var util_5 = util.buildOptions;
-var util_6 = util.doesMatch;
-var util_7 = util.doesNotMatch;
-var util_8 = util.getAllMatches;
-
-var convertToJson = function convertToJson(node, options) {
-  var jObj = {}; //when no child node or attr is present
-
-  if ((!node.child || util.isEmptyObject(node.child)) && (!node.attrsMap || util.isEmptyObject(node.attrsMap))) {
-    return util.isExist(node.val) ? node.val : '';
-  } else {
-    //otherwise create a textnode if node has some text
-    if (util.isExist(node.val)) {
-      if (!(typeof node.val === 'string' && (node.val === '' || node.val === options.cdataPositionChar))) {
-        jObj[options.textNodeName] = node.val;
-      }
+    for (var i = 0, len = callbacks.length; i < len; ++i) {
+      callbacks[i].apply(this, args);
     }
   }
 
-  util.merge(jObj, node.attrsMap);
-  var keys = Object.keys(node.child);
-
-  for (var index = 0; index < keys.length; index++) {
-    var tagname = keys[index];
-
-    if (node.child[tagname] && node.child[tagname].length > 1) {
-      jObj[tagname] = [];
-
-      for (var tag in node.child[tagname]) {
-        jObj[tagname].push(convertToJson(node.child[tagname][tag], options));
-      }
-    } else {
-      jObj[tagname] = convertToJson(node.child[tagname][0], options);
-    }
-  } //add value
+  return this;
+};
+/**
+ * Return array of callbacks for `event`.
+ *
+ * @param {String} event
+ * @return {Array}
+ * @api public
+ */
 
 
-  return jObj;
+Emitter.prototype.listeners = function (event) {
+  this._callbacks = this._callbacks || {};
+  return this._callbacks['$' + event] || [];
+};
+/**
+ * Check if this emitter has `event` handlers.
+ *
+ * @param {String} event
+ * @return {Boolean}
+ * @api public
+ */
+
+
+Emitter.prototype.hasListeners = function (event) {
+  return !!this.listeners(event).length;
 };
 
-var convertToJson_1 = convertToJson;
-var node2json = {
-  convertToJson: convertToJson_1
-};
+},{}],51:[function(require,module,exports){
+'use strict'; //parse Empty Node as self closing node
 
-var xmlNode = function xmlNode(tagname, parent, val) {
-  this.tagname = tagname;
-  this.parent = parent;
-  this.child = {}; //child tags
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-  this.attrsMap = {}; //attributes map
-
-  this.val = val; //text only
-
-  this.addChild = function (child) {
-    if (Array.isArray(this.child[child.tagname])) {
-      //already presents
-      this.child[child.tagname].push(child);
-    } else {
-      this.child[child.tagname] = [child];
-    }
-  };
-};
-
-var buildOptions = util.buildOptions;
-var TagType = {
-  OPENING: 1,
-  CLOSING: 2,
-  SELF: 3,
-  CDATA: 4
-};
-var regx = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)'; //const tagsRegx = new RegExp("<(\\/?[\\w:\\-\._]+)([^>]*)>(\\s*"+cdataRegx+")*([^<]+)?","g");
-//const tagsRegx = new RegExp("<(\\/?)((\\w*:)?([\\w:\\-\._]+))([^>]*)>([^<]*)("+cdataRegx+"([^<]*))*([^<]+)?","g");
-//polyfill
-
-if (!Number.parseInt && window.parseInt) {
-  Number.parseInt = window.parseInt;
-}
-
-if (!Number.parseFloat && window.parseFloat) {
-  Number.parseFloat = window.parseFloat;
-}
+var buildOptions = require('./util').buildOptions;
 
 var defaultOptions = {
   attributeNamePrefix: '@_',
   attrNodeName: false,
   textNodeName: '#text',
   ignoreAttributes: true,
-  ignoreNameSpace: false,
-  allowBooleanAttributes: false,
-  //a tag can have attributes without any value
-  //ignoreRootElement : false,
-  parseNodeValue: true,
-  parseAttributeValue: false,
-  arrayMode: false,
-  trimValues: true,
-  //Trim string values of tag and attributes
   cdataTagName: false,
   cdataPositionChar: '\\c',
-  localeRange: '',
+  format: false,
+  indentBy: '  ',
+  supressEmptyNode: false,
   tagValueProcessor: function tagValueProcessor(a) {
     return a;
   },
   attrValueProcessor: function attrValueProcessor(a) {
     return a;
-  } //decodeStrict: false,
-
+  }
 };
-var defaultOptions_1 = defaultOptions;
-var props = ['attributeNamePrefix', 'attrNodeName', 'textNodeName', 'ignoreAttributes', 'ignoreNameSpace', 'allowBooleanAttributes', 'parseNodeValue', 'parseAttributeValue', 'arrayMode', 'trimValues', 'cdataTagName', 'cdataPositionChar', 'localeRange', 'tagValueProcessor', 'attrValueProcessor', 'parseTrueNumberOnly'];
-var props_1 = props;
+var props = ['attributeNamePrefix', 'attrNodeName', 'textNodeName', 'ignoreAttributes', 'cdataTagName', 'cdataPositionChar', 'format', 'indentBy', 'supressEmptyNode', 'tagValueProcessor', 'attrValueProcessor'];
 
-var getTraversalObj = function getTraversalObj(xmlData, options) {
-  options = buildOptions(options, defaultOptions, props); //xmlData = xmlData.replace(/\r?\n/g, " ");//make it single line
+function Parser(options) {
+  this.options = buildOptions(options, defaultOptions, props);
 
-  xmlData = xmlData.replace(/<!--[\s\S]*?-->/g, ''); //Remove  comments
+  if (this.options.ignoreAttributes || this.options.attrNodeName) {
+    this.isAttribute = function ()
+    /*a*/
+    {
+      return false;
+    };
+  } else {
+    this.attrPrefixLen = this.options.attributeNamePrefix.length;
+    this.isAttribute = isAttribute;
+  }
 
-  var xmlObj = new xmlNode('!xml');
-  var currentNode = xmlObj;
-  regx = regx.replace(/\[\\w/g, '[' + options.localeRange + '\\w');
-  var tagsRegx = new RegExp(regx, 'g');
-  var tag = tagsRegx.exec(xmlData);
-  var nextTag = tagsRegx.exec(xmlData);
+  if (this.options.cdataTagName) {
+    this.isCDATA = isCDATA;
+  } else {
+    this.isCDATA = function ()
+    /*a*/
+    {
+      return false;
+    };
+  }
 
-  while (tag) {
-    var tagType = checkForTagType(tag);
+  this.replaceCDATAstr = replaceCDATAstr;
+  this.replaceCDATAarr = replaceCDATAarr;
 
-    if (tagType === TagType.CLOSING) {
-      //add parsed data to parent node
-      if (currentNode.parent && tag[14]) {
-        currentNode.parent.val = util.getValue(currentNode.parent.val) + '' + processTagValue(tag[14], options);
-      }
+  if (this.options.format) {
+    this.indentate = indentate;
+    this.tagEndChar = '>\n';
+    this.newLine = '\n';
+  } else {
+    this.indentate = function () {
+      return '';
+    };
 
-      currentNode = currentNode.parent;
-    } else if (tagType === TagType.CDATA) {
-      if (options.cdataTagName) {
-        //add cdata node
-        var childNode = new xmlNode(options.cdataTagName, currentNode, tag[3]);
-        childNode.attrsMap = buildAttributesMap(tag[8], options);
-        currentNode.addChild(childNode); //for backtracking
+    this.tagEndChar = '>';
+    this.newLine = '';
+  }
 
-        currentNode.val = util.getValue(currentNode.val) + options.cdataPositionChar; //add rest value to parent node
+  if (this.options.supressEmptyNode) {
+    this.buildTextNode = buildEmptyTextNode;
+    this.buildObjNode = buildEmptyObjNode;
+  } else {
+    this.buildTextNode = buildTextValNode;
+    this.buildObjNode = buildObjectNode;
+  }
 
-        if (tag[14]) {
-          currentNode.val += processTagValue(tag[14], options);
+  this.buildTextValNode = buildTextValNode;
+  this.buildObjectNode = buildObjectNode;
+}
+
+Parser.prototype.parse = function (jObj) {
+  return this.j2x(jObj, 0).val;
+};
+
+Parser.prototype.j2x = function (jObj, level) {
+  var attrStr = '';
+  var val = '';
+  var keys = Object.keys(jObj);
+  var len = keys.length;
+
+  for (var i = 0; i < len; i++) {
+    var key = keys[i];
+
+    if (typeof jObj[key] === 'undefined') {// supress undefined node
+    } else if (jObj[key] === null) {
+      val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+    } else if (_typeof(jObj[key]) !== 'object') {
+      //premitive type
+      var attr = this.isAttribute(key);
+
+      if (attr) {
+        attrStr += ' ' + attr + '="' + this.options.attrValueProcessor('' + jObj[key]) + '"';
+      } else if (this.isCDATA(key)) {
+        if (jObj[this.options.textNodeName]) {
+          val += this.replaceCDATAstr(jObj[this.options.textNodeName], jObj[key]);
+        } else {
+          val += this.replaceCDATAstr('', jObj[key]);
         }
       } else {
-        currentNode.val = (currentNode.val || '') + (tag[3] || '') + processTagValue(tag[14], options);
-      }
-    } else if (tagType === TagType.SELF) {
-      if (currentNode && tag[14]) {
-        currentNode.val = util.getValue(currentNode.val) + '' + processTagValue(tag[14], options);
-      }
-
-      var _childNode = new xmlNode(options.ignoreNameSpace ? tag[7] : tag[5], currentNode, '');
-
-      if (tag[8] && tag[8].length > 0) {
-        tag[8] = tag[8].substr(0, tag[8].length - 1);
-      }
-
-      _childNode.attrsMap = buildAttributesMap(tag[8], options);
-      currentNode.addChild(_childNode);
-    } else {
-      //TagType.OPENING
-      var _childNode2 = new xmlNode(options.ignoreNameSpace ? tag[7] : tag[5], currentNode, processTagValue(tag[14], options));
-
-      _childNode2.attrsMap = buildAttributesMap(tag[8], options);
-      currentNode.addChild(_childNode2);
-      currentNode = _childNode2;
-    }
-
-    tag = nextTag;
-    nextTag = tagsRegx.exec(xmlData);
-  }
-
-  return xmlObj;
-};
-
-function processTagValue(val, options) {
-  if (val) {
-    if (options.trimValues) {
-      val = val.trim();
-    }
-
-    val = options.tagValueProcessor(val);
-    val = parseValue(val, options.parseNodeValue, options.parseTrueNumberOnly);
-  }
-
-  return val;
-}
-
-function checkForTagType(match) {
-  if (match[4] === ']]>') {
-    return TagType.CDATA;
-  } else if (match[10] === '/') {
-    return TagType.CLOSING;
-  } else if (typeof match[8] !== 'undefined' && match[8].substr(match[8].length - 1) === '/') {
-    return TagType.SELF;
-  } else {
-    return TagType.OPENING;
-  }
-}
-
-function resolveNameSpace(tagname, options) {
-  if (options.ignoreNameSpace) {
-    var tags = tagname.split(':');
-    var prefix = tagname.charAt(0) === '/' ? '/' : '';
-
-    if (tags[0] === 'xmlns') {
-      return '';
-    }
-
-    if (tags.length === 2) {
-      tagname = prefix + tags[1];
-    }
-  }
-
-  return tagname;
-}
-
-function parseValue(val, shouldParse, parseTrueNumberOnly) {
-  if (shouldParse && typeof val === 'string') {
-    var parsed;
-
-    if (val.trim() === '' || isNaN(val)) {
-      parsed = val === 'true' ? true : val === 'false' ? false : val;
-    } else {
-      if (val.indexOf('0x') !== -1) {
-        //support hexa decimal
-        parsed = Number.parseInt(val, 16);
-      } else if (val.indexOf('.') !== -1) {
-        parsed = Number.parseFloat(val);
-      } else {
-        parsed = Number.parseInt(val, 10);
-      }
-
-      if (parseTrueNumberOnly) {
-        parsed = String(parsed) === val ? parsed : val;
-      }
-    }
-
-    return parsed;
-  } else {
-    if (util.isExist(val)) {
-      return val;
-    } else {
-      return '';
-    }
-  }
-} //TODO: change regex to capture NS
-//const attrsRegx = new RegExp("([\\w\\-\\.\\:]+)\\s*=\\s*(['\"])((.|\n)*?)\\2","gm");
-
-
-var attrsRegx = new RegExp('([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?', 'g');
-
-function buildAttributesMap(attrStr, options) {
-  if (!options.ignoreAttributes && typeof attrStr === 'string') {
-    attrStr = attrStr.replace(/\r?\n/g, ' '); //attrStr = attrStr || attrStr.trim();
-
-    var matches = util.getAllMatches(attrStr, attrsRegx);
-    var len = matches.length; //don't make it inline
-
-    var attrs = {};
-
-    for (var i = 0; i < len; i++) {
-      var attrName = resolveNameSpace(matches[i][1], options);
-
-      if (attrName.length) {
-        if (matches[i][4] !== undefined) {
-          if (options.trimValues) {
-            matches[i][4] = matches[i][4].trim();
+        //tag value
+        if (key === this.options.textNodeName) {
+          if (jObj[this.options.cdataTagName]) {//value will added while processing cdata
+          } else {
+            val += this.options.tagValueProcessor('' + jObj[key]);
           }
-
-          matches[i][4] = options.attrValueProcessor(matches[i][4]);
-          attrs[options.attributeNamePrefix + attrName] = parseValue(matches[i][4], options.parseAttributeValue, options.parseTrueNumberOnly);
-        } else if (options.allowBooleanAttributes) {
-          attrs[options.attributeNamePrefix + attrName] = true;
+        } else {
+          val += this.buildTextNode(jObj[key], key, '', level);
         }
       }
-    }
+    } else if (Array.isArray(jObj[key])) {
+      //repeated nodes
+      if (this.isCDATA(key)) {
+        val += this.indentate(level);
 
-    if (!Object.keys(attrs).length) {
-      return;
-    }
+        if (jObj[this.options.textNodeName]) {
+          val += this.replaceCDATAarr(jObj[this.options.textNodeName], jObj[key]);
+        } else {
+          val += this.replaceCDATAarr('', jObj[key]);
+        }
+      } else {
+        //nested nodes
+        var arrLen = jObj[key].length;
 
-    if (options.attrNodeName) {
-      var attrCollection = {};
-      attrCollection[options.attrNodeName] = attrs;
-      return attrCollection;
-    }
+        for (var j = 0; j < arrLen; j++) {
+          var item = jObj[key][j];
 
-    return attrs;
+          if (typeof item === 'undefined') {// supress undefined node
+          } else if (item === null) {
+            val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+          } else if (_typeof(item) === 'object') {
+            var result = this.j2x(item, level + 1);
+            val += this.buildObjNode(result.val, key, result.attrStr, level);
+          } else {
+            val += this.buildTextNode(item, key, '', level);
+          }
+        }
+      }
+    } else {
+      //nested node
+      if (this.options.attrNodeName && key === this.options.attrNodeName) {
+        var Ks = Object.keys(jObj[key]);
+        var L = Ks.length;
+
+        for (var _j = 0; _j < L; _j++) {
+          attrStr += ' ' + Ks[_j] + '="' + this.options.attrValueProcessor('' + jObj[key][Ks[_j]]) + '"';
+        }
+      } else {
+        var _result = this.j2x(jObj[key], level + 1);
+
+        val += this.buildObjNode(_result.val, key, _result.attrStr, level);
+      }
+    }
+  }
+
+  return {
+    attrStr: attrStr,
+    val: val
+  };
+};
+
+function replaceCDATAstr(str, cdata) {
+  str = this.options.tagValueProcessor('' + str);
+
+  if (this.options.cdataPositionChar === '' || str === '') {
+    return str + '<![CDATA[' + cdata + ']]' + this.tagEndChar;
+  } else {
+    return str.replace(this.options.cdataPositionChar, '<![CDATA[' + cdata + ']]' + this.tagEndChar);
   }
 }
 
-var getTraversalObj_1 = getTraversalObj;
-var xmlstr2xmlnode = {
-  defaultOptions: defaultOptions_1,
-  props: props_1,
-  getTraversalObj: getTraversalObj_1
-};
+function replaceCDATAarr(str, cdata) {
+  str = this.options.tagValueProcessor('' + str);
 
-var char = function char(a) {
+  if (this.options.cdataPositionChar === '' || str === '') {
+    return str + '<![CDATA[' + cdata.join(']]><![CDATA[') + ']]' + this.tagEndChar;
+  } else {
+    for (var v in cdata) {
+      str = str.replace(this.options.cdataPositionChar, '<![CDATA[' + cdata[v] + ']]>');
+    }
+
+    return str + this.newLine;
+  }
+}
+
+function buildObjectNode(val, key, attrStr, level) {
+  if (attrStr && !val.includes('<')) {
+    return this.indentate(level) + '<' + key + attrStr + '>' + val + //+ this.newLine
+    // + this.indentate(level)
+    '</' + key + this.tagEndChar;
+  } else {
+    return this.indentate(level) + '<' + key + attrStr + this.tagEndChar + val + //+ this.newLine
+    this.indentate(level) + '</' + key + this.tagEndChar;
+  }
+}
+
+function buildEmptyObjNode(val, key, attrStr, level) {
+  if (val !== '') {
+    return this.buildObjectNode(val, key, attrStr, level);
+  } else {
+    return this.indentate(level) + '<' + key + attrStr + '/' + this.tagEndChar; //+ this.newLine
+  }
+}
+
+function buildTextValNode(val, key, attrStr, level) {
+  return this.indentate(level) + '<' + key + attrStr + '>' + this.options.tagValueProcessor('' + val) + '</' + key + this.tagEndChar;
+}
+
+function buildEmptyTextNode(val, key, attrStr, level) {
+  if (val !== '') {
+    return this.buildTextValNode(val, key, attrStr, level);
+  } else {
+    return this.indentate(level) + '<' + key + attrStr + '/' + this.tagEndChar;
+  }
+}
+
+function indentate(level) {
+  return this.options.indentBy.repeat(level);
+}
+
+function isAttribute(name
+/*, options*/
+) {
+  if (name.startsWith(this.options.attributeNamePrefix)) {
+    return name.substr(this.attrPrefixLen);
+  } else {
+    return false;
+  }
+}
+
+function isCDATA(name) {
+  return name === this.options.cdataTagName;
+} //formatting
+//indentation
+//\n after each closing or self closing tag
+
+
+module.exports = Parser;
+
+},{"./util":56}],52:[function(require,module,exports){
+'use strict';
+
+var _char = function _char(a) {
   return String.fromCharCode(a);
 };
 
 var chars = {
-  nilChar: char(176),
-  missingChar: char(201),
-  nilPremitive: char(175),
-  missingPremitive: char(200),
-  emptyChar: char(178),
-  emptyValue: char(177),
+  nilChar: _char(176),
+  missingChar: _char(201),
+  nilPremitive: _char(175),
+  missingPremitive: _char(200),
+  emptyChar: _char(178),
+  emptyValue: _char(177),
   //empty Premitive
-  boundryChar: char(179),
-  objStart: char(198),
-  arrStart: char(204),
-  arrayEnd: char(185)
+  boundryChar: _char(179),
+  objStart: _char(198),
+  arrStart: _char(204),
+  arrayEnd: _char(185)
 };
 var charsArr = [chars.nilChar, chars.nilPremitive, chars.missingChar, chars.missingPremitive, chars.boundryChar, chars.emptyChar, chars.emptyValue, chars.arrayEnd, chars.objStart, chars.arrStart];
 
@@ -18296,22 +11099,71 @@ function hasData(jObj) {
   }
 }
 
-var buildOptions$1 = util.buildOptions;
+var x2j = require('./xmlstr2xmlnode');
+
+var buildOptions = require('./util').buildOptions;
 
 var convert2nimn = function convert2nimn(node, e_schema, options) {
-  options = buildOptions$1(options, xmlstr2xmlnode.defaultOptions, xmlstr2xmlnode.props);
+  options = buildOptions(options, x2j.defaultOptions, x2j.props);
   return _e(node, e_schema, options);
 };
 
-var convert2nimn_1 = convert2nimn;
-var nimndata = {
-  convert2nimn: convert2nimn_1
+exports.convert2nimn = convert2nimn;
+
+},{"./util":56,"./xmlstr2xmlnode":59}],53:[function(require,module,exports){
+'use strict';
+
+var util = require('./util');
+
+var convertToJson = function convertToJson(node, options) {
+  var jObj = {}; //when no child node or attr is present
+
+  if ((!node.child || util.isEmptyObject(node.child)) && (!node.attrsMap || util.isEmptyObject(node.attrsMap))) {
+    return util.isExist(node.val) ? node.val : '';
+  } else {
+    //otherwise create a textnode if node has some text
+    if (util.isExist(node.val)) {
+      if (!(typeof node.val === 'string' && (node.val === '' || node.val === options.cdataPositionChar))) {
+        jObj[options.textNodeName] = node.val;
+      }
+    }
+  }
+
+  util.merge(jObj, node.attrsMap);
+  var keys = Object.keys(node.child);
+
+  for (var index = 0; index < keys.length; index++) {
+    var tagname = keys[index];
+
+    if (node.child[tagname] && node.child[tagname].length > 1) {
+      jObj[tagname] = [];
+
+      for (var tag in node.child[tagname]) {
+        jObj[tagname].push(convertToJson(node.child[tagname][tag], options));
+      }
+    } else {
+      jObj[tagname] = convertToJson(node.child[tagname][0], options);
+    }
+  } //add value
+
+
+  return jObj;
 };
 
-var buildOptions$2 = util.buildOptions; //TODO: do it later
+exports.convertToJson = convertToJson;
+
+},{"./util":56}],54:[function(require,module,exports){
+'use strict';
+
+var util = require('./util');
+
+var buildOptions = require('./util').buildOptions;
+
+var x2j = require('./xmlstr2xmlnode'); //TODO: do it later
+
 
 var convertToJsonString = function convertToJsonString(node, options) {
-  options = buildOptions$2(options, xmlstr2xmlnode.defaultOptions, xmlstr2xmlnode.props);
+  options = buildOptions(options, x2j.defaultOptions, x2j.props);
   options.indentBy = options.indentBy || '';
   return _cToJsonStr(node, options, 0);
 };
@@ -18365,20 +11217,146 @@ function stringval(v) {
   }
 }
 
-var convertToJsonString_1 = convertToJsonString;
-var node2json_str = {
-  convertToJsonString: convertToJsonString_1
+function indentate(options, level) {
+  return options.indentBy.repeat(level);
+}
+
+exports.convertToJsonString = convertToJsonString;
+
+},{"./util":56,"./xmlstr2xmlnode":59}],55:[function(require,module,exports){
+'use strict';
+
+var nodeToJson = require('./node2json');
+
+var xmlToNodeobj = require('./xmlstr2xmlnode');
+
+var x2xmlnode = require('./xmlstr2xmlnode');
+
+var buildOptions = require('./util').buildOptions;
+
+exports.parse = function (xmlData, options) {
+  options = buildOptions(options, x2xmlnode.defaultOptions, x2xmlnode.props);
+  return nodeToJson.convertToJson(xmlToNodeobj.getTraversalObj(xmlData, options), options);
 };
 
-var defaultOptions$1 = {
+exports.convertTonimn = require('../src/nimndata').convert2nimn;
+exports.getTraversalObj = xmlToNodeobj.getTraversalObj;
+exports.convertToJson = nodeToJson.convertToJson;
+exports.convertToJsonString = require('./node2json_str').convertToJsonString;
+exports.validate = require('./validator').validate;
+exports.j2xParser = require('./json2xml');
+
+exports.parseToNimn = function (xmlData, schema, options) {
+  return exports.convertTonimn(exports.getTraversalObj(xmlData, options), schema, options);
+};
+
+},{"../src/nimndata":52,"./json2xml":51,"./node2json":53,"./node2json_str":54,"./util":56,"./validator":57,"./xmlstr2xmlnode":59}],56:[function(require,module,exports){
+'use strict';
+
+var getAllMatches = function getAllMatches(string, regex) {
+  var matches = [];
+  var match = regex.exec(string);
+
+  while (match) {
+    var allmatches = [];
+    var len = match.length;
+
+    for (var index = 0; index < len; index++) {
+      allmatches.push(match[index]);
+    }
+
+    matches.push(allmatches);
+    match = regex.exec(string);
+  }
+
+  return matches;
+};
+
+var doesMatch = function doesMatch(string, regex) {
+  var match = regex.exec(string);
+  return !(match === null || typeof match === 'undefined');
+};
+
+var doesNotMatch = function doesNotMatch(string, regex) {
+  return !doesMatch(string, regex);
+};
+
+exports.isExist = function (v) {
+  return typeof v !== 'undefined';
+};
+
+exports.isEmptyObject = function (obj) {
+  return Object.keys(obj).length === 0;
+};
+/**
+ * Copy all the properties of a into b.
+ * @param {*} target
+ * @param {*} a
+ */
+
+
+exports.merge = function (target, a) {
+  if (a) {
+    var keys = Object.keys(a); // will return an array of own properties
+
+    var len = keys.length; //don't make it inline
+
+    for (var i = 0; i < len; i++) {
+      target[keys[i]] = a[keys[i]];
+    }
+  }
+};
+/* exports.merge =function (b,a){
+  return Object.assign(b,a);
+} */
+
+
+exports.getValue = function (v) {
+  if (exports.isExist(v)) {
+    return v;
+  } else {
+    return '';
+  }
+}; // const fakeCall = function(a) {return a;};
+// const fakeCallNoReturn = function() {};
+
+
+exports.buildOptions = function (options, defaultOptions, props) {
+  var newOptions = {};
+
+  if (!options) {
+    return defaultOptions; //if there are not options
+  }
+
+  for (var i = 0; i < props.length; i++) {
+    if (options[props[i]] !== undefined) {
+      newOptions[props[i]] = options[props[i]];
+    } else {
+      newOptions[props[i]] = defaultOptions[props[i]];
+    }
+  }
+
+  return newOptions;
+};
+
+exports.doesMatch = doesMatch;
+exports.doesNotMatch = doesNotMatch;
+exports.getAllMatches = getAllMatches;
+
+},{}],57:[function(require,module,exports){
+'use strict';
+
+var util = require('./util');
+
+var defaultOptions = {
   allowBooleanAttributes: false,
   //A tag can have attributes without any value
   localeRange: 'a-zA-Z'
 };
-var props$1 = ['allowBooleanAttributes', 'localeRange']; //const tagsPattern = new RegExp("<\\/?([\\w:\\-_\.]+)\\s*\/?>","g");
+var props = ['allowBooleanAttributes', 'localeRange']; //const tagsPattern = new RegExp("<\\/?([\\w:\\-_\.]+)\\s*\/?>","g");
 
-var validate = function validate(xmlData, options) {
-  options = util.buildOptions(options, defaultOptions$1, props$1); //xmlData = xmlData.replace(/(\r\n|\n|\r)/gm,"");//make it single line
+exports.validate = function (xmlData, options) {
+  options = util.buildOptions(options, defaultOptions, props); //xmlData = xmlData.replace(/(\r\n|\n|\r)/gm,"");//make it single line
   //xmlData = xmlData.replace(/(^\s*<\?xml.*?\?>)/g,"");//Remove XML starting tag
   //xmlData = xmlData.replace(/(<!DOCTYPE[\s\w\"\.\/\-\:]+(\[.*\])*\s*>)/g,"");//Remove DOCTYPE
 
@@ -18736,514 +11714,8383 @@ function validateTagName(tagname, regxTagName) {
   return !util.doesNotMatch(tagname, regxTagName);
 }
 
-var validator = {
-  validate: validate
+},{"./util":56}],58:[function(require,module,exports){
+'use strict';
+
+module.exports = function (tagname, parent, val) {
+  this.tagname = tagname;
+  this.parent = parent;
+  this.child = {}; //child tags
+
+  this.attrsMap = {}; //attributes map
+
+  this.val = val; //text only
+
+  this.addChild = function (child) {
+    if (Array.isArray(this.child[child.tagname])) {
+      //already presents
+      this.child[child.tagname].push(child);
+    } else {
+      this.child[child.tagname] = [child];
+    }
+  };
 };
 
-function _typeof(obj) {
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function (obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function (obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
+},{}],59:[function(require,module,exports){
+'use strict';
 
-  return _typeof(obj);
+var util = require('./util');
+
+var buildOptions = require('./util').buildOptions;
+
+var xmlNode = require('./xmlNode');
+
+var TagType = {
+  OPENING: 1,
+  CLOSING: 2,
+  SELF: 3,
+  CDATA: 4
+};
+var regx = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)'; //const tagsRegx = new RegExp("<(\\/?[\\w:\\-\._]+)([^>]*)>(\\s*"+cdataRegx+")*([^<]+)?","g");
+//const tagsRegx = new RegExp("<(\\/?)((\\w*:)?([\\w:\\-\._]+))([^>]*)>([^<]*)("+cdataRegx+"([^<]*))*([^<]+)?","g");
+//polyfill
+
+if (!Number.parseInt && window.parseInt) {
+  Number.parseInt = window.parseInt;
 }
 
-var buildOptions$3 = util.buildOptions;
-var defaultOptions$2 = {
+if (!Number.parseFloat && window.parseFloat) {
+  Number.parseFloat = window.parseFloat;
+}
+
+var defaultOptions = {
   attributeNamePrefix: '@_',
   attrNodeName: false,
   textNodeName: '#text',
   ignoreAttributes: true,
+  ignoreNameSpace: false,
+  allowBooleanAttributes: false,
+  //a tag can have attributes without any value
+  //ignoreRootElement : false,
+  parseNodeValue: true,
+  parseAttributeValue: false,
+  arrayMode: false,
+  trimValues: true,
+  //Trim string values of tag and attributes
   cdataTagName: false,
   cdataPositionChar: '\\c',
-  format: false,
-  indentBy: '  ',
-  supressEmptyNode: false,
+  localeRange: '',
   tagValueProcessor: function tagValueProcessor(a) {
     return a;
   },
   attrValueProcessor: function attrValueProcessor(a) {
     return a;
-  }
+  } //decodeStrict: false,
+
 };
-var props$2 = ['attributeNamePrefix', 'attrNodeName', 'textNodeName', 'ignoreAttributes', 'cdataTagName', 'cdataPositionChar', 'format', 'indentBy', 'supressEmptyNode', 'tagValueProcessor', 'attrValueProcessor'];
+exports.defaultOptions = defaultOptions;
+var props = ['attributeNamePrefix', 'attrNodeName', 'textNodeName', 'ignoreAttributes', 'ignoreNameSpace', 'allowBooleanAttributes', 'parseNodeValue', 'parseAttributeValue', 'arrayMode', 'trimValues', 'cdataTagName', 'cdataPositionChar', 'localeRange', 'tagValueProcessor', 'attrValueProcessor', 'parseTrueNumberOnly'];
+exports.props = props;
 
-function Parser(options) {
-  this.options = buildOptions$3(options, defaultOptions$2, props$2);
+var getTraversalObj = function getTraversalObj(xmlData, options) {
+  options = buildOptions(options, defaultOptions, props); //xmlData = xmlData.replace(/\r?\n/g, " ");//make it single line
 
-  if (this.options.ignoreAttributes || this.options.attrNodeName) {
-    this.isAttribute = function ()
-    /*a*/
-    {
-      return false;
-    };
-  } else {
-    this.attrPrefixLen = this.options.attributeNamePrefix.length;
-    this.isAttribute = isAttribute;
+  xmlData = xmlData.replace(/<!--[\s\S]*?-->/g, ''); //Remove  comments
+
+  var xmlObj = new xmlNode('!xml');
+  var currentNode = xmlObj;
+  regx = regx.replace(/\[\\w/g, '[' + options.localeRange + '\\w');
+  var tagsRegx = new RegExp(regx, 'g');
+  var tag = tagsRegx.exec(xmlData);
+  var nextTag = tagsRegx.exec(xmlData);
+
+  while (tag) {
+    var tagType = checkForTagType(tag);
+
+    if (tagType === TagType.CLOSING) {
+      //add parsed data to parent node
+      if (currentNode.parent && tag[14]) {
+        currentNode.parent.val = util.getValue(currentNode.parent.val) + '' + processTagValue(tag[14], options);
+      }
+
+      currentNode = currentNode.parent;
+    } else if (tagType === TagType.CDATA) {
+      if (options.cdataTagName) {
+        //add cdata node
+        var childNode = new xmlNode(options.cdataTagName, currentNode, tag[3]);
+        childNode.attrsMap = buildAttributesMap(tag[8], options);
+        currentNode.addChild(childNode); //for backtracking
+
+        currentNode.val = util.getValue(currentNode.val) + options.cdataPositionChar; //add rest value to parent node
+
+        if (tag[14]) {
+          currentNode.val += processTagValue(tag[14], options);
+        }
+      } else {
+        currentNode.val = (currentNode.val || '') + (tag[3] || '') + processTagValue(tag[14], options);
+      }
+    } else if (tagType === TagType.SELF) {
+      if (currentNode && tag[14]) {
+        currentNode.val = util.getValue(currentNode.val) + '' + processTagValue(tag[14], options);
+      }
+
+      var _childNode = new xmlNode(options.ignoreNameSpace ? tag[7] : tag[5], currentNode, '');
+
+      if (tag[8] && tag[8].length > 0) {
+        tag[8] = tag[8].substr(0, tag[8].length - 1);
+      }
+
+      _childNode.attrsMap = buildAttributesMap(tag[8], options);
+      currentNode.addChild(_childNode);
+    } else {
+      //TagType.OPENING
+      var _childNode2 = new xmlNode(options.ignoreNameSpace ? tag[7] : tag[5], currentNode, processTagValue(tag[14], options));
+
+      _childNode2.attrsMap = buildAttributesMap(tag[8], options);
+      currentNode.addChild(_childNode2);
+      currentNode = _childNode2;
+    }
+
+    tag = nextTag;
+    nextTag = tagsRegx.exec(xmlData);
   }
 
-  if (this.options.cdataTagName) {
-    this.isCDATA = isCDATA;
-  } else {
-    this.isCDATA = function ()
-    /*a*/
-    {
-      return false;
-    };
+  return xmlObj;
+};
+
+function processTagValue(val, options) {
+  if (val) {
+    if (options.trimValues) {
+      val = val.trim();
+    }
+
+    val = options.tagValueProcessor(val);
+    val = parseValue(val, options.parseNodeValue, options.parseTrueNumberOnly);
   }
 
-  this.replaceCDATAstr = replaceCDATAstr;
-  this.replaceCDATAarr = replaceCDATAarr;
-
-  if (this.options.format) {
-    this.indentate = indentate;
-    this.tagEndChar = '>\n';
-    this.newLine = '\n';
-  } else {
-    this.indentate = function () {
-      return '';
-    };
-
-    this.tagEndChar = '>';
-    this.newLine = '';
-  }
-
-  if (this.options.supressEmptyNode) {
-    this.buildTextNode = buildEmptyTextNode;
-    this.buildObjNode = buildEmptyObjNode;
-  } else {
-    this.buildTextNode = buildTextValNode;
-    this.buildObjNode = buildObjectNode;
-  }
-
-  this.buildTextValNode = buildTextValNode;
-  this.buildObjectNode = buildObjectNode;
+  return val;
 }
 
-Parser.prototype.parse = function (jObj) {
-  return this.j2x(jObj, 0).val;
-};
+function checkForTagType(match) {
+  if (match[4] === ']]>') {
+    return TagType.CDATA;
+  } else if (match[10] === '/') {
+    return TagType.CLOSING;
+  } else if (typeof match[8] !== 'undefined' && match[8].substr(match[8].length - 1) === '/') {
+    return TagType.SELF;
+  } else {
+    return TagType.OPENING;
+  }
+}
 
-Parser.prototype.j2x = function (jObj, level) {
-  var attrStr = '';
-  var val = '';
-  var keys = Object.keys(jObj);
-  var len = keys.length;
+function resolveNameSpace(tagname, options) {
+  if (options.ignoreNameSpace) {
+    var tags = tagname.split(':');
+    var prefix = tagname.charAt(0) === '/' ? '/' : '';
 
-  for (var i = 0; i < len; i++) {
-    var key = keys[i];
+    if (tags[0] === 'xmlns') {
+      return '';
+    }
 
-    if (typeof jObj[key] === 'undefined') ; else if (jObj[key] === null) {
-      val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
-    } else if (_typeof(jObj[key]) !== 'object') {
-      //premitive type
-      var attr = this.isAttribute(key);
+    if (tags.length === 2) {
+      tagname = prefix + tags[1];
+    }
+  }
 
-      if (attr) {
-        attrStr += ' ' + attr + '="' + this.options.attrValueProcessor('' + jObj[key]) + '"';
-      } else if (this.isCDATA(key)) {
-        if (jObj[this.options.textNodeName]) {
-          val += this.replaceCDATAstr(jObj[this.options.textNodeName], jObj[key]);
-        } else {
-          val += this.replaceCDATAstr('', jObj[key]);
-        }
+  return tagname;
+}
+
+function parseValue(val, shouldParse, parseTrueNumberOnly) {
+  if (shouldParse && typeof val === 'string') {
+    var parsed;
+
+    if (val.trim() === '' || isNaN(val)) {
+      parsed = val === 'true' ? true : val === 'false' ? false : val;
+    } else {
+      if (val.indexOf('0x') !== -1) {
+        //support hexa decimal
+        parsed = Number.parseInt(val, 16);
+      } else if (val.indexOf('.') !== -1) {
+        parsed = Number.parseFloat(val);
       } else {
-        //tag value
-        if (key === this.options.textNodeName) {
-          if (jObj[this.options.cdataTagName]) ; else {
-            val += this.options.tagValueProcessor('' + jObj[key]);
+        parsed = Number.parseInt(val, 10);
+      }
+
+      if (parseTrueNumberOnly) {
+        parsed = String(parsed) === val ? parsed : val;
+      }
+    }
+
+    return parsed;
+  } else {
+    if (util.isExist(val)) {
+      return val;
+    } else {
+      return '';
+    }
+  }
+} //TODO: change regex to capture NS
+//const attrsRegx = new RegExp("([\\w\\-\\.\\:]+)\\s*=\\s*(['\"])((.|\n)*?)\\2","gm");
+
+
+var attrsRegx = new RegExp('([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?', 'g');
+
+function buildAttributesMap(attrStr, options) {
+  if (!options.ignoreAttributes && typeof attrStr === 'string') {
+    attrStr = attrStr.replace(/\r?\n/g, ' '); //attrStr = attrStr || attrStr.trim();
+
+    var matches = util.getAllMatches(attrStr, attrsRegx);
+    var len = matches.length; //don't make it inline
+
+    var attrs = {};
+
+    for (var i = 0; i < len; i++) {
+      var attrName = resolveNameSpace(matches[i][1], options);
+
+      if (attrName.length) {
+        if (matches[i][4] !== undefined) {
+          if (options.trimValues) {
+            matches[i][4] = matches[i][4].trim();
           }
-        } else {
-          val += this.buildTextNode(jObj[key], key, '', level);
+
+          matches[i][4] = options.attrValueProcessor(matches[i][4]);
+          attrs[options.attributeNamePrefix + attrName] = parseValue(matches[i][4], options.parseAttributeValue, options.parseTrueNumberOnly);
+        } else if (options.allowBooleanAttributes) {
+          attrs[options.attributeNamePrefix + attrName] = true;
         }
       }
-    } else if (Array.isArray(jObj[key])) {
-      //repeated nodes
-      if (this.isCDATA(key)) {
-        val += this.indentate(level);
+    }
 
-        if (jObj[this.options.textNodeName]) {
-          val += this.replaceCDATAarr(jObj[this.options.textNodeName], jObj[key]);
-        } else {
-          val += this.replaceCDATAarr('', jObj[key]);
+    if (!Object.keys(attrs).length) {
+      return;
+    }
+
+    if (options.attrNodeName) {
+      var attrCollection = {};
+      attrCollection[options.attrNodeName] = attrs;
+      return attrCollection;
+    }
+
+    return attrs;
+  }
+}
+
+exports.getTraversalObj = getTraversalObj;
+
+},{"./util":56,"./xmlNode":58}],60:[function(require,module,exports){
+"use strict";
+
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m;
+  var eLen = nBytes * 8 - mLen - 1;
+  var eMax = (1 << eLen) - 1;
+  var eBias = eMax >> 1;
+  var nBits = -7;
+  var i = isLE ? nBytes - 1 : 0;
+  var d = isLE ? -1 : 1;
+  var s = buffer[offset + i];
+  i += d;
+  e = s & (1 << -nBits) - 1;
+  s >>= -nBits;
+  nBits += eLen;
+
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & (1 << -nBits) - 1;
+  e >>= -nBits;
+  nBits += mLen;
+
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias;
+  } else if (e === eMax) {
+    return m ? NaN : (s ? -1 : 1) * Infinity;
+  } else {
+    m = m + Math.pow(2, mLen);
+    e = e - eBias;
+  }
+
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
+};
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c;
+  var eLen = nBytes * 8 - mLen - 1;
+  var eMax = (1 << eLen) - 1;
+  var eBias = eMax >> 1;
+  var rt = mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0;
+  var i = isLE ? 0 : nBytes - 1;
+  var d = isLE ? 1 : -1;
+  var s = value < 0 || value === 0 && 1 / value < 0 ? 1 : 0;
+  value = Math.abs(value);
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0;
+    e = eMax;
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2);
+
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--;
+      c *= 2;
+    }
+
+    if (e + eBias >= 1) {
+      value += rt / c;
+    } else {
+      value += rt * Math.pow(2, 1 - eBias);
+    }
+
+    if (value * c >= 2) {
+      e++;
+      c /= 2;
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0;
+      e = eMax;
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen);
+      e = e + eBias;
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
+      e = 0;
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = e << mLen | m;
+  eLen += mLen;
+
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128;
+};
+
+},{}],61:[function(require,module,exports){
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+//! moment.js
+;
+
+(function (global, factory) {
+  (typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define(factory) : global.moment = factory();
+})(void 0, function () {
+  'use strict';
+
+  var hookCallback;
+
+  function hooks() {
+    return hookCallback.apply(null, arguments);
+  } // This is done to register the method called with moment()
+  // without creating circular dependencies.
+
+
+  function setHookCallback(callback) {
+    hookCallback = callback;
+  }
+
+  function isArray(input) {
+    return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
+  }
+
+  function isObject(input) {
+    // IE8 will treat undefined and null as object if it wasn't for
+    // input != null
+    return input != null && Object.prototype.toString.call(input) === '[object Object]';
+  }
+
+  function isObjectEmpty(obj) {
+    if (Object.getOwnPropertyNames) {
+      return Object.getOwnPropertyNames(obj).length === 0;
+    } else {
+      var k;
+
+      for (k in obj) {
+        if (obj.hasOwnProperty(k)) {
+          return false;
         }
+      }
+
+      return true;
+    }
+  }
+
+  function isUndefined(input) {
+    return input === void 0;
+  }
+
+  function isNumber(input) {
+    return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
+  }
+
+  function isDate(input) {
+    return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
+  }
+
+  function map(arr, fn) {
+    var res = [],
+        i;
+
+    for (i = 0; i < arr.length; ++i) {
+      res.push(fn(arr[i], i));
+    }
+
+    return res;
+  }
+
+  function hasOwnProp(a, b) {
+    return Object.prototype.hasOwnProperty.call(a, b);
+  }
+
+  function extend(a, b) {
+    for (var i in b) {
+      if (hasOwnProp(b, i)) {
+        a[i] = b[i];
+      }
+    }
+
+    if (hasOwnProp(b, 'toString')) {
+      a.toString = b.toString;
+    }
+
+    if (hasOwnProp(b, 'valueOf')) {
+      a.valueOf = b.valueOf;
+    }
+
+    return a;
+  }
+
+  function createUTC(input, format, locale, strict) {
+    return createLocalOrUTC(input, format, locale, strict, true).utc();
+  }
+
+  function defaultParsingFlags() {
+    // We need to deep clone this object.
+    return {
+      empty: false,
+      unusedTokens: [],
+      unusedInput: [],
+      overflow: -2,
+      charsLeftOver: 0,
+      nullInput: false,
+      invalidMonth: null,
+      invalidFormat: false,
+      userInvalidated: false,
+      iso: false,
+      parsedDateParts: [],
+      meridiem: null,
+      rfc2822: false,
+      weekdayMismatch: false
+    };
+  }
+
+  function getParsingFlags(m) {
+    if (m._pf == null) {
+      m._pf = defaultParsingFlags();
+    }
+
+    return m._pf;
+  }
+
+  var some;
+
+  if (Array.prototype.some) {
+    some = Array.prototype.some;
+  } else {
+    some = function some(fun) {
+      var t = Object(this);
+      var len = t.length >>> 0;
+
+      for (var i = 0; i < len; i++) {
+        if (i in t && fun.call(this, t[i], i, t)) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+  }
+
+  function isValid(m) {
+    if (m._isValid == null) {
+      var flags = getParsingFlags(m);
+      var parsedParts = some.call(flags.parsedDateParts, function (i) {
+        return i != null;
+      });
+      var isNowValid = !isNaN(m._d.getTime()) && flags.overflow < 0 && !flags.empty && !flags.invalidMonth && !flags.invalidWeekday && !flags.weekdayMismatch && !flags.nullInput && !flags.invalidFormat && !flags.userInvalidated && (!flags.meridiem || flags.meridiem && parsedParts);
+
+      if (m._strict) {
+        isNowValid = isNowValid && flags.charsLeftOver === 0 && flags.unusedTokens.length === 0 && flags.bigHour === undefined;
+      }
+
+      if (Object.isFrozen == null || !Object.isFrozen(m)) {
+        m._isValid = isNowValid;
       } else {
-        //nested nodes
-        var arrLen = jObj[key].length;
+        return isNowValid;
+      }
+    }
 
-        for (var j = 0; j < arrLen; j++) {
-          var item = jObj[key][j];
+    return m._isValid;
+  }
 
-          if (typeof item === 'undefined') ; else if (item === null) {
-            val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
-          } else if (_typeof(item) === 'object') {
-            var result = this.j2x(item, level + 1);
-            val += this.buildObjNode(result.val, key, result.attrStr, level);
-          } else {
-            val += this.buildTextNode(item, key, '', level);
-          }
+  function createInvalid(flags) {
+    var m = createUTC(NaN);
+
+    if (flags != null) {
+      extend(getParsingFlags(m), flags);
+    } else {
+      getParsingFlags(m).userInvalidated = true;
+    }
+
+    return m;
+  } // Plugins that add properties should also add the key here (null value),
+  // so we can properly clone ourselves.
+
+
+  var momentProperties = hooks.momentProperties = [];
+
+  function copyConfig(to, from) {
+    var i, prop, val;
+
+    if (!isUndefined(from._isAMomentObject)) {
+      to._isAMomentObject = from._isAMomentObject;
+    }
+
+    if (!isUndefined(from._i)) {
+      to._i = from._i;
+    }
+
+    if (!isUndefined(from._f)) {
+      to._f = from._f;
+    }
+
+    if (!isUndefined(from._l)) {
+      to._l = from._l;
+    }
+
+    if (!isUndefined(from._strict)) {
+      to._strict = from._strict;
+    }
+
+    if (!isUndefined(from._tzm)) {
+      to._tzm = from._tzm;
+    }
+
+    if (!isUndefined(from._isUTC)) {
+      to._isUTC = from._isUTC;
+    }
+
+    if (!isUndefined(from._offset)) {
+      to._offset = from._offset;
+    }
+
+    if (!isUndefined(from._pf)) {
+      to._pf = getParsingFlags(from);
+    }
+
+    if (!isUndefined(from._locale)) {
+      to._locale = from._locale;
+    }
+
+    if (momentProperties.length > 0) {
+      for (i = 0; i < momentProperties.length; i++) {
+        prop = momentProperties[i];
+        val = from[prop];
+
+        if (!isUndefined(val)) {
+          to[prop] = val;
         }
+      }
+    }
+
+    return to;
+  }
+
+  var updateInProgress = false; // Moment prototype object
+
+  function Moment(config) {
+    copyConfig(this, config);
+    this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+
+    if (!this.isValid()) {
+      this._d = new Date(NaN);
+    } // Prevent infinite loop in case updateOffset creates new moment
+    // objects.
+
+
+    if (updateInProgress === false) {
+      updateInProgress = true;
+      hooks.updateOffset(this);
+      updateInProgress = false;
+    }
+  }
+
+  function isMoment(obj) {
+    return obj instanceof Moment || obj != null && obj._isAMomentObject != null;
+  }
+
+  function absFloor(number) {
+    if (number < 0) {
+      // -0 -> 0
+      return Math.ceil(number) || 0;
+    } else {
+      return Math.floor(number);
+    }
+  }
+
+  function toInt(argumentForCoercion) {
+    var coercedNumber = +argumentForCoercion,
+        value = 0;
+
+    if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+      value = absFloor(coercedNumber);
+    }
+
+    return value;
+  } // compare two arrays, return the number of differences
+
+
+  function compareArrays(array1, array2, dontConvert) {
+    var len = Math.min(array1.length, array2.length),
+        lengthDiff = Math.abs(array1.length - array2.length),
+        diffs = 0,
+        i;
+
+    for (i = 0; i < len; i++) {
+      if (dontConvert && array1[i] !== array2[i] || !dontConvert && toInt(array1[i]) !== toInt(array2[i])) {
+        diffs++;
+      }
+    }
+
+    return diffs + lengthDiff;
+  }
+
+  function warn(msg) {
+    if (hooks.suppressDeprecationWarnings === false && typeof console !== 'undefined' && console.warn) {
+      console.warn('Deprecation warning: ' + msg);
+    }
+  }
+
+  function deprecate(msg, fn) {
+    var firstTime = true;
+    return extend(function () {
+      if (hooks.deprecationHandler != null) {
+        hooks.deprecationHandler(null, msg);
+      }
+
+      if (firstTime) {
+        var args = [];
+        var arg;
+
+        for (var i = 0; i < arguments.length; i++) {
+          arg = '';
+
+          if (_typeof(arguments[i]) === 'object') {
+            arg += '\n[' + i + '] ';
+
+            for (var key in arguments[0]) {
+              arg += key + ': ' + arguments[0][key] + ', ';
+            }
+
+            arg = arg.slice(0, -2); // Remove trailing comma and space
+          } else {
+            arg = arguments[i];
+          }
+
+          args.push(arg);
+        }
+
+        warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + new Error().stack);
+        firstTime = false;
+      }
+
+      return fn.apply(this, arguments);
+    }, fn);
+  }
+
+  var deprecations = {};
+
+  function deprecateSimple(name, msg) {
+    if (hooks.deprecationHandler != null) {
+      hooks.deprecationHandler(name, msg);
+    }
+
+    if (!deprecations[name]) {
+      warn(msg);
+      deprecations[name] = true;
+    }
+  }
+
+  hooks.suppressDeprecationWarnings = false;
+  hooks.deprecationHandler = null;
+
+  function isFunction(input) {
+    return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
+  }
+
+  function set(config) {
+    var prop, i;
+
+    for (i in config) {
+      prop = config[i];
+
+      if (isFunction(prop)) {
+        this[i] = prop;
+      } else {
+        this['_' + i] = prop;
+      }
+    }
+
+    this._config = config; // Lenient ordinal parsing accepts just a number in addition to
+    // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
+    // TODO: Remove "ordinalParse" fallback in next major release.
+
+    this._dayOfMonthOrdinalParseLenient = new RegExp((this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) + '|' + /\d{1,2}/.source);
+  }
+
+  function mergeConfigs(parentConfig, childConfig) {
+    var res = extend({}, parentConfig),
+        prop;
+
+    for (prop in childConfig) {
+      if (hasOwnProp(childConfig, prop)) {
+        if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+          res[prop] = {};
+          extend(res[prop], parentConfig[prop]);
+          extend(res[prop], childConfig[prop]);
+        } else if (childConfig[prop] != null) {
+          res[prop] = childConfig[prop];
+        } else {
+          delete res[prop];
+        }
+      }
+    }
+
+    for (prop in parentConfig) {
+      if (hasOwnProp(parentConfig, prop) && !hasOwnProp(childConfig, prop) && isObject(parentConfig[prop])) {
+        // make sure changes to properties don't modify parent config
+        res[prop] = extend({}, res[prop]);
+      }
+    }
+
+    return res;
+  }
+
+  function Locale(config) {
+    if (config != null) {
+      this.set(config);
+    }
+  }
+
+  var keys;
+
+  if (Object.keys) {
+    keys = Object.keys;
+  } else {
+    keys = function keys(obj) {
+      var i,
+          res = [];
+
+      for (i in obj) {
+        if (hasOwnProp(obj, i)) {
+          res.push(i);
+        }
+      }
+
+      return res;
+    };
+  }
+
+  var defaultCalendar = {
+    sameDay: '[Today at] LT',
+    nextDay: '[Tomorrow at] LT',
+    nextWeek: 'dddd [at] LT',
+    lastDay: '[Yesterday at] LT',
+    lastWeek: '[Last] dddd [at] LT',
+    sameElse: 'L'
+  };
+
+  function calendar(key, mom, now) {
+    var output = this._calendar[key] || this._calendar['sameElse'];
+    return isFunction(output) ? output.call(mom, now) : output;
+  }
+
+  var defaultLongDateFormat = {
+    LTS: 'h:mm:ss A',
+    LT: 'h:mm A',
+    L: 'MM/DD/YYYY',
+    LL: 'MMMM D, YYYY',
+    LLL: 'MMMM D, YYYY h:mm A',
+    LLLL: 'dddd, MMMM D, YYYY h:mm A'
+  };
+
+  function longDateFormat(key) {
+    var format = this._longDateFormat[key],
+        formatUpper = this._longDateFormat[key.toUpperCase()];
+
+    if (format || !formatUpper) {
+      return format;
+    }
+
+    this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
+      return val.slice(1);
+    });
+    return this._longDateFormat[key];
+  }
+
+  var defaultInvalidDate = 'Invalid date';
+
+  function invalidDate() {
+    return this._invalidDate;
+  }
+
+  var defaultOrdinal = '%d';
+  var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
+
+  function ordinal(number) {
+    return this._ordinal.replace('%d', number);
+  }
+
+  var defaultRelativeTime = {
+    future: 'in %s',
+    past: '%s ago',
+    s: 'a few seconds',
+    ss: '%d seconds',
+    m: 'a minute',
+    mm: '%d minutes',
+    h: 'an hour',
+    hh: '%d hours',
+    d: 'a day',
+    dd: '%d days',
+    M: 'a month',
+    MM: '%d months',
+    y: 'a year',
+    yy: '%d years'
+  };
+
+  function relativeTime(number, withoutSuffix, string, isFuture) {
+    var output = this._relativeTime[string];
+    return isFunction(output) ? output(number, withoutSuffix, string, isFuture) : output.replace(/%d/i, number);
+  }
+
+  function pastFuture(diff, output) {
+    var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+    return isFunction(format) ? format(output) : format.replace(/%s/i, output);
+  }
+
+  var aliases = {};
+
+  function addUnitAlias(unit, shorthand) {
+    var lowerCase = unit.toLowerCase();
+    aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
+  }
+
+  function normalizeUnits(units) {
+    return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
+  }
+
+  function normalizeObjectUnits(inputObject) {
+    var normalizedInput = {},
+        normalizedProp,
+        prop;
+
+    for (prop in inputObject) {
+      if (hasOwnProp(inputObject, prop)) {
+        normalizedProp = normalizeUnits(prop);
+
+        if (normalizedProp) {
+          normalizedInput[normalizedProp] = inputObject[prop];
+        }
+      }
+    }
+
+    return normalizedInput;
+  }
+
+  var priorities = {};
+
+  function addUnitPriority(unit, priority) {
+    priorities[unit] = priority;
+  }
+
+  function getPrioritizedUnits(unitsObj) {
+    var units = [];
+
+    for (var u in unitsObj) {
+      units.push({
+        unit: u,
+        priority: priorities[u]
+      });
+    }
+
+    units.sort(function (a, b) {
+      return a.priority - b.priority;
+    });
+    return units;
+  }
+
+  function zeroFill(number, targetLength, forceSign) {
+    var absNumber = '' + Math.abs(number),
+        zerosToFill = targetLength - absNumber.length,
+        sign = number >= 0;
+    return (sign ? forceSign ? '+' : '' : '-') + Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
+  }
+
+  var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
+  var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
+  var formatFunctions = {};
+  var formatTokenFunctions = {}; // token:    'M'
+  // padded:   ['MM', 2]
+  // ordinal:  'Mo'
+  // callback: function () { this.month() + 1 }
+
+  function addFormatToken(token, padded, ordinal, callback) {
+    var func = callback;
+
+    if (typeof callback === 'string') {
+      func = function func() {
+        return this[callback]();
+      };
+    }
+
+    if (token) {
+      formatTokenFunctions[token] = func;
+    }
+
+    if (padded) {
+      formatTokenFunctions[padded[0]] = function () {
+        return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
+      };
+    }
+
+    if (ordinal) {
+      formatTokenFunctions[ordinal] = function () {
+        return this.localeData().ordinal(func.apply(this, arguments), token);
+      };
+    }
+  }
+
+  function removeFormattingTokens(input) {
+    if (input.match(/\[[\s\S]/)) {
+      return input.replace(/^\[|\]$/g, '');
+    }
+
+    return input.replace(/\\/g, '');
+  }
+
+  function makeFormatFunction(format) {
+    var array = format.match(formattingTokens),
+        i,
+        length;
+
+    for (i = 0, length = array.length; i < length; i++) {
+      if (formatTokenFunctions[array[i]]) {
+        array[i] = formatTokenFunctions[array[i]];
+      } else {
+        array[i] = removeFormattingTokens(array[i]);
+      }
+    }
+
+    return function (mom) {
+      var output = '',
+          i;
+
+      for (i = 0; i < length; i++) {
+        output += isFunction(array[i]) ? array[i].call(mom, format) : array[i];
+      }
+
+      return output;
+    };
+  } // format date using native date object
+
+
+  function formatMoment(m, format) {
+    if (!m.isValid()) {
+      return m.localeData().invalidDate();
+    }
+
+    format = expandFormat(format, m.localeData());
+    formatFunctions[format] = formatFunctions[format] || makeFormatFunction(format);
+    return formatFunctions[format](m);
+  }
+
+  function expandFormat(format, locale) {
+    var i = 5;
+
+    function replaceLongDateFormatTokens(input) {
+      return locale.longDateFormat(input) || input;
+    }
+
+    localFormattingTokens.lastIndex = 0;
+
+    while (i >= 0 && localFormattingTokens.test(format)) {
+      format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
+      localFormattingTokens.lastIndex = 0;
+      i -= 1;
+    }
+
+    return format;
+  }
+
+  var match1 = /\d/; //       0 - 9
+
+  var match2 = /\d\d/; //      00 - 99
+
+  var match3 = /\d{3}/; //     000 - 999
+
+  var match4 = /\d{4}/; //    0000 - 9999
+
+  var match6 = /[+-]?\d{6}/; // -999999 - 999999
+
+  var match1to2 = /\d\d?/; //       0 - 99
+
+  var match3to4 = /\d\d\d\d?/; //     999 - 9999
+
+  var match5to6 = /\d\d\d\d\d\d?/; //   99999 - 999999
+
+  var match1to3 = /\d{1,3}/; //       0 - 999
+
+  var match1to4 = /\d{1,4}/; //       0 - 9999
+
+  var match1to6 = /[+-]?\d{1,6}/; // -999999 - 999999
+
+  var matchUnsigned = /\d+/; //       0 - inf
+
+  var matchSigned = /[+-]?\d+/; //    -inf - inf
+
+  var matchOffset = /Z|[+-]\d\d:?\d\d/gi; // +00:00 -00:00 +0000 -0000 or Z
+
+  var matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi; // +00 -00 +00:00 -00:00 +0000 -0000 or Z
+
+  var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
+  // any word (or two) characters or numbers including two/three word month in arabic.
+  // includes scottish gaelic two word and hyphenated months
+
+  var matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i;
+  var regexes = {};
+
+  function addRegexToken(token, regex, strictRegex) {
+    regexes[token] = isFunction(regex) ? regex : function (isStrict, localeData) {
+      return isStrict && strictRegex ? strictRegex : regex;
+    };
+  }
+
+  function getParseRegexForToken(token, config) {
+    if (!hasOwnProp(regexes, token)) {
+      return new RegExp(unescapeFormat(token));
+    }
+
+    return regexes[token](config._strict, config._locale);
+  } // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+
+
+  function unescapeFormat(s) {
+    return regexEscape(s.replace('\\', '').replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
+      return p1 || p2 || p3 || p4;
+    }));
+  }
+
+  function regexEscape(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  }
+
+  var tokens = {};
+
+  function addParseToken(token, callback) {
+    var i,
+        func = callback;
+
+    if (typeof token === 'string') {
+      token = [token];
+    }
+
+    if (isNumber(callback)) {
+      func = function func(input, array) {
+        array[callback] = toInt(input);
+      };
+    }
+
+    for (i = 0; i < token.length; i++) {
+      tokens[token[i]] = func;
+    }
+  }
+
+  function addWeekParseToken(token, callback) {
+    addParseToken(token, function (input, array, config, token) {
+      config._w = config._w || {};
+      callback(input, config._w, config, token);
+    });
+  }
+
+  function addTimeToArrayFromToken(token, input, config) {
+    if (input != null && hasOwnProp(tokens, token)) {
+      tokens[token](input, config._a, config, token);
+    }
+  }
+
+  var YEAR = 0;
+  var MONTH = 1;
+  var DATE = 2;
+  var HOUR = 3;
+  var MINUTE = 4;
+  var SECOND = 5;
+  var MILLISECOND = 6;
+  var WEEK = 7;
+  var WEEKDAY = 8; // FORMATTING
+
+  addFormatToken('Y', 0, 0, function () {
+    var y = this.year();
+    return y <= 9999 ? '' + y : '+' + y;
+  });
+  addFormatToken(0, ['YY', 2], 0, function () {
+    return this.year() % 100;
+  });
+  addFormatToken(0, ['YYYY', 4], 0, 'year');
+  addFormatToken(0, ['YYYYY', 5], 0, 'year');
+  addFormatToken(0, ['YYYYYY', 6, true], 0, 'year'); // ALIASES
+
+  addUnitAlias('year', 'y'); // PRIORITIES
+
+  addUnitPriority('year', 1); // PARSING
+
+  addRegexToken('Y', matchSigned);
+  addRegexToken('YY', match1to2, match2);
+  addRegexToken('YYYY', match1to4, match4);
+  addRegexToken('YYYYY', match1to6, match6);
+  addRegexToken('YYYYYY', match1to6, match6);
+  addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+  addParseToken('YYYY', function (input, array) {
+    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+  });
+  addParseToken('YY', function (input, array) {
+    array[YEAR] = hooks.parseTwoDigitYear(input);
+  });
+  addParseToken('Y', function (input, array) {
+    array[YEAR] = parseInt(input, 10);
+  }); // HELPERS
+
+  function daysInYear(year) {
+    return isLeapYear(year) ? 366 : 365;
+  }
+
+  function isLeapYear(year) {
+    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
+  } // HOOKS
+
+
+  hooks.parseTwoDigitYear = function (input) {
+    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+  }; // MOMENTS
+
+
+  var getSetYear = makeGetSet('FullYear', true);
+
+  function getIsLeapYear() {
+    return isLeapYear(this.year());
+  }
+
+  function makeGetSet(unit, keepTime) {
+    return function (value) {
+      if (value != null) {
+        set$1(this, unit, value);
+        hooks.updateOffset(this, keepTime);
+        return this;
+      } else {
+        return get(this, unit);
+      }
+    };
+  }
+
+  function get(mom, unit) {
+    return mom.isValid() ? mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+  }
+
+  function set$1(mom, unit, value) {
+    if (mom.isValid() && !isNaN(value)) {
+      if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
+      } else {
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+      }
+    }
+  } // MOMENTS
+
+
+  function stringGet(units) {
+    units = normalizeUnits(units);
+
+    if (isFunction(this[units])) {
+      return this[units]();
+    }
+
+    return this;
+  }
+
+  function stringSet(units, value) {
+    if (_typeof(units) === 'object') {
+      units = normalizeObjectUnits(units);
+      var prioritized = getPrioritizedUnits(units);
+
+      for (var i = 0; i < prioritized.length; i++) {
+        this[prioritized[i].unit](units[prioritized[i].unit]);
       }
     } else {
-      //nested node
-      if (this.options.attrNodeName && key === this.options.attrNodeName) {
-        var Ks = Object.keys(jObj[key]);
-        var L = Ks.length;
+      units = normalizeUnits(units);
 
-        for (var _j = 0; _j < L; _j++) {
-          attrStr += ' ' + Ks[_j] + '="' + this.options.attrValueProcessor('' + jObj[key][Ks[_j]]) + '"';
+      if (isFunction(this[units])) {
+        return this[units](value);
+      }
+    }
+
+    return this;
+  }
+
+  function mod(n, x) {
+    return (n % x + x) % x;
+  }
+
+  var indexOf;
+
+  if (Array.prototype.indexOf) {
+    indexOf = Array.prototype.indexOf;
+  } else {
+    indexOf = function indexOf(o) {
+      // I know
+      var i;
+
+      for (i = 0; i < this.length; ++i) {
+        if (this[i] === o) {
+          return i;
+        }
+      }
+
+      return -1;
+    };
+  }
+
+  function daysInMonth(year, month) {
+    if (isNaN(year) || isNaN(month)) {
+      return NaN;
+    }
+
+    var modMonth = mod(month, 12);
+    year += (month - modMonth) / 12;
+    return modMonth === 1 ? isLeapYear(year) ? 29 : 28 : 31 - modMonth % 7 % 2;
+  } // FORMATTING
+
+
+  addFormatToken('M', ['MM', 2], 'Mo', function () {
+    return this.month() + 1;
+  });
+  addFormatToken('MMM', 0, 0, function (format) {
+    return this.localeData().monthsShort(this, format);
+  });
+  addFormatToken('MMMM', 0, 0, function (format) {
+    return this.localeData().months(this, format);
+  }); // ALIASES
+
+  addUnitAlias('month', 'M'); // PRIORITY
+
+  addUnitPriority('month', 8); // PARSING
+
+  addRegexToken('M', match1to2);
+  addRegexToken('MM', match1to2, match2);
+  addRegexToken('MMM', function (isStrict, locale) {
+    return locale.monthsShortRegex(isStrict);
+  });
+  addRegexToken('MMMM', function (isStrict, locale) {
+    return locale.monthsRegex(isStrict);
+  });
+  addParseToken(['M', 'MM'], function (input, array) {
+    array[MONTH] = toInt(input) - 1;
+  });
+  addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
+    var month = config._locale.monthsParse(input, token, config._strict); // if we didn't find a month name, mark the date as invalid.
+
+
+    if (month != null) {
+      array[MONTH] = month;
+    } else {
+      getParsingFlags(config).invalidMonth = input;
+    }
+  }); // LOCALES
+
+  var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
+  var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
+
+  function localeMonths(m, format) {
+    if (!m) {
+      return isArray(this._months) ? this._months : this._months['standalone'];
+    }
+
+    return isArray(this._months) ? this._months[m.month()] : this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
+  }
+
+  var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+
+  function localeMonthsShort(m, format) {
+    if (!m) {
+      return isArray(this._monthsShort) ? this._monthsShort : this._monthsShort['standalone'];
+    }
+
+    return isArray(this._monthsShort) ? this._monthsShort[m.month()] : this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
+  }
+
+  function handleStrictParse(monthName, format, strict) {
+    var i,
+        ii,
+        mom,
+        llc = monthName.toLocaleLowerCase();
+
+    if (!this._monthsParse) {
+      // this is not used
+      this._monthsParse = [];
+      this._longMonthsParse = [];
+      this._shortMonthsParse = [];
+
+      for (i = 0; i < 12; ++i) {
+        mom = createUTC([2000, i]);
+        this._shortMonthsParse[i] = this.monthsShort(mom, '').toLocaleLowerCase();
+        this._longMonthsParse[i] = this.months(mom, '').toLocaleLowerCase();
+      }
+    }
+
+    if (strict) {
+      if (format === 'MMM') {
+        ii = indexOf.call(this._shortMonthsParse, llc);
+        return ii !== -1 ? ii : null;
+      } else {
+        ii = indexOf.call(this._longMonthsParse, llc);
+        return ii !== -1 ? ii : null;
+      }
+    } else {
+      if (format === 'MMM') {
+        ii = indexOf.call(this._shortMonthsParse, llc);
+
+        if (ii !== -1) {
+          return ii;
+        }
+
+        ii = indexOf.call(this._longMonthsParse, llc);
+        return ii !== -1 ? ii : null;
+      } else {
+        ii = indexOf.call(this._longMonthsParse, llc);
+
+        if (ii !== -1) {
+          return ii;
+        }
+
+        ii = indexOf.call(this._shortMonthsParse, llc);
+        return ii !== -1 ? ii : null;
+      }
+    }
+  }
+
+  function localeMonthsParse(monthName, format, strict) {
+    var i, mom, regex;
+
+    if (this._monthsParseExact) {
+      return handleStrictParse.call(this, monthName, format, strict);
+    }
+
+    if (!this._monthsParse) {
+      this._monthsParse = [];
+      this._longMonthsParse = [];
+      this._shortMonthsParse = [];
+    } // TODO: add sorting
+    // Sorting makes sure if one month (or abbr) is a prefix of another
+    // see sorting in computeMonthsParse
+
+
+    for (i = 0; i < 12; i++) {
+      // make the regex if we don't have it already
+      mom = createUTC([2000, i]);
+
+      if (strict && !this._longMonthsParse[i]) {
+        this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
+        this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
+      }
+
+      if (!strict && !this._monthsParse[i]) {
+        regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
+        this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
+      } // test the regex
+
+
+      if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
+        return i;
+      } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
+        return i;
+      } else if (!strict && this._monthsParse[i].test(monthName)) {
+        return i;
+      }
+    }
+  } // MOMENTS
+
+
+  function setMonth(mom, value) {
+    var dayOfMonth;
+
+    if (!mom.isValid()) {
+      // No op
+      return mom;
+    }
+
+    if (typeof value === 'string') {
+      if (/^\d+$/.test(value)) {
+        value = toInt(value);
+      } else {
+        value = mom.localeData().monthsParse(value); // TODO: Another silent failure?
+
+        if (!isNumber(value)) {
+          return mom;
+        }
+      }
+    }
+
+    dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
+
+    mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+
+    return mom;
+  }
+
+  function getSetMonth(value) {
+    if (value != null) {
+      setMonth(this, value);
+      hooks.updateOffset(this, true);
+      return this;
+    } else {
+      return get(this, 'Month');
+    }
+  }
+
+  function getDaysInMonth() {
+    return daysInMonth(this.year(), this.month());
+  }
+
+  var defaultMonthsShortRegex = matchWord;
+
+  function monthsShortRegex(isStrict) {
+    if (this._monthsParseExact) {
+      if (!hasOwnProp(this, '_monthsRegex')) {
+        computeMonthsParse.call(this);
+      }
+
+      if (isStrict) {
+        return this._monthsShortStrictRegex;
+      } else {
+        return this._monthsShortRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_monthsShortRegex')) {
+        this._monthsShortRegex = defaultMonthsShortRegex;
+      }
+
+      return this._monthsShortStrictRegex && isStrict ? this._monthsShortStrictRegex : this._monthsShortRegex;
+    }
+  }
+
+  var defaultMonthsRegex = matchWord;
+
+  function monthsRegex(isStrict) {
+    if (this._monthsParseExact) {
+      if (!hasOwnProp(this, '_monthsRegex')) {
+        computeMonthsParse.call(this);
+      }
+
+      if (isStrict) {
+        return this._monthsStrictRegex;
+      } else {
+        return this._monthsRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_monthsRegex')) {
+        this._monthsRegex = defaultMonthsRegex;
+      }
+
+      return this._monthsStrictRegex && isStrict ? this._monthsStrictRegex : this._monthsRegex;
+    }
+  }
+
+  function computeMonthsParse() {
+    function cmpLenRev(a, b) {
+      return b.length - a.length;
+    }
+
+    var shortPieces = [],
+        longPieces = [],
+        mixedPieces = [],
+        i,
+        mom;
+
+    for (i = 0; i < 12; i++) {
+      // make the regex if we don't have it already
+      mom = createUTC([2000, i]);
+      shortPieces.push(this.monthsShort(mom, ''));
+      longPieces.push(this.months(mom, ''));
+      mixedPieces.push(this.months(mom, ''));
+      mixedPieces.push(this.monthsShort(mom, ''));
+    } // Sorting makes sure if one month (or abbr) is a prefix of another it
+    // will match the longer piece.
+
+
+    shortPieces.sort(cmpLenRev);
+    longPieces.sort(cmpLenRev);
+    mixedPieces.sort(cmpLenRev);
+
+    for (i = 0; i < 12; i++) {
+      shortPieces[i] = regexEscape(shortPieces[i]);
+      longPieces[i] = regexEscape(longPieces[i]);
+    }
+
+    for (i = 0; i < 24; i++) {
+      mixedPieces[i] = regexEscape(mixedPieces[i]);
+    }
+
+    this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+    this._monthsShortRegex = this._monthsRegex;
+    this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
+    this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
+  }
+
+  function createDate(y, m, d, h, M, s, ms) {
+    // can't just apply() to create a date:
+    // https://stackoverflow.com/q/181348
+    var date; // the date constructor remaps years 0-99 to 1900-1999
+
+    if (y < 100 && y >= 0) {
+      // preserve leap years using a full 400 year cycle, then reset
+      date = new Date(y + 400, m, d, h, M, s, ms);
+
+      if (isFinite(date.getFullYear())) {
+        date.setFullYear(y);
+      }
+    } else {
+      date = new Date(y, m, d, h, M, s, ms);
+    }
+
+    return date;
+  }
+
+  function createUTCDate(y) {
+    var date; // the Date.UTC function remaps years 0-99 to 1900-1999
+
+    if (y < 100 && y >= 0) {
+      var args = Array.prototype.slice.call(arguments); // preserve leap years using a full 400 year cycle, then reset
+
+      args[0] = y + 400;
+      date = new Date(Date.UTC.apply(null, args));
+
+      if (isFinite(date.getUTCFullYear())) {
+        date.setUTCFullYear(y);
+      }
+    } else {
+      date = new Date(Date.UTC.apply(null, arguments));
+    }
+
+    return date;
+  } // start-of-first-week - start-of-year
+
+
+  function firstWeekOffset(year, dow, doy) {
+    var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+    fwd = 7 + dow - doy,
+        // first-week day local weekday -- which local weekday is fwd
+    fwdlw = (7 + createUTCDate(year, 0, fwd).getUTCDay() - dow) % 7;
+    return -fwdlw + fwd - 1;
+  } // https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+
+
+  function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
+    var localWeekday = (7 + weekday - dow) % 7,
+        weekOffset = firstWeekOffset(year, dow, doy),
+        dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset,
+        resYear,
+        resDayOfYear;
+
+    if (dayOfYear <= 0) {
+      resYear = year - 1;
+      resDayOfYear = daysInYear(resYear) + dayOfYear;
+    } else if (dayOfYear > daysInYear(year)) {
+      resYear = year + 1;
+      resDayOfYear = dayOfYear - daysInYear(year);
+    } else {
+      resYear = year;
+      resDayOfYear = dayOfYear;
+    }
+
+    return {
+      year: resYear,
+      dayOfYear: resDayOfYear
+    };
+  }
+
+  function weekOfYear(mom, dow, doy) {
+    var weekOffset = firstWeekOffset(mom.year(), dow, doy),
+        week = Math.floor((mom.dayOfYear() - weekOffset - 1) / 7) + 1,
+        resWeek,
+        resYear;
+
+    if (week < 1) {
+      resYear = mom.year() - 1;
+      resWeek = week + weeksInYear(resYear, dow, doy);
+    } else if (week > weeksInYear(mom.year(), dow, doy)) {
+      resWeek = week - weeksInYear(mom.year(), dow, doy);
+      resYear = mom.year() + 1;
+    } else {
+      resYear = mom.year();
+      resWeek = week;
+    }
+
+    return {
+      week: resWeek,
+      year: resYear
+    };
+  }
+
+  function weeksInYear(year, dow, doy) {
+    var weekOffset = firstWeekOffset(year, dow, doy),
+        weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
+    return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+  } // FORMATTING
+
+
+  addFormatToken('w', ['ww', 2], 'wo', 'week');
+  addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek'); // ALIASES
+
+  addUnitAlias('week', 'w');
+  addUnitAlias('isoWeek', 'W'); // PRIORITIES
+
+  addUnitPriority('week', 5);
+  addUnitPriority('isoWeek', 5); // PARSING
+
+  addRegexToken('w', match1to2);
+  addRegexToken('ww', match1to2, match2);
+  addRegexToken('W', match1to2);
+  addRegexToken('WW', match1to2, match2);
+  addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
+    week[token.substr(0, 1)] = toInt(input);
+  }); // HELPERS
+  // LOCALES
+
+  function localeWeek(mom) {
+    return weekOfYear(mom, this._week.dow, this._week.doy).week;
+  }
+
+  var defaultLocaleWeek = {
+    dow: 0,
+    // Sunday is the first day of the week.
+    doy: 6 // The week that contains Jan 6th is the first week of the year.
+
+  };
+
+  function localeFirstDayOfWeek() {
+    return this._week.dow;
+  }
+
+  function localeFirstDayOfYear() {
+    return this._week.doy;
+  } // MOMENTS
+
+
+  function getSetWeek(input) {
+    var week = this.localeData().week(this);
+    return input == null ? week : this.add((input - week) * 7, 'd');
+  }
+
+  function getSetISOWeek(input) {
+    var week = weekOfYear(this, 1, 4).week;
+    return input == null ? week : this.add((input - week) * 7, 'd');
+  } // FORMATTING
+
+
+  addFormatToken('d', 0, 'do', 'day');
+  addFormatToken('dd', 0, 0, function (format) {
+    return this.localeData().weekdaysMin(this, format);
+  });
+  addFormatToken('ddd', 0, 0, function (format) {
+    return this.localeData().weekdaysShort(this, format);
+  });
+  addFormatToken('dddd', 0, 0, function (format) {
+    return this.localeData().weekdays(this, format);
+  });
+  addFormatToken('e', 0, 0, 'weekday');
+  addFormatToken('E', 0, 0, 'isoWeekday'); // ALIASES
+
+  addUnitAlias('day', 'd');
+  addUnitAlias('weekday', 'e');
+  addUnitAlias('isoWeekday', 'E'); // PRIORITY
+
+  addUnitPriority('day', 11);
+  addUnitPriority('weekday', 11);
+  addUnitPriority('isoWeekday', 11); // PARSING
+
+  addRegexToken('d', match1to2);
+  addRegexToken('e', match1to2);
+  addRegexToken('E', match1to2);
+  addRegexToken('dd', function (isStrict, locale) {
+    return locale.weekdaysMinRegex(isStrict);
+  });
+  addRegexToken('ddd', function (isStrict, locale) {
+    return locale.weekdaysShortRegex(isStrict);
+  });
+  addRegexToken('dddd', function (isStrict, locale) {
+    return locale.weekdaysRegex(isStrict);
+  });
+  addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
+    var weekday = config._locale.weekdaysParse(input, token, config._strict); // if we didn't get a weekday name, mark the date as invalid
+
+
+    if (weekday != null) {
+      week.d = weekday;
+    } else {
+      getParsingFlags(config).invalidWeekday = input;
+    }
+  });
+  addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
+    week[token] = toInt(input);
+  }); // HELPERS
+
+  function parseWeekday(input, locale) {
+    if (typeof input !== 'string') {
+      return input;
+    }
+
+    if (!isNaN(input)) {
+      return parseInt(input, 10);
+    }
+
+    input = locale.weekdaysParse(input);
+
+    if (typeof input === 'number') {
+      return input;
+    }
+
+    return null;
+  }
+
+  function parseIsoWeekday(input, locale) {
+    if (typeof input === 'string') {
+      return locale.weekdaysParse(input) % 7 || 7;
+    }
+
+    return isNaN(input) ? null : input;
+  } // LOCALES
+
+
+  function shiftWeekdays(ws, n) {
+    return ws.slice(n, 7).concat(ws.slice(0, n));
+  }
+
+  var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
+
+  function localeWeekdays(m, format) {
+    var weekdays = isArray(this._weekdays) ? this._weekdays : this._weekdays[m && m !== true && this._weekdays.isFormat.test(format) ? 'format' : 'standalone'];
+    return m === true ? shiftWeekdays(weekdays, this._week.dow) : m ? weekdays[m.day()] : weekdays;
+  }
+
+  var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
+
+  function localeWeekdaysShort(m) {
+    return m === true ? shiftWeekdays(this._weekdaysShort, this._week.dow) : m ? this._weekdaysShort[m.day()] : this._weekdaysShort;
+  }
+
+  var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
+
+  function localeWeekdaysMin(m) {
+    return m === true ? shiftWeekdays(this._weekdaysMin, this._week.dow) : m ? this._weekdaysMin[m.day()] : this._weekdaysMin;
+  }
+
+  function handleStrictParse$1(weekdayName, format, strict) {
+    var i,
+        ii,
+        mom,
+        llc = weekdayName.toLocaleLowerCase();
+
+    if (!this._weekdaysParse) {
+      this._weekdaysParse = [];
+      this._shortWeekdaysParse = [];
+      this._minWeekdaysParse = [];
+
+      for (i = 0; i < 7; ++i) {
+        mom = createUTC([2000, 1]).day(i);
+        this._minWeekdaysParse[i] = this.weekdaysMin(mom, '').toLocaleLowerCase();
+        this._shortWeekdaysParse[i] = this.weekdaysShort(mom, '').toLocaleLowerCase();
+        this._weekdaysParse[i] = this.weekdays(mom, '').toLocaleLowerCase();
+      }
+    }
+
+    if (strict) {
+      if (format === 'dddd') {
+        ii = indexOf.call(this._weekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      } else if (format === 'ddd') {
+        ii = indexOf.call(this._shortWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      } else {
+        ii = indexOf.call(this._minWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      }
+    } else {
+      if (format === 'dddd') {
+        ii = indexOf.call(this._weekdaysParse, llc);
+
+        if (ii !== -1) {
+          return ii;
+        }
+
+        ii = indexOf.call(this._shortWeekdaysParse, llc);
+
+        if (ii !== -1) {
+          return ii;
+        }
+
+        ii = indexOf.call(this._minWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      } else if (format === 'ddd') {
+        ii = indexOf.call(this._shortWeekdaysParse, llc);
+
+        if (ii !== -1) {
+          return ii;
+        }
+
+        ii = indexOf.call(this._weekdaysParse, llc);
+
+        if (ii !== -1) {
+          return ii;
+        }
+
+        ii = indexOf.call(this._minWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      } else {
+        ii = indexOf.call(this._minWeekdaysParse, llc);
+
+        if (ii !== -1) {
+          return ii;
+        }
+
+        ii = indexOf.call(this._weekdaysParse, llc);
+
+        if (ii !== -1) {
+          return ii;
+        }
+
+        ii = indexOf.call(this._shortWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      }
+    }
+  }
+
+  function localeWeekdaysParse(weekdayName, format, strict) {
+    var i, mom, regex;
+
+    if (this._weekdaysParseExact) {
+      return handleStrictParse$1.call(this, weekdayName, format, strict);
+    }
+
+    if (!this._weekdaysParse) {
+      this._weekdaysParse = [];
+      this._minWeekdaysParse = [];
+      this._shortWeekdaysParse = [];
+      this._fullWeekdaysParse = [];
+    }
+
+    for (i = 0; i < 7; i++) {
+      // make the regex if we don't have it already
+      mom = createUTC([2000, 1]).day(i);
+
+      if (strict && !this._fullWeekdaysParse[i]) {
+        this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\\.?') + '$', 'i');
+        this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\\.?') + '$', 'i');
+        this._minWeekdaysParse[i] = new RegExp('^' + this.weekdaysMin(mom, '').replace('.', '\\.?') + '$', 'i');
+      }
+
+      if (!this._weekdaysParse[i]) {
+        regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
+        this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
+      } // test the regex
+
+
+      if (strict && format === 'dddd' && this._fullWeekdaysParse[i].test(weekdayName)) {
+        return i;
+      } else if (strict && format === 'ddd' && this._shortWeekdaysParse[i].test(weekdayName)) {
+        return i;
+      } else if (strict && format === 'dd' && this._minWeekdaysParse[i].test(weekdayName)) {
+        return i;
+      } else if (!strict && this._weekdaysParse[i].test(weekdayName)) {
+        return i;
+      }
+    }
+  } // MOMENTS
+
+
+  function getSetDayOfWeek(input) {
+    if (!this.isValid()) {
+      return input != null ? this : NaN;
+    }
+
+    var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+
+    if (input != null) {
+      input = parseWeekday(input, this.localeData());
+      return this.add(input - day, 'd');
+    } else {
+      return day;
+    }
+  }
+
+  function getSetLocaleDayOfWeek(input) {
+    if (!this.isValid()) {
+      return input != null ? this : NaN;
+    }
+
+    var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+    return input == null ? weekday : this.add(input - weekday, 'd');
+  }
+
+  function getSetISODayOfWeek(input) {
+    if (!this.isValid()) {
+      return input != null ? this : NaN;
+    } // behaves the same as moment#day except
+    // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+    // as a setter, sunday should belong to the previous week.
+
+
+    if (input != null) {
+      var weekday = parseIsoWeekday(input, this.localeData());
+      return this.day(this.day() % 7 ? weekday : weekday - 7);
+    } else {
+      return this.day() || 7;
+    }
+  }
+
+  var defaultWeekdaysRegex = matchWord;
+
+  function weekdaysRegex(isStrict) {
+    if (this._weekdaysParseExact) {
+      if (!hasOwnProp(this, '_weekdaysRegex')) {
+        computeWeekdaysParse.call(this);
+      }
+
+      if (isStrict) {
+        return this._weekdaysStrictRegex;
+      } else {
+        return this._weekdaysRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_weekdaysRegex')) {
+        this._weekdaysRegex = defaultWeekdaysRegex;
+      }
+
+      return this._weekdaysStrictRegex && isStrict ? this._weekdaysStrictRegex : this._weekdaysRegex;
+    }
+  }
+
+  var defaultWeekdaysShortRegex = matchWord;
+
+  function weekdaysShortRegex(isStrict) {
+    if (this._weekdaysParseExact) {
+      if (!hasOwnProp(this, '_weekdaysRegex')) {
+        computeWeekdaysParse.call(this);
+      }
+
+      if (isStrict) {
+        return this._weekdaysShortStrictRegex;
+      } else {
+        return this._weekdaysShortRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_weekdaysShortRegex')) {
+        this._weekdaysShortRegex = defaultWeekdaysShortRegex;
+      }
+
+      return this._weekdaysShortStrictRegex && isStrict ? this._weekdaysShortStrictRegex : this._weekdaysShortRegex;
+    }
+  }
+
+  var defaultWeekdaysMinRegex = matchWord;
+
+  function weekdaysMinRegex(isStrict) {
+    if (this._weekdaysParseExact) {
+      if (!hasOwnProp(this, '_weekdaysRegex')) {
+        computeWeekdaysParse.call(this);
+      }
+
+      if (isStrict) {
+        return this._weekdaysMinStrictRegex;
+      } else {
+        return this._weekdaysMinRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_weekdaysMinRegex')) {
+        this._weekdaysMinRegex = defaultWeekdaysMinRegex;
+      }
+
+      return this._weekdaysMinStrictRegex && isStrict ? this._weekdaysMinStrictRegex : this._weekdaysMinRegex;
+    }
+  }
+
+  function computeWeekdaysParse() {
+    function cmpLenRev(a, b) {
+      return b.length - a.length;
+    }
+
+    var minPieces = [],
+        shortPieces = [],
+        longPieces = [],
+        mixedPieces = [],
+        i,
+        mom,
+        minp,
+        shortp,
+        longp;
+
+    for (i = 0; i < 7; i++) {
+      // make the regex if we don't have it already
+      mom = createUTC([2000, 1]).day(i);
+      minp = this.weekdaysMin(mom, '');
+      shortp = this.weekdaysShort(mom, '');
+      longp = this.weekdays(mom, '');
+      minPieces.push(minp);
+      shortPieces.push(shortp);
+      longPieces.push(longp);
+      mixedPieces.push(minp);
+      mixedPieces.push(shortp);
+      mixedPieces.push(longp);
+    } // Sorting makes sure if one weekday (or abbr) is a prefix of another it
+    // will match the longer piece.
+
+
+    minPieces.sort(cmpLenRev);
+    shortPieces.sort(cmpLenRev);
+    longPieces.sort(cmpLenRev);
+    mixedPieces.sort(cmpLenRev);
+
+    for (i = 0; i < 7; i++) {
+      shortPieces[i] = regexEscape(shortPieces[i]);
+      longPieces[i] = regexEscape(longPieces[i]);
+      mixedPieces[i] = regexEscape(mixedPieces[i]);
+    }
+
+    this._weekdaysRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+    this._weekdaysShortRegex = this._weekdaysRegex;
+    this._weekdaysMinRegex = this._weekdaysRegex;
+    this._weekdaysStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
+    this._weekdaysShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
+    this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
+  } // FORMATTING
+
+
+  function hFormat() {
+    return this.hours() % 12 || 12;
+  }
+
+  function kFormat() {
+    return this.hours() || 24;
+  }
+
+  addFormatToken('H', ['HH', 2], 0, 'hour');
+  addFormatToken('h', ['hh', 2], 0, hFormat);
+  addFormatToken('k', ['kk', 2], 0, kFormat);
+  addFormatToken('hmm', 0, 0, function () {
+    return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2);
+  });
+  addFormatToken('hmmss', 0, 0, function () {
+    return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2) + zeroFill(this.seconds(), 2);
+  });
+  addFormatToken('Hmm', 0, 0, function () {
+    return '' + this.hours() + zeroFill(this.minutes(), 2);
+  });
+  addFormatToken('Hmmss', 0, 0, function () {
+    return '' + this.hours() + zeroFill(this.minutes(), 2) + zeroFill(this.seconds(), 2);
+  });
+
+  function meridiem(token, lowercase) {
+    addFormatToken(token, 0, 0, function () {
+      return this.localeData().meridiem(this.hours(), this.minutes(), lowercase);
+    });
+  }
+
+  meridiem('a', true);
+  meridiem('A', false); // ALIASES
+
+  addUnitAlias('hour', 'h'); // PRIORITY
+
+  addUnitPriority('hour', 13); // PARSING
+
+  function matchMeridiem(isStrict, locale) {
+    return locale._meridiemParse;
+  }
+
+  addRegexToken('a', matchMeridiem);
+  addRegexToken('A', matchMeridiem);
+  addRegexToken('H', match1to2);
+  addRegexToken('h', match1to2);
+  addRegexToken('k', match1to2);
+  addRegexToken('HH', match1to2, match2);
+  addRegexToken('hh', match1to2, match2);
+  addRegexToken('kk', match1to2, match2);
+  addRegexToken('hmm', match3to4);
+  addRegexToken('hmmss', match5to6);
+  addRegexToken('Hmm', match3to4);
+  addRegexToken('Hmmss', match5to6);
+  addParseToken(['H', 'HH'], HOUR);
+  addParseToken(['k', 'kk'], function (input, array, config) {
+    var kInput = toInt(input);
+    array[HOUR] = kInput === 24 ? 0 : kInput;
+  });
+  addParseToken(['a', 'A'], function (input, array, config) {
+    config._isPm = config._locale.isPM(input);
+    config._meridiem = input;
+  });
+  addParseToken(['h', 'hh'], function (input, array, config) {
+    array[HOUR] = toInt(input);
+    getParsingFlags(config).bigHour = true;
+  });
+  addParseToken('hmm', function (input, array, config) {
+    var pos = input.length - 2;
+    array[HOUR] = toInt(input.substr(0, pos));
+    array[MINUTE] = toInt(input.substr(pos));
+    getParsingFlags(config).bigHour = true;
+  });
+  addParseToken('hmmss', function (input, array, config) {
+    var pos1 = input.length - 4;
+    var pos2 = input.length - 2;
+    array[HOUR] = toInt(input.substr(0, pos1));
+    array[MINUTE] = toInt(input.substr(pos1, 2));
+    array[SECOND] = toInt(input.substr(pos2));
+    getParsingFlags(config).bigHour = true;
+  });
+  addParseToken('Hmm', function (input, array, config) {
+    var pos = input.length - 2;
+    array[HOUR] = toInt(input.substr(0, pos));
+    array[MINUTE] = toInt(input.substr(pos));
+  });
+  addParseToken('Hmmss', function (input, array, config) {
+    var pos1 = input.length - 4;
+    var pos2 = input.length - 2;
+    array[HOUR] = toInt(input.substr(0, pos1));
+    array[MINUTE] = toInt(input.substr(pos1, 2));
+    array[SECOND] = toInt(input.substr(pos2));
+  }); // LOCALES
+
+  function localeIsPM(input) {
+    // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+    // Using charAt should be more compatible.
+    return (input + '').toLowerCase().charAt(0) === 'p';
+  }
+
+  var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
+
+  function localeMeridiem(hours, minutes, isLower) {
+    if (hours > 11) {
+      return isLower ? 'pm' : 'PM';
+    } else {
+      return isLower ? 'am' : 'AM';
+    }
+  } // MOMENTS
+  // Setting the hour should keep the time, because the user explicitly
+  // specified which hour they want. So trying to maintain the same hour (in
+  // a new timezone) makes sense. Adding/subtracting hours does not follow
+  // this rule.
+
+
+  var getSetHour = makeGetSet('Hours', true);
+  var baseConfig = {
+    calendar: defaultCalendar,
+    longDateFormat: defaultLongDateFormat,
+    invalidDate: defaultInvalidDate,
+    ordinal: defaultOrdinal,
+    dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
+    relativeTime: defaultRelativeTime,
+    months: defaultLocaleMonths,
+    monthsShort: defaultLocaleMonthsShort,
+    week: defaultLocaleWeek,
+    weekdays: defaultLocaleWeekdays,
+    weekdaysMin: defaultLocaleWeekdaysMin,
+    weekdaysShort: defaultLocaleWeekdaysShort,
+    meridiemParse: defaultLocaleMeridiemParse
+  }; // internal storage for locale config files
+
+  var locales = {};
+  var localeFamilies = {};
+  var globalLocale;
+
+  function normalizeLocale(key) {
+    return key ? key.toLowerCase().replace('_', '-') : key;
+  } // pick the locale from the array
+  // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+  // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+
+
+  function chooseLocale(names) {
+    var i = 0,
+        j,
+        next,
+        locale,
+        split;
+
+    while (i < names.length) {
+      split = normalizeLocale(names[i]).split('-');
+      j = split.length;
+      next = normalizeLocale(names[i + 1]);
+      next = next ? next.split('-') : null;
+
+      while (j > 0) {
+        locale = loadLocale(split.slice(0, j).join('-'));
+
+        if (locale) {
+          return locale;
+        }
+
+        if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
+          //the next array item is better than a shallower substring of this one
+          break;
+        }
+
+        j--;
+      }
+
+      i++;
+    }
+
+    return globalLocale;
+  }
+
+  function loadLocale(name) {
+    var oldLocale = null; // TODO: Find a better way to register and load all the locales in Node
+
+    if (!locales[name] && typeof module !== 'undefined' && module && module.exports) {
+      try {
+        oldLocale = globalLocale._abbr;
+        var aliasedRequire = require;
+        aliasedRequire('./locale/' + name);
+        getSetGlobalLocale(oldLocale);
+      } catch (e) {}
+    }
+
+    return locales[name];
+  } // This function will load locale and then set the global locale.  If
+  // no arguments are passed in, it will simply return the current global
+  // locale key.
+
+
+  function getSetGlobalLocale(key, values) {
+    var data;
+
+    if (key) {
+      if (isUndefined(values)) {
+        data = getLocale(key);
+      } else {
+        data = defineLocale(key, values);
+      }
+
+      if (data) {
+        // moment.duration._locale = moment._locale = data;
+        globalLocale = data;
+      } else {
+        if (typeof console !== 'undefined' && console.warn) {
+          //warn user if arguments are passed but the locale could not be set
+          console.warn('Locale ' + key + ' not found. Did you forget to load it?');
+        }
+      }
+    }
+
+    return globalLocale._abbr;
+  }
+
+  function defineLocale(name, config) {
+    if (config !== null) {
+      var locale,
+          parentConfig = baseConfig;
+      config.abbr = name;
+
+      if (locales[name] != null) {
+        deprecateSimple('defineLocaleOverride', 'use moment.updateLocale(localeName, config) to change ' + 'an existing locale. moment.defineLocale(localeName, ' + 'config) should only be used for creating a new locale ' + 'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.');
+        parentConfig = locales[name]._config;
+      } else if (config.parentLocale != null) {
+        if (locales[config.parentLocale] != null) {
+          parentConfig = locales[config.parentLocale]._config;
+        } else {
+          locale = loadLocale(config.parentLocale);
+
+          if (locale != null) {
+            parentConfig = locale._config;
+          } else {
+            if (!localeFamilies[config.parentLocale]) {
+              localeFamilies[config.parentLocale] = [];
+            }
+
+            localeFamilies[config.parentLocale].push({
+              name: name,
+              config: config
+            });
+            return null;
+          }
+        }
+      }
+
+      locales[name] = new Locale(mergeConfigs(parentConfig, config));
+
+      if (localeFamilies[name]) {
+        localeFamilies[name].forEach(function (x) {
+          defineLocale(x.name, x.config);
+        });
+      } // backwards compat for now: also set the locale
+      // make sure we set the locale AFTER all child locales have been
+      // created, so we won't end up with the child locale set.
+
+
+      getSetGlobalLocale(name);
+      return locales[name];
+    } else {
+      // useful for testing
+      delete locales[name];
+      return null;
+    }
+  }
+
+  function updateLocale(name, config) {
+    if (config != null) {
+      var locale,
+          tmpLocale,
+          parentConfig = baseConfig; // MERGE
+
+      tmpLocale = loadLocale(name);
+
+      if (tmpLocale != null) {
+        parentConfig = tmpLocale._config;
+      }
+
+      config = mergeConfigs(parentConfig, config);
+      locale = new Locale(config);
+      locale.parentLocale = locales[name];
+      locales[name] = locale; // backwards compat for now: also set the locale
+
+      getSetGlobalLocale(name);
+    } else {
+      // pass null for config to unupdate, useful for tests
+      if (locales[name] != null) {
+        if (locales[name].parentLocale != null) {
+          locales[name] = locales[name].parentLocale;
+        } else if (locales[name] != null) {
+          delete locales[name];
+        }
+      }
+    }
+
+    return locales[name];
+  } // returns locale data
+
+
+  function getLocale(key) {
+    var locale;
+
+    if (key && key._locale && key._locale._abbr) {
+      key = key._locale._abbr;
+    }
+
+    if (!key) {
+      return globalLocale;
+    }
+
+    if (!isArray(key)) {
+      //short-circuit everything else
+      locale = loadLocale(key);
+
+      if (locale) {
+        return locale;
+      }
+
+      key = [key];
+    }
+
+    return chooseLocale(key);
+  }
+
+  function listLocales() {
+    return keys(locales);
+  }
+
+  function checkOverflow(m) {
+    var overflow;
+    var a = m._a;
+
+    if (a && getParsingFlags(m).overflow === -2) {
+      overflow = a[MONTH] < 0 || a[MONTH] > 11 ? MONTH : a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH]) ? DATE : a[HOUR] < 0 || a[HOUR] > 24 || a[HOUR] === 24 && (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0) ? HOUR : a[MINUTE] < 0 || a[MINUTE] > 59 ? MINUTE : a[SECOND] < 0 || a[SECOND] > 59 ? SECOND : a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND : -1;
+
+      if (getParsingFlags(m)._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+        overflow = DATE;
+      }
+
+      if (getParsingFlags(m)._overflowWeeks && overflow === -1) {
+        overflow = WEEK;
+      }
+
+      if (getParsingFlags(m)._overflowWeekday && overflow === -1) {
+        overflow = WEEKDAY;
+      }
+
+      getParsingFlags(m).overflow = overflow;
+    }
+
+    return m;
+  } // Pick the first defined of two or three arguments.
+
+
+  function defaults(a, b, c) {
+    if (a != null) {
+      return a;
+    }
+
+    if (b != null) {
+      return b;
+    }
+
+    return c;
+  }
+
+  function currentDateArray(config) {
+    // hooks is actually the exported moment object
+    var nowValue = new Date(hooks.now());
+
+    if (config._useUTC) {
+      return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
+    }
+
+    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+  } // convert an array to a date.
+  // the array should mirror the parameters below
+  // note: all values past the year are optional and will default to the lowest possible value.
+  // [year, month, day , hour, minute, second, millisecond]
+
+
+  function configFromArray(config) {
+    var i,
+        date,
+        input = [],
+        currentDate,
+        expectedWeekday,
+        yearToUse;
+
+    if (config._d) {
+      return;
+    }
+
+    currentDate = currentDateArray(config); //compute day of the year from weeks and weekdays
+
+    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+      dayOfYearFromWeekInfo(config);
+    } //if the day of the year is set, figure out what it is
+
+
+    if (config._dayOfYear != null) {
+      yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+      if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
+        getParsingFlags(config)._overflowDayOfYear = true;
+      }
+
+      date = createUTCDate(yearToUse, 0, config._dayOfYear);
+      config._a[MONTH] = date.getUTCMonth();
+      config._a[DATE] = date.getUTCDate();
+    } // Default to current date.
+    // * if no year, month, day of month are given, default to today
+    // * if day of month is given, default month and year
+    // * if month is given, default only year
+    // * if year is given, don't default anything
+
+
+    for (i = 0; i < 3 && config._a[i] == null; ++i) {
+      config._a[i] = input[i] = currentDate[i];
+    } // Zero out whatever was not defaulted, including time
+
+
+    for (; i < 7; i++) {
+      config._a[i] = input[i] = config._a[i] == null ? i === 2 ? 1 : 0 : config._a[i];
+    } // Check for 24:00:00.000
+
+
+    if (config._a[HOUR] === 24 && config._a[MINUTE] === 0 && config._a[SECOND] === 0 && config._a[MILLISECOND] === 0) {
+      config._nextDay = true;
+      config._a[HOUR] = 0;
+    }
+
+    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+    expectedWeekday = config._useUTC ? config._d.getUTCDay() : config._d.getDay(); // Apply timezone offset from input. The actual utcOffset can be changed
+    // with parseZone.
+
+    if (config._tzm != null) {
+      config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+    }
+
+    if (config._nextDay) {
+      config._a[HOUR] = 24;
+    } // check for mismatching day of week
+
+
+    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== expectedWeekday) {
+      getParsingFlags(config).weekdayMismatch = true;
+    }
+  }
+
+  function dayOfYearFromWeekInfo(config) {
+    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+    w = config._w;
+
+    if (w.GG != null || w.W != null || w.E != null) {
+      dow = 1;
+      doy = 4; // TODO: We need to take the current isoWeekYear, but that depends on
+      // how we interpret now (local, utc, fixed offset). So create
+      // a now version of current config (take local/utc/offset flags, and
+      // create now).
+
+      weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
+      week = defaults(w.W, 1);
+      weekday = defaults(w.E, 1);
+
+      if (weekday < 1 || weekday > 7) {
+        weekdayOverflow = true;
+      }
+    } else {
+      dow = config._locale._week.dow;
+      doy = config._locale._week.doy;
+      var curWeek = weekOfYear(createLocal(), dow, doy);
+      weekYear = defaults(w.gg, config._a[YEAR], curWeek.year); // Default to current week.
+
+      week = defaults(w.w, curWeek.week);
+
+      if (w.d != null) {
+        // weekday -- low day numbers are considered next week
+        weekday = w.d;
+
+        if (weekday < 0 || weekday > 6) {
+          weekdayOverflow = true;
+        }
+      } else if (w.e != null) {
+        // local weekday -- counting starts from beginning of week
+        weekday = w.e + dow;
+
+        if (w.e < 0 || w.e > 6) {
+          weekdayOverflow = true;
         }
       } else {
-        var _result = this.j2x(jObj[key], level + 1);
-
-        val += this.buildObjNode(_result.val, key, _result.attrStr, level);
+        // default to beginning of week
+        weekday = dow;
       }
     }
-  }
 
-  return {
-    attrStr: attrStr,
-    val: val
-  };
-};
+    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+      getParsingFlags(config)._overflowWeeks = true;
+    } else if (weekdayOverflow != null) {
+      getParsingFlags(config)._overflowWeekday = true;
+    } else {
+      temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+      config._a[YEAR] = temp.year;
+      config._dayOfYear = temp.dayOfYear;
+    }
+  } // iso 8601 regex
+  // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
 
-function replaceCDATAstr(str, cdata) {
-  str = this.options.tagValueProcessor('' + str);
 
-  if (this.options.cdataPositionChar === '' || str === '') {
-    return str + '<![CDATA[' + cdata + ']]' + this.tagEndChar;
-  } else {
-    return str.replace(this.options.cdataPositionChar, '<![CDATA[' + cdata + ']]' + this.tagEndChar);
-  }
-}
+  var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
+  var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
+  var tzRegex = /Z|[+-]\d\d(?::?\d\d)?/;
+  var isoDates = [['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/], ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/], ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/], ['GGGG-[W]WW', /\d{4}-W\d\d/, false], ['YYYY-DDD', /\d{4}-\d{3}/], ['YYYY-MM', /\d{4}-\d\d/, false], ['YYYYYYMMDD', /[+-]\d{10}/], ['YYYYMMDD', /\d{8}/], // YYYYMM is NOT allowed by the standard
+  ['GGGG[W]WWE', /\d{4}W\d{3}/], ['GGGG[W]WW', /\d{4}W\d{2}/, false], ['YYYYDDD', /\d{7}/]]; // iso time formats and regexes
 
-function replaceCDATAarr(str, cdata) {
-  str = this.options.tagValueProcessor('' + str);
+  var isoTimes = [['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/], ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/], ['HH:mm:ss', /\d\d:\d\d:\d\d/], ['HH:mm', /\d\d:\d\d/], ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/], ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/], ['HHmmss', /\d\d\d\d\d\d/], ['HHmm', /\d\d\d\d/], ['HH', /\d\d/]];
+  var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i; // date from iso format
 
-  if (this.options.cdataPositionChar === '' || str === '') {
-    return str + '<![CDATA[' + cdata.join(']]><![CDATA[') + ']]' + this.tagEndChar;
-  } else {
-    for (var v in cdata) {
-      str = str.replace(this.options.cdataPositionChar, '<![CDATA[' + cdata[v] + ']]>');
+  function configFromISO(config) {
+    var i,
+        l,
+        string = config._i,
+        match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
+        allowTime,
+        dateFormat,
+        timeFormat,
+        tzFormat;
+
+    if (match) {
+      getParsingFlags(config).iso = true;
+
+      for (i = 0, l = isoDates.length; i < l; i++) {
+        if (isoDates[i][1].exec(match[1])) {
+          dateFormat = isoDates[i][0];
+          allowTime = isoDates[i][2] !== false;
+          break;
+        }
+      }
+
+      if (dateFormat == null) {
+        config._isValid = false;
+        return;
+      }
+
+      if (match[3]) {
+        for (i = 0, l = isoTimes.length; i < l; i++) {
+          if (isoTimes[i][1].exec(match[3])) {
+            // match[2] should be 'T' or space
+            timeFormat = (match[2] || ' ') + isoTimes[i][0];
+            break;
+          }
+        }
+
+        if (timeFormat == null) {
+          config._isValid = false;
+          return;
+        }
+      }
+
+      if (!allowTime && timeFormat != null) {
+        config._isValid = false;
+        return;
+      }
+
+      if (match[4]) {
+        if (tzRegex.exec(match[4])) {
+          tzFormat = 'Z';
+        } else {
+          config._isValid = false;
+          return;
+        }
+      }
+
+      config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
+      configFromStringAndFormat(config);
+    } else {
+      config._isValid = false;
+    }
+  } // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
+
+
+  var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
+  function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
+    var result = [untruncateYear(yearStr), defaultLocaleMonthsShort.indexOf(monthStr), parseInt(dayStr, 10), parseInt(hourStr, 10), parseInt(minuteStr, 10)];
+
+    if (secondStr) {
+      result.push(parseInt(secondStr, 10));
     }
 
-    return str + this.newLine;
-  }
-}
-
-function buildObjectNode(val, key, attrStr, level) {
-  if (attrStr && !val.includes('<')) {
-    return this.indentate(level) + '<' + key + attrStr + '>' + val + //+ this.newLine
-    // + this.indentate(level)
-    '</' + key + this.tagEndChar;
-  } else {
-    return this.indentate(level) + '<' + key + attrStr + this.tagEndChar + val + //+ this.newLine
-    this.indentate(level) + '</' + key + this.tagEndChar;
-  }
-}
-
-function buildEmptyObjNode(val, key, attrStr, level) {
-  if (val !== '') {
-    return this.buildObjectNode(val, key, attrStr, level);
-  } else {
-    return this.indentate(level) + '<' + key + attrStr + '/' + this.tagEndChar; //+ this.newLine
-  }
-}
-
-function buildTextValNode(val, key, attrStr, level) {
-  return this.indentate(level) + '<' + key + attrStr + '>' + this.options.tagValueProcessor('' + val) + '</' + key + this.tagEndChar;
-}
-
-function buildEmptyTextNode(val, key, attrStr, level) {
-  if (val !== '') {
-    return this.buildTextValNode(val, key, attrStr, level);
-  } else {
-    return this.indentate(level) + '<' + key + attrStr + '/' + this.tagEndChar;
-  }
-}
-
-function indentate(level) {
-  return this.options.indentBy.repeat(level);
-}
-
-function isAttribute(name
-/*, options*/
-) {
-  if (name.startsWith(this.options.attributeNamePrefix)) {
-    return name.substr(this.attrPrefixLen);
-  } else {
-    return false;
-  }
-}
-
-function isCDATA(name) {
-  return name === this.options.cdataTagName;
-} //formatting
-//indentation
-//\n after each closing or self closing tag
-
-
-var json2xml = Parser;
-
-var parser = createCommonjsModule(function (module, exports) {
-
-  var x2xmlnode = xmlstr2xmlnode;
-  var buildOptions = util.buildOptions;
-
-  exports.parse = function (xmlData, options) {
-    options = buildOptions(options, x2xmlnode.defaultOptions, x2xmlnode.props);
-    return node2json.convertToJson(xmlstr2xmlnode.getTraversalObj(xmlData, options), options);
-  };
-
-  exports.convertTonimn = nimndata.convert2nimn;
-  exports.getTraversalObj = xmlstr2xmlnode.getTraversalObj;
-  exports.convertToJson = node2json.convertToJson;
-  exports.convertToJsonString = node2json_str.convertToJsonString;
-  exports.validate = validator.validate;
-  exports.j2xParser = json2xml;
-
-  exports.parseToNimn = function (xmlData, schema, options) {
-    return exports.convertTonimn(exports.getTraversalObj(xmlData, options), schema, options);
-  };
-});
-var parser_1 = parser.parse;
-var parser_2 = parser.convertTonimn;
-var parser_3 = parser.getTraversalObj;
-var parser_4 = parser.convertToJson;
-var parser_5 = parser.convertToJsonString;
-var parser_6 = parser.validate;
-var parser_7 = parser.j2xParser;
-var parser_8 = parser.parseToNimn;
-
-exports.convertToJson = parser_4;
-exports.convertToJsonString = parser_5;
-exports.convertTonimn = parser_2;
-exports.default = parser;
-exports.getTraversalObj = parser_3;
-exports.j2xParser = parser_7;
-exports.parse = parser_1;
-exports.parseToNimn = parser_8;
-exports.validate = parser_6;
-
-},{}],56:[function(require,module,exports){
-(function (global){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function (obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function (obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
+    return result;
   }
 
-  return _typeof(obj);
-}
+  function untruncateYear(yearStr) {
+    var year = parseInt(yearStr, 10);
 
-var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var componentEmitter = createCommonjsModule(function (module) {
-  /**
-   * Expose `Emitter`.
-   */
-  {
-    module.exports = Emitter;
-  }
-  /**
-   * Initialize a new `Emitter`.
-   *
-   * @api public
-   */
-
-
-  function Emitter(obj) {
-    if (obj) return mixin(obj);
-  }
-  /**
-   * Mixin the emitter properties.
-   *
-   * @param {Object} obj
-   * @return {Object}
-   * @api private
-   */
-
-  function mixin(obj) {
-    for (var key in Emitter.prototype) {
-      obj[key] = Emitter.prototype[key];
+    if (year <= 49) {
+      return 2000 + year;
+    } else if (year <= 999) {
+      return 1900 + year;
     }
 
-    return obj;
+    return year;
   }
-  /**
-   * Listen on the given `event` with `fn`.
-   *
-   * @param {String} event
-   * @param {Function} fn
-   * @return {Emitter}
-   * @api public
-   */
 
+  function preprocessRFC2822(s) {
+    // Remove comments and folding whitespace and replace multiple-spaces with a single space
+    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+  }
 
-  Emitter.prototype.on = Emitter.prototype.addEventListener = function (event, fn) {
-    this._callbacks = this._callbacks || {};
-    (this._callbacks['$' + event] = this._callbacks['$' + event] || []).push(fn);
-    return this;
-  };
-  /**
-   * Adds an `event` listener that will be invoked a single
-   * time then automatically removed.
-   *
-   * @param {String} event
-   * @param {Function} fn
-   * @return {Emitter}
-   * @api public
-   */
+  function checkWeekday(weekdayStr, parsedInput, config) {
+    if (weekdayStr) {
+      // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+      var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+          weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
 
-
-  Emitter.prototype.once = function (event, fn) {
-    function on() {
-      this.off(event, on);
-      fn.apply(this, arguments);
+      if (weekdayProvided !== weekdayActual) {
+        getParsingFlags(config).weekdayMismatch = true;
+        config._isValid = false;
+        return false;
+      }
     }
 
-    on.fn = fn;
-    this.on(event, on);
-    return this;
+    return true;
+  }
+
+  var obsOffsets = {
+    UT: 0,
+    GMT: 0,
+    EDT: -4 * 60,
+    EST: -5 * 60,
+    CDT: -5 * 60,
+    CST: -6 * 60,
+    MDT: -6 * 60,
+    MST: -7 * 60,
+    PDT: -7 * 60,
+    PST: -8 * 60
   };
-  /**
-   * Remove the given callback for `event` or all
-   * registered callbacks.
-   *
-   * @param {String} event
-   * @param {Function} fn
-   * @return {Emitter}
-   * @api public
-   */
+
+  function calculateOffset(obsOffset, militaryOffset, numOffset) {
+    if (obsOffset) {
+      return obsOffsets[obsOffset];
+    } else if (militaryOffset) {
+      // the only allowed military tz is Z
+      return 0;
+    } else {
+      var hm = parseInt(numOffset, 10);
+      var m = hm % 100,
+          h = (hm - m) / 100;
+      return h * 60 + m;
+    }
+  } // date and time from ref 2822 format
 
 
-  Emitter.prototype.off = Emitter.prototype.removeListener = Emitter.prototype.removeAllListeners = Emitter.prototype.removeEventListener = function (event, fn) {
-    this._callbacks = this._callbacks || {}; // all
+  function configFromRFC2822(config) {
+    var match = rfc2822.exec(preprocessRFC2822(config._i));
 
-    if (0 == arguments.length) {
-      this._callbacks = {};
+    if (match) {
+      var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
+
+      if (!checkWeekday(match[1], parsedArray, config)) {
+        return;
+      }
+
+      config._a = parsedArray;
+      config._tzm = calculateOffset(match[8], match[9], match[10]);
+      config._d = createUTCDate.apply(null, config._a);
+
+      config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
+      getParsingFlags(config).rfc2822 = true;
+    } else {
+      config._isValid = false;
+    }
+  } // date from iso format or fallback
+
+
+  function configFromString(config) {
+    var matched = aspNetJsonRegex.exec(config._i);
+
+    if (matched !== null) {
+      config._d = new Date(+matched[1]);
+      return;
+    }
+
+    configFromISO(config);
+
+    if (config._isValid === false) {
+      delete config._isValid;
+    } else {
+      return;
+    }
+
+    configFromRFC2822(config);
+
+    if (config._isValid === false) {
+      delete config._isValid;
+    } else {
+      return;
+    } // Final attempt, use Input Fallback
+
+
+    hooks.createFromInputFallback(config);
+  }
+
+  hooks.createFromInputFallback = deprecate('value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' + 'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' + 'discouraged and will be removed in an upcoming major release. Please refer to ' + 'http://momentjs.com/guides/#/warnings/js-date/ for more info.', function (config) {
+    config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+  }); // constant that refers to the ISO standard
+
+  hooks.ISO_8601 = function () {}; // constant that refers to the RFC 2822 form
+
+
+  hooks.RFC_2822 = function () {}; // date from string and format string
+
+
+  function configFromStringAndFormat(config) {
+    // TODO: Move this to another part of the creation flow to prevent circular deps
+    if (config._f === hooks.ISO_8601) {
+      configFromISO(config);
+      return;
+    }
+
+    if (config._f === hooks.RFC_2822) {
+      configFromRFC2822(config);
+      return;
+    }
+
+    config._a = [];
+    getParsingFlags(config).empty = true; // This array is used to make a Date, either with `new Date` or `Date.UTC`
+
+    var string = '' + config._i,
+        i,
+        parsedInput,
+        tokens,
+        token,
+        skipped,
+        stringLength = string.length,
+        totalParsedInputLength = 0;
+    tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
+
+    for (i = 0; i < tokens.length; i++) {
+      token = tokens[i];
+      parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0]; // console.log('token', token, 'parsedInput', parsedInput,
+      //         'regex', getParseRegexForToken(token, config));
+
+      if (parsedInput) {
+        skipped = string.substr(0, string.indexOf(parsedInput));
+
+        if (skipped.length > 0) {
+          getParsingFlags(config).unusedInput.push(skipped);
+        }
+
+        string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
+        totalParsedInputLength += parsedInput.length;
+      } // don't parse if it's not a known token
+
+
+      if (formatTokenFunctions[token]) {
+        if (parsedInput) {
+          getParsingFlags(config).empty = false;
+        } else {
+          getParsingFlags(config).unusedTokens.push(token);
+        }
+
+        addTimeToArrayFromToken(token, parsedInput, config);
+      } else if (config._strict && !parsedInput) {
+        getParsingFlags(config).unusedTokens.push(token);
+      }
+    } // add remaining unparsed input length to the string
+
+
+    getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
+
+    if (string.length > 0) {
+      getParsingFlags(config).unusedInput.push(string);
+    } // clear _12h flag if hour is <= 12
+
+
+    if (config._a[HOUR] <= 12 && getParsingFlags(config).bigHour === true && config._a[HOUR] > 0) {
+      getParsingFlags(config).bigHour = undefined;
+    }
+
+    getParsingFlags(config).parsedDateParts = config._a.slice(0);
+    getParsingFlags(config).meridiem = config._meridiem; // handle meridiem
+
+    config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
+    configFromArray(config);
+    checkOverflow(config);
+  }
+
+  function meridiemFixWrap(locale, hour, meridiem) {
+    var isPm;
+
+    if (meridiem == null) {
+      // nothing to do
+      return hour;
+    }
+
+    if (locale.meridiemHour != null) {
+      return locale.meridiemHour(hour, meridiem);
+    } else if (locale.isPM != null) {
+      // Fallback
+      isPm = locale.isPM(meridiem);
+
+      if (isPm && hour < 12) {
+        hour += 12;
+      }
+
+      if (!isPm && hour === 12) {
+        hour = 0;
+      }
+
+      return hour;
+    } else {
+      // this is not supposed to happen
+      return hour;
+    }
+  } // date from string and array of format strings
+
+
+  function configFromStringAndArray(config) {
+    var tempConfig, bestMoment, scoreToBeat, i, currentScore;
+
+    if (config._f.length === 0) {
+      getParsingFlags(config).invalidFormat = true;
+      config._d = new Date(NaN);
+      return;
+    }
+
+    for (i = 0; i < config._f.length; i++) {
+      currentScore = 0;
+      tempConfig = copyConfig({}, config);
+
+      if (config._useUTC != null) {
+        tempConfig._useUTC = config._useUTC;
+      }
+
+      tempConfig._f = config._f[i];
+      configFromStringAndFormat(tempConfig);
+
+      if (!isValid(tempConfig)) {
+        continue;
+      } // if there is any input that was not parsed add a penalty for that format
+
+
+      currentScore += getParsingFlags(tempConfig).charsLeftOver; //or tokens
+
+      currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+      getParsingFlags(tempConfig).score = currentScore;
+
+      if (scoreToBeat == null || currentScore < scoreToBeat) {
+        scoreToBeat = currentScore;
+        bestMoment = tempConfig;
+      }
+    }
+
+    extend(config, bestMoment || tempConfig);
+  }
+
+  function configFromObject(config) {
+    if (config._d) {
+      return;
+    }
+
+    var i = normalizeObjectUnits(config._i);
+    config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
+      return obj && parseInt(obj, 10);
+    });
+    configFromArray(config);
+  }
+
+  function createFromConfig(config) {
+    var res = new Moment(checkOverflow(prepareConfig(config)));
+
+    if (res._nextDay) {
+      // Adding is smart enough around DST
+      res.add(1, 'd');
+      res._nextDay = undefined;
+    }
+
+    return res;
+  }
+
+  function prepareConfig(config) {
+    var input = config._i,
+        format = config._f;
+    config._locale = config._locale || getLocale(config._l);
+
+    if (input === null || format === undefined && input === '') {
+      return createInvalid({
+        nullInput: true
+      });
+    }
+
+    if (typeof input === 'string') {
+      config._i = input = config._locale.preparse(input);
+    }
+
+    if (isMoment(input)) {
+      return new Moment(checkOverflow(input));
+    } else if (isDate(input)) {
+      config._d = input;
+    } else if (isArray(format)) {
+      configFromStringAndArray(config);
+    } else if (format) {
+      configFromStringAndFormat(config);
+    } else {
+      configFromInput(config);
+    }
+
+    if (!isValid(config)) {
+      config._d = null;
+    }
+
+    return config;
+  }
+
+  function configFromInput(config) {
+    var input = config._i;
+
+    if (isUndefined(input)) {
+      config._d = new Date(hooks.now());
+    } else if (isDate(input)) {
+      config._d = new Date(input.valueOf());
+    } else if (typeof input === 'string') {
+      configFromString(config);
+    } else if (isArray(input)) {
+      config._a = map(input.slice(0), function (obj) {
+        return parseInt(obj, 10);
+      });
+      configFromArray(config);
+    } else if (isObject(input)) {
+      configFromObject(config);
+    } else if (isNumber(input)) {
+      // from milliseconds
+      config._d = new Date(input);
+    } else {
+      hooks.createFromInputFallback(config);
+    }
+  }
+
+  function createLocalOrUTC(input, format, locale, strict, isUTC) {
+    var c = {};
+
+    if (locale === true || locale === false) {
+      strict = locale;
+      locale = undefined;
+    }
+
+    if (isObject(input) && isObjectEmpty(input) || isArray(input) && input.length === 0) {
+      input = undefined;
+    } // object construction must be done this way.
+    // https://github.com/moment/moment/issues/1423
+
+
+    c._isAMomentObject = true;
+    c._useUTC = c._isUTC = isUTC;
+    c._l = locale;
+    c._i = input;
+    c._f = format;
+    c._strict = strict;
+    return createFromConfig(c);
+  }
+
+  function createLocal(input, format, locale, strict) {
+    return createLocalOrUTC(input, format, locale, strict, false);
+  }
+
+  var prototypeMin = deprecate('moment().min is deprecated, use moment.max instead. http://momentjs.com/guides/#/warnings/min-max/', function () {
+    var other = createLocal.apply(null, arguments);
+
+    if (this.isValid() && other.isValid()) {
+      return other < this ? this : other;
+    } else {
+      return createInvalid();
+    }
+  });
+  var prototypeMax = deprecate('moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/', function () {
+    var other = createLocal.apply(null, arguments);
+
+    if (this.isValid() && other.isValid()) {
+      return other > this ? this : other;
+    } else {
+      return createInvalid();
+    }
+  }); // Pick a moment m from moments so that m[fn](other) is true for all
+  // other. This relies on the function fn to be transitive.
+  //
+  // moments should either be an array of moment objects or an array, whose
+  // first element is an array of moment objects.
+
+  function pickBy(fn, moments) {
+    var res, i;
+
+    if (moments.length === 1 && isArray(moments[0])) {
+      moments = moments[0];
+    }
+
+    if (!moments.length) {
+      return createLocal();
+    }
+
+    res = moments[0];
+
+    for (i = 1; i < moments.length; ++i) {
+      if (!moments[i].isValid() || moments[i][fn](res)) {
+        res = moments[i];
+      }
+    }
+
+    return res;
+  } // TODO: Use [].sort instead?
+
+
+  function min() {
+    var args = [].slice.call(arguments, 0);
+    return pickBy('isBefore', args);
+  }
+
+  function max() {
+    var args = [].slice.call(arguments, 0);
+    return pickBy('isAfter', args);
+  }
+
+  var now = function now() {
+    return Date.now ? Date.now() : +new Date();
+  };
+
+  var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', 'millisecond'];
+
+  function isDurationValid(m) {
+    for (var key in m) {
+      if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+        return false;
+      }
+    }
+
+    var unitHasDecimal = false;
+
+    for (var i = 0; i < ordering.length; ++i) {
+      if (m[ordering[i]]) {
+        if (unitHasDecimal) {
+          return false; // only allow non-integers for smallest unit
+        }
+
+        if (parseFloat(m[ordering[i]]) !== toInt(m[ordering[i]])) {
+          unitHasDecimal = true;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  function isValid$1() {
+    return this._isValid;
+  }
+
+  function createInvalid$1() {
+    return createDuration(NaN);
+  }
+
+  function Duration(duration) {
+    var normalizedInput = normalizeObjectUnits(duration),
+        years = normalizedInput.year || 0,
+        quarters = normalizedInput.quarter || 0,
+        months = normalizedInput.month || 0,
+        weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
+        days = normalizedInput.day || 0,
+        hours = normalizedInput.hour || 0,
+        minutes = normalizedInput.minute || 0,
+        seconds = normalizedInput.second || 0,
+        milliseconds = normalizedInput.millisecond || 0;
+    this._isValid = isDurationValid(normalizedInput); // representation for dateAddRemove
+
+    this._milliseconds = +milliseconds + seconds * 1e3 + // 1000
+    minutes * 6e4 + // 1000 * 60
+    hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
+    // Because of dateAddRemove treats 24 hours as different from a
+    // day when working around DST, we need to store them separately
+
+    this._days = +days + weeks * 7; // It is impossible to translate months into days without knowing
+    // which months you are are talking about, so we have to store
+    // it separately.
+
+    this._months = +months + quarters * 3 + years * 12;
+    this._data = {};
+    this._locale = getLocale();
+
+    this._bubble();
+  }
+
+  function isDuration(obj) {
+    return obj instanceof Duration;
+  }
+
+  function absRound(number) {
+    if (number < 0) {
+      return Math.round(-1 * number) * -1;
+    } else {
+      return Math.round(number);
+    }
+  } // FORMATTING
+
+
+  function offset(token, separator) {
+    addFormatToken(token, 0, 0, function () {
+      var offset = this.utcOffset();
+      var sign = '+';
+
+      if (offset < 0) {
+        offset = -offset;
+        sign = '-';
+      }
+
+      return sign + zeroFill(~~(offset / 60), 2) + separator + zeroFill(~~offset % 60, 2);
+    });
+  }
+
+  offset('Z', ':');
+  offset('ZZ', ''); // PARSING
+
+  addRegexToken('Z', matchShortOffset);
+  addRegexToken('ZZ', matchShortOffset);
+  addParseToken(['Z', 'ZZ'], function (input, array, config) {
+    config._useUTC = true;
+    config._tzm = offsetFromString(matchShortOffset, input);
+  }); // HELPERS
+  // timezone chunker
+  // '+10:00' > ['10',  '00']
+  // '-1530'  > ['-15', '30']
+
+  var chunkOffset = /([\+\-]|\d\d)/gi;
+
+  function offsetFromString(matcher, string) {
+    var matches = (string || '').match(matcher);
+
+    if (matches === null) {
+      return null;
+    }
+
+    var chunk = matches[matches.length - 1] || [];
+    var parts = (chunk + '').match(chunkOffset) || ['-', 0, 0];
+    var minutes = +(parts[1] * 60) + toInt(parts[2]);
+    return minutes === 0 ? 0 : parts[0] === '+' ? minutes : -minutes;
+  } // Return a moment from input, that is local/utc/zone equivalent to model.
+
+
+  function cloneWithOffset(input, model) {
+    var res, diff;
+
+    if (model._isUTC) {
+      res = model.clone();
+      diff = (isMoment(input) || isDate(input) ? input.valueOf() : createLocal(input).valueOf()) - res.valueOf(); // Use low-level api, because this fn is low-level api.
+
+      res._d.setTime(res._d.valueOf() + diff);
+
+      hooks.updateOffset(res, false);
+      return res;
+    } else {
+      return createLocal(input).local();
+    }
+  }
+
+  function getDateOffset(m) {
+    // On Firefox.24 Date#getTimezoneOffset returns a floating point.
+    // https://github.com/moment/moment/pull/1871
+    return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
+  } // HOOKS
+  // This function will be called whenever a moment is mutated.
+  // It is intended to keep the offset in sync with the timezone.
+
+
+  hooks.updateOffset = function () {}; // MOMENTS
+  // keepLocalTime = true means only change the timezone, without
+  // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
+  // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
+  // +0200, so we adjust the time as needed, to be valid.
+  //
+  // Keeping the time actually adds/subtracts (one hour)
+  // from the actual represented time. That is why we call updateOffset
+  // a second time. In case it wants us to change the offset again
+  // _changeInProgress == true case, then we have to adjust, because
+  // there is no such time in the given timezone.
+
+
+  function getSetOffset(input, keepLocalTime, keepMinutes) {
+    var offset = this._offset || 0,
+        localAdjust;
+
+    if (!this.isValid()) {
+      return input != null ? this : NaN;
+    }
+
+    if (input != null) {
+      if (typeof input === 'string') {
+        input = offsetFromString(matchShortOffset, input);
+
+        if (input === null) {
+          return this;
+        }
+      } else if (Math.abs(input) < 16 && !keepMinutes) {
+        input = input * 60;
+      }
+
+      if (!this._isUTC && keepLocalTime) {
+        localAdjust = getDateOffset(this);
+      }
+
+      this._offset = input;
+      this._isUTC = true;
+
+      if (localAdjust != null) {
+        this.add(localAdjust, 'm');
+      }
+
+      if (offset !== input) {
+        if (!keepLocalTime || this._changeInProgress) {
+          addSubtract(this, createDuration(input - offset, 'm'), 1, false);
+        } else if (!this._changeInProgress) {
+          this._changeInProgress = true;
+          hooks.updateOffset(this, true);
+          this._changeInProgress = null;
+        }
+      }
+
       return this;
-    } // specific event
+    } else {
+      return this._isUTC ? offset : getDateOffset(this);
+    }
+  }
 
+  function getSetZone(input, keepLocalTime) {
+    if (input != null) {
+      if (typeof input !== 'string') {
+        input = -input;
+      }
 
-    var callbacks = this._callbacks['$' + event];
-    if (!callbacks) return this; // remove all handlers
-
-    if (1 == arguments.length) {
-      delete this._callbacks['$' + event];
+      this.utcOffset(input, keepLocalTime);
       return this;
-    } // remove specific handler
+    } else {
+      return -this.utcOffset();
+    }
+  }
+
+  function setOffsetToUTC(keepLocalTime) {
+    return this.utcOffset(0, keepLocalTime);
+  }
+
+  function setOffsetToLocal(keepLocalTime) {
+    if (this._isUTC) {
+      this.utcOffset(0, keepLocalTime);
+      this._isUTC = false;
+
+      if (keepLocalTime) {
+        this.subtract(getDateOffset(this), 'm');
+      }
+    }
+
+    return this;
+  }
+
+  function setOffsetToParsedOffset() {
+    if (this._tzm != null) {
+      this.utcOffset(this._tzm, false, true);
+    } else if (typeof this._i === 'string') {
+      var tZone = offsetFromString(matchOffset, this._i);
+
+      if (tZone != null) {
+        this.utcOffset(tZone);
+      } else {
+        this.utcOffset(0, true);
+      }
+    }
+
+    return this;
+  }
+
+  function hasAlignedHourOffset(input) {
+    if (!this.isValid()) {
+      return false;
+    }
+
+    input = input ? createLocal(input).utcOffset() : 0;
+    return (this.utcOffset() - input) % 60 === 0;
+  }
+
+  function isDaylightSavingTime() {
+    return this.utcOffset() > this.clone().month(0).utcOffset() || this.utcOffset() > this.clone().month(5).utcOffset();
+  }
+
+  function isDaylightSavingTimeShifted() {
+    if (!isUndefined(this._isDSTShifted)) {
+      return this._isDSTShifted;
+    }
+
+    var c = {};
+    copyConfig(c, this);
+    c = prepareConfig(c);
+
+    if (c._a) {
+      var other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
+      this._isDSTShifted = this.isValid() && compareArrays(c._a, other.toArray()) > 0;
+    } else {
+      this._isDSTShifted = false;
+    }
+
+    return this._isDSTShifted;
+  }
+
+  function isLocal() {
+    return this.isValid() ? !this._isUTC : false;
+  }
+
+  function isUtcOffset() {
+    return this.isValid() ? this._isUTC : false;
+  }
+
+  function isUtc() {
+    return this.isValid() ? this._isUTC && this._offset === 0 : false;
+  } // ASP.NET json date format regex
 
 
-    var cb;
+  var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/; // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+  // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+  // and further modified to allow for strings containing both week and day
 
-    for (var i = 0; i < callbacks.length; i++) {
-      cb = callbacks[i];
+  var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
 
-      if (cb === fn || cb.fn === fn) {
-        callbacks.splice(i, 1);
+  function createDuration(input, key) {
+    var duration = input,
+        // matching against regexp is expensive, do it on demand
+    match = null,
+        sign,
+        ret,
+        diffRes;
+
+    if (isDuration(input)) {
+      duration = {
+        ms: input._milliseconds,
+        d: input._days,
+        M: input._months
+      };
+    } else if (isNumber(input)) {
+      duration = {};
+
+      if (key) {
+        duration[key] = input;
+      } else {
+        duration.milliseconds = input;
+      }
+    } else if (!!(match = aspNetRegex.exec(input))) {
+      sign = match[1] === '-' ? -1 : 1;
+      duration = {
+        y: 0,
+        d: toInt(match[DATE]) * sign,
+        h: toInt(match[HOUR]) * sign,
+        m: toInt(match[MINUTE]) * sign,
+        s: toInt(match[SECOND]) * sign,
+        ms: toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
+
+      };
+    } else if (!!(match = isoRegex.exec(input))) {
+      sign = match[1] === '-' ? -1 : 1;
+      duration = {
+        y: parseIso(match[2], sign),
+        M: parseIso(match[3], sign),
+        w: parseIso(match[4], sign),
+        d: parseIso(match[5], sign),
+        h: parseIso(match[6], sign),
+        m: parseIso(match[7], sign),
+        s: parseIso(match[8], sign)
+      };
+    } else if (duration == null) {
+      // checks for null or undefined
+      duration = {};
+    } else if (_typeof(duration) === 'object' && ('from' in duration || 'to' in duration)) {
+      diffRes = momentsDifference(createLocal(duration.from), createLocal(duration.to));
+      duration = {};
+      duration.ms = diffRes.milliseconds;
+      duration.M = diffRes.months;
+    }
+
+    ret = new Duration(duration);
+
+    if (isDuration(input) && hasOwnProp(input, '_locale')) {
+      ret._locale = input._locale;
+    }
+
+    return ret;
+  }
+
+  createDuration.fn = Duration.prototype;
+  createDuration.invalid = createInvalid$1;
+
+  function parseIso(inp, sign) {
+    // We'd normally use ~~inp for this, but unfortunately it also
+    // converts floats to ints.
+    // inp may be undefined, so careful calling replace on it.
+    var res = inp && parseFloat(inp.replace(',', '.')); // apply sign while we're at it
+
+    return (isNaN(res) ? 0 : res) * sign;
+  }
+
+  function positiveMomentsDifference(base, other) {
+    var res = {};
+    res.months = other.month() - base.month() + (other.year() - base.year()) * 12;
+
+    if (base.clone().add(res.months, 'M').isAfter(other)) {
+      --res.months;
+    }
+
+    res.milliseconds = +other - +base.clone().add(res.months, 'M');
+    return res;
+  }
+
+  function momentsDifference(base, other) {
+    var res;
+
+    if (!(base.isValid() && other.isValid())) {
+      return {
+        milliseconds: 0,
+        months: 0
+      };
+    }
+
+    other = cloneWithOffset(other, base);
+
+    if (base.isBefore(other)) {
+      res = positiveMomentsDifference(base, other);
+    } else {
+      res = positiveMomentsDifference(other, base);
+      res.milliseconds = -res.milliseconds;
+      res.months = -res.months;
+    }
+
+    return res;
+  } // TODO: remove 'name' arg after deprecation is removed
+
+
+  function createAdder(direction, name) {
+    return function (val, period) {
+      var dur, tmp; //invert the arguments, but complain about it
+
+      if (period !== null && !isNaN(+period)) {
+        deprecateSimple(name, 'moment().' + name + '(period, number) is deprecated. Please use moment().' + name + '(number, period). ' + 'See http://momentjs.com/guides/#/warnings/add-inverted-param/ for more info.');
+        tmp = val;
+        val = period;
+        period = tmp;
+      }
+
+      val = typeof val === 'string' ? +val : val;
+      dur = createDuration(val, period);
+      addSubtract(this, dur, direction);
+      return this;
+    };
+  }
+
+  function addSubtract(mom, duration, isAdding, updateOffset) {
+    var milliseconds = duration._milliseconds,
+        days = absRound(duration._days),
+        months = absRound(duration._months);
+
+    if (!mom.isValid()) {
+      // No op
+      return;
+    }
+
+    updateOffset = updateOffset == null ? true : updateOffset;
+
+    if (months) {
+      setMonth(mom, get(mom, 'Month') + months * isAdding);
+    }
+
+    if (days) {
+      set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
+    }
+
+    if (milliseconds) {
+      mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+    }
+
+    if (updateOffset) {
+      hooks.updateOffset(mom, days || months);
+    }
+  }
+
+  var add = createAdder(1, 'add');
+  var subtract = createAdder(-1, 'subtract');
+
+  function getCalendarFormat(myMoment, now) {
+    var diff = myMoment.diff(now, 'days', true);
+    return diff < -6 ? 'sameElse' : diff < -1 ? 'lastWeek' : diff < 0 ? 'lastDay' : diff < 1 ? 'sameDay' : diff < 2 ? 'nextDay' : diff < 7 ? 'nextWeek' : 'sameElse';
+  }
+
+  function calendar$1(time, formats) {
+    // We want to compare the start of today, vs this.
+    // Getting start-of-today depends on whether we're local/utc/offset or not.
+    var now = time || createLocal(),
+        sod = cloneWithOffset(now, this).startOf('day'),
+        format = hooks.calendarFormat(this, sod) || 'sameElse';
+    var output = formats && (isFunction(formats[format]) ? formats[format].call(this, now) : formats[format]);
+    return this.format(output || this.localeData().calendar(format, this, createLocal(now)));
+  }
+
+  function clone() {
+    return new Moment(this);
+  }
+
+  function isAfter(input, units) {
+    var localInput = isMoment(input) ? input : createLocal(input);
+
+    if (!(this.isValid() && localInput.isValid())) {
+      return false;
+    }
+
+    units = normalizeUnits(units) || 'millisecond';
+
+    if (units === 'millisecond') {
+      return this.valueOf() > localInput.valueOf();
+    } else {
+      return localInput.valueOf() < this.clone().startOf(units).valueOf();
+    }
+  }
+
+  function isBefore(input, units) {
+    var localInput = isMoment(input) ? input : createLocal(input);
+
+    if (!(this.isValid() && localInput.isValid())) {
+      return false;
+    }
+
+    units = normalizeUnits(units) || 'millisecond';
+
+    if (units === 'millisecond') {
+      return this.valueOf() < localInput.valueOf();
+    } else {
+      return this.clone().endOf(units).valueOf() < localInput.valueOf();
+    }
+  }
+
+  function isBetween(from, to, units, inclusivity) {
+    var localFrom = isMoment(from) ? from : createLocal(from),
+        localTo = isMoment(to) ? to : createLocal(to);
+
+    if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+      return false;
+    }
+
+    inclusivity = inclusivity || '()';
+    return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) && (inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
+  }
+
+  function isSame(input, units) {
+    var localInput = isMoment(input) ? input : createLocal(input),
+        inputMs;
+
+    if (!(this.isValid() && localInput.isValid())) {
+      return false;
+    }
+
+    units = normalizeUnits(units) || 'millisecond';
+
+    if (units === 'millisecond') {
+      return this.valueOf() === localInput.valueOf();
+    } else {
+      inputMs = localInput.valueOf();
+      return this.clone().startOf(units).valueOf() <= inputMs && inputMs <= this.clone().endOf(units).valueOf();
+    }
+  }
+
+  function isSameOrAfter(input, units) {
+    return this.isSame(input, units) || this.isAfter(input, units);
+  }
+
+  function isSameOrBefore(input, units) {
+    return this.isSame(input, units) || this.isBefore(input, units);
+  }
+
+  function diff(input, units, asFloat) {
+    var that, zoneDelta, output;
+
+    if (!this.isValid()) {
+      return NaN;
+    }
+
+    that = cloneWithOffset(input, this);
+
+    if (!that.isValid()) {
+      return NaN;
+    }
+
+    zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4;
+    units = normalizeUnits(units);
+
+    switch (units) {
+      case 'year':
+        output = monthDiff(this, that) / 12;
         break;
-      }
-    } // Remove event specific arrays for event types that no
-    // one is subscribed for to avoid memory leak.
 
+      case 'month':
+        output = monthDiff(this, that);
+        break;
 
-    if (callbacks.length === 0) {
-      delete this._callbacks['$' + event];
+      case 'quarter':
+        output = monthDiff(this, that) / 3;
+        break;
+
+      case 'second':
+        output = (this - that) / 1e3;
+        break;
+      // 1000
+
+      case 'minute':
+        output = (this - that) / 6e4;
+        break;
+      // 1000 * 60
+
+      case 'hour':
+        output = (this - that) / 36e5;
+        break;
+      // 1000 * 60 * 60
+
+      case 'day':
+        output = (this - that - zoneDelta) / 864e5;
+        break;
+      // 1000 * 60 * 60 * 24, negate dst
+
+      case 'week':
+        output = (this - that - zoneDelta) / 6048e5;
+        break;
+      // 1000 * 60 * 60 * 24 * 7, negate dst
+
+      default:
+        output = this - that;
     }
 
-    return this;
-  };
+    return asFloat ? output : absFloor(output);
+  }
+
+  function monthDiff(a, b) {
+    // difference in months
+    var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month()),
+        // b is in (anchor - 1 month, anchor + 1 month)
+    anchor = a.clone().add(wholeMonthDiff, 'months'),
+        anchor2,
+        adjust;
+
+    if (b - anchor < 0) {
+      anchor2 = a.clone().add(wholeMonthDiff - 1, 'months'); // linear across the month
+
+      adjust = (b - anchor) / (anchor - anchor2);
+    } else {
+      anchor2 = a.clone().add(wholeMonthDiff + 1, 'months'); // linear across the month
+
+      adjust = (b - anchor) / (anchor2 - anchor);
+    } //check for negative zero, return zero if negative zero
+
+
+    return -(wholeMonthDiff + adjust) || 0;
+  }
+
+  hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+  hooks.defaultFormatUtc = 'YYYY-MM-DDTHH:mm:ss[Z]';
+
+  function toString() {
+    return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
+  }
+
+  function toISOString(keepOffset) {
+    if (!this.isValid()) {
+      return null;
+    }
+
+    var utc = keepOffset !== true;
+    var m = utc ? this.clone().utc() : this;
+
+    if (m.year() < 0 || m.year() > 9999) {
+      return formatMoment(m, utc ? 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYYYY-MM-DD[T]HH:mm:ss.SSSZ');
+    }
+
+    if (isFunction(Date.prototype.toISOString)) {
+      // native implementation is ~50x faster, use it when we can
+      if (utc) {
+        return this.toDate().toISOString();
+      } else {
+        return new Date(this.valueOf() + this.utcOffset() * 60 * 1000).toISOString().replace('Z', formatMoment(m, 'Z'));
+      }
+    }
+
+    return formatMoment(m, utc ? 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYY-MM-DD[T]HH:mm:ss.SSSZ');
+  }
   /**
-   * Emit `event` with the given args.
+   * Return a human readable representation of a moment that can
+   * also be evaluated to get a new moment which is the same
    *
-   * @param {String} event
-   * @param {Mixed} ...
-   * @return {Emitter}
+   * @link https://nodejs.org/dist/latest/docs/api/util.html#util_custom_inspect_function_on_objects
    */
 
 
-  Emitter.prototype.emit = function (event) {
-    this._callbacks = this._callbacks || {};
-    var args = new Array(arguments.length - 1),
-        callbacks = this._callbacks['$' + event];
+  function inspect() {
+    if (!this.isValid()) {
+      return 'moment.invalid(/* ' + this._i + ' */)';
+    }
 
+    var func = 'moment';
+    var zone = '';
+
+    if (!this.isLocal()) {
+      func = this.utcOffset() === 0 ? 'moment.utc' : 'moment.parseZone';
+      zone = 'Z';
+    }
+
+    var prefix = '[' + func + '("]';
+    var year = 0 <= this.year() && this.year() <= 9999 ? 'YYYY' : 'YYYYYY';
+    var datetime = '-MM-DD[T]HH:mm:ss.SSS';
+    var suffix = zone + '[")]';
+    return this.format(prefix + year + datetime + suffix);
+  }
+
+  function format(inputString) {
+    if (!inputString) {
+      inputString = this.isUtc() ? hooks.defaultFormatUtc : hooks.defaultFormat;
+    }
+
+    var output = formatMoment(this, inputString);
+    return this.localeData().postformat(output);
+  }
+
+  function from(time, withoutSuffix) {
+    if (this.isValid() && (isMoment(time) && time.isValid() || createLocal(time).isValid())) {
+      return createDuration({
+        to: this,
+        from: time
+      }).locale(this.locale()).humanize(!withoutSuffix);
+    } else {
+      return this.localeData().invalidDate();
+    }
+  }
+
+  function fromNow(withoutSuffix) {
+    return this.from(createLocal(), withoutSuffix);
+  }
+
+  function to(time, withoutSuffix) {
+    if (this.isValid() && (isMoment(time) && time.isValid() || createLocal(time).isValid())) {
+      return createDuration({
+        from: this,
+        to: time
+      }).locale(this.locale()).humanize(!withoutSuffix);
+    } else {
+      return this.localeData().invalidDate();
+    }
+  }
+
+  function toNow(withoutSuffix) {
+    return this.to(createLocal(), withoutSuffix);
+  } // If passed a locale key, it will set the locale for this
+  // instance.  Otherwise, it will return the locale configuration
+  // variables for this instance.
+
+
+  function locale(key) {
+    var newLocaleData;
+
+    if (key === undefined) {
+      return this._locale._abbr;
+    } else {
+      newLocaleData = getLocale(key);
+
+      if (newLocaleData != null) {
+        this._locale = newLocaleData;
+      }
+
+      return this;
+    }
+  }
+
+  var lang = deprecate('moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.', function (key) {
+    if (key === undefined) {
+      return this.localeData();
+    } else {
+      return this.locale(key);
+    }
+  });
+
+  function localeData() {
+    return this._locale;
+  }
+
+  var MS_PER_SECOND = 1000;
+  var MS_PER_MINUTE = 60 * MS_PER_SECOND;
+  var MS_PER_HOUR = 60 * MS_PER_MINUTE;
+  var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR; // actual modulo - handles negative numbers (for dates before 1970):
+
+  function mod$1(dividend, divisor) {
+    return (dividend % divisor + divisor) % divisor;
+  }
+
+  function localStartOfDate(y, m, d) {
+    // the date constructor remaps years 0-99 to 1900-1999
+    if (y < 100 && y >= 0) {
+      // preserve leap years using a full 400 year cycle, then reset
+      return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+    } else {
+      return new Date(y, m, d).valueOf();
+    }
+  }
+
+  function utcStartOfDate(y, m, d) {
+    // Date.UTC remaps years 0-99 to 1900-1999
+    if (y < 100 && y >= 0) {
+      // preserve leap years using a full 400 year cycle, then reset
+      return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+    } else {
+      return Date.UTC(y, m, d);
+    }
+  }
+
+  function startOf(units) {
+    var time;
+    units = normalizeUnits(units);
+
+    if (units === undefined || units === 'millisecond' || !this.isValid()) {
+      return this;
+    }
+
+    var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+    switch (units) {
+      case 'year':
+        time = startOfDate(this.year(), 0, 1);
+        break;
+
+      case 'quarter':
+        time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
+        break;
+
+      case 'month':
+        time = startOfDate(this.year(), this.month(), 1);
+        break;
+
+      case 'week':
+        time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
+        break;
+
+      case 'isoWeek':
+        time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
+        break;
+
+      case 'day':
+      case 'date':
+        time = startOfDate(this.year(), this.month(), this.date());
+        break;
+
+      case 'hour':
+        time = this._d.valueOf();
+        time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
+        break;
+
+      case 'minute':
+        time = this._d.valueOf();
+        time -= mod$1(time, MS_PER_MINUTE);
+        break;
+
+      case 'second':
+        time = this._d.valueOf();
+        time -= mod$1(time, MS_PER_SECOND);
+        break;
+    }
+
+    this._d.setTime(time);
+
+    hooks.updateOffset(this, true);
+    return this;
+  }
+
+  function endOf(units) {
+    var time;
+    units = normalizeUnits(units);
+
+    if (units === undefined || units === 'millisecond' || !this.isValid()) {
+      return this;
+    }
+
+    var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+    switch (units) {
+      case 'year':
+        time = startOfDate(this.year() + 1, 0, 1) - 1;
+        break;
+
+      case 'quarter':
+        time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
+        break;
+
+      case 'month':
+        time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+        break;
+
+      case 'week':
+        time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
+        break;
+
+      case 'isoWeek':
+        time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
+        break;
+
+      case 'day':
+      case 'date':
+        time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+        break;
+
+      case 'hour':
+        time = this._d.valueOf();
+        time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
+        break;
+
+      case 'minute':
+        time = this._d.valueOf();
+        time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+        break;
+
+      case 'second':
+        time = this._d.valueOf();
+        time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+        break;
+    }
+
+    this._d.setTime(time);
+
+    hooks.updateOffset(this, true);
+    return this;
+  }
+
+  function valueOf() {
+    return this._d.valueOf() - (this._offset || 0) * 60000;
+  }
+
+  function unix() {
+    return Math.floor(this.valueOf() / 1000);
+  }
+
+  function toDate() {
+    return new Date(this.valueOf());
+  }
+
+  function toArray() {
+    var m = this;
+    return [m.year(), m.month(), m.date(), m.hour(), m.minute(), m.second(), m.millisecond()];
+  }
+
+  function toObject() {
+    var m = this;
+    return {
+      years: m.year(),
+      months: m.month(),
+      date: m.date(),
+      hours: m.hours(),
+      minutes: m.minutes(),
+      seconds: m.seconds(),
+      milliseconds: m.milliseconds()
+    };
+  }
+
+  function toJSON() {
+    // new Date(NaN).toJSON() === null
+    return this.isValid() ? this.toISOString() : null;
+  }
+
+  function isValid$2() {
+    return isValid(this);
+  }
+
+  function parsingFlags() {
+    return extend({}, getParsingFlags(this));
+  }
+
+  function invalidAt() {
+    return getParsingFlags(this).overflow;
+  }
+
+  function creationData() {
+    return {
+      input: this._i,
+      format: this._f,
+      locale: this._locale,
+      isUTC: this._isUTC,
+      strict: this._strict
+    };
+  } // FORMATTING
+
+
+  addFormatToken(0, ['gg', 2], 0, function () {
+    return this.weekYear() % 100;
+  });
+  addFormatToken(0, ['GG', 2], 0, function () {
+    return this.isoWeekYear() % 100;
+  });
+
+  function addWeekYearFormatToken(token, getter) {
+    addFormatToken(0, [token, token.length], 0, getter);
+  }
+
+  addWeekYearFormatToken('gggg', 'weekYear');
+  addWeekYearFormatToken('ggggg', 'weekYear');
+  addWeekYearFormatToken('GGGG', 'isoWeekYear');
+  addWeekYearFormatToken('GGGGG', 'isoWeekYear'); // ALIASES
+
+  addUnitAlias('weekYear', 'gg');
+  addUnitAlias('isoWeekYear', 'GG'); // PRIORITY
+
+  addUnitPriority('weekYear', 1);
+  addUnitPriority('isoWeekYear', 1); // PARSING
+
+  addRegexToken('G', matchSigned);
+  addRegexToken('g', matchSigned);
+  addRegexToken('GG', match1to2, match2);
+  addRegexToken('gg', match1to2, match2);
+  addRegexToken('GGGG', match1to4, match4);
+  addRegexToken('gggg', match1to4, match4);
+  addRegexToken('GGGGG', match1to6, match6);
+  addRegexToken('ggggg', match1to6, match6);
+  addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, config, token) {
+    week[token.substr(0, 2)] = toInt(input);
+  });
+  addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
+    week[token] = hooks.parseTwoDigitYear(input);
+  }); // MOMENTS
+
+  function getSetWeekYear(input) {
+    return getSetWeekYearHelper.call(this, input, this.week(), this.weekday(), this.localeData()._week.dow, this.localeData()._week.doy);
+  }
+
+  function getSetISOWeekYear(input) {
+    return getSetWeekYearHelper.call(this, input, this.isoWeek(), this.isoWeekday(), 1, 4);
+  }
+
+  function getISOWeeksInYear() {
+    return weeksInYear(this.year(), 1, 4);
+  }
+
+  function getWeeksInYear() {
+    var weekInfo = this.localeData()._week;
+
+    return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+  }
+
+  function getSetWeekYearHelper(input, week, weekday, dow, doy) {
+    var weeksTarget;
+
+    if (input == null) {
+      return weekOfYear(this, dow, doy).year;
+    } else {
+      weeksTarget = weeksInYear(input, dow, doy);
+
+      if (week > weeksTarget) {
+        week = weeksTarget;
+      }
+
+      return setWeekAll.call(this, input, week, weekday, dow, doy);
+    }
+  }
+
+  function setWeekAll(weekYear, week, weekday, dow, doy) {
+    var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
+        date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
+    this.year(date.getUTCFullYear());
+    this.month(date.getUTCMonth());
+    this.date(date.getUTCDate());
+    return this;
+  } // FORMATTING
+
+
+  addFormatToken('Q', 0, 'Qo', 'quarter'); // ALIASES
+
+  addUnitAlias('quarter', 'Q'); // PRIORITY
+
+  addUnitPriority('quarter', 7); // PARSING
+
+  addRegexToken('Q', match1);
+  addParseToken('Q', function (input, array) {
+    array[MONTH] = (toInt(input) - 1) * 3;
+  }); // MOMENTS
+
+  function getSetQuarter(input) {
+    return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
+  } // FORMATTING
+
+
+  addFormatToken('D', ['DD', 2], 'Do', 'date'); // ALIASES
+
+  addUnitAlias('date', 'D'); // PRIORITY
+
+  addUnitPriority('date', 9); // PARSING
+
+  addRegexToken('D', match1to2);
+  addRegexToken('DD', match1to2, match2);
+  addRegexToken('Do', function (isStrict, locale) {
+    // TODO: Remove "ordinalParse" fallback in next major release.
+    return isStrict ? locale._dayOfMonthOrdinalParse || locale._ordinalParse : locale._dayOfMonthOrdinalParseLenient;
+  });
+  addParseToken(['D', 'DD'], DATE);
+  addParseToken('Do', function (input, array) {
+    array[DATE] = toInt(input.match(match1to2)[0]);
+  }); // MOMENTS
+
+  var getSetDayOfMonth = makeGetSet('Date', true); // FORMATTING
+
+  addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear'); // ALIASES
+
+  addUnitAlias('dayOfYear', 'DDD'); // PRIORITY
+
+  addUnitPriority('dayOfYear', 4); // PARSING
+
+  addRegexToken('DDD', match1to3);
+  addRegexToken('DDDD', match3);
+  addParseToken(['DDD', 'DDDD'], function (input, array, config) {
+    config._dayOfYear = toInt(input);
+  }); // HELPERS
+  // MOMENTS
+
+  function getSetDayOfYear(input) {
+    var dayOfYear = Math.round((this.clone().startOf('day') - this.clone().startOf('year')) / 864e5) + 1;
+    return input == null ? dayOfYear : this.add(input - dayOfYear, 'd');
+  } // FORMATTING
+
+
+  addFormatToken('m', ['mm', 2], 0, 'minute'); // ALIASES
+
+  addUnitAlias('minute', 'm'); // PRIORITY
+
+  addUnitPriority('minute', 14); // PARSING
+
+  addRegexToken('m', match1to2);
+  addRegexToken('mm', match1to2, match2);
+  addParseToken(['m', 'mm'], MINUTE); // MOMENTS
+
+  var getSetMinute = makeGetSet('Minutes', false); // FORMATTING
+
+  addFormatToken('s', ['ss', 2], 0, 'second'); // ALIASES
+
+  addUnitAlias('second', 's'); // PRIORITY
+
+  addUnitPriority('second', 15); // PARSING
+
+  addRegexToken('s', match1to2);
+  addRegexToken('ss', match1to2, match2);
+  addParseToken(['s', 'ss'], SECOND); // MOMENTS
+
+  var getSetSecond = makeGetSet('Seconds', false); // FORMATTING
+
+  addFormatToken('S', 0, 0, function () {
+    return ~~(this.millisecond() / 100);
+  });
+  addFormatToken(0, ['SS', 2], 0, function () {
+    return ~~(this.millisecond() / 10);
+  });
+  addFormatToken(0, ['SSS', 3], 0, 'millisecond');
+  addFormatToken(0, ['SSSS', 4], 0, function () {
+    return this.millisecond() * 10;
+  });
+  addFormatToken(0, ['SSSSS', 5], 0, function () {
+    return this.millisecond() * 100;
+  });
+  addFormatToken(0, ['SSSSSS', 6], 0, function () {
+    return this.millisecond() * 1000;
+  });
+  addFormatToken(0, ['SSSSSSS', 7], 0, function () {
+    return this.millisecond() * 10000;
+  });
+  addFormatToken(0, ['SSSSSSSS', 8], 0, function () {
+    return this.millisecond() * 100000;
+  });
+  addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
+    return this.millisecond() * 1000000;
+  }); // ALIASES
+
+  addUnitAlias('millisecond', 'ms'); // PRIORITY
+
+  addUnitPriority('millisecond', 16); // PARSING
+
+  addRegexToken('S', match1to3, match1);
+  addRegexToken('SS', match1to3, match2);
+  addRegexToken('SSS', match1to3, match3);
+  var token;
+
+  for (token = 'SSSS'; token.length <= 9; token += 'S') {
+    addRegexToken(token, matchUnsigned);
+  }
+
+  function parseMs(input, array) {
+    array[MILLISECOND] = toInt(('0.' + input) * 1000);
+  }
+
+  for (token = 'S'; token.length <= 9; token += 'S') {
+    addParseToken(token, parseMs);
+  } // MOMENTS
+
+
+  var getSetMillisecond = makeGetSet('Milliseconds', false); // FORMATTING
+
+  addFormatToken('z', 0, 0, 'zoneAbbr');
+  addFormatToken('zz', 0, 0, 'zoneName'); // MOMENTS
+
+  function getZoneAbbr() {
+    return this._isUTC ? 'UTC' : '';
+  }
+
+  function getZoneName() {
+    return this._isUTC ? 'Coordinated Universal Time' : '';
+  }
+
+  var proto = Moment.prototype;
+  proto.add = add;
+  proto.calendar = calendar$1;
+  proto.clone = clone;
+  proto.diff = diff;
+  proto.endOf = endOf;
+  proto.format = format;
+  proto.from = from;
+  proto.fromNow = fromNow;
+  proto.to = to;
+  proto.toNow = toNow;
+  proto.get = stringGet;
+  proto.invalidAt = invalidAt;
+  proto.isAfter = isAfter;
+  proto.isBefore = isBefore;
+  proto.isBetween = isBetween;
+  proto.isSame = isSame;
+  proto.isSameOrAfter = isSameOrAfter;
+  proto.isSameOrBefore = isSameOrBefore;
+  proto.isValid = isValid$2;
+  proto.lang = lang;
+  proto.locale = locale;
+  proto.localeData = localeData;
+  proto.max = prototypeMax;
+  proto.min = prototypeMin;
+  proto.parsingFlags = parsingFlags;
+  proto.set = stringSet;
+  proto.startOf = startOf;
+  proto.subtract = subtract;
+  proto.toArray = toArray;
+  proto.toObject = toObject;
+  proto.toDate = toDate;
+  proto.toISOString = toISOString;
+  proto.inspect = inspect;
+  proto.toJSON = toJSON;
+  proto.toString = toString;
+  proto.unix = unix;
+  proto.valueOf = valueOf;
+  proto.creationData = creationData;
+  proto.year = getSetYear;
+  proto.isLeapYear = getIsLeapYear;
+  proto.weekYear = getSetWeekYear;
+  proto.isoWeekYear = getSetISOWeekYear;
+  proto.quarter = proto.quarters = getSetQuarter;
+  proto.month = getSetMonth;
+  proto.daysInMonth = getDaysInMonth;
+  proto.week = proto.weeks = getSetWeek;
+  proto.isoWeek = proto.isoWeeks = getSetISOWeek;
+  proto.weeksInYear = getWeeksInYear;
+  proto.isoWeeksInYear = getISOWeeksInYear;
+  proto.date = getSetDayOfMonth;
+  proto.day = proto.days = getSetDayOfWeek;
+  proto.weekday = getSetLocaleDayOfWeek;
+  proto.isoWeekday = getSetISODayOfWeek;
+  proto.dayOfYear = getSetDayOfYear;
+  proto.hour = proto.hours = getSetHour;
+  proto.minute = proto.minutes = getSetMinute;
+  proto.second = proto.seconds = getSetSecond;
+  proto.millisecond = proto.milliseconds = getSetMillisecond;
+  proto.utcOffset = getSetOffset;
+  proto.utc = setOffsetToUTC;
+  proto.local = setOffsetToLocal;
+  proto.parseZone = setOffsetToParsedOffset;
+  proto.hasAlignedHourOffset = hasAlignedHourOffset;
+  proto.isDST = isDaylightSavingTime;
+  proto.isLocal = isLocal;
+  proto.isUtcOffset = isUtcOffset;
+  proto.isUtc = isUtc;
+  proto.isUTC = isUtc;
+  proto.zoneAbbr = getZoneAbbr;
+  proto.zoneName = getZoneName;
+  proto.dates = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
+  proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
+  proto.years = deprecate('years accessor is deprecated. Use year instead', getSetYear);
+  proto.zone = deprecate('moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/', getSetZone);
+  proto.isDSTShifted = deprecate('isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information', isDaylightSavingTimeShifted);
+
+  function createUnix(input) {
+    return createLocal(input * 1000);
+  }
+
+  function createInZone() {
+    return createLocal.apply(null, arguments).parseZone();
+  }
+
+  function preParsePostFormat(string) {
+    return string;
+  }
+
+  var proto$1 = Locale.prototype;
+  proto$1.calendar = calendar;
+  proto$1.longDateFormat = longDateFormat;
+  proto$1.invalidDate = invalidDate;
+  proto$1.ordinal = ordinal;
+  proto$1.preparse = preParsePostFormat;
+  proto$1.postformat = preParsePostFormat;
+  proto$1.relativeTime = relativeTime;
+  proto$1.pastFuture = pastFuture;
+  proto$1.set = set;
+  proto$1.months = localeMonths;
+  proto$1.monthsShort = localeMonthsShort;
+  proto$1.monthsParse = localeMonthsParse;
+  proto$1.monthsRegex = monthsRegex;
+  proto$1.monthsShortRegex = monthsShortRegex;
+  proto$1.week = localeWeek;
+  proto$1.firstDayOfYear = localeFirstDayOfYear;
+  proto$1.firstDayOfWeek = localeFirstDayOfWeek;
+  proto$1.weekdays = localeWeekdays;
+  proto$1.weekdaysMin = localeWeekdaysMin;
+  proto$1.weekdaysShort = localeWeekdaysShort;
+  proto$1.weekdaysParse = localeWeekdaysParse;
+  proto$1.weekdaysRegex = weekdaysRegex;
+  proto$1.weekdaysShortRegex = weekdaysShortRegex;
+  proto$1.weekdaysMinRegex = weekdaysMinRegex;
+  proto$1.isPM = localeIsPM;
+  proto$1.meridiem = localeMeridiem;
+
+  function get$1(format, index, field, setter) {
+    var locale = getLocale();
+    var utc = createUTC().set(setter, index);
+    return locale[field](utc, format);
+  }
+
+  function listMonthsImpl(format, index, field) {
+    if (isNumber(format)) {
+      index = format;
+      format = undefined;
+    }
+
+    format = format || '';
+
+    if (index != null) {
+      return get$1(format, index, field, 'month');
+    }
+
+    var i;
+    var out = [];
+
+    for (i = 0; i < 12; i++) {
+      out[i] = get$1(format, i, field, 'month');
+    }
+
+    return out;
+  } // ()
+  // (5)
+  // (fmt, 5)
+  // (fmt)
+  // (true)
+  // (true, 5)
+  // (true, fmt, 5)
+  // (true, fmt)
+
+
+  function listWeekdaysImpl(localeSorted, format, index, field) {
+    if (typeof localeSorted === 'boolean') {
+      if (isNumber(format)) {
+        index = format;
+        format = undefined;
+      }
+
+      format = format || '';
+    } else {
+      format = localeSorted;
+      index = format;
+      localeSorted = false;
+
+      if (isNumber(format)) {
+        index = format;
+        format = undefined;
+      }
+
+      format = format || '';
+    }
+
+    var locale = getLocale(),
+        shift = localeSorted ? locale._week.dow : 0;
+
+    if (index != null) {
+      return get$1(format, (index + shift) % 7, field, 'day');
+    }
+
+    var i;
+    var out = [];
+
+    for (i = 0; i < 7; i++) {
+      out[i] = get$1(format, (i + shift) % 7, field, 'day');
+    }
+
+    return out;
+  }
+
+  function listMonths(format, index) {
+    return listMonthsImpl(format, index, 'months');
+  }
+
+  function listMonthsShort(format, index) {
+    return listMonthsImpl(format, index, 'monthsShort');
+  }
+
+  function listWeekdays(localeSorted, format, index) {
+    return listWeekdaysImpl(localeSorted, format, index, 'weekdays');
+  }
+
+  function listWeekdaysShort(localeSorted, format, index) {
+    return listWeekdaysImpl(localeSorted, format, index, 'weekdaysShort');
+  }
+
+  function listWeekdaysMin(localeSorted, format, index) {
+    return listWeekdaysImpl(localeSorted, format, index, 'weekdaysMin');
+  }
+
+  getSetGlobalLocale('en', {
+    dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
+    ordinal: function ordinal(number) {
+      var b = number % 10,
+          output = toInt(number % 100 / 10) === 1 ? 'th' : b === 1 ? 'st' : b === 2 ? 'nd' : b === 3 ? 'rd' : 'th';
+      return number + output;
+    }
+  }); // Side effect imports
+
+  hooks.lang = deprecate('moment.lang is deprecated. Use moment.locale instead.', getSetGlobalLocale);
+  hooks.langData = deprecate('moment.langData is deprecated. Use moment.localeData instead.', getLocale);
+  var mathAbs = Math.abs;
+
+  function abs() {
+    var data = this._data;
+    this._milliseconds = mathAbs(this._milliseconds);
+    this._days = mathAbs(this._days);
+    this._months = mathAbs(this._months);
+    data.milliseconds = mathAbs(data.milliseconds);
+    data.seconds = mathAbs(data.seconds);
+    data.minutes = mathAbs(data.minutes);
+    data.hours = mathAbs(data.hours);
+    data.months = mathAbs(data.months);
+    data.years = mathAbs(data.years);
+    return this;
+  }
+
+  function addSubtract$1(duration, input, value, direction) {
+    var other = createDuration(input, value);
+    duration._milliseconds += direction * other._milliseconds;
+    duration._days += direction * other._days;
+    duration._months += direction * other._months;
+    return duration._bubble();
+  } // supports only 2.0-style add(1, 's') or add(duration)
+
+
+  function add$1(input, value) {
+    return addSubtract$1(this, input, value, 1);
+  } // supports only 2.0-style subtract(1, 's') or subtract(duration)
+
+
+  function subtract$1(input, value) {
+    return addSubtract$1(this, input, value, -1);
+  }
+
+  function absCeil(number) {
+    if (number < 0) {
+      return Math.floor(number);
+    } else {
+      return Math.ceil(number);
+    }
+  }
+
+  function bubble() {
+    var milliseconds = this._milliseconds;
+    var days = this._days;
+    var months = this._months;
+    var data = this._data;
+    var seconds, minutes, hours, years, monthsFromDays; // if we have a mix of positive and negative values, bubble down first
+    // check: https://github.com/moment/moment/issues/2166
+
+    if (!(milliseconds >= 0 && days >= 0 && months >= 0 || milliseconds <= 0 && days <= 0 && months <= 0)) {
+      milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
+      days = 0;
+      months = 0;
+    } // The following code bubbles up values, see the tests for
+    // examples of what that means.
+
+
+    data.milliseconds = milliseconds % 1000;
+    seconds = absFloor(milliseconds / 1000);
+    data.seconds = seconds % 60;
+    minutes = absFloor(seconds / 60);
+    data.minutes = minutes % 60;
+    hours = absFloor(minutes / 60);
+    data.hours = hours % 24;
+    days += absFloor(hours / 24); // convert days to months
+
+    monthsFromDays = absFloor(daysToMonths(days));
+    months += monthsFromDays;
+    days -= absCeil(monthsToDays(monthsFromDays)); // 12 months -> 1 year
+
+    years = absFloor(months / 12);
+    months %= 12;
+    data.days = days;
+    data.months = months;
+    data.years = years;
+    return this;
+  }
+
+  function daysToMonths(days) {
+    // 400 years have 146097 days (taking into account leap year rules)
+    // 400 years have 12 months === 4800
+    return days * 4800 / 146097;
+  }
+
+  function monthsToDays(months) {
+    // the reverse of daysToMonths
+    return months * 146097 / 4800;
+  }
+
+  function as(units) {
+    if (!this.isValid()) {
+      return NaN;
+    }
+
+    var days;
+    var months;
+    var milliseconds = this._milliseconds;
+    units = normalizeUnits(units);
+
+    if (units === 'month' || units === 'quarter' || units === 'year') {
+      days = this._days + milliseconds / 864e5;
+      months = this._months + daysToMonths(days);
+
+      switch (units) {
+        case 'month':
+          return months;
+
+        case 'quarter':
+          return months / 3;
+
+        case 'year':
+          return months / 12;
+      }
+    } else {
+      // handle milliseconds separately because of floating point math errors (issue #1867)
+      days = this._days + Math.round(monthsToDays(this._months));
+
+      switch (units) {
+        case 'week':
+          return days / 7 + milliseconds / 6048e5;
+
+        case 'day':
+          return days + milliseconds / 864e5;
+
+        case 'hour':
+          return days * 24 + milliseconds / 36e5;
+
+        case 'minute':
+          return days * 1440 + milliseconds / 6e4;
+
+        case 'second':
+          return days * 86400 + milliseconds / 1000;
+        // Math.floor prevents floating point math errors here
+
+        case 'millisecond':
+          return Math.floor(days * 864e5) + milliseconds;
+
+        default:
+          throw new Error('Unknown unit ' + units);
+      }
+    }
+  } // TODO: Use this.as('ms')?
+
+
+  function valueOf$1() {
+    if (!this.isValid()) {
+      return NaN;
+    }
+
+    return this._milliseconds + this._days * 864e5 + this._months % 12 * 2592e6 + toInt(this._months / 12) * 31536e6;
+  }
+
+  function makeAs(alias) {
+    return function () {
+      return this.as(alias);
+    };
+  }
+
+  var asMilliseconds = makeAs('ms');
+  var asSeconds = makeAs('s');
+  var asMinutes = makeAs('m');
+  var asHours = makeAs('h');
+  var asDays = makeAs('d');
+  var asWeeks = makeAs('w');
+  var asMonths = makeAs('M');
+  var asQuarters = makeAs('Q');
+  var asYears = makeAs('y');
+
+  function clone$1() {
+    return createDuration(this);
+  }
+
+  function get$2(units) {
+    units = normalizeUnits(units);
+    return this.isValid() ? this[units + 's']() : NaN;
+  }
+
+  function makeGetter(name) {
+    return function () {
+      return this.isValid() ? this._data[name] : NaN;
+    };
+  }
+
+  var milliseconds = makeGetter('milliseconds');
+  var seconds = makeGetter('seconds');
+  var minutes = makeGetter('minutes');
+  var hours = makeGetter('hours');
+  var days = makeGetter('days');
+  var months = makeGetter('months');
+  var years = makeGetter('years');
+
+  function weeks() {
+    return absFloor(this.days() / 7);
+  }
+
+  var round = Math.round;
+  var thresholds = {
+    ss: 44,
+    // a few seconds to seconds
+    s: 45,
+    // seconds to minute
+    m: 45,
+    // minutes to hour
+    h: 22,
+    // hours to day
+    d: 26,
+    // days to month
+    M: 11 // months to year
+
+  }; // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+
+  function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
+    return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+  }
+
+  function relativeTime$1(posNegDuration, withoutSuffix, locale) {
+    var duration = createDuration(posNegDuration).abs();
+    var seconds = round(duration.as('s'));
+    var minutes = round(duration.as('m'));
+    var hours = round(duration.as('h'));
+    var days = round(duration.as('d'));
+    var months = round(duration.as('M'));
+    var years = round(duration.as('y'));
+    var a = seconds <= thresholds.ss && ['s', seconds] || seconds < thresholds.s && ['ss', seconds] || minutes <= 1 && ['m'] || minutes < thresholds.m && ['mm', minutes] || hours <= 1 && ['h'] || hours < thresholds.h && ['hh', hours] || days <= 1 && ['d'] || days < thresholds.d && ['dd', days] || months <= 1 && ['M'] || months < thresholds.M && ['MM', months] || years <= 1 && ['y'] || ['yy', years];
+    a[2] = withoutSuffix;
+    a[3] = +posNegDuration > 0;
+    a[4] = locale;
+    return substituteTimeAgo.apply(null, a);
+  } // This function allows you to set the rounding function for relative time strings
+
+
+  function getSetRelativeTimeRounding(roundingFunction) {
+    if (roundingFunction === undefined) {
+      return round;
+    }
+
+    if (typeof roundingFunction === 'function') {
+      round = roundingFunction;
+      return true;
+    }
+
+    return false;
+  } // This function allows you to set a threshold for relative time strings
+
+
+  function getSetRelativeTimeThreshold(threshold, limit) {
+    if (thresholds[threshold] === undefined) {
+      return false;
+    }
+
+    if (limit === undefined) {
+      return thresholds[threshold];
+    }
+
+    thresholds[threshold] = limit;
+
+    if (threshold === 's') {
+      thresholds.ss = limit - 1;
+    }
+
+    return true;
+  }
+
+  function humanize(withSuffix) {
+    if (!this.isValid()) {
+      return this.localeData().invalidDate();
+    }
+
+    var locale = this.localeData();
+    var output = relativeTime$1(this, !withSuffix, locale);
+
+    if (withSuffix) {
+      output = locale.pastFuture(+this, output);
+    }
+
+    return locale.postformat(output);
+  }
+
+  var abs$1 = Math.abs;
+
+  function sign(x) {
+    return (x > 0) - (x < 0) || +x;
+  }
+
+  function toISOString$1() {
+    // for ISO strings we do not use the normal bubbling rules:
+    //  * milliseconds bubble up until they become hours
+    //  * days do not bubble at all
+    //  * months bubble up until they become years
+    // This is because there is no context-free conversion between hours and days
+    // (think of clock changes)
+    // and also not between days and months (28-31 days per month)
+    if (!this.isValid()) {
+      return this.localeData().invalidDate();
+    }
+
+    var seconds = abs$1(this._milliseconds) / 1000;
+    var days = abs$1(this._days);
+    var months = abs$1(this._months);
+    var minutes, hours, years; // 3600 seconds -> 60 minutes -> 1 hour
+
+    minutes = absFloor(seconds / 60);
+    hours = absFloor(minutes / 60);
+    seconds %= 60;
+    minutes %= 60; // 12 months -> 1 year
+
+    years = absFloor(months / 12);
+    months %= 12; // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+
+    var Y = years;
+    var M = months;
+    var D = days;
+    var h = hours;
+    var m = minutes;
+    var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
+    var total = this.asSeconds();
+
+    if (!total) {
+      // this is the same as C#'s (Noda) and python (isodate)...
+      // but not other JS (goog.date)
+      return 'P0D';
+    }
+
+    var totalSign = total < 0 ? '-' : '';
+    var ymSign = sign(this._months) !== sign(total) ? '-' : '';
+    var daysSign = sign(this._days) !== sign(total) ? '-' : '';
+    var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+    return totalSign + 'P' + (Y ? ymSign + Y + 'Y' : '') + (M ? ymSign + M + 'M' : '') + (D ? daysSign + D + 'D' : '') + (h || m || s ? 'T' : '') + (h ? hmsSign + h + 'H' : '') + (m ? hmsSign + m + 'M' : '') + (s ? hmsSign + s + 'S' : '');
+  }
+
+  var proto$2 = Duration.prototype;
+  proto$2.isValid = isValid$1;
+  proto$2.abs = abs;
+  proto$2.add = add$1;
+  proto$2.subtract = subtract$1;
+  proto$2.as = as;
+  proto$2.asMilliseconds = asMilliseconds;
+  proto$2.asSeconds = asSeconds;
+  proto$2.asMinutes = asMinutes;
+  proto$2.asHours = asHours;
+  proto$2.asDays = asDays;
+  proto$2.asWeeks = asWeeks;
+  proto$2.asMonths = asMonths;
+  proto$2.asQuarters = asQuarters;
+  proto$2.asYears = asYears;
+  proto$2.valueOf = valueOf$1;
+  proto$2._bubble = bubble;
+  proto$2.clone = clone$1;
+  proto$2.get = get$2;
+  proto$2.milliseconds = milliseconds;
+  proto$2.seconds = seconds;
+  proto$2.minutes = minutes;
+  proto$2.hours = hours;
+  proto$2.days = days;
+  proto$2.weeks = weeks;
+  proto$2.months = months;
+  proto$2.years = years;
+  proto$2.humanize = humanize;
+  proto$2.toISOString = toISOString$1;
+  proto$2.toString = toISOString$1;
+  proto$2.toJSON = toISOString$1;
+  proto$2.locale = locale;
+  proto$2.localeData = localeData;
+  proto$2.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', toISOString$1);
+  proto$2.lang = lang; // Side effect imports
+  // FORMATTING
+
+  addFormatToken('X', 0, 0, 'unix');
+  addFormatToken('x', 0, 0, 'valueOf'); // PARSING
+
+  addRegexToken('x', matchSigned);
+  addRegexToken('X', matchTimestamp);
+  addParseToken('X', function (input, array, config) {
+    config._d = new Date(parseFloat(input, 10) * 1000);
+  });
+  addParseToken('x', function (input, array, config) {
+    config._d = new Date(toInt(input));
+  }); // Side effect imports
+
+  hooks.version = '2.24.0';
+  setHookCallback(createLocal);
+  hooks.fn = proto;
+  hooks.min = min;
+  hooks.max = max;
+  hooks.now = now;
+  hooks.utc = createUTC;
+  hooks.unix = createUnix;
+  hooks.months = listMonths;
+  hooks.isDate = isDate;
+  hooks.locale = getSetGlobalLocale;
+  hooks.invalid = createInvalid;
+  hooks.duration = createDuration;
+  hooks.isMoment = isMoment;
+  hooks.weekdays = listWeekdays;
+  hooks.parseZone = createInZone;
+  hooks.localeData = getLocale;
+  hooks.isDuration = isDuration;
+  hooks.monthsShort = listMonthsShort;
+  hooks.weekdaysMin = listWeekdaysMin;
+  hooks.defineLocale = defineLocale;
+  hooks.updateLocale = updateLocale;
+  hooks.locales = listLocales;
+  hooks.weekdaysShort = listWeekdaysShort;
+  hooks.normalizeUnits = normalizeUnits;
+  hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+  hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
+  hooks.calendarFormat = getCalendarFormat;
+  hooks.prototype = proto; // currently HTML5 input type only supports 24-hour formats
+
+  hooks.HTML5_FMT = {
+    DATETIME_LOCAL: 'YYYY-MM-DDTHH:mm',
+    // <input type="datetime-local" />
+    DATETIME_LOCAL_SECONDS: 'YYYY-MM-DDTHH:mm:ss',
+    // <input type="datetime-local" step="1" />
+    DATETIME_LOCAL_MS: 'YYYY-MM-DDTHH:mm:ss.SSS',
+    // <input type="datetime-local" step="0.001" />
+    DATE: 'YYYY-MM-DD',
+    // <input type="date" />
+    TIME: 'HH:mm',
+    // <input type="time" />
+    TIME_SECONDS: 'HH:mm:ss',
+    // <input type="time" step="1" />
+    TIME_MS: 'HH:mm:ss.SSS',
+    // <input type="time" step="0.001" />
+    WEEK: 'GGGG-[W]WW',
+    // <input type="week" />
+    MONTH: 'YYYY-MM' // <input type="month" />
+
+  };
+  return hooks;
+});
+
+},{}],62:[function(require,module,exports){
+"use strict";
+
+// shim for using process in browser
+var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+  throw new Error('setTimeout has not been defined');
+}
+
+function defaultClearTimeout() {
+  throw new Error('clearTimeout has not been defined');
+}
+
+(function () {
+  try {
+    if (typeof setTimeout === 'function') {
+      cachedSetTimeout = setTimeout;
+    } else {
+      cachedSetTimeout = defaultSetTimout;
+    }
+  } catch (e) {
+    cachedSetTimeout = defaultSetTimout;
+  }
+
+  try {
+    if (typeof clearTimeout === 'function') {
+      cachedClearTimeout = clearTimeout;
+    } else {
+      cachedClearTimeout = defaultClearTimeout;
+    }
+  } catch (e) {
+    cachedClearTimeout = defaultClearTimeout;
+  }
+})();
+
+function runTimeout(fun) {
+  if (cachedSetTimeout === setTimeout) {
+    //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+  } // if setTimeout wasn't available but was latter defined
+
+
+  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    cachedSetTimeout = setTimeout;
+    return setTimeout(fun, 0);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedSetTimeout(fun, 0);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+      return cachedSetTimeout.call(null, fun, 0);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+      return cachedSetTimeout.call(this, fun, 0);
+    }
+  }
+}
+
+function runClearTimeout(marker) {
+  if (cachedClearTimeout === clearTimeout) {
+    //normal enviroments in sane situations
+    return clearTimeout(marker);
+  } // if clearTimeout wasn't available but was latter defined
+
+
+  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+    cachedClearTimeout = clearTimeout;
+    return clearTimeout(marker);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedClearTimeout(marker);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+      return cachedClearTimeout.call(null, marker);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+      return cachedClearTimeout.call(this, marker);
+    }
+  }
+}
+
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+  if (!draining || !currentQueue) {
+    return;
+  }
+
+  draining = false;
+
+  if (currentQueue.length) {
+    queue = currentQueue.concat(queue);
+  } else {
+    queueIndex = -1;
+  }
+
+  if (queue.length) {
+    drainQueue();
+  }
+}
+
+function drainQueue() {
+  if (draining) {
+    return;
+  }
+
+  var timeout = runTimeout(cleanUpNextTick);
+  draining = true;
+  var len = queue.length;
+
+  while (len) {
+    currentQueue = queue;
+    queue = [];
+
+    while (++queueIndex < len) {
+      if (currentQueue) {
+        currentQueue[queueIndex].run();
+      }
+    }
+
+    queueIndex = -1;
+    len = queue.length;
+  }
+
+  currentQueue = null;
+  draining = false;
+  runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+  var args = new Array(arguments.length - 1);
+
+  if (arguments.length > 1) {
     for (var i = 1; i < arguments.length; i++) {
       args[i - 1] = arguments[i];
     }
+  }
 
-    if (callbacks) {
-      callbacks = callbacks.slice(0);
+  queue.push(new Item(fun, args));
 
-      for (var i = 0, len = callbacks.length; i < len; ++i) {
-        callbacks[i].apply(this, args);
+  if (queue.length === 1 && !draining) {
+    runTimeout(drainQueue);
+  }
+}; // v8 likes predictible objects
+
+
+function Item(fun, array) {
+  this.fun = fun;
+  this.array = array;
+}
+
+Item.prototype.run = function () {
+  this.fun.apply(null, this.array);
+};
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+  return [];
+};
+
+process.binding = function (name) {
+  throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+  return '/';
+};
+
+process.chdir = function (dir) {
+  throw new Error('process.chdir is not supported');
+};
+
+process.umask = function () {
+  return 0;
+};
+
+},{}],63:[function(require,module,exports){
+(function (process,setImmediate){
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+// vim:ts=4:sts=4:sw=4:
+
+/*!
+ *
+ * Copyright 2009-2017 Kris Kowal under the terms of the MIT
+ * license found at https://github.com/kriskowal/q/blob/v1/LICENSE
+ *
+ * With parts by Tyler Close
+ * Copyright 2007-2009 Tyler Close under the terms of the MIT X license found
+ * at http://www.opensource.org/licenses/mit-license.html
+ * Forked at ref_send.js version: 2009-05-11
+ *
+ * With parts by Mark Miller
+ * Copyright (C) 2011 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+(function (definition) {
+  "use strict"; // This file will function properly as a <script> tag, or a module
+  // using CommonJS and NodeJS or RequireJS module formats.  In
+  // Common/Node/RequireJS, the module exports the Q API and when
+  // executed as a simple <script>, it creates a Q global instead.
+  // Montage Require
+
+  if (typeof bootstrap === "function") {
+    bootstrap("promise", definition); // CommonJS
+  } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object" && (typeof module === "undefined" ? "undefined" : _typeof(module)) === "object") {
+    module.exports = definition(); // RequireJS
+  } else if (typeof define === "function" && define.amd) {
+    define(definition); // SES (Secure EcmaScript)
+  } else if (typeof ses !== "undefined") {
+    if (!ses.ok()) {
+      return;
+    } else {
+      ses.makeQ = definition;
+    } // <script>
+
+  } else if (typeof window !== "undefined" || typeof self !== "undefined") {
+    // Prefer window over self for add-on scripts. Use self for
+    // non-windowed contexts.
+    var global = typeof window !== "undefined" ? window : self; // Get the `window` object, save the previous Q global
+    // and initialize Q as a global.
+
+    var previousQ = global.Q;
+    global.Q = definition(); // Add a noConflict function so Q can be removed from the
+    // global namespace.
+
+    global.Q.noConflict = function () {
+      global.Q = previousQ;
+      return this;
+    };
+  } else {
+    throw new Error("This environment was not anticipated by Q. Please file a bug.");
+  }
+})(function () {
+  "use strict";
+
+  var hasStacks = false;
+
+  try {
+    throw new Error();
+  } catch (e) {
+    hasStacks = !!e.stack;
+  } // All code after this point will be filtered from stack traces reported
+  // by Q.
+
+
+  var qStartingLine = captureLine();
+  var qFileName; // shims
+  // used for fallback in "allResolved"
+
+  var noop = function noop() {}; // Use the fastest possible means to execute a task in a future turn
+  // of the event loop.
+
+
+  var nextTick = function () {
+    // linked list of tasks (single, with head node)
+    var head = {
+      task: void 0,
+      next: null
+    };
+    var tail = head;
+    var flushing = false;
+    var requestTick = void 0;
+    var isNodeJS = false; // queue for late tasks, used by unhandled rejection tracking
+
+    var laterQueue = [];
+
+    function flush() {
+      /* jshint loopfunc: true */
+      var task, domain;
+
+      while (head.next) {
+        head = head.next;
+        task = head.task;
+        head.task = void 0;
+        domain = head.domain;
+
+        if (domain) {
+          head.domain = void 0;
+          domain.enter();
+        }
+
+        runSingle(task, domain);
+      }
+
+      while (laterQueue.length) {
+        task = laterQueue.pop();
+        runSingle(task);
+      }
+
+      flushing = false;
+    } // runs a single function in the async queue
+
+
+    function runSingle(task, domain) {
+      try {
+        task();
+      } catch (e) {
+        if (isNodeJS) {
+          // In node, uncaught exceptions are considered fatal errors.
+          // Re-throw them synchronously to interrupt flushing!
+          // Ensure continuation if the uncaught exception is suppressed
+          // listening "uncaughtException" events (as domains does).
+          // Continue in next event to avoid tick recursion.
+          if (domain) {
+            domain.exit();
+          }
+
+          setTimeout(flush, 0);
+
+          if (domain) {
+            domain.enter();
+          }
+
+          throw e;
+        } else {
+          // In browsers, uncaught exceptions are not fatal.
+          // Re-throw them asynchronously to avoid slow-downs.
+          setTimeout(function () {
+            throw e;
+          }, 0);
+        }
+      }
+
+      if (domain) {
+        domain.exit();
       }
     }
 
+    nextTick = function nextTick(task) {
+      tail = tail.next = {
+        task: task,
+        domain: isNodeJS && process.domain,
+        next: null
+      };
+
+      if (!flushing) {
+        flushing = true;
+        requestTick();
+      }
+    };
+
+    if ((typeof process === "undefined" ? "undefined" : _typeof(process)) === "object" && process.toString() === "[object process]" && process.nextTick) {
+      // Ensure Q is in a real Node environment, with a `process.nextTick`.
+      // To see through fake Node environments:
+      // * Mocha test runner - exposes a `process` global without a `nextTick`
+      // * Browserify - exposes a `process.nexTick` function that uses
+      //   `setTimeout`. In this case `setImmediate` is preferred because
+      //    it is faster. Browserify's `process.toString()` yields
+      //   "[object Object]", while in a real Node environment
+      //   `process.toString()` yields "[object process]".
+      isNodeJS = true;
+
+      requestTick = function requestTick() {
+        process.nextTick(flush);
+      };
+    } else if (typeof setImmediate === "function") {
+      // In IE10, Node.js 0.9+, or https://github.com/NobleJS/setImmediate
+      if (typeof window !== "undefined") {
+        requestTick = setImmediate.bind(window, flush);
+      } else {
+        requestTick = function requestTick() {
+          setImmediate(flush);
+        };
+      }
+    } else if (typeof MessageChannel !== "undefined") {
+      // modern browsers
+      // http://www.nonblocking.io/2011/06/windownexttick.html
+      var channel = new MessageChannel(); // At least Safari Version 6.0.5 (8536.30.1) intermittently cannot create
+      // working message ports the first time a page loads.
+
+      channel.port1.onmessage = function () {
+        requestTick = requestPortTick;
+        channel.port1.onmessage = flush;
+        flush();
+      };
+
+      var requestPortTick = function requestPortTick() {
+        // Opera requires us to provide a message payload, regardless of
+        // whether we use it.
+        channel.port2.postMessage(0);
+      };
+
+      requestTick = function requestTick() {
+        setTimeout(flush, 0);
+        requestPortTick();
+      };
+    } else {
+      // old browsers
+      requestTick = function requestTick() {
+        setTimeout(flush, 0);
+      };
+    } // runs a task after all other tasks have been run
+    // this is useful for unhandled rejection tracking that needs to happen
+    // after all `then`d tasks have been run.
+
+
+    nextTick.runAfter = function (task) {
+      laterQueue.push(task);
+
+      if (!flushing) {
+        flushing = true;
+        requestTick();
+      }
+    };
+
+    return nextTick;
+  }(); // Attempt to make generics safe in the face of downstream
+  // modifications.
+  // There is no situation where this is necessary.
+  // If you need a security guarantee, these primordials need to be
+  // deeply frozen anyway, and if you don’t need a security guarantee,
+  // this is just plain paranoid.
+  // However, this **might** have the nice side-effect of reducing the size of
+  // the minified code by reducing x.call() to merely x()
+  // See Mark Miller’s explanation of what this does.
+  // http://wiki.ecmascript.org/doku.php?id=conventions:safe_meta_programming
+
+
+  var call = Function.call;
+
+  function uncurryThis(f) {
+    return function () {
+      return call.apply(f, arguments);
+    };
+  } // This is equivalent, but slower:
+  // uncurryThis = Function_bind.bind(Function_bind.call);
+  // http://jsperf.com/uncurrythis
+
+
+  var array_slice = uncurryThis(Array.prototype.slice);
+  var array_reduce = uncurryThis(Array.prototype.reduce || function (callback, basis) {
+    var index = 0,
+        length = this.length; // concerning the initial value, if one is not provided
+
+    if (arguments.length === 1) {
+      // seek to the first value in the array, accounting
+      // for the possibility that is is a sparse array
+      do {
+        if (index in this) {
+          basis = this[index++];
+          break;
+        }
+
+        if (++index >= length) {
+          throw new TypeError();
+        }
+      } while (1);
+    } // reduce
+
+
+    for (; index < length; index++) {
+      // account for the possibility that the array is sparse
+      if (index in this) {
+        basis = callback(basis, this[index], index);
+      }
+    }
+
+    return basis;
+  });
+  var array_indexOf = uncurryThis(Array.prototype.indexOf || function (value) {
+    // not a very good shim, but good enough for our one use of it
+    for (var i = 0; i < this.length; i++) {
+      if (this[i] === value) {
+        return i;
+      }
+    }
+
+    return -1;
+  });
+  var array_map = uncurryThis(Array.prototype.map || function (callback, thisp) {
+    var self = this;
+    var collect = [];
+    array_reduce(self, function (undefined, value, index) {
+      collect.push(callback.call(thisp, value, index, self));
+    }, void 0);
+    return collect;
+  });
+
+  var object_create = Object.create || function (prototype) {
+    function Type() {}
+
+    Type.prototype = prototype;
+    return new Type();
+  };
+
+  var object_defineProperty = Object.defineProperty || function (obj, prop, descriptor) {
+    obj[prop] = descriptor.value;
+    return obj;
+  };
+
+  var object_hasOwnProperty = uncurryThis(Object.prototype.hasOwnProperty);
+
+  var object_keys = Object.keys || function (object) {
+    var keys = [];
+
+    for (var key in object) {
+      if (object_hasOwnProperty(object, key)) {
+        keys.push(key);
+      }
+    }
+
+    return keys;
+  };
+
+  var object_toString = uncurryThis(Object.prototype.toString);
+
+  function isObject(value) {
+    return value === Object(value);
+  } // generator related shims
+  // FIXME: Remove this function once ES6 generators are in SpiderMonkey.
+
+
+  function isStopIteration(exception) {
+    return object_toString(exception) === "[object StopIteration]" || exception instanceof QReturnValue;
+  } // FIXME: Remove this helper and Q.return once ES6 generators are in
+  // SpiderMonkey.
+
+
+  var QReturnValue;
+
+  if (typeof ReturnValue !== "undefined") {
+    QReturnValue = ReturnValue;
+  } else {
+    QReturnValue = function QReturnValue(value) {
+      this.value = value;
+    };
+  } // long stack traces
+
+
+  var STACK_JUMP_SEPARATOR = "From previous event:";
+
+  function makeStackTraceLong(error, promise) {
+    // If possible, transform the error stack trace by removing Node and Q
+    // cruft, then concatenating with the stack trace of `promise`. See #57.
+    if (hasStacks && promise.stack && _typeof(error) === "object" && error !== null && error.stack) {
+      var stacks = [];
+
+      for (var p = promise; !!p; p = p.source) {
+        if (p.stack && (!error.__minimumStackCounter__ || error.__minimumStackCounter__ > p.stackCounter)) {
+          object_defineProperty(error, "__minimumStackCounter__", {
+            value: p.stackCounter,
+            configurable: true
+          });
+          stacks.unshift(p.stack);
+        }
+      }
+
+      stacks.unshift(error.stack);
+      var concatedStacks = stacks.join("\n" + STACK_JUMP_SEPARATOR + "\n");
+      var stack = filterStackString(concatedStacks);
+      object_defineProperty(error, "stack", {
+        value: stack,
+        configurable: true
+      });
+    }
+  }
+
+  function filterStackString(stackString) {
+    var lines = stackString.split("\n");
+    var desiredLines = [];
+
+    for (var i = 0; i < lines.length; ++i) {
+      var line = lines[i];
+
+      if (!isInternalFrame(line) && !isNodeFrame(line) && line) {
+        desiredLines.push(line);
+      }
+    }
+
+    return desiredLines.join("\n");
+  }
+
+  function isNodeFrame(stackLine) {
+    return stackLine.indexOf("(module.js:") !== -1 || stackLine.indexOf("(node.js:") !== -1;
+  }
+
+  function getFileNameAndLineNumber(stackLine) {
+    // Named functions: "at functionName (filename:lineNumber:columnNumber)"
+    // In IE10 function name can have spaces ("Anonymous function") O_o
+    var attempt1 = /at .+ \((.+):(\d+):(?:\d+)\)$/.exec(stackLine);
+
+    if (attempt1) {
+      return [attempt1[1], Number(attempt1[2])];
+    } // Anonymous functions: "at filename:lineNumber:columnNumber"
+
+
+    var attempt2 = /at ([^ ]+):(\d+):(?:\d+)$/.exec(stackLine);
+
+    if (attempt2) {
+      return [attempt2[1], Number(attempt2[2])];
+    } // Firefox style: "function@filename:lineNumber or @filename:lineNumber"
+
+
+    var attempt3 = /.*@(.+):(\d+)$/.exec(stackLine);
+
+    if (attempt3) {
+      return [attempt3[1], Number(attempt3[2])];
+    }
+  }
+
+  function isInternalFrame(stackLine) {
+    var fileNameAndLineNumber = getFileNameAndLineNumber(stackLine);
+
+    if (!fileNameAndLineNumber) {
+      return false;
+    }
+
+    var fileName = fileNameAndLineNumber[0];
+    var lineNumber = fileNameAndLineNumber[1];
+    return fileName === qFileName && lineNumber >= qStartingLine && lineNumber <= qEndingLine;
+  } // discover own file name and line number range for filtering stack
+  // traces
+
+
+  function captureLine() {
+    if (!hasStacks) {
+      return;
+    }
+
+    try {
+      throw new Error();
+    } catch (e) {
+      var lines = e.stack.split("\n");
+      var firstLine = lines[0].indexOf("@") > 0 ? lines[1] : lines[2];
+      var fileNameAndLineNumber = getFileNameAndLineNumber(firstLine);
+
+      if (!fileNameAndLineNumber) {
+        return;
+      }
+
+      qFileName = fileNameAndLineNumber[0];
+      return fileNameAndLineNumber[1];
+    }
+  }
+
+  function deprecate(callback, name, alternative) {
+    return function () {
+      if (typeof console !== "undefined" && typeof console.warn === "function") {
+        console.warn(name + " is deprecated, use " + alternative + " instead.", new Error("").stack);
+      }
+
+      return callback.apply(callback, arguments);
+    };
+  } // end of shims
+  // beginning of real work
+
+  /**
+   * Constructs a promise for an immediate reference, passes promises through, or
+   * coerces promises from different systems.
+   * @param value immediate reference or promise
+   */
+
+
+  function Q(value) {
+    // If the object is already a Promise, return it directly.  This enables
+    // the resolve function to both be used to created references from objects,
+    // but to tolerably coerce non-promises to promises.
+    if (value instanceof Promise) {
+      return value;
+    } // assimilate thenables
+
+
+    if (isPromiseAlike(value)) {
+      return coerce(value);
+    } else {
+      return fulfill(value);
+    }
+  }
+
+  Q.resolve = Q;
+  /**
+   * Performs a task in a future turn of the event loop.
+   * @param {Function} task
+   */
+
+  Q.nextTick = nextTick;
+  /**
+   * Controls whether or not long stack traces will be on
+   */
+
+  Q.longStackSupport = false;
+  /**
+   * The counter is used to determine the stopping point for building
+   * long stack traces. In makeStackTraceLong we walk backwards through
+   * the linked list of promises, only stacks which were created before
+   * the rejection are concatenated.
+   */
+
+  var longStackCounter = 1; // enable long stacks if Q_DEBUG is set
+
+  if ((typeof process === "undefined" ? "undefined" : _typeof(process)) === "object" && process && process.env && process.env.Q_DEBUG) {
+    Q.longStackSupport = true;
+  }
+  /**
+   * Constructs a {promise, resolve, reject} object.
+   *
+   * `resolve` is a callback to invoke with a more resolved value for the
+   * promise. To fulfill the promise, invoke `resolve` with any value that is
+   * not a thenable. To reject the promise, invoke `resolve` with a rejected
+   * thenable, or invoke `reject` with the reason directly. To resolve the
+   * promise to another thenable, thus putting it in the same state, invoke
+   * `resolve` with that other thenable.
+   */
+
+
+  Q.defer = defer;
+
+  function defer() {
+    // if "messages" is an "Array", that indicates that the promise has not yet
+    // been resolved.  If it is "undefined", it has been resolved.  Each
+    // element of the messages array is itself an array of complete arguments to
+    // forward to the resolved promise.  We coerce the resolution value to a
+    // promise using the `resolve` function because it handles both fully
+    // non-thenable values and other thenables gracefully.
+    var messages = [],
+        progressListeners = [],
+        resolvedPromise;
+    var deferred = object_create(defer.prototype);
+    var promise = object_create(Promise.prototype);
+
+    promise.promiseDispatch = function (resolve, op, operands) {
+      var args = array_slice(arguments);
+
+      if (messages) {
+        messages.push(args);
+
+        if (op === "when" && operands[1]) {
+          // progress operand
+          progressListeners.push(operands[1]);
+        }
+      } else {
+        Q.nextTick(function () {
+          resolvedPromise.promiseDispatch.apply(resolvedPromise, args);
+        });
+      }
+    }; // XXX deprecated
+
+
+    promise.valueOf = function () {
+      if (messages) {
+        return promise;
+      }
+
+      var nearerValue = nearer(resolvedPromise);
+
+      if (isPromise(nearerValue)) {
+        resolvedPromise = nearerValue; // shorten chain
+      }
+
+      return nearerValue;
+    };
+
+    promise.inspect = function () {
+      if (!resolvedPromise) {
+        return {
+          state: "pending"
+        };
+      }
+
+      return resolvedPromise.inspect();
+    };
+
+    if (Q.longStackSupport && hasStacks) {
+      try {
+        throw new Error();
+      } catch (e) {
+        // NOTE: don't try to use `Error.captureStackTrace` or transfer the
+        // accessor around; that causes memory leaks as per GH-111. Just
+        // reify the stack trace as a string ASAP.
+        //
+        // At the same time, cut off the first line; it's always just
+        // "[object Promise]\n", as per the `toString`.
+        promise.stack = e.stack.substring(e.stack.indexOf("\n") + 1);
+        promise.stackCounter = longStackCounter++;
+      }
+    } // NOTE: we do the checks for `resolvedPromise` in each method, instead of
+    // consolidating them into `become`, since otherwise we'd create new
+    // promises with the lines `become(whatever(value))`. See e.g. GH-252.
+
+
+    function become(newPromise) {
+      resolvedPromise = newPromise;
+
+      if (Q.longStackSupport && hasStacks) {
+        // Only hold a reference to the new promise if long stacks
+        // are enabled to reduce memory usage
+        promise.source = newPromise;
+      }
+
+      array_reduce(messages, function (undefined, message) {
+        Q.nextTick(function () {
+          newPromise.promiseDispatch.apply(newPromise, message);
+        });
+      }, void 0);
+      messages = void 0;
+      progressListeners = void 0;
+    }
+
+    deferred.promise = promise;
+
+    deferred.resolve = function (value) {
+      if (resolvedPromise) {
+        return;
+      }
+
+      become(Q(value));
+    };
+
+    deferred.fulfill = function (value) {
+      if (resolvedPromise) {
+        return;
+      }
+
+      become(fulfill(value));
+    };
+
+    deferred.reject = function (reason) {
+      if (resolvedPromise) {
+        return;
+      }
+
+      become(reject(reason));
+    };
+
+    deferred.notify = function (progress) {
+      if (resolvedPromise) {
+        return;
+      }
+
+      array_reduce(progressListeners, function (undefined, progressListener) {
+        Q.nextTick(function () {
+          progressListener(progress);
+        });
+      }, void 0);
+    };
+
+    return deferred;
+  }
+  /**
+   * Creates a Node-style callback that will resolve or reject the deferred
+   * promise.
+   * @returns a nodeback
+   */
+
+
+  defer.prototype.makeNodeResolver = function () {
+    var self = this;
+    return function (error, value) {
+      if (error) {
+        self.reject(error);
+      } else if (arguments.length > 2) {
+        self.resolve(array_slice(arguments, 1));
+      } else {
+        self.resolve(value);
+      }
+    };
+  };
+  /**
+   * @param resolver {Function} a function that returns nothing and accepts
+   * the resolve, reject, and notify functions for a deferred.
+   * @returns a promise that may be resolved with the given resolve and reject
+   * functions, or rejected by a thrown exception in resolver
+   */
+
+
+  Q.Promise = promise; // ES6
+
+  Q.promise = promise;
+
+  function promise(resolver) {
+    if (typeof resolver !== "function") {
+      throw new TypeError("resolver must be a function.");
+    }
+
+    var deferred = defer();
+
+    try {
+      resolver(deferred.resolve, deferred.reject, deferred.notify);
+    } catch (reason) {
+      deferred.reject(reason);
+    }
+
+    return deferred.promise;
+  }
+
+  promise.race = race; // ES6
+
+  promise.all = all; // ES6
+
+  promise.reject = reject; // ES6
+
+  promise.resolve = Q; // ES6
+  // XXX experimental.  This method is a way to denote that a local value is
+  // serializable and should be immediately dispatched to a remote upon request,
+  // instead of passing a reference.
+
+  Q.passByCopy = function (object) {
+    //freeze(object);
+    //passByCopies.set(object, true);
+    return object;
+  };
+
+  Promise.prototype.passByCopy = function () {
+    //freeze(object);
+    //passByCopies.set(object, true);
     return this;
   };
   /**
-   * Return array of callbacks for `event`.
+   * If two promises eventually fulfill to the same value, promises that value,
+   * but otherwise rejects.
+   * @param x {Any*}
+   * @param y {Any*}
+   * @returns {Any*} a promise for x and y if they are the same, but a rejection
+   * otherwise.
    *
-   * @param {String} event
-   * @return {Array}
-   * @api public
    */
 
 
-  Emitter.prototype.listeners = function (event) {
-    this._callbacks = this._callbacks || {};
-    return this._callbacks['$' + event] || [];
+  Q.join = function (x, y) {
+    return Q(x).join(y);
+  };
+
+  Promise.prototype.join = function (that) {
+    return Q([this, that]).spread(function (x, y) {
+      if (x === y) {
+        // TODO: "===" should be Object.is or equiv
+        return x;
+      } else {
+        throw new Error("Q can't join: not the same: " + x + " " + y);
+      }
+    });
   };
   /**
-   * Check if this emitter has `event` handlers.
-   *
-   * @param {String} event
-   * @return {Boolean}
-   * @api public
+   * Returns a promise for the first of an array of promises to become settled.
+   * @param answers {Array[Any*]} promises to race
+   * @returns {Any*} the first promise to be settled
    */
 
 
-  Emitter.prototype.hasListeners = function (event) {
-    return !!this.listeners(event).length;
+  Q.race = race;
+
+  function race(answerPs) {
+    return promise(function (resolve, reject) {
+      // Switch to this once we can assume at least ES5
+      // answerPs.forEach(function (answerP) {
+      //     Q(answerP).then(resolve, reject);
+      // });
+      // Use this in the meantime
+      for (var i = 0, len = answerPs.length; i < len; i++) {
+        Q(answerPs[i]).then(resolve, reject);
+      }
+    });
+  }
+
+  Promise.prototype.race = function () {
+    return this.then(Q.race);
+  };
+  /**
+   * Constructs a Promise with a promise descriptor object and optional fallback
+   * function.  The descriptor contains methods like when(rejected), get(name),
+   * set(name, value), post(name, args), and delete(name), which all
+   * return either a value, a promise for a value, or a rejection.  The fallback
+   * accepts the operation name, a resolver, and any further arguments that would
+   * have been forwarded to the appropriate method above had a method been
+   * provided with the proper name.  The API makes no guarantees about the nature
+   * of the returned object, apart from that it is usable whereever promises are
+   * bought and sold.
+   */
+
+
+  Q.makePromise = Promise;
+
+  function Promise(descriptor, fallback, inspect) {
+    if (fallback === void 0) {
+      fallback = function fallback(op) {
+        return reject(new Error("Promise does not support operation: " + op));
+      };
+    }
+
+    if (inspect === void 0) {
+      inspect = function inspect() {
+        return {
+          state: "unknown"
+        };
+      };
+    }
+
+    var promise = object_create(Promise.prototype);
+
+    promise.promiseDispatch = function (resolve, op, args) {
+      var result;
+
+      try {
+        if (descriptor[op]) {
+          result = descriptor[op].apply(promise, args);
+        } else {
+          result = fallback.call(promise, op, args);
+        }
+      } catch (exception) {
+        result = reject(exception);
+      }
+
+      if (resolve) {
+        resolve(result);
+      }
+    };
+
+    promise.inspect = inspect; // XXX deprecated `valueOf` and `exception` support
+
+    if (inspect) {
+      var inspected = inspect();
+
+      if (inspected.state === "rejected") {
+        promise.exception = inspected.reason;
+      }
+
+      promise.valueOf = function () {
+        var inspected = inspect();
+
+        if (inspected.state === "pending" || inspected.state === "rejected") {
+          return promise;
+        }
+
+        return inspected.value;
+      };
+    }
+
+    return promise;
+  }
+
+  Promise.prototype.toString = function () {
+    return "[object Promise]";
+  };
+
+  Promise.prototype.then = function (fulfilled, rejected, progressed) {
+    var self = this;
+    var deferred = defer();
+    var done = false; // ensure the untrusted promise makes at most a
+    // single call to one of the callbacks
+
+    function _fulfilled(value) {
+      try {
+        return typeof fulfilled === "function" ? fulfilled(value) : value;
+      } catch (exception) {
+        return reject(exception);
+      }
+    }
+
+    function _rejected(exception) {
+      if (typeof rejected === "function") {
+        makeStackTraceLong(exception, self);
+
+        try {
+          return rejected(exception);
+        } catch (newException) {
+          return reject(newException);
+        }
+      }
+
+      return reject(exception);
+    }
+
+    function _progressed(value) {
+      return typeof progressed === "function" ? progressed(value) : value;
+    }
+
+    Q.nextTick(function () {
+      self.promiseDispatch(function (value) {
+        if (done) {
+          return;
+        }
+
+        done = true;
+        deferred.resolve(_fulfilled(value));
+      }, "when", [function (exception) {
+        if (done) {
+          return;
+        }
+
+        done = true;
+        deferred.resolve(_rejected(exception));
+      }]);
+    }); // Progress propagator need to be attached in the current tick.
+
+    self.promiseDispatch(void 0, "when", [void 0, function (value) {
+      var newValue;
+      var threw = false;
+
+      try {
+        newValue = _progressed(value);
+      } catch (e) {
+        threw = true;
+
+        if (Q.onerror) {
+          Q.onerror(e);
+        } else {
+          throw e;
+        }
+      }
+
+      if (!threw) {
+        deferred.notify(newValue);
+      }
+    }]);
+    return deferred.promise;
+  };
+
+  Q.tap = function (promise, callback) {
+    return Q(promise).tap(callback);
+  };
+  /**
+   * Works almost like "finally", but not called for rejections.
+   * Original resolution value is passed through callback unaffected.
+   * Callback may return a promise that will be awaited for.
+   * @param {Function} callback
+   * @returns {Q.Promise}
+   * @example
+   * doSomething()
+   *   .then(...)
+   *   .tap(console.log)
+   *   .then(...);
+   */
+
+
+  Promise.prototype.tap = function (callback) {
+    callback = Q(callback);
+    return this.then(function (value) {
+      return callback.fcall(value).thenResolve(value);
+    });
+  };
+  /**
+   * Registers an observer on a promise.
+   *
+   * Guarantees:
+   *
+   * 1. that fulfilled and rejected will be called only once.
+   * 2. that either the fulfilled callback or the rejected callback will be
+   *    called, but not both.
+   * 3. that fulfilled and rejected will not be called in this turn.
+   *
+   * @param value      promise or immediate reference to observe
+   * @param fulfilled  function to be called with the fulfilled value
+   * @param rejected   function to be called with the rejection exception
+   * @param progressed function to be called on any progress notifications
+   * @return promise for the return value from the invoked callback
+   */
+
+
+  Q.when = when;
+
+  function when(value, fulfilled, rejected, progressed) {
+    return Q(value).then(fulfilled, rejected, progressed);
+  }
+
+  Promise.prototype.thenResolve = function (value) {
+    return this.then(function () {
+      return value;
+    });
+  };
+
+  Q.thenResolve = function (promise, value) {
+    return Q(promise).thenResolve(value);
+  };
+
+  Promise.prototype.thenReject = function (reason) {
+    return this.then(function () {
+      throw reason;
+    });
+  };
+
+  Q.thenReject = function (promise, reason) {
+    return Q(promise).thenReject(reason);
+  };
+  /**
+   * If an object is not a promise, it is as "near" as possible.
+   * If a promise is rejected, it is as "near" as possible too.
+   * If it’s a fulfilled promise, the fulfillment value is nearer.
+   * If it’s a deferred promise and the deferred has been resolved, the
+   * resolution is "nearer".
+   * @param object
+   * @returns most resolved (nearest) form of the object
+   */
+  // XXX should we re-do this?
+
+
+  Q.nearer = nearer;
+
+  function nearer(value) {
+    if (isPromise(value)) {
+      var inspected = value.inspect();
+
+      if (inspected.state === "fulfilled") {
+        return inspected.value;
+      }
+    }
+
+    return value;
+  }
+  /**
+   * @returns whether the given object is a promise.
+   * Otherwise it is a fulfilled value.
+   */
+
+
+  Q.isPromise = isPromise;
+
+  function isPromise(object) {
+    return object instanceof Promise;
+  }
+
+  Q.isPromiseAlike = isPromiseAlike;
+
+  function isPromiseAlike(object) {
+    return isObject(object) && typeof object.then === "function";
+  }
+  /**
+   * @returns whether the given object is a pending promise, meaning not
+   * fulfilled or rejected.
+   */
+
+
+  Q.isPending = isPending;
+
+  function isPending(object) {
+    return isPromise(object) && object.inspect().state === "pending";
+  }
+
+  Promise.prototype.isPending = function () {
+    return this.inspect().state === "pending";
+  };
+  /**
+   * @returns whether the given object is a value or fulfilled
+   * promise.
+   */
+
+
+  Q.isFulfilled = isFulfilled;
+
+  function isFulfilled(object) {
+    return !isPromise(object) || object.inspect().state === "fulfilled";
+  }
+
+  Promise.prototype.isFulfilled = function () {
+    return this.inspect().state === "fulfilled";
+  };
+  /**
+   * @returns whether the given object is a rejected promise.
+   */
+
+
+  Q.isRejected = isRejected;
+
+  function isRejected(object) {
+    return isPromise(object) && object.inspect().state === "rejected";
+  }
+
+  Promise.prototype.isRejected = function () {
+    return this.inspect().state === "rejected";
+  }; //// BEGIN UNHANDLED REJECTION TRACKING
+  // This promise library consumes exceptions thrown in handlers so they can be
+  // handled by a subsequent promise.  The exceptions get added to this array when
+  // they are created, and removed when they are handled.  Note that in ES6 or
+  // shimmed environments, this would naturally be a `Set`.
+
+
+  var unhandledReasons = [];
+  var unhandledRejections = [];
+  var reportedUnhandledRejections = [];
+  var trackUnhandledRejections = true;
+
+  function resetUnhandledRejections() {
+    unhandledReasons.length = 0;
+    unhandledRejections.length = 0;
+
+    if (!trackUnhandledRejections) {
+      trackUnhandledRejections = true;
+    }
+  }
+
+  function trackRejection(promise, reason) {
+    if (!trackUnhandledRejections) {
+      return;
+    }
+
+    if ((typeof process === "undefined" ? "undefined" : _typeof(process)) === "object" && typeof process.emit === "function") {
+      Q.nextTick.runAfter(function () {
+        if (array_indexOf(unhandledRejections, promise) !== -1) {
+          process.emit("unhandledRejection", reason, promise);
+          reportedUnhandledRejections.push(promise);
+        }
+      });
+    }
+
+    unhandledRejections.push(promise);
+
+    if (reason && typeof reason.stack !== "undefined") {
+      unhandledReasons.push(reason.stack);
+    } else {
+      unhandledReasons.push("(no stack) " + reason);
+    }
+  }
+
+  function untrackRejection(promise) {
+    if (!trackUnhandledRejections) {
+      return;
+    }
+
+    var at = array_indexOf(unhandledRejections, promise);
+
+    if (at !== -1) {
+      if ((typeof process === "undefined" ? "undefined" : _typeof(process)) === "object" && typeof process.emit === "function") {
+        Q.nextTick.runAfter(function () {
+          var atReport = array_indexOf(reportedUnhandledRejections, promise);
+
+          if (atReport !== -1) {
+            process.emit("rejectionHandled", unhandledReasons[at], promise);
+            reportedUnhandledRejections.splice(atReport, 1);
+          }
+        });
+      }
+
+      unhandledRejections.splice(at, 1);
+      unhandledReasons.splice(at, 1);
+    }
+  }
+
+  Q.resetUnhandledRejections = resetUnhandledRejections;
+
+  Q.getUnhandledReasons = function () {
+    // Make a copy so that consumers can't interfere with our internal state.
+    return unhandledReasons.slice();
+  };
+
+  Q.stopUnhandledRejectionTracking = function () {
+    resetUnhandledRejections();
+    trackUnhandledRejections = false;
+  };
+
+  resetUnhandledRejections(); //// END UNHANDLED REJECTION TRACKING
+
+  /**
+   * Constructs a rejected promise.
+   * @param reason value describing the failure
+   */
+
+  Q.reject = reject;
+
+  function reject(reason) {
+    var rejection = Promise({
+      "when": function when(rejected) {
+        // note that the error has been handled
+        if (rejected) {
+          untrackRejection(this);
+        }
+
+        return rejected ? rejected(reason) : this;
+      }
+    }, function fallback() {
+      return this;
+    }, function inspect() {
+      return {
+        state: "rejected",
+        reason: reason
+      };
+    }); // Note that the reason has not been handled.
+
+    trackRejection(rejection, reason);
+    return rejection;
+  }
+  /**
+   * Constructs a fulfilled promise for an immediate reference.
+   * @param value immediate reference
+   */
+
+
+  Q.fulfill = fulfill;
+
+  function fulfill(value) {
+    return Promise({
+      "when": function when() {
+        return value;
+      },
+      "get": function get(name) {
+        return value[name];
+      },
+      "set": function set(name, rhs) {
+        value[name] = rhs;
+      },
+      "delete": function _delete(name) {
+        delete value[name];
+      },
+      "post": function post(name, args) {
+        // Mark Miller proposes that post with no name should apply a
+        // promised function.
+        if (name === null || name === void 0) {
+          return value.apply(void 0, args);
+        } else {
+          return value[name].apply(value, args);
+        }
+      },
+      "apply": function apply(thisp, args) {
+        return value.apply(thisp, args);
+      },
+      "keys": function keys() {
+        return object_keys(value);
+      }
+    }, void 0, function inspect() {
+      return {
+        state: "fulfilled",
+        value: value
+      };
+    });
+  }
+  /**
+   * Converts thenables to Q promises.
+   * @param promise thenable promise
+   * @returns a Q promise
+   */
+
+
+  function coerce(promise) {
+    var deferred = defer();
+    Q.nextTick(function () {
+      try {
+        promise.then(deferred.resolve, deferred.reject, deferred.notify);
+      } catch (exception) {
+        deferred.reject(exception);
+      }
+    });
+    return deferred.promise;
+  }
+  /**
+   * Annotates an object such that it will never be
+   * transferred away from this process over any promise
+   * communication channel.
+   * @param object
+   * @returns promise a wrapping of that object that
+   * additionally responds to the "isDef" message
+   * without a rejection.
+   */
+
+
+  Q.master = master;
+
+  function master(object) {
+    return Promise({
+      "isDef": function isDef() {}
+    }, function fallback(op, args) {
+      return dispatch(object, op, args);
+    }, function () {
+      return Q(object).inspect();
+    });
+  }
+  /**
+   * Spreads the values of a promised array of arguments into the
+   * fulfillment callback.
+   * @param fulfilled callback that receives variadic arguments from the
+   * promised array
+   * @param rejected callback that receives the exception if the promise
+   * is rejected.
+   * @returns a promise for the return value or thrown exception of
+   * either callback.
+   */
+
+
+  Q.spread = spread;
+
+  function spread(value, fulfilled, rejected) {
+    return Q(value).spread(fulfilled, rejected);
+  }
+
+  Promise.prototype.spread = function (fulfilled, rejected) {
+    return this.all().then(function (array) {
+      return fulfilled.apply(void 0, array);
+    }, rejected);
+  };
+  /**
+   * The async function is a decorator for generator functions, turning
+   * them into asynchronous generators.  Although generators are only part
+   * of the newest ECMAScript 6 drafts, this code does not cause syntax
+   * errors in older engines.  This code should continue to work and will
+   * in fact improve over time as the language improves.
+   *
+   * ES6 generators are currently part of V8 version 3.19 with the
+   * --harmony-generators runtime flag enabled.  SpiderMonkey has had them
+   * for longer, but under an older Python-inspired form.  This function
+   * works on both kinds of generators.
+   *
+   * Decorates a generator function such that:
+   *  - it may yield promises
+   *  - execution will continue when that promise is fulfilled
+   *  - the value of the yield expression will be the fulfilled value
+   *  - it returns a promise for the return value (when the generator
+   *    stops iterating)
+   *  - the decorated function returns a promise for the return value
+   *    of the generator or the first rejected promise among those
+   *    yielded.
+   *  - if an error is thrown in the generator, it propagates through
+   *    every following yield until it is caught, or until it escapes
+   *    the generator function altogether, and is translated into a
+   *    rejection for the promise returned by the decorated generator.
+   */
+
+
+  Q.async = async;
+
+  function async(makeGenerator) {
+    return function () {
+      // when verb is "send", arg is a value
+      // when verb is "throw", arg is an exception
+      function continuer(verb, arg) {
+        var result; // Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
+        // engine that has a deployed base of browsers that support generators.
+        // However, SM's generators use the Python-inspired semantics of
+        // outdated ES6 drafts.  We would like to support ES6, but we'd also
+        // like to make it possible to use generators in deployed browsers, so
+        // we also support Python-style generators.  At some point we can remove
+        // this block.
+
+        if (typeof StopIteration === "undefined") {
+          // ES6 Generators
+          try {
+            result = generator[verb](arg);
+          } catch (exception) {
+            return reject(exception);
+          }
+
+          if (result.done) {
+            return Q(result.value);
+          } else {
+            return when(result.value, callback, errback);
+          }
+        } else {
+          // SpiderMonkey Generators
+          // FIXME: Remove this case when SM does ES6 generators.
+          try {
+            result = generator[verb](arg);
+          } catch (exception) {
+            if (isStopIteration(exception)) {
+              return Q(exception.value);
+            } else {
+              return reject(exception);
+            }
+          }
+
+          return when(result, callback, errback);
+        }
+      }
+
+      var generator = makeGenerator.apply(this, arguments);
+      var callback = continuer.bind(continuer, "next");
+      var errback = continuer.bind(continuer, "throw");
+      return callback();
+    };
+  }
+  /**
+   * The spawn function is a small wrapper around async that immediately
+   * calls the generator and also ends the promise chain, so that any
+   * unhandled errors are thrown instead of forwarded to the error
+   * handler. This is useful because it's extremely common to run
+   * generators at the top-level to work with libraries.
+   */
+
+
+  Q.spawn = spawn;
+
+  function spawn(makeGenerator) {
+    Q.done(Q.async(makeGenerator)());
+  } // FIXME: Remove this interface once ES6 generators are in SpiderMonkey.
+
+  /**
+   * Throws a ReturnValue exception to stop an asynchronous generator.
+   *
+   * This interface is a stop-gap measure to support generator return
+   * values in older Firefox/SpiderMonkey.  In browsers that support ES6
+   * generators like Chromium 29, just use "return" in your generator
+   * functions.
+   *
+   * @param value the return value for the surrounding generator
+   * @throws ReturnValue exception with the value.
+   * @example
+   * // ES6 style
+   * Q.async(function* () {
+   *      var foo = yield getFooPromise();
+   *      var bar = yield getBarPromise();
+   *      return foo + bar;
+   * })
+   * // Older SpiderMonkey style
+   * Q.async(function () {
+   *      var foo = yield getFooPromise();
+   *      var bar = yield getBarPromise();
+   *      Q.return(foo + bar);
+   * })
+   */
+
+
+  Q["return"] = _return;
+
+  function _return(value) {
+    throw new QReturnValue(value);
+  }
+  /**
+   * The promised function decorator ensures that any promise arguments
+   * are settled and passed as values (`this` is also settled and passed
+   * as a value).  It will also ensure that the result of a function is
+   * always a promise.
+   *
+   * @example
+   * var add = Q.promised(function (a, b) {
+   *     return a + b;
+   * });
+   * add(Q(a), Q(B));
+   *
+   * @param {function} callback The function to decorate
+   * @returns {function} a function that has been decorated.
+   */
+
+
+  Q.promised = promised;
+
+  function promised(callback) {
+    return function () {
+      return spread([this, all(arguments)], function (self, args) {
+        return callback.apply(self, args);
+      });
+    };
+  }
+  /**
+   * sends a message to a value in a future turn
+   * @param object* the recipient
+   * @param op the name of the message operation, e.g., "when",
+   * @param args further arguments to be forwarded to the operation
+   * @returns result {Promise} a promise for the result of the operation
+   */
+
+
+  Q.dispatch = dispatch;
+
+  function dispatch(object, op, args) {
+    return Q(object).dispatch(op, args);
+  }
+
+  Promise.prototype.dispatch = function (op, args) {
+    var self = this;
+    var deferred = defer();
+    Q.nextTick(function () {
+      self.promiseDispatch(deferred.resolve, op, args);
+    });
+    return deferred.promise;
+  };
+  /**
+   * Gets the value of a property in a future turn.
+   * @param object    promise or immediate reference for target object
+   * @param name      name of property to get
+   * @return promise for the property value
+   */
+
+
+  Q.get = function (object, key) {
+    return Q(object).dispatch("get", [key]);
+  };
+
+  Promise.prototype.get = function (key) {
+    return this.dispatch("get", [key]);
+  };
+  /**
+   * Sets the value of a property in a future turn.
+   * @param object    promise or immediate reference for object object
+   * @param name      name of property to set
+   * @param value     new value of property
+   * @return promise for the return value
+   */
+
+
+  Q.set = function (object, key, value) {
+    return Q(object).dispatch("set", [key, value]);
+  };
+
+  Promise.prototype.set = function (key, value) {
+    return this.dispatch("set", [key, value]);
+  };
+  /**
+   * Deletes a property in a future turn.
+   * @param object    promise or immediate reference for target object
+   * @param name      name of property to delete
+   * @return promise for the return value
+   */
+
+
+  Q.del = // XXX legacy
+  Q["delete"] = function (object, key) {
+    return Q(object).dispatch("delete", [key]);
+  };
+
+  Promise.prototype.del = // XXX legacy
+  Promise.prototype["delete"] = function (key) {
+    return this.dispatch("delete", [key]);
+  };
+  /**
+   * Invokes a method in a future turn.
+   * @param object    promise or immediate reference for target object
+   * @param name      name of method to invoke
+   * @param value     a value to post, typically an array of
+   *                  invocation arguments for promises that
+   *                  are ultimately backed with `resolve` values,
+   *                  as opposed to those backed with URLs
+   *                  wherein the posted value can be any
+   *                  JSON serializable object.
+   * @return promise for the return value
+   */
+  // bound locally because it is used by other methods
+
+
+  Q.mapply = // XXX As proposed by "Redsandro"
+  Q.post = function (object, name, args) {
+    return Q(object).dispatch("post", [name, args]);
+  };
+
+  Promise.prototype.mapply = // XXX As proposed by "Redsandro"
+  Promise.prototype.post = function (name, args) {
+    return this.dispatch("post", [name, args]);
+  };
+  /**
+   * Invokes a method in a future turn.
+   * @param object    promise or immediate reference for target object
+   * @param name      name of method to invoke
+   * @param ...args   array of invocation arguments
+   * @return promise for the return value
+   */
+
+
+  Q.send = // XXX Mark Miller's proposed parlance
+  Q.mcall = // XXX As proposed by "Redsandro"
+  Q.invoke = function (object, name
+  /*...args*/
+  ) {
+    return Q(object).dispatch("post", [name, array_slice(arguments, 2)]);
+  };
+
+  Promise.prototype.send = // XXX Mark Miller's proposed parlance
+  Promise.prototype.mcall = // XXX As proposed by "Redsandro"
+  Promise.prototype.invoke = function (name
+  /*...args*/
+  ) {
+    return this.dispatch("post", [name, array_slice(arguments, 1)]);
+  };
+  /**
+   * Applies the promised function in a future turn.
+   * @param object    promise or immediate reference for target function
+   * @param args      array of application arguments
+   */
+
+
+  Q.fapply = function (object, args) {
+    return Q(object).dispatch("apply", [void 0, args]);
+  };
+
+  Promise.prototype.fapply = function (args) {
+    return this.dispatch("apply", [void 0, args]);
+  };
+  /**
+   * Calls the promised function in a future turn.
+   * @param object    promise or immediate reference for target function
+   * @param ...args   array of application arguments
+   */
+
+
+  Q["try"] = Q.fcall = function (object
+  /* ...args*/
+  ) {
+    return Q(object).dispatch("apply", [void 0, array_slice(arguments, 1)]);
+  };
+
+  Promise.prototype.fcall = function ()
+  /*...args*/
+  {
+    return this.dispatch("apply", [void 0, array_slice(arguments)]);
+  };
+  /**
+   * Binds the promised function, transforming return values into a fulfilled
+   * promise and thrown errors into a rejected one.
+   * @param object    promise or immediate reference for target function
+   * @param ...args   array of application arguments
+   */
+
+
+  Q.fbind = function (object
+  /*...args*/
+  ) {
+    var promise = Q(object);
+    var args = array_slice(arguments, 1);
+    return function fbound() {
+      return promise.dispatch("apply", [this, args.concat(array_slice(arguments))]);
+    };
+  };
+
+  Promise.prototype.fbind = function ()
+  /*...args*/
+  {
+    var promise = this;
+    var args = array_slice(arguments);
+    return function fbound() {
+      return promise.dispatch("apply", [this, args.concat(array_slice(arguments))]);
+    };
+  };
+  /**
+   * Requests the names of the owned properties of a promised
+   * object in a future turn.
+   * @param object    promise or immediate reference for target object
+   * @return promise for the keys of the eventually settled object
+   */
+
+
+  Q.keys = function (object) {
+    return Q(object).dispatch("keys", []);
+  };
+
+  Promise.prototype.keys = function () {
+    return this.dispatch("keys", []);
+  };
+  /**
+   * Turns an array of promises into a promise for an array.  If any of
+   * the promises gets rejected, the whole array is rejected immediately.
+   * @param {Array*} an array (or promise for an array) of values (or
+   * promises for values)
+   * @returns a promise for an array of the corresponding values
+   */
+  // By Mark Miller
+  // http://wiki.ecmascript.org/doku.php?id=strawman:concurrency&rev=1308776521#allfulfilled
+
+
+  Q.all = all;
+
+  function all(promises) {
+    return when(promises, function (promises) {
+      var pendingCount = 0;
+      var deferred = defer();
+      array_reduce(promises, function (undefined, promise, index) {
+        var snapshot;
+
+        if (isPromise(promise) && (snapshot = promise.inspect()).state === "fulfilled") {
+          promises[index] = snapshot.value;
+        } else {
+          ++pendingCount;
+          when(promise, function (value) {
+            promises[index] = value;
+
+            if (--pendingCount === 0) {
+              deferred.resolve(promises);
+            }
+          }, deferred.reject, function (progress) {
+            deferred.notify({
+              index: index,
+              value: progress
+            });
+          });
+        }
+      }, void 0);
+
+      if (pendingCount === 0) {
+        deferred.resolve(promises);
+      }
+
+      return deferred.promise;
+    });
+  }
+
+  Promise.prototype.all = function () {
+    return all(this);
+  };
+  /**
+   * Returns the first resolved promise of an array. Prior rejected promises are
+   * ignored.  Rejects only if all promises are rejected.
+   * @param {Array*} an array containing values or promises for values
+   * @returns a promise fulfilled with the value of the first resolved promise,
+   * or a rejected promise if all promises are rejected.
+   */
+
+
+  Q.any = any;
+
+  function any(promises) {
+    if (promises.length === 0) {
+      return Q.resolve();
+    }
+
+    var deferred = Q.defer();
+    var pendingCount = 0;
+    array_reduce(promises, function (prev, current, index) {
+      var promise = promises[index];
+      pendingCount++;
+      when(promise, onFulfilled, onRejected, onProgress);
+
+      function onFulfilled(result) {
+        deferred.resolve(result);
+      }
+
+      function onRejected(err) {
+        pendingCount--;
+
+        if (pendingCount === 0) {
+          var rejection = err || new Error("" + err);
+          rejection.message = "Q can't get fulfillment value from any promise, all " + "promises were rejected. Last error message: " + rejection.message;
+          deferred.reject(rejection);
+        }
+      }
+
+      function onProgress(progress) {
+        deferred.notify({
+          index: index,
+          value: progress
+        });
+      }
+    }, undefined);
+    return deferred.promise;
+  }
+
+  Promise.prototype.any = function () {
+    return any(this);
+  };
+  /**
+   * Waits for all promises to be settled, either fulfilled or
+   * rejected.  This is distinct from `all` since that would stop
+   * waiting at the first rejection.  The promise returned by
+   * `allResolved` will never be rejected.
+   * @param promises a promise for an array (or an array) of promises
+   * (or values)
+   * @return a promise for an array of promises
+   */
+
+
+  Q.allResolved = deprecate(allResolved, "allResolved", "allSettled");
+
+  function allResolved(promises) {
+    return when(promises, function (promises) {
+      promises = array_map(promises, Q);
+      return when(all(array_map(promises, function (promise) {
+        return when(promise, noop, noop);
+      })), function () {
+        return promises;
+      });
+    });
+  }
+
+  Promise.prototype.allResolved = function () {
+    return allResolved(this);
+  };
+  /**
+   * @see Promise#allSettled
+   */
+
+
+  Q.allSettled = allSettled;
+
+  function allSettled(promises) {
+    return Q(promises).allSettled();
+  }
+  /**
+   * Turns an array of promises into a promise for an array of their states (as
+   * returned by `inspect`) when they have all settled.
+   * @param {Array[Any*]} values an array (or promise for an array) of values (or
+   * promises for values)
+   * @returns {Array[State]} an array of states for the respective values.
+   */
+
+
+  Promise.prototype.allSettled = function () {
+    return this.then(function (promises) {
+      return all(array_map(promises, function (promise) {
+        promise = Q(promise);
+
+        function regardless() {
+          return promise.inspect();
+        }
+
+        return promise.then(regardless, regardless);
+      }));
+    });
+  };
+  /**
+   * Captures the failure of a promise, giving an oportunity to recover
+   * with a callback.  If the given promise is fulfilled, the returned
+   * promise is fulfilled.
+   * @param {Any*} promise for something
+   * @param {Function} callback to fulfill the returned promise if the
+   * given promise is rejected
+   * @returns a promise for the return value of the callback
+   */
+
+
+  Q.fail = // XXX legacy
+  Q["catch"] = function (object, rejected) {
+    return Q(object).then(void 0, rejected);
+  };
+
+  Promise.prototype.fail = // XXX legacy
+  Promise.prototype["catch"] = function (rejected) {
+    return this.then(void 0, rejected);
+  };
+  /**
+   * Attaches a listener that can respond to progress notifications from a
+   * promise's originating deferred. This listener receives the exact arguments
+   * passed to ``deferred.notify``.
+   * @param {Any*} promise for something
+   * @param {Function} callback to receive any progress notifications
+   * @returns the given promise, unchanged
+   */
+
+
+  Q.progress = progress;
+
+  function progress(object, progressed) {
+    return Q(object).then(void 0, void 0, progressed);
+  }
+
+  Promise.prototype.progress = function (progressed) {
+    return this.then(void 0, void 0, progressed);
+  };
+  /**
+   * Provides an opportunity to observe the settling of a promise,
+   * regardless of whether the promise is fulfilled or rejected.  Forwards
+   * the resolution to the returned promise when the callback is done.
+   * The callback can return a promise to defer completion.
+   * @param {Any*} promise
+   * @param {Function} callback to observe the resolution of the given
+   * promise, takes no arguments.
+   * @returns a promise for the resolution of the given promise when
+   * ``fin`` is done.
+   */
+
+
+  Q.fin = // XXX legacy
+  Q["finally"] = function (object, callback) {
+    return Q(object)["finally"](callback);
+  };
+
+  Promise.prototype.fin = // XXX legacy
+  Promise.prototype["finally"] = function (callback) {
+    if (!callback || typeof callback.apply !== "function") {
+      throw new Error("Q can't apply finally callback");
+    }
+
+    callback = Q(callback);
+    return this.then(function (value) {
+      return callback.fcall().then(function () {
+        return value;
+      });
+    }, function (reason) {
+      // TODO attempt to recycle the rejection with "this".
+      return callback.fcall().then(function () {
+        throw reason;
+      });
+    });
+  };
+  /**
+   * Terminates a chain of promises, forcing rejections to be
+   * thrown as exceptions.
+   * @param {Any*} promise at the end of a chain of promises
+   * @returns nothing
+   */
+
+
+  Q.done = function (object, fulfilled, rejected, progress) {
+    return Q(object).done(fulfilled, rejected, progress);
+  };
+
+  Promise.prototype.done = function (fulfilled, rejected, progress) {
+    var onUnhandledError = function onUnhandledError(error) {
+      // forward to a future turn so that ``when``
+      // does not catch it and turn it into a rejection.
+      Q.nextTick(function () {
+        makeStackTraceLong(error, promise);
+
+        if (Q.onerror) {
+          Q.onerror(error);
+        } else {
+          throw error;
+        }
+      });
+    }; // Avoid unnecessary `nextTick`ing via an unnecessary `when`.
+
+
+    var promise = fulfilled || rejected || progress ? this.then(fulfilled, rejected, progress) : this;
+
+    if ((typeof process === "undefined" ? "undefined" : _typeof(process)) === "object" && process && process.domain) {
+      onUnhandledError = process.domain.bind(onUnhandledError);
+    }
+
+    promise.then(void 0, onUnhandledError);
+  };
+  /**
+   * Causes a promise to be rejected if it does not get fulfilled before
+   * some milliseconds time out.
+   * @param {Any*} promise
+   * @param {Number} milliseconds timeout
+   * @param {Any*} custom error message or Error object (optional)
+   * @returns a promise for the resolution of the given promise if it is
+   * fulfilled before the timeout, otherwise rejected.
+   */
+
+
+  Q.timeout = function (object, ms, error) {
+    return Q(object).timeout(ms, error);
+  };
+
+  Promise.prototype.timeout = function (ms, error) {
+    var deferred = defer();
+    var timeoutId = setTimeout(function () {
+      if (!error || "string" === typeof error) {
+        error = new Error(error || "Timed out after " + ms + " ms");
+        error.code = "ETIMEDOUT";
+      }
+
+      deferred.reject(error);
+    }, ms);
+    this.then(function (value) {
+      clearTimeout(timeoutId);
+      deferred.resolve(value);
+    }, function (exception) {
+      clearTimeout(timeoutId);
+      deferred.reject(exception);
+    }, deferred.notify);
+    return deferred.promise;
+  };
+  /**
+   * Returns a promise for the given value (or promised value), some
+   * milliseconds after it resolved. Passes rejections immediately.
+   * @param {Any*} promise
+   * @param {Number} milliseconds
+   * @returns a promise for the resolution of the given promise after milliseconds
+   * time has elapsed since the resolution of the given promise.
+   * If the given promise rejects, that is passed immediately.
+   */
+
+
+  Q.delay = function (object, timeout) {
+    if (timeout === void 0) {
+      timeout = object;
+      object = void 0;
+    }
+
+    return Q(object).delay(timeout);
+  };
+
+  Promise.prototype.delay = function (timeout) {
+    return this.then(function (value) {
+      var deferred = defer();
+      setTimeout(function () {
+        deferred.resolve(value);
+      }, timeout);
+      return deferred.promise;
+    });
+  };
+  /**
+   * Passes a continuation to a Node function, which is called with the given
+   * arguments provided as an array, and returns a promise.
+   *
+   *      Q.nfapply(FS.readFile, [__filename])
+   *      .then(function (content) {
+   *      })
+   *
+   */
+
+
+  Q.nfapply = function (callback, args) {
+    return Q(callback).nfapply(args);
+  };
+
+  Promise.prototype.nfapply = function (args) {
+    var deferred = defer();
+    var nodeArgs = array_slice(args);
+    nodeArgs.push(deferred.makeNodeResolver());
+    this.fapply(nodeArgs).fail(deferred.reject);
+    return deferred.promise;
+  };
+  /**
+   * Passes a continuation to a Node function, which is called with the given
+   * arguments provided individually, and returns a promise.
+   * @example
+   * Q.nfcall(FS.readFile, __filename)
+   * .then(function (content) {
+   * })
+   *
+   */
+
+
+  Q.nfcall = function (callback
+  /*...args*/
+  ) {
+    var args = array_slice(arguments, 1);
+    return Q(callback).nfapply(args);
+  };
+
+  Promise.prototype.nfcall = function ()
+  /*...args*/
+  {
+    var nodeArgs = array_slice(arguments);
+    var deferred = defer();
+    nodeArgs.push(deferred.makeNodeResolver());
+    this.fapply(nodeArgs).fail(deferred.reject);
+    return deferred.promise;
+  };
+  /**
+   * Wraps a NodeJS continuation passing function and returns an equivalent
+   * version that returns a promise.
+   * @example
+   * Q.nfbind(FS.readFile, __filename)("utf-8")
+   * .then(console.log)
+   * .done()
+   */
+
+
+  Q.nfbind = Q.denodeify = function (callback
+  /*...args*/
+  ) {
+    if (callback === undefined) {
+      throw new Error("Q can't wrap an undefined function");
+    }
+
+    var baseArgs = array_slice(arguments, 1);
+    return function () {
+      var nodeArgs = baseArgs.concat(array_slice(arguments));
+      var deferred = defer();
+      nodeArgs.push(deferred.makeNodeResolver());
+      Q(callback).fapply(nodeArgs).fail(deferred.reject);
+      return deferred.promise;
+    };
+  };
+
+  Promise.prototype.nfbind = Promise.prototype.denodeify = function ()
+  /*...args*/
+  {
+    var args = array_slice(arguments);
+    args.unshift(this);
+    return Q.denodeify.apply(void 0, args);
+  };
+
+  Q.nbind = function (callback, thisp
+  /*...args*/
+  ) {
+    var baseArgs = array_slice(arguments, 2);
+    return function () {
+      var nodeArgs = baseArgs.concat(array_slice(arguments));
+      var deferred = defer();
+      nodeArgs.push(deferred.makeNodeResolver());
+
+      function bound() {
+        return callback.apply(thisp, arguments);
+      }
+
+      Q(bound).fapply(nodeArgs).fail(deferred.reject);
+      return deferred.promise;
+    };
+  };
+
+  Promise.prototype.nbind = function ()
+  /*thisp, ...args*/
+  {
+    var args = array_slice(arguments, 0);
+    args.unshift(this);
+    return Q.nbind.apply(void 0, args);
+  };
+  /**
+   * Calls a method of a Node-style object that accepts a Node-style
+   * callback with a given array of arguments, plus a provided callback.
+   * @param object an object that has the named method
+   * @param {String} name name of the method of object
+   * @param {Array} args arguments to pass to the method; the callback
+   * will be provided by Q and appended to these arguments.
+   * @returns a promise for the value or error
+   */
+
+
+  Q.nmapply = // XXX As proposed by "Redsandro"
+  Q.npost = function (object, name, args) {
+    return Q(object).npost(name, args);
+  };
+
+  Promise.prototype.nmapply = // XXX As proposed by "Redsandro"
+  Promise.prototype.npost = function (name, args) {
+    var nodeArgs = array_slice(args || []);
+    var deferred = defer();
+    nodeArgs.push(deferred.makeNodeResolver());
+    this.dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+    return deferred.promise;
+  };
+  /**
+   * Calls a method of a Node-style object that accepts a Node-style
+   * callback, forwarding the given variadic arguments, plus a provided
+   * callback argument.
+   * @param object an object that has the named method
+   * @param {String} name name of the method of object
+   * @param ...args arguments to pass to the method; the callback will
+   * be provided by Q and appended to these arguments.
+   * @returns a promise for the value or error
+   */
+
+
+  Q.nsend = // XXX Based on Mark Miller's proposed "send"
+  Q.nmcall = // XXX Based on "Redsandro's" proposal
+  Q.ninvoke = function (object, name
+  /*...args*/
+  ) {
+    var nodeArgs = array_slice(arguments, 2);
+    var deferred = defer();
+    nodeArgs.push(deferred.makeNodeResolver());
+    Q(object).dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+    return deferred.promise;
+  };
+
+  Promise.prototype.nsend = // XXX Based on Mark Miller's proposed "send"
+  Promise.prototype.nmcall = // XXX Based on "Redsandro's" proposal
+  Promise.prototype.ninvoke = function (name
+  /*...args*/
+  ) {
+    var nodeArgs = array_slice(arguments, 1);
+    var deferred = defer();
+    nodeArgs.push(deferred.makeNodeResolver());
+    this.dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+    return deferred.promise;
+  };
+  /**
+   * If a function would like to support both Node continuation-passing-style and
+   * promise-returning-style, it can end its internal promise chain with
+   * `nodeify(nodeback)`, forwarding the optional nodeback argument.  If the user
+   * elects to use a nodeback, the result will be sent there.  If they do not
+   * pass a nodeback, they will receive the result promise.
+   * @param object a result (or a promise for a result)
+   * @param {Function} nodeback a Node.js-style callback
+   * @returns either the promise or nothing
+   */
+
+
+  Q.nodeify = nodeify;
+
+  function nodeify(object, nodeback) {
+    return Q(object).nodeify(nodeback);
+  }
+
+  Promise.prototype.nodeify = function (nodeback) {
+    if (nodeback) {
+      this.then(function (value) {
+        Q.nextTick(function () {
+          nodeback(null, value);
+        });
+      }, function (error) {
+        Q.nextTick(function () {
+          nodeback(error);
+        });
+      });
+    } else {
+      return this;
+    }
+  };
+
+  Q.noConflict = function () {
+    throw new Error("Q.noConflict only works when Q is used as a global");
+  }; // All code before this point will be filtered from stack traces.
+
+
+  var qEndingLine = captureLine();
+  return Q;
+});
+
+}).call(this,require('_process'),require("timers").setImmediate)
+},{"_process":62,"timers":70}],64:[function(require,module,exports){
+"use strict";
+
+function Agent() {
+  this._defaults = [];
+}
+
+["use", "on", "once", "set", "query", "type", "accept", "auth", "withCredentials", "sortQuery", "retry", "ok", "redirects", "timeout", "buffer", "serialize", "parse", "ca", "key", "pfx", "cert"].forEach(function (fn) {
+  /** Default setting for all requests from this agent */
+  Agent.prototype[fn] = function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    this._defaults.push({
+      fn: fn,
+      args: args
+    });
+
+    return this;
   };
 });
+
+Agent.prototype._setDefaults = function (req) {
+  this._defaults.forEach(function (def) {
+    req[def.fn].apply(req, def.args);
+  });
+};
+
+module.exports = Agent;
+
+},{}],65:[function(require,module,exports){
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+/**
+ * Root reference for iframes.
+ */
+var root;
+
+if (typeof window !== 'undefined') {
+  // Browser window
+  root = window;
+} else if (typeof self !== 'undefined') {
+  // Web Worker
+  root = self;
+} else {
+  // Other environments
+  console.warn("Using browser-only version of superagent in non-browser environment");
+  root = void 0;
+}
+
+var Emitter = require('component-emitter');
+
+var RequestBase = require('./request-base');
+
+var isObject = require('./is-object');
+
+var ResponseBase = require('./response-base');
+
+var Agent = require('./agent-base');
+/**
+ * Noop.
+ */
+
+
+function noop() {}
+
+;
+/**
+ * Expose `request`.
+ */
+
+var request = exports = module.exports = function (method, url) {
+  // callback
+  if ('function' == typeof url) {
+    return new exports.Request('GET', method).end(url);
+  } // url first
+
+
+  if (1 == arguments.length) {
+    return new exports.Request('GET', method);
+  }
+
+  return new exports.Request(method, url);
+};
+
+exports.Request = Request;
+/**
+ * Determine XHR.
+ */
+
+request.getXHR = function () {
+  if (root.XMLHttpRequest && (!root.location || 'file:' != root.location.protocol || !root.ActiveXObject)) {
+    return new XMLHttpRequest();
+  } else {
+    try {
+      return new ActiveXObject('Microsoft.XMLHTTP');
+    } catch (e) {}
+
+    try {
+      return new ActiveXObject('Msxml2.XMLHTTP.6.0');
+    } catch (e) {}
+
+    try {
+      return new ActiveXObject('Msxml2.XMLHTTP.3.0');
+    } catch (e) {}
+
+    try {
+      return new ActiveXObject('Msxml2.XMLHTTP');
+    } catch (e) {}
+  }
+
+  throw Error("Browser-only version of superagent could not find XHR");
+};
+/**
+ * Removes leading and trailing whitespace, added to support IE.
+ *
+ * @param {String} s
+ * @return {String}
+ * @api private
+ */
+
+
+var trim = ''.trim ? function (s) {
+  return s.trim();
+} : function (s) {
+  return s.replace(/(^\s*|\s*$)/g, '');
+};
+/**
+ * Serialize the given `obj`.
+ *
+ * @param {Object} obj
+ * @return {String}
+ * @api private
+ */
+
+function serialize(obj) {
+  if (!isObject(obj)) return obj;
+  var pairs = [];
+
+  for (var key in obj) {
+    pushEncodedKeyValuePair(pairs, key, obj[key]);
+  }
+
+  return pairs.join('&');
+}
+/**
+ * Helps 'serialize' with serializing arrays.
+ * Mutates the pairs array.
+ *
+ * @param {Array} pairs
+ * @param {String} key
+ * @param {Mixed} val
+ */
+
+
+function pushEncodedKeyValuePair(pairs, key, val) {
+  if (val != null) {
+    if (Array.isArray(val)) {
+      val.forEach(function (v) {
+        pushEncodedKeyValuePair(pairs, key, v);
+      });
+    } else if (isObject(val)) {
+      for (var subkey in val) {
+        pushEncodedKeyValuePair(pairs, "".concat(key, "[").concat(subkey, "]"), val[subkey]);
+      }
+    } else {
+      pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+    }
+  } else if (val === null) {
+    pairs.push(encodeURIComponent(key));
+  }
+}
+/**
+ * Expose serialization method.
+ */
+
+
+request.serializeObject = serialize;
+/**
+  * Parse the given x-www-form-urlencoded `str`.
+  *
+  * @param {String} str
+  * @return {Object}
+  * @api private
+  */
+
+function parseString(str) {
+  var obj = {};
+  var pairs = str.split('&');
+  var pair;
+  var pos;
+
+  for (var i = 0, len = pairs.length; i < len; ++i) {
+    pair = pairs[i];
+    pos = pair.indexOf('=');
+
+    if (pos == -1) {
+      obj[decodeURIComponent(pair)] = '';
+    } else {
+      obj[decodeURIComponent(pair.slice(0, pos))] = decodeURIComponent(pair.slice(pos + 1));
+    }
+  }
+
+  return obj;
+}
+/**
+ * Expose parser.
+ */
+
+
+request.parseString = parseString;
+/**
+ * Default MIME type map.
+ *
+ *     superagent.types.xml = 'application/xml';
+ *
+ */
+
+request.types = {
+  html: 'text/html',
+  json: 'application/json',
+  xml: 'text/xml',
+  urlencoded: 'application/x-www-form-urlencoded',
+  'form': 'application/x-www-form-urlencoded',
+  'form-data': 'application/x-www-form-urlencoded'
+};
+/**
+ * Default serialization map.
+ *
+ *     superagent.serialize['application/xml'] = function(obj){
+ *       return 'generated xml here';
+ *     };
+ *
+ */
+
+request.serialize = {
+  'application/x-www-form-urlencoded': serialize,
+  'application/json': JSON.stringify
+};
+/**
+  * Default parsers.
+  *
+  *     superagent.parse['application/xml'] = function(str){
+  *       return { object parsed from str };
+  *     };
+  *
+  */
+
+request.parse = {
+  'application/x-www-form-urlencoded': parseString,
+  'application/json': JSON.parse
+};
+/**
+ * Parse the given header `str` into
+ * an object containing the mapped fields.
+ *
+ * @param {String} str
+ * @return {Object}
+ * @api private
+ */
+
+function parseHeader(str) {
+  var lines = str.split(/\r?\n/);
+  var fields = {};
+  var index;
+  var line;
+  var field;
+  var val;
+
+  for (var i = 0, len = lines.length; i < len; ++i) {
+    line = lines[i];
+    index = line.indexOf(':');
+
+    if (index === -1) {
+      // could be empty line, just skip it
+      continue;
+    }
+
+    field = line.slice(0, index).toLowerCase();
+    val = trim(line.slice(index + 1));
+    fields[field] = val;
+  }
+
+  return fields;
+}
+/**
+ * Check if `mime` is json or has +json structured syntax suffix.
+ *
+ * @param {String} mime
+ * @return {Boolean}
+ * @api private
+ */
+
+
+function isJSON(mime) {
+  // should match /json or +json
+  // but not /json-seq
+  return /[\/+]json($|[^-\w])/.test(mime);
+}
+/**
+ * Initialize a new `Response` with the given `xhr`.
+ *
+ *  - set flags (.ok, .error, etc)
+ *  - parse header
+ *
+ * Examples:
+ *
+ *  Aliasing `superagent` as `request` is nice:
+ *
+ *      request = superagent;
+ *
+ *  We can use the promise-like API, or pass callbacks:
+ *
+ *      request.get('/').end(function(res){});
+ *      request.get('/', function(res){});
+ *
+ *  Sending data can be chained:
+ *
+ *      request
+ *        .post('/user')
+ *        .send({ name: 'tj' })
+ *        .end(function(res){});
+ *
+ *  Or passed to `.send()`:
+ *
+ *      request
+ *        .post('/user')
+ *        .send({ name: 'tj' }, function(res){});
+ *
+ *  Or passed to `.post()`:
+ *
+ *      request
+ *        .post('/user', { name: 'tj' })
+ *        .end(function(res){});
+ *
+ * Or further reduced to a single call for simple cases:
+ *
+ *      request
+ *        .post('/user', { name: 'tj' }, function(res){});
+ *
+ * @param {XMLHTTPRequest} xhr
+ * @param {Object} options
+ * @api private
+ */
+
+
+function Response(req) {
+  this.req = req;
+  this.xhr = this.req.xhr; // responseText is accessible only if responseType is '' or 'text' and on older browsers
+
+  this.text = this.req.method != 'HEAD' && (this.xhr.responseType === '' || this.xhr.responseType === 'text') || typeof this.xhr.responseType === 'undefined' ? this.xhr.responseText : null;
+  this.statusText = this.req.xhr.statusText;
+  var status = this.xhr.status; // handle IE9 bug: http://stackoverflow.com/questions/10046972/msie-returns-status-code-of-1223-for-ajax-request
+
+  if (status === 1223) {
+    status = 204;
+  }
+
+  this._setStatusProperties(status);
+
+  this.header = this.headers = parseHeader(this.xhr.getAllResponseHeaders()); // getAllResponseHeaders sometimes falsely returns "" for CORS requests, but
+  // getResponseHeader still works. so we get content-type even if getting
+  // other headers fails.
+
+  this.header['content-type'] = this.xhr.getResponseHeader('content-type');
+
+  this._setHeaderProperties(this.header);
+
+  if (null === this.text && req._responseType) {
+    this.body = this.xhr.response;
+  } else {
+    this.body = this.req.method != 'HEAD' ? this._parseBody(this.text ? this.text : this.xhr.response) : null;
+  }
+}
+
+ResponseBase(Response.prototype);
+/**
+ * Parse the given body `str`.
+ *
+ * Used for auto-parsing of bodies. Parsers
+ * are defined on the `superagent.parse` object.
+ *
+ * @param {String} str
+ * @return {Mixed}
+ * @api private
+ */
+
+Response.prototype._parseBody = function (str) {
+  var parse = request.parse[this.type];
+
+  if (this.req._parser) {
+    return this.req._parser(this, str);
+  }
+
+  if (!parse && isJSON(this.type)) {
+    parse = request.parse['application/json'];
+  }
+
+  return parse && str && (str.length || str instanceof Object) ? parse(str) : null;
+};
+/**
+ * Return an `Error` representative of this response.
+ *
+ * @return {Error}
+ * @api public
+ */
+
+
+Response.prototype.toError = function () {
+  var req = this.req;
+  var method = req.method;
+  var url = req.url;
+  var msg = "cannot ".concat(method, " ").concat(url, " (").concat(this.status, ")");
+  var err = new Error(msg);
+  err.status = this.status;
+  err.method = method;
+  err.url = url;
+  return err;
+};
+/**
+ * Expose `Response`.
+ */
+
+
+request.Response = Response;
+/**
+ * Initialize a new `Request` with the given `method` and `url`.
+ *
+ * @param {String} method
+ * @param {String} url
+ * @api public
+ */
+
+function Request(method, url) {
+  var self = this;
+  this._query = this._query || [];
+  this.method = method;
+  this.url = url;
+  this.header = {}; // preserves header name case
+
+  this._header = {}; // coerces header names to lowercase
+
+  this.on('end', function () {
+    var err = null;
+    var res = null;
+
+    try {
+      res = new Response(self);
+    } catch (e) {
+      err = new Error('Parser is unable to parse the response');
+      err.parse = true;
+      err.original = e; // issue #675: return the raw response if the response parsing fails
+
+      if (self.xhr) {
+        // ie9 doesn't have 'response' property
+        err.rawResponse = typeof self.xhr.responseType == 'undefined' ? self.xhr.responseText : self.xhr.response; // issue #876: return the http status code if the response parsing fails
+
+        err.status = self.xhr.status ? self.xhr.status : null;
+        err.statusCode = err.status; // backwards-compat only
+      } else {
+        err.rawResponse = null;
+        err.status = null;
+      }
+
+      return self.callback(err);
+    }
+
+    self.emit('response', res);
+    var new_err;
+
+    try {
+      if (!self._isResponseOK(res)) {
+        new_err = new Error(res.statusText || 'Unsuccessful HTTP response');
+      }
+    } catch (custom_err) {
+      new_err = custom_err; // ok() callback can throw
+    } // #1000 don't catch errors from the callback to avoid double calling it
+
+
+    if (new_err) {
+      new_err.original = err;
+      new_err.response = res;
+      new_err.status = res.status;
+      self.callback(new_err, res);
+    } else {
+      self.callback(null, res);
+    }
+  });
+}
+/**
+ * Mixin `Emitter` and `RequestBase`.
+ */
+
+
+Emitter(Request.prototype);
+RequestBase(Request.prototype);
+/**
+ * Set Content-Type to `type`, mapping values from `request.types`.
+ *
+ * Examples:
+ *
+ *      superagent.types.xml = 'application/xml';
+ *
+ *      request.post('/')
+ *        .type('xml')
+ *        .send(xmlstring)
+ *        .end(callback);
+ *
+ *      request.post('/')
+ *        .type('application/xml')
+ *        .send(xmlstring)
+ *        .end(callback);
+ *
+ * @param {String} type
+ * @return {Request} for chaining
+ * @api public
+ */
+
+Request.prototype.type = function (type) {
+  this.set('Content-Type', request.types[type] || type);
+  return this;
+};
+/**
+ * Set Accept to `type`, mapping values from `request.types`.
+ *
+ * Examples:
+ *
+ *      superagent.types.json = 'application/json';
+ *
+ *      request.get('/agent')
+ *        .accept('json')
+ *        .end(callback);
+ *
+ *      request.get('/agent')
+ *        .accept('application/json')
+ *        .end(callback);
+ *
+ * @param {String} accept
+ * @return {Request} for chaining
+ * @api public
+ */
+
+
+Request.prototype.accept = function (type) {
+  this.set('Accept', request.types[type] || type);
+  return this;
+};
+/**
+ * Set Authorization field value with `user` and `pass`.
+ *
+ * @param {String} user
+ * @param {String} [pass] optional in case of using 'bearer' as type
+ * @param {Object} options with 'type' property 'auto', 'basic' or 'bearer' (default 'basic')
+ * @return {Request} for chaining
+ * @api public
+ */
+
+
+Request.prototype.auth = function (user, pass, options) {
+  if (1 === arguments.length) pass = '';
+
+  if (_typeof(pass) === 'object' && pass !== null) {
+    // pass is optional and can be replaced with options
+    options = pass;
+    pass = '';
+  }
+
+  if (!options) {
+    options = {
+      type: 'function' === typeof btoa ? 'basic' : 'auto'
+    };
+  }
+
+  var encoder = function encoder(string) {
+    if ('function' === typeof btoa) {
+      return btoa(string);
+    }
+
+    throw new Error('Cannot use basic auth, btoa is not a function');
+  };
+
+  return this._auth(user, pass, options, encoder);
+};
+/**
+ * Add query-string `val`.
+ *
+ * Examples:
+ *
+ *   request.get('/shoes')
+ *     .query('size=10')
+ *     .query({ color: 'blue' })
+ *
+ * @param {Object|String} val
+ * @return {Request} for chaining
+ * @api public
+ */
+
+
+Request.prototype.query = function (val) {
+  if ('string' != typeof val) val = serialize(val);
+  if (val) this._query.push(val);
+  return this;
+};
+/**
+ * Queue the given `file` as an attachment to the specified `field`,
+ * with optional `options` (or filename).
+ *
+ * ``` js
+ * request.post('/upload')
+ *   .attach('content', new Blob(['<a id="a"><b id="b">hey!</b></a>'], { type: "text/html"}))
+ *   .end(callback);
+ * ```
+ *
+ * @param {String} field
+ * @param {Blob|File} file
+ * @param {String|Object} options
+ * @return {Request} for chaining
+ * @api public
+ */
+
+
+Request.prototype.attach = function (field, file, options) {
+  if (file) {
+    if (this._data) {
+      throw Error("superagent can't mix .send() and .attach()");
+    }
+
+    this._getFormData().append(field, file, options || file.name);
+  }
+
+  return this;
+};
+
+Request.prototype._getFormData = function () {
+  if (!this._formData) {
+    this._formData = new root.FormData();
+  }
+
+  return this._formData;
+};
+/**
+ * Invoke the callback with `err` and `res`
+ * and handle arity check.
+ *
+ * @param {Error} err
+ * @param {Response} res
+ * @api private
+ */
+
+
+Request.prototype.callback = function (err, res) {
+  if (this._shouldRetry(err, res)) {
+    return this._retry();
+  }
+
+  var fn = this._callback;
+  this.clearTimeout();
+
+  if (err) {
+    if (this._maxRetries) err.retries = this._retries - 1;
+    this.emit('error', err);
+  }
+
+  fn(err, res);
+};
+/**
+ * Invoke callback with x-domain error.
+ *
+ * @api private
+ */
+
+
+Request.prototype.crossDomainError = function () {
+  var err = new Error('Request has been terminated\nPossible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.');
+  err.crossDomain = true;
+  err.status = this.status;
+  err.method = this.method;
+  err.url = this.url;
+  this.callback(err);
+}; // This only warns, because the request is still likely to work
+
+
+Request.prototype.buffer = Request.prototype.ca = Request.prototype.agent = function () {
+  console.warn("This is not supported in browser version of superagent");
+  return this;
+}; // This throws, because it can't send/receive data as expected
+
+
+Request.prototype.pipe = Request.prototype.write = function () {
+  throw Error("Streaming is not supported in browser version of superagent");
+};
+/**
+ * Check if `obj` is a host object,
+ * we don't want to serialize these :)
+ *
+ * @param {Object} obj
+ * @return {Boolean}
+ * @api private
+ */
+
+
+Request.prototype._isHost = function _isHost(obj) {
+  // Native objects stringify to [object File], [object Blob], [object FormData], etc.
+  return obj && 'object' === _typeof(obj) && !Array.isArray(obj) && Object.prototype.toString.call(obj) !== '[object Object]';
+};
+/**
+ * Initiate request, invoking callback `fn(res)`
+ * with an instanceof `Response`.
+ *
+ * @param {Function} fn
+ * @return {Request} for chaining
+ * @api public
+ */
+
+
+Request.prototype.end = function (fn) {
+  if (this._endCalled) {
+    console.warn("Warning: .end() was called twice. This is not supported in superagent");
+  }
+
+  this._endCalled = true; // store callback
+
+  this._callback = fn || noop; // querystring
+
+  this._finalizeQueryString();
+
+  this._end();
+};
+
+Request.prototype._end = function () {
+  if (this._aborted) return this.callback(Error("The request has been aborted even before .end() was called"));
+  var self = this;
+  var xhr = this.xhr = request.getXHR();
+  var data = this._formData || this._data;
+
+  this._setTimeouts(); // state change
+
+
+  xhr.onreadystatechange = function () {
+    var readyState = xhr.readyState;
+
+    if (readyState >= 2 && self._responseTimeoutTimer) {
+      clearTimeout(self._responseTimeoutTimer);
+    }
+
+    if (4 != readyState) {
+      return;
+    } // In IE9, reads to any property (e.g. status) off of an aborted XHR will
+    // result in the error "Could not complete the operation due to error c00c023f"
+
+
+    var status;
+
+    try {
+      status = xhr.status;
+    } catch (e) {
+      status = 0;
+    }
+
+    if (!status) {
+      if (self.timedout || self._aborted) return;
+      return self.crossDomainError();
+    }
+
+    self.emit('end');
+  }; // progress
+
+
+  var handleProgress = function handleProgress(direction, e) {
+    if (e.total > 0) {
+      e.percent = e.loaded / e.total * 100;
+    }
+
+    e.direction = direction;
+    self.emit('progress', e);
+  };
+
+  if (this.hasListeners('progress')) {
+    try {
+      xhr.onprogress = handleProgress.bind(null, 'download');
+
+      if (xhr.upload) {
+        xhr.upload.onprogress = handleProgress.bind(null, 'upload');
+      }
+    } catch (e) {// Accessing xhr.upload fails in IE from a web worker, so just pretend it doesn't exist.
+      // Reported here:
+      // https://connect.microsoft.com/IE/feedback/details/837245/xmlhttprequest-upload-throws-invalid-argument-when-used-from-web-worker-context
+    }
+  } // initiate request
+
+
+  try {
+    if (this.username && this.password) {
+      xhr.open(this.method, this.url, true, this.username, this.password);
+    } else {
+      xhr.open(this.method, this.url, true);
+    }
+  } catch (err) {
+    // see #1149
+    return this.callback(err);
+  } // CORS
+
+
+  if (this._withCredentials) xhr.withCredentials = true; // body
+
+  if (!this._formData && 'GET' != this.method && 'HEAD' != this.method && 'string' != typeof data && !this._isHost(data)) {
+    // serialize stuff
+    var contentType = this._header['content-type'];
+
+    var _serialize = this._serializer || request.serialize[contentType ? contentType.split(';')[0] : ''];
+
+    if (!_serialize && isJSON(contentType)) {
+      _serialize = request.serialize['application/json'];
+    }
+
+    if (_serialize) data = _serialize(data);
+  } // set header fields
+
+
+  for (var field in this.header) {
+    if (null == this.header[field]) continue;
+    if (this.header.hasOwnProperty(field)) xhr.setRequestHeader(field, this.header[field]);
+  }
+
+  if (this._responseType) {
+    xhr.responseType = this._responseType;
+  } // send stuff
+
+
+  this.emit('request', this); // IE11 xhr.send(undefined) sends 'undefined' string as POST payload (instead of nothing)
+  // We need null here if data is undefined
+
+  xhr.send(typeof data !== 'undefined' ? data : null);
+};
+
+request.agent = function () {
+  return new Agent();
+};
+
+["GET", "POST", "OPTIONS", "PATCH", "PUT", "DELETE"].forEach(function (method) {
+  Agent.prototype[method.toLowerCase()] = function (url, fn) {
+    var req = new request.Request(method, url);
+
+    this._setDefaults(req);
+
+    if (fn) {
+      req.end(fn);
+    }
+
+    return req;
+  };
+});
+Agent.prototype.del = Agent.prototype['delete'];
+/**
+ * GET `url` with optional callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed|Function} [data] or fn
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+request.get = function (url, data, fn) {
+  var req = request('GET', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.query(data);
+  if (fn) req.end(fn);
+  return req;
+};
+/**
+ * HEAD `url` with optional callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed|Function} [data] or fn
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+
+request.head = function (url, data, fn) {
+  var req = request('HEAD', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.query(data);
+  if (fn) req.end(fn);
+  return req;
+};
+/**
+ * OPTIONS query to `url` with optional callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed|Function} [data] or fn
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+
+request.options = function (url, data, fn) {
+  var req = request('OPTIONS', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+/**
+ * DELETE `url` with optional `data` and callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed} [data]
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+
+function del(url, data, fn) {
+  var req = request('DELETE', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+}
+
+request['del'] = del;
+request['delete'] = del;
+/**
+ * PATCH `url` with optional `data` and callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed} [data]
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+request.patch = function (url, data, fn) {
+  var req = request('PATCH', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+/**
+ * POST `url` with optional `data` and callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed} [data]
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+
+request.post = function (url, data, fn) {
+  var req = request('POST', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+/**
+ * PUT `url` with optional `data` and callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed|Function} [data] or fn
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+
+request.put = function (url, data, fn) {
+  var req = request('PUT', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+
+},{"./agent-base":64,"./is-object":66,"./request-base":67,"./response-base":68,"component-emitter":50}],66:[function(require,module,exports){
+'use strict';
+/**
+ * Check if `obj` is an object.
+ *
+ * @param {Object} obj
+ * @return {Boolean}
+ * @api private
+ */
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function isObject(obj) {
   return null !== obj && 'object' === _typeof(obj);
 }
 
-var isObject_1 = isObject;
+module.exports = isObject;
 
+},{}],67:[function(require,module,exports){
+'use strict';
 /**
  * Module of mixed-in functions shared between node and client code
  */
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var isObject = require('./is-object');
 /**
  * Expose `RequestBase`.
  */
 
 
-var requestBase = RequestBase;
+module.exports = RequestBase;
 /**
  * Initialize a new `RequestBase`.
  *
@@ -19569,7 +20416,7 @@ RequestBase.prototype.getHeader = RequestBase.prototype.get;
  */
 
 RequestBase.prototype.set = function (field, val) {
-  if (isObject_1(field)) {
+  if (isObject(field)) {
     for (var key in field) {
       this.set(key, field[key]);
     }
@@ -19631,7 +20478,7 @@ RequestBase.prototype.field = function (name, val) {
     throw new Error(".field() can't be used if .send() is used. Please use only .send() or only .field() & .attach()");
   }
 
-  if (isObject_1(name)) {
+  if (isObject(name)) {
     for (var key in name) {
       this.field(key, name[key]);
     }
@@ -19810,7 +20657,7 @@ RequestBase.prototype.toJSON = function () {
 
 
 RequestBase.prototype.send = function (data) {
-  var isObj = isObject_1(data);
+  var isObj = isObject(data);
   var type = this._header['content-type'];
 
   if (this._formData) {
@@ -19828,7 +20675,7 @@ RequestBase.prototype.send = function (data) {
   } // merge
 
 
-  if (isObj && isObject_1(this._data)) {
+  if (isObj && isObject(this._data)) {
     for (var key in data) {
       this._data[key] = data[key];
     }
@@ -19963,93 +20810,19 @@ RequestBase.prototype._setTimeouts = function () {
   }
 };
 
-/**
- * Return the mime type for the given `str`.
- *
- * @param {String} str
- * @return {String}
- * @api private
- */
-
-var type = function type(str) {
-  return str.split(/ *; */).shift();
-};
-/**
- * Return header field parameters.
- *
- * @param {String} str
- * @return {Object}
- * @api private
- */
-
-
-var params = function params(str) {
-  return str.split(/ *; */).reduce(function (obj, str) {
-    var parts = str.split(/ *= */);
-    var key = parts.shift();
-    var val = parts.shift();
-    if (key && val) obj[key] = val;
-    return obj;
-  }, {});
-};
-/**
- * Parse Link header fields.
- *
- * @param {String} str
- * @return {Object}
- * @api private
- */
-
-
-var parseLinks = function parseLinks(str) {
-  return str.split(/ *, */).reduce(function (obj, str) {
-    var parts = str.split(/ *; */);
-    var url = parts[0].slice(1, -1);
-    var rel = parts[1].split(/ *= */)[1].slice(1, -1);
-    obj[rel] = url;
-    return obj;
-  }, {});
-};
-/**
- * Strip content related fields from `header`.
- *
- * @param {Object} header
- * @return {Object} header
- * @api private
- */
-
-
-var cleanHeader = function cleanHeader(header, changesOrigin) {
-  delete header['content-type'];
-  delete header['content-length'];
-  delete header['transfer-encoding'];
-  delete header['host']; // secuirty
-
-  if (changesOrigin) {
-    delete header['authorization'];
-    delete header['cookie'];
-  }
-
-  return header;
-};
-
-var utils = {
-  type: type,
-  params: params,
-  parseLinks: parseLinks,
-  cleanHeader: cleanHeader
-};
-
+},{"./is-object":66}],68:[function(require,module,exports){
+'use strict';
 /**
  * Module dependencies.
  */
 
+var utils = require('./utils');
 /**
  * Expose `ResponseBase`.
  */
 
 
-var responseBase = ResponseBase;
+module.exports = ResponseBase;
 /**
  * Initialize a new `ResponseBase`.
  *
@@ -20057,7 +20830,7 @@ var responseBase = ResponseBase;
  */
 
 function ResponseBase(obj) {
-  if (obj) return mixin$1(obj);
+  if (obj) return mixin(obj);
 }
 /**
  * Mixin the prototype properties.
@@ -20068,7 +20841,7 @@ function ResponseBase(obj) {
  */
 
 
-function mixin$1(obj) {
+function mixin(obj) {
   for (var key in ResponseBase.prototype) {
     obj[key] = ResponseBase.prototype[key];
   }
@@ -20168,976 +20941,159 @@ ResponseBase.prototype._setStatusProperties = function (status) {
   this.unprocessableEntity = 422 == status;
 };
 
-function Agent() {
-  this._defaults = [];
-}
+},{"./utils":69}],69:[function(require,module,exports){
+'use strict';
+/**
+ * Return the mime type for the given `str`.
+ *
+ * @param {String} str
+ * @return {String}
+ * @api private
+ */
 
-["use", "on", "once", "set", "query", "type", "accept", "auth", "withCredentials", "sortQuery", "retry", "ok", "redirects", "timeout", "buffer", "serialize", "parse", "ca", "key", "pfx", "cert"].forEach(function (fn) {
-  /** Default setting for all requests from this agent */
-  Agent.prototype[fn] = function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+exports.type = function (str) {
+  return str.split(/ *; */).shift();
+};
+/**
+ * Return header field parameters.
+ *
+ * @param {String} str
+ * @return {Object}
+ * @api private
+ */
 
-    this._defaults.push({
-      fn: fn,
-      args: args
-    });
 
-    return this;
-  };
-});
+exports.params = function (str) {
+  return str.split(/ *; */).reduce(function (obj, str) {
+    var parts = str.split(/ *= */);
+    var key = parts.shift();
+    var val = parts.shift();
+    if (key && val) obj[key] = val;
+    return obj;
+  }, {});
+};
+/**
+ * Parse Link header fields.
+ *
+ * @param {String} str
+ * @return {Object}
+ * @api private
+ */
 
-Agent.prototype._setDefaults = function (req) {
-  this._defaults.forEach(function (def) {
-    req[def.fn].apply(req, def.args);
-  });
+
+exports.parseLinks = function (str) {
+  return str.split(/ *, */).reduce(function (obj, str) {
+    var parts = str.split(/ *; */);
+    var url = parts[0].slice(1, -1);
+    var rel = parts[1].split(/ *= */)[1].slice(1, -1);
+    obj[rel] = url;
+    return obj;
+  }, {});
+};
+/**
+ * Strip content related fields from `header`.
+ *
+ * @param {Object} header
+ * @return {Object} header
+ * @api private
+ */
+
+
+exports.cleanHeader = function (header, changesOrigin) {
+  delete header['content-type'];
+  delete header['content-length'];
+  delete header['transfer-encoding'];
+  delete header['host']; // secuirty
+
+  if (changesOrigin) {
+    delete header['authorization'];
+    delete header['cookie'];
+  }
+
+  return header;
 };
 
-var agentBase = Agent;
+},{}],70:[function(require,module,exports){
+(function (setImmediate,clearImmediate){
+"use strict";
 
-var client = createCommonjsModule(function (module, exports) {
-  /**
-   * Root reference for iframes.
-   */
-  var root;
+var nextTick = require('process/browser.js').nextTick;
 
-  if (typeof window !== 'undefined') {
-    // Browser window
-    root = window;
-  } else if (typeof self !== 'undefined') {
-    // Web Worker
-    root = self;
-  } else {
-    // Other environments
-    console.warn("Using browser-only version of superagent in non-browser environment");
-    root = commonjsGlobal;
+var apply = Function.prototype.apply;
+var slice = Array.prototype.slice;
+var immediateIds = {};
+var nextImmediateId = 0; // DOM APIs, for completeness
+
+exports.setTimeout = function () {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+
+exports.setInterval = function () {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+
+exports.clearTimeout = exports.clearInterval = function (timeout) {
+  timeout.close();
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+
+Timeout.prototype.unref = Timeout.prototype.ref = function () {};
+
+Timeout.prototype.close = function () {
+  this._clearFn.call(window, this._id);
+}; // Does not start the time, just sets up the members needed.
+
+
+exports.enroll = function (item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function (item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function (item) {
+  clearTimeout(item._idleTimeoutId);
+  var msecs = item._idleTimeout;
+
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout) item._onTimeout();
+    }, msecs);
   }
-  /**
-   * Noop.
-   */
+}; // That's not how node.js implements it but the exposed api is the same.
 
 
-  function noop() {}
-  /**
-   * Expose `request`.
-   */
-
-  var request = exports = module.exports = function (method, url) {
-    // callback
-    if ('function' == typeof url) {
-      return new exports.Request('GET', method).end(url);
-    } // url first
-
-
-    if (1 == arguments.length) {
-      return new exports.Request('GET', method);
-    }
-
-    return new exports.Request(method, url);
-  };
-
-  exports.Request = Request;
-  /**
-   * Determine XHR.
-   */
-
-  request.getXHR = function () {
-    if (root.XMLHttpRequest && (!root.location || 'file:' != root.location.protocol || !root.ActiveXObject)) {
-      return new XMLHttpRequest();
-    } else {
-      try {
-        return new ActiveXObject('Microsoft.XMLHTTP');
-      } catch (e) {}
-
-      try {
-        return new ActiveXObject('Msxml2.XMLHTTP.6.0');
-      } catch (e) {}
-
-      try {
-        return new ActiveXObject('Msxml2.XMLHTTP.3.0');
-      } catch (e) {}
-
-      try {
-        return new ActiveXObject('Msxml2.XMLHTTP');
-      } catch (e) {}
-    }
-
-    throw Error("Browser-only version of superagent could not find XHR");
-  };
-  /**
-   * Removes leading and trailing whitespace, added to support IE.
-   *
-   * @param {String} s
-   * @return {String}
-   * @api private
-   */
-
-
-  var trim = ''.trim ? function (s) {
-    return s.trim();
-  } : function (s) {
-    return s.replace(/(^\s*|\s*$)/g, '');
-  };
-  /**
-   * Serialize the given `obj`.
-   *
-   * @param {Object} obj
-   * @return {String}
-   * @api private
-   */
-
-  function serialize(obj) {
-    if (!isObject_1(obj)) return obj;
-    var pairs = [];
-
-    for (var key in obj) {
-      pushEncodedKeyValuePair(pairs, key, obj[key]);
-    }
-
-    return pairs.join('&');
-  }
-  /**
-   * Helps 'serialize' with serializing arrays.
-   * Mutates the pairs array.
-   *
-   * @param {Array} pairs
-   * @param {String} key
-   * @param {Mixed} val
-   */
-
-
-  function pushEncodedKeyValuePair(pairs, key, val) {
-    if (val != null) {
-      if (Array.isArray(val)) {
-        val.forEach(function (v) {
-          pushEncodedKeyValuePair(pairs, key, v);
-        });
-      } else if (isObject_1(val)) {
-        for (var subkey in val) {
-          pushEncodedKeyValuePair(pairs, "".concat(key, "[").concat(subkey, "]"), val[subkey]);
-        }
+exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function (fn) {
+  var id = nextImmediateId++;
+  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+  immediateIds[id] = true;
+  nextTick(function onNextTick() {
+    if (immediateIds[id]) {
+      // fn.call() is faster so we optimize for the common use-case
+      // @see http://jsperf.com/call-apply-segu
+      if (args) {
+        fn.apply(null, args);
       } else {
-        pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
-      }
-    } else if (val === null) {
-      pairs.push(encodeURIComponent(key));
+        fn.call(null);
+      } // Prevent ids from leaking
+
+
+      exports.clearImmediate(id);
     }
-  }
-  /**
-   * Expose serialization method.
-   */
-
-
-  request.serializeObject = serialize;
-  /**
-    * Parse the given x-www-form-urlencoded `str`.
-    *
-    * @param {String} str
-    * @return {Object}
-    * @api private
-    */
-
-  function parseString(str) {
-    var obj = {};
-    var pairs = str.split('&');
-    var pair;
-    var pos;
-
-    for (var i = 0, len = pairs.length; i < len; ++i) {
-      pair = pairs[i];
-      pos = pair.indexOf('=');
-
-      if (pos == -1) {
-        obj[decodeURIComponent(pair)] = '';
-      } else {
-        obj[decodeURIComponent(pair.slice(0, pos))] = decodeURIComponent(pair.slice(pos + 1));
-      }
-    }
-
-    return obj;
-  }
-  /**
-   * Expose parser.
-   */
-
-
-  request.parseString = parseString;
-  /**
-   * Default MIME type map.
-   *
-   *     superagent.types.xml = 'application/xml';
-   *
-   */
-
-  request.types = {
-    html: 'text/html',
-    json: 'application/json',
-    xml: 'text/xml',
-    urlencoded: 'application/x-www-form-urlencoded',
-    'form': 'application/x-www-form-urlencoded',
-    'form-data': 'application/x-www-form-urlencoded'
-  };
-  /**
-   * Default serialization map.
-   *
-   *     superagent.serialize['application/xml'] = function(obj){
-   *       return 'generated xml here';
-   *     };
-   *
-   */
-
-  request.serialize = {
-    'application/x-www-form-urlencoded': serialize,
-    'application/json': JSON.stringify
-  };
-  /**
-    * Default parsers.
-    *
-    *     superagent.parse['application/xml'] = function(str){
-    *       return { object parsed from str };
-    *     };
-    *
-    */
-
-  request.parse = {
-    'application/x-www-form-urlencoded': parseString,
-    'application/json': JSON.parse
-  };
-  /**
-   * Parse the given header `str` into
-   * an object containing the mapped fields.
-   *
-   * @param {String} str
-   * @return {Object}
-   * @api private
-   */
-
-  function parseHeader(str) {
-    var lines = str.split(/\r?\n/);
-    var fields = {};
-    var index;
-    var line;
-    var field;
-    var val;
-
-    for (var i = 0, len = lines.length; i < len; ++i) {
-      line = lines[i];
-      index = line.indexOf(':');
-
-      if (index === -1) {
-        // could be empty line, just skip it
-        continue;
-      }
-
-      field = line.slice(0, index).toLowerCase();
-      val = trim(line.slice(index + 1));
-      fields[field] = val;
-    }
-
-    return fields;
-  }
-  /**
-   * Check if `mime` is json or has +json structured syntax suffix.
-   *
-   * @param {String} mime
-   * @return {Boolean}
-   * @api private
-   */
-
-
-  function isJSON(mime) {
-    // should match /json or +json
-    // but not /json-seq
-    return /[\/+]json($|[^-\w])/.test(mime);
-  }
-  /**
-   * Initialize a new `Response` with the given `xhr`.
-   *
-   *  - set flags (.ok, .error, etc)
-   *  - parse header
-   *
-   * Examples:
-   *
-   *  Aliasing `superagent` as `request` is nice:
-   *
-   *      request = superagent;
-   *
-   *  We can use the promise-like API, or pass callbacks:
-   *
-   *      request.get('/').end(function(res){});
-   *      request.get('/', function(res){});
-   *
-   *  Sending data can be chained:
-   *
-   *      request
-   *        .post('/user')
-   *        .send({ name: 'tj' })
-   *        .end(function(res){});
-   *
-   *  Or passed to `.send()`:
-   *
-   *      request
-   *        .post('/user')
-   *        .send({ name: 'tj' }, function(res){});
-   *
-   *  Or passed to `.post()`:
-   *
-   *      request
-   *        .post('/user', { name: 'tj' })
-   *        .end(function(res){});
-   *
-   * Or further reduced to a single call for simple cases:
-   *
-   *      request
-   *        .post('/user', { name: 'tj' }, function(res){});
-   *
-   * @param {XMLHTTPRequest} xhr
-   * @param {Object} options
-   * @api private
-   */
-
-
-  function Response(req) {
-    this.req = req;
-    this.xhr = this.req.xhr; // responseText is accessible only if responseType is '' or 'text' and on older browsers
-
-    this.text = this.req.method != 'HEAD' && (this.xhr.responseType === '' || this.xhr.responseType === 'text') || typeof this.xhr.responseType === 'undefined' ? this.xhr.responseText : null;
-    this.statusText = this.req.xhr.statusText;
-    var status = this.xhr.status; // handle IE9 bug: http://stackoverflow.com/questions/10046972/msie-returns-status-code-of-1223-for-ajax-request
-
-    if (status === 1223) {
-      status = 204;
-    }
-
-    this._setStatusProperties(status);
-
-    this.header = this.headers = parseHeader(this.xhr.getAllResponseHeaders()); // getAllResponseHeaders sometimes falsely returns "" for CORS requests, but
-    // getResponseHeader still works. so we get content-type even if getting
-    // other headers fails.
-
-    this.header['content-type'] = this.xhr.getResponseHeader('content-type');
-
-    this._setHeaderProperties(this.header);
-
-    if (null === this.text && req._responseType) {
-      this.body = this.xhr.response;
-    } else {
-      this.body = this.req.method != 'HEAD' ? this._parseBody(this.text ? this.text : this.xhr.response) : null;
-    }
-  }
-
-  responseBase(Response.prototype);
-  /**
-   * Parse the given body `str`.
-   *
-   * Used for auto-parsing of bodies. Parsers
-   * are defined on the `superagent.parse` object.
-   *
-   * @param {String} str
-   * @return {Mixed}
-   * @api private
-   */
-
-  Response.prototype._parseBody = function (str) {
-    var parse = request.parse[this.type];
-
-    if (this.req._parser) {
-      return this.req._parser(this, str);
-    }
-
-    if (!parse && isJSON(this.type)) {
-      parse = request.parse['application/json'];
-    }
-
-    return parse && str && (str.length || str instanceof Object) ? parse(str) : null;
-  };
-  /**
-   * Return an `Error` representative of this response.
-   *
-   * @return {Error}
-   * @api public
-   */
-
-
-  Response.prototype.toError = function () {
-    var req = this.req;
-    var method = req.method;
-    var url = req.url;
-    var msg = "cannot ".concat(method, " ").concat(url, " (").concat(this.status, ")");
-    var err = new Error(msg);
-    err.status = this.status;
-    err.method = method;
-    err.url = url;
-    return err;
-  };
-  /**
-   * Expose `Response`.
-   */
-
-
-  request.Response = Response;
-  /**
-   * Initialize a new `Request` with the given `method` and `url`.
-   *
-   * @param {String} method
-   * @param {String} url
-   * @api public
-   */
-
-  function Request(method, url) {
-    var self = this;
-    this._query = this._query || [];
-    this.method = method;
-    this.url = url;
-    this.header = {}; // preserves header name case
-
-    this._header = {}; // coerces header names to lowercase
-
-    this.on('end', function () {
-      var err = null;
-      var res = null;
-
-      try {
-        res = new Response(self);
-      } catch (e) {
-        err = new Error('Parser is unable to parse the response');
-        err.parse = true;
-        err.original = e; // issue #675: return the raw response if the response parsing fails
-
-        if (self.xhr) {
-          // ie9 doesn't have 'response' property
-          err.rawResponse = typeof self.xhr.responseType == 'undefined' ? self.xhr.responseText : self.xhr.response; // issue #876: return the http status code if the response parsing fails
-
-          err.status = self.xhr.status ? self.xhr.status : null;
-          err.statusCode = err.status; // backwards-compat only
-        } else {
-          err.rawResponse = null;
-          err.status = null;
-        }
-
-        return self.callback(err);
-      }
-
-      self.emit('response', res);
-      var new_err;
-
-      try {
-        if (!self._isResponseOK(res)) {
-          new_err = new Error(res.statusText || 'Unsuccessful HTTP response');
-        }
-      } catch (custom_err) {
-        new_err = custom_err; // ok() callback can throw
-      } // #1000 don't catch errors from the callback to avoid double calling it
-
-
-      if (new_err) {
-        new_err.original = err;
-        new_err.response = res;
-        new_err.status = res.status;
-        self.callback(new_err, res);
-      } else {
-        self.callback(null, res);
-      }
-    });
-  }
-  /**
-   * Mixin `Emitter` and `RequestBase`.
-   */
-
-
-  componentEmitter(Request.prototype);
-  requestBase(Request.prototype);
-  /**
-   * Set Content-Type to `type`, mapping values from `request.types`.
-   *
-   * Examples:
-   *
-   *      superagent.types.xml = 'application/xml';
-   *
-   *      request.post('/')
-   *        .type('xml')
-   *        .send(xmlstring)
-   *        .end(callback);
-   *
-   *      request.post('/')
-   *        .type('application/xml')
-   *        .send(xmlstring)
-   *        .end(callback);
-   *
-   * @param {String} type
-   * @return {Request} for chaining
-   * @api public
-   */
-
-  Request.prototype.type = function (type) {
-    this.set('Content-Type', request.types[type] || type);
-    return this;
-  };
-  /**
-   * Set Accept to `type`, mapping values from `request.types`.
-   *
-   * Examples:
-   *
-   *      superagent.types.json = 'application/json';
-   *
-   *      request.get('/agent')
-   *        .accept('json')
-   *        .end(callback);
-   *
-   *      request.get('/agent')
-   *        .accept('application/json')
-   *        .end(callback);
-   *
-   * @param {String} accept
-   * @return {Request} for chaining
-   * @api public
-   */
-
-
-  Request.prototype.accept = function (type) {
-    this.set('Accept', request.types[type] || type);
-    return this;
-  };
-  /**
-   * Set Authorization field value with `user` and `pass`.
-   *
-   * @param {String} user
-   * @param {String} [pass] optional in case of using 'bearer' as type
-   * @param {Object} options with 'type' property 'auto', 'basic' or 'bearer' (default 'basic')
-   * @return {Request} for chaining
-   * @api public
-   */
-
-
-  Request.prototype.auth = function (user, pass, options) {
-    if (1 === arguments.length) pass = '';
-
-    if (_typeof(pass) === 'object' && pass !== null) {
-      // pass is optional and can be replaced with options
-      options = pass;
-      pass = '';
-    }
-
-    if (!options) {
-      options = {
-        type: 'function' === typeof btoa ? 'basic' : 'auto'
-      };
-    }
-
-    var encoder = function encoder(string) {
-      if ('function' === typeof btoa) {
-        return btoa(string);
-      }
-
-      throw new Error('Cannot use basic auth, btoa is not a function');
-    };
-
-    return this._auth(user, pass, options, encoder);
-  };
-  /**
-   * Add query-string `val`.
-   *
-   * Examples:
-   *
-   *   request.get('/shoes')
-   *     .query('size=10')
-   *     .query({ color: 'blue' })
-   *
-   * @param {Object|String} val
-   * @return {Request} for chaining
-   * @api public
-   */
-
-
-  Request.prototype.query = function (val) {
-    if ('string' != typeof val) val = serialize(val);
-    if (val) this._query.push(val);
-    return this;
-  };
-  /**
-   * Queue the given `file` as an attachment to the specified `field`,
-   * with optional `options` (or filename).
-   *
-   * ``` js
-   * request.post('/upload')
-   *   .attach('content', new Blob(['<a id="a"><b id="b">hey!</b></a>'], { type: "text/html"}))
-   *   .end(callback);
-   * ```
-   *
-   * @param {String} field
-   * @param {Blob|File} file
-   * @param {String|Object} options
-   * @return {Request} for chaining
-   * @api public
-   */
-
-
-  Request.prototype.attach = function (field, file, options) {
-    if (file) {
-      if (this._data) {
-        throw Error("superagent can't mix .send() and .attach()");
-      }
-
-      this._getFormData().append(field, file, options || file.name);
-    }
-
-    return this;
-  };
-
-  Request.prototype._getFormData = function () {
-    if (!this._formData) {
-      this._formData = new root.FormData();
-    }
-
-    return this._formData;
-  };
-  /**
-   * Invoke the callback with `err` and `res`
-   * and handle arity check.
-   *
-   * @param {Error} err
-   * @param {Response} res
-   * @api private
-   */
-
-
-  Request.prototype.callback = function (err, res) {
-    if (this._shouldRetry(err, res)) {
-      return this._retry();
-    }
-
-    var fn = this._callback;
-    this.clearTimeout();
-
-    if (err) {
-      if (this._maxRetries) err.retries = this._retries - 1;
-      this.emit('error', err);
-    }
-
-    fn(err, res);
-  };
-  /**
-   * Invoke callback with x-domain error.
-   *
-   * @api private
-   */
-
-
-  Request.prototype.crossDomainError = function () {
-    var err = new Error('Request has been terminated\nPossible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.');
-    err.crossDomain = true;
-    err.status = this.status;
-    err.method = this.method;
-    err.url = this.url;
-    this.callback(err);
-  }; // This only warns, because the request is still likely to work
-
-
-  Request.prototype.buffer = Request.prototype.ca = Request.prototype.agent = function () {
-    console.warn("This is not supported in browser version of superagent");
-    return this;
-  }; // This throws, because it can't send/receive data as expected
-
-
-  Request.prototype.pipe = Request.prototype.write = function () {
-    throw Error("Streaming is not supported in browser version of superagent");
-  };
-  /**
-   * Check if `obj` is a host object,
-   * we don't want to serialize these :)
-   *
-   * @param {Object} obj
-   * @return {Boolean}
-   * @api private
-   */
-
-
-  Request.prototype._isHost = function _isHost(obj) {
-    // Native objects stringify to [object File], [object Blob], [object FormData], etc.
-    return obj && 'object' === _typeof(obj) && !Array.isArray(obj) && Object.prototype.toString.call(obj) !== '[object Object]';
-  };
-  /**
-   * Initiate request, invoking callback `fn(res)`
-   * with an instanceof `Response`.
-   *
-   * @param {Function} fn
-   * @return {Request} for chaining
-   * @api public
-   */
-
-
-  Request.prototype.end = function (fn) {
-    if (this._endCalled) {
-      console.warn("Warning: .end() was called twice. This is not supported in superagent");
-    }
-
-    this._endCalled = true; // store callback
-
-    this._callback = fn || noop; // querystring
-
-    this._finalizeQueryString();
-
-    this._end();
-  };
-
-  Request.prototype._end = function () {
-    if (this._aborted) return this.callback(Error("The request has been aborted even before .end() was called"));
-    var self = this;
-    var xhr = this.xhr = request.getXHR();
-    var data = this._formData || this._data;
-
-    this._setTimeouts(); // state change
-
-
-    xhr.onreadystatechange = function () {
-      var readyState = xhr.readyState;
-
-      if (readyState >= 2 && self._responseTimeoutTimer) {
-        clearTimeout(self._responseTimeoutTimer);
-      }
-
-      if (4 != readyState) {
-        return;
-      } // In IE9, reads to any property (e.g. status) off of an aborted XHR will
-      // result in the error "Could not complete the operation due to error c00c023f"
-
-
-      var status;
-
-      try {
-        status = xhr.status;
-      } catch (e) {
-        status = 0;
-      }
-
-      if (!status) {
-        if (self.timedout || self._aborted) return;
-        return self.crossDomainError();
-      }
-
-      self.emit('end');
-    }; // progress
-
-
-    var handleProgress = function handleProgress(direction, e) {
-      if (e.total > 0) {
-        e.percent = e.loaded / e.total * 100;
-      }
-
-      e.direction = direction;
-      self.emit('progress', e);
-    };
-
-    if (this.hasListeners('progress')) {
-      try {
-        xhr.onprogress = handleProgress.bind(null, 'download');
-
-        if (xhr.upload) {
-          xhr.upload.onprogress = handleProgress.bind(null, 'upload');
-        }
-      } catch (e) {// Accessing xhr.upload fails in IE from a web worker, so just pretend it doesn't exist.
-        // Reported here:
-        // https://connect.microsoft.com/IE/feedback/details/837245/xmlhttprequest-upload-throws-invalid-argument-when-used-from-web-worker-context
-      }
-    } // initiate request
-
-
-    try {
-      if (this.username && this.password) {
-        xhr.open(this.method, this.url, true, this.username, this.password);
-      } else {
-        xhr.open(this.method, this.url, true);
-      }
-    } catch (err) {
-      // see #1149
-      return this.callback(err);
-    } // CORS
-
-
-    if (this._withCredentials) xhr.withCredentials = true; // body
-
-    if (!this._formData && 'GET' != this.method && 'HEAD' != this.method && 'string' != typeof data && !this._isHost(data)) {
-      // serialize stuff
-      var contentType = this._header['content-type'];
-
-      var _serialize = this._serializer || request.serialize[contentType ? contentType.split(';')[0] : ''];
-
-      if (!_serialize && isJSON(contentType)) {
-        _serialize = request.serialize['application/json'];
-      }
-
-      if (_serialize) data = _serialize(data);
-    } // set header fields
-
-
-    for (var field in this.header) {
-      if (null == this.header[field]) continue;
-      if (this.header.hasOwnProperty(field)) xhr.setRequestHeader(field, this.header[field]);
-    }
-
-    if (this._responseType) {
-      xhr.responseType = this._responseType;
-    } // send stuff
-
-
-    this.emit('request', this); // IE11 xhr.send(undefined) sends 'undefined' string as POST payload (instead of nothing)
-    // We need null here if data is undefined
-
-    xhr.send(typeof data !== 'undefined' ? data : null);
-  };
-
-  request.agent = function () {
-    return new agentBase();
-  };
-
-  ["GET", "POST", "OPTIONS", "PATCH", "PUT", "DELETE"].forEach(function (method) {
-    agentBase.prototype[method.toLowerCase()] = function (url, fn) {
-      var req = new request.Request(method, url);
-
-      this._setDefaults(req);
-
-      if (fn) {
-        req.end(fn);
-      }
-
-      return req;
-    };
   });
-  agentBase.prototype.del = agentBase.prototype['delete'];
-  /**
-   * GET `url` with optional callback `fn(res)`.
-   *
-   * @param {String} url
-   * @param {Mixed|Function} [data] or fn
-   * @param {Function} [fn]
-   * @return {Request}
-   * @api public
-   */
+  return id;
+};
+exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function (id) {
+  delete immediateIds[id];
+};
 
-  request.get = function (url, data, fn) {
-    var req = request('GET', url);
-    if ('function' == typeof data) fn = data, data = null;
-    if (data) req.query(data);
-    if (fn) req.end(fn);
-    return req;
-  };
-  /**
-   * HEAD `url` with optional callback `fn(res)`.
-   *
-   * @param {String} url
-   * @param {Mixed|Function} [data] or fn
-   * @param {Function} [fn]
-   * @return {Request}
-   * @api public
-   */
-
-
-  request.head = function (url, data, fn) {
-    var req = request('HEAD', url);
-    if ('function' == typeof data) fn = data, data = null;
-    if (data) req.query(data);
-    if (fn) req.end(fn);
-    return req;
-  };
-  /**
-   * OPTIONS query to `url` with optional callback `fn(res)`.
-   *
-   * @param {String} url
-   * @param {Mixed|Function} [data] or fn
-   * @param {Function} [fn]
-   * @return {Request}
-   * @api public
-   */
-
-
-  request.options = function (url, data, fn) {
-    var req = request('OPTIONS', url);
-    if ('function' == typeof data) fn = data, data = null;
-    if (data) req.send(data);
-    if (fn) req.end(fn);
-    return req;
-  };
-  /**
-   * DELETE `url` with optional `data` and callback `fn(res)`.
-   *
-   * @param {String} url
-   * @param {Mixed} [data]
-   * @param {Function} [fn]
-   * @return {Request}
-   * @api public
-   */
-
-
-  function del(url, data, fn) {
-    var req = request('DELETE', url);
-    if ('function' == typeof data) fn = data, data = null;
-    if (data) req.send(data);
-    if (fn) req.end(fn);
-    return req;
-  }
-
-  request['del'] = del;
-  request['delete'] = del;
-  /**
-   * PATCH `url` with optional `data` and callback `fn(res)`.
-   *
-   * @param {String} url
-   * @param {Mixed} [data]
-   * @param {Function} [fn]
-   * @return {Request}
-   * @api public
-   */
-
-  request.patch = function (url, data, fn) {
-    var req = request('PATCH', url);
-    if ('function' == typeof data) fn = data, data = null;
-    if (data) req.send(data);
-    if (fn) req.end(fn);
-    return req;
-  };
-  /**
-   * POST `url` with optional `data` and callback `fn(res)`.
-   *
-   * @param {String} url
-   * @param {Mixed} [data]
-   * @param {Function} [fn]
-   * @return {Request}
-   * @api public
-   */
-
-
-  request.post = function (url, data, fn) {
-    var req = request('POST', url);
-    if ('function' == typeof data) fn = data, data = null;
-    if (data) req.send(data);
-    if (fn) req.end(fn);
-    return req;
-  };
-  /**
-   * PUT `url` with optional `data` and callback `fn(res)`.
-   *
-   * @param {String} url
-   * @param {Mixed|Function} [data] or fn
-   * @param {Function} [fn]
-   * @return {Request}
-   * @api public
-   */
-
-
-  request.put = function (url, data, fn) {
-    var req = request('PUT', url);
-    if ('function' == typeof data) fn = data, data = null;
-    if (data) req.send(data);
-    if (fn) req.end(fn);
-    return req;
-  };
-});
-var client_1 = client.Request;
-
-exports.Request = client_1;
-exports.default = client;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[3])(3)
+}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
+},{"process/browser.js":62,"timers":70}]},{},[3])(3)
 });
