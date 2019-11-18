@@ -42,7 +42,6 @@ public class ArquillianTest {
   public static WebArchive createDeployment() {
     // resolve given dependencies from Maven POM
     File[] libs = Maven.resolver()
-      .offline(true)
       .loadPomFromFile("pom.xml")
       .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
 
