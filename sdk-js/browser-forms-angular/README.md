@@ -7,7 +7,8 @@ This example attempts to illustrate the way to implement (or use) the [JS SDK](h
 Supported browsers are:
 - Firefox
 - Google Chrome
-- Internet Explorer 9+
+- Edge
+- Internet Explorer 11+
 
 ## Setup
 
@@ -68,13 +69,13 @@ and then
 ```js
 new CamSDK.Form({
   client: camClient,
-  
+
   // with the URL we build previously
   formUrl: url,
-  
+
   // and the task ID
   taskId: taskId,
-  
+
   // $formContainer can be a DOM element or a jQuery object
   containerElement: $formContainer,
 
