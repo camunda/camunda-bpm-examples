@@ -41,6 +41,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [SDK-JS Examples](#sdk-js-examples)
 * [Authentication](#authentication)
 * [Spring Boot Starter examples](#spring-boot-starter-examples)
+* [External Task Client examples](#external-task-client-examples)
 
 ### Getting Started with camunda BPM
 
@@ -196,6 +197,15 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 7 
  | [Autodeployment](spring-boot-starter/example-autodeployment) | Spring boot with embedded engine and Webapps                             |  Spring Boot Starter           |
  | [Twitter](spring-boot-starter/example-twitter)             | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, Webapps, Twitter  |
  | [REST API DMN](spring-boot-starter/example-dmn-rest)       | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, REST API |
+
+### External Task Client Examples
+
+| Name                                                      | Environment | Keywords                    |
+|-----------------------------------------------------------|-------------|-----------------------------|
+| [Loan Granting - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/loan-granting) | Java External Task Client     | External Task Client, Servicetask   |
+| [Order Handling - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/order-handling)| Java External Task Client     | External Task Client, Servicetask       |
+| [Loan Granting - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/granting-loans) | JavaScript External Task Client     | External Task Client, Servicetask             |
+| [Order Handling - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/order) | JavaScript External Task Client     | External Task Client, Servicetask |
 
 
 ### Contribute!
