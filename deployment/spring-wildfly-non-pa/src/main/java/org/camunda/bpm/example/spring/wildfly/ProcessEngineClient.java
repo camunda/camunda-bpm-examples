@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.example.spring.jboss;
+package org.camunda.bpm.example.spring.wildfly;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +28,7 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class ProcessEngineClient implements InitializingBean {
 
-  private final static Logger LOGG = Logger.getLogger(ProcessEngineClient.class.getName());
+  private final static Logger LOG = Logger.getLogger(ProcessEngineClient.class.getName());
   
   protected ProcessEngine processEngine;
   
@@ -38,7 +38,7 @@ public class ProcessEngineClient implements InitializingBean {
         .createProcessDefinitionQuery()
         .count();
     
-    LOGG.log(Level.INFO, "\n\n\n" +
+    LOG.log(Level.INFO, "\n\n\n" +
       "Hi there!" +
       "\n" +
       "I am a spring bean and I am using a container managed process engine provided as JBoss Service for all applications to share." +

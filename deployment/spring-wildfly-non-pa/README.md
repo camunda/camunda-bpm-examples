@@ -1,25 +1,28 @@
-# Plain Spring Web application for JBoss AS 7
+# Plain Spring Web application for WildFly
 
 This example demonstrates how to deploy a plain web application which
 
   * Does not include a @ProcessApplication class and does not provide any BPMN 2.0 processes
-  * Starts a Spring Webapplication context
-  * Binds a shared, container managed process engine as Spring Bean
+  * Starts a Spring WebApplication context
+  * Binds a shared, container managed Process Engine as Spring Bean
 
 ## Why is this example interesting?
 
-The JBoss AS 7 extensions from camunda allow you to manage Process Engines as JBoss Services. However, if your application does not
-provide a @ProcessApplication class, JBoss AS 7 is not aware of the fact that your application uses the process engine. In that case,
-the following scenarios can occur:
+The WildFly extensions from Camunda allow you to manage Process Engines as JBoss Services. However, 
+if your application does not provide a `@ProcessApplication` class, WildFly is not aware of the
+fact that your application uses the Process Engine. In that case, the following scenarios can occur:
 
-  * At deployment, your application is deployed *before* the process engine is started, causing the deployment of your application to fail.
-  * When the process engine is stopped, your application is not stopped but will likely fail at some point because the process engine is not available anymore.
+  * At deployment, your application is deployed *before* the Process Engine is started, causing the 
+    deployment of your application to fail.
+  * When the Process Engine is stopped, your application is not stopped but will likely fail at some
+    point because the Process Engine is not available anymore.
 
-This problem can be resolved by adding a declarative dependency between the process engine and a component in your application.
+This problem can be resolved by adding a declarative dependency between the process engine and a 
+component in your application.
 
 ## Show me the important parts!
 
-We reference the process engine resource in `web.xml`:
+We reference the Process Engine resource in `web.xml`:
 
 ```xml
 <resource-ref>
@@ -29,10 +32,11 @@ We reference the process engine resource in `web.xml`:
 </resource-ref>
 ```
 
-This creates a declarative dependency between the web application context and the process engine. Now JBoss AS 7 knows that we are using it.
-We can look it up using the local name `java:comp/env/processEngine/default` from anywhere in our application.
+This creates a declarative dependency between the web application context and the Process Engine. 
+Now WildFly knows that we are using it. We can look it up using the local name `java:comp/env/processEngine/default` 
+from anywhere in our application.
 
-In our case, we want to reference it from a Spring application context:
+In our case, we want to reference it from a Spring ApplicationContext:
 
 ```xml
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -45,14 +49,14 @@ In our case, we want to reference it from a Spring application context:
   </bean>
   
   <!-- inject it into a bean -->
-  <bean class="org.camunda.bpm.example.spring.jboss.ProcessEngineClient">
+  <bean class="org.camunda.bpm.example.spring.wildfly.ProcessEngineClient">
     <property name="processEngine" ref="processEngine" />
   </bean>
 
 </beans>
 ```
 
-We also add an entry to the manifest so that the process engine classes are added to our classpath:
+We also add an entry to the manifest, so that the Process Engine classes are added to our classpath:
 
 ```xml
 <build>
@@ -76,7 +80,7 @@ We also add an entry to the manifest so that the process engine classes are adde
 ## How to use it?
 
   1. Build it with maven
-  2. Deploy it to JBoss AS 7 (download it from [here][1])
+  2. Deploy it to WildFly (download it from [here][1])
   3. Watch out for this console log:
 
 ```bash
@@ -86,4 +90,4 @@ The engine is named default.
 There are currently 0 processes deployed on this engine.
 ```
 
-[1]: https://camunda.org/release/camunda-bpm/jboss/
+[1]: https://camunda.org/release/camunda-bpm/wildfly/

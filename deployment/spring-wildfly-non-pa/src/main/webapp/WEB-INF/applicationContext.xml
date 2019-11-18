@@ -10,7 +10,7 @@
     </bean>
 
     <!-- inject it into a bean -->
-    <bean class="org.camunda.bpm.example.spring.jboss.ProcessEngineClient">
+    <bean class="org.camunda.bpm.example.spring.wildfly.ProcessEngineClient">
         <property name="processEngine" ref="processEngine" />
     </bean>
 
