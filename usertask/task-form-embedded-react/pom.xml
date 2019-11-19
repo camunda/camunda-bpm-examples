@@ -8,7 +8,7 @@
   <name>Task Form Embedded</name>
 
   <properties>
-    <version.camunda>7.12.0-alpha6</version.camunda>
+    <version.camunda>7.12.0</version.camunda>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

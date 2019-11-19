@@ -62,7 +62,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Service Invocation Asynchronous](/servicetask/service-invocation-asynchronous)   | Unit Test     | Signal, Async             |
 | [User Task Assignment Email](/usertask/task-assignment-email) *            | All                  | Email, Usertask           |
 | [User Task Form Embedded](/usertask/task-form-embedded) *                  | All                  | Html, Form, Usertask      |
-| [User Task Form Embedded - Serialized Java Object](/usertask/task-form-embedded-serialized-java-object) *                  | All                  | Html, Form, Usertask      |
+| [User Task Form Embedded - Serialized Java Object](/usertask/task-form-embedded-serialized-java-object) * | All    | Html, Form, Usertask      |
 | [User Task Form Embedded - JSON](/usertask/task-form-embedded-json) *      | All                  | Html, Form, Usertask      |
 | [User Task Form Embedded - Bpmn Elements](/usertask/task-form-embedded-bpmn-events) *  | All      | Html, Form, Usertask      |
 | [User Task Form Embedded - React](/usertask/task-form-embedded-react) *    | All                  | Html, Form, Usertask      |
@@ -201,20 +201,27 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 7 
 
 ### External Task Client Examples
 
-| Name                                                      | Environment | Keywords                    |
-|-----------------------------------------------------------|-------------|-----------------------------|
-| [Loan Granting - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/loan-granting) | Java External Task Client     | External Task Client, Servicetask   |
-| [Order Handling - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/order-handling)| Java External Task Client     | External Task Client, Servicetask       |
-| [Loan Granting - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/granting-loans) | JavaScript External Task Client     | External Task Client, Servicetask             |
-| [Order Handling - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/order) | JavaScript External Task Client     | External Task Client, Servicetask |
+| Name                                                                                                                         | Environment                         | Keywords                          |
+|------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|-----------------------------------|
+| [Loan Granting - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/loan-granting)      | Java External Task Client           | External Task Client, Servicetask |
+| [Order Handling - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/order-handling)    | Java External Task Client           | External Task Client, Servicetask |
+| [Loan Granting - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/granting-loans) | JavaScript External Task Client     | External Task Client, Servicetask |
+| [Order Handling - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/order)         | JavaScript External Task Client     | External Task Client, Servicetask |
+
+### Container Specifics
+
+| Name                                                                                          | Container             |  Keywords                 |
+| ----------------------------------------------------------------------------------------------|-----------------------|---------------------------|
+| [Jackson Annotation Example for WildFly](wildfly/jackson-annotations)                         | Wildfly               | War, Servlet              |
+
 
 
 ### Contribute!
 
-  * Website: http://www.camunda.org/
+  * Website: http://www.camunda.com/
   * Getting Started: https://docs.camunda.org/get-started/
-  * Issue Tracker: https://app.camunda.com/jira
-  * Contribution Guidelines: http://www.camunda.org/community/contribute.html
+  * Issue Tracker: https://jira.camunda.com/projects/CAM/issues
+  * Contribution Guidelines: https://camunda.com/learn/community/#contribute
 
 ### License
 The source files in this repository are made available under the [Apache License Version 2.0](./LICENSE).
