@@ -65,7 +65,7 @@ camForm.on('variables-fetched', function() {
 
 ## Running the example
 
-1. [Download a Camunda BPM Distribution](http://camunda.org/download)
+1. [Download a Camunda BPM Distribution](http://camunda.com/download)
 2. Checkout this repository using Git
 3. Build the example using `mvn clean package`
 4. Deploy the `.war` file located in the `target/` folder to the server

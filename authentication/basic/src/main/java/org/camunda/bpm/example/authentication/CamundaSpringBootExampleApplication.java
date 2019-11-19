@@ -19,7 +19,6 @@ package org.camunda.bpm.example.authentication;
 
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.identity.User;
-import org.camunda.bpm.engine.rest.filter.CacheControlFilter;
 import org.camunda.bpm.engine.rest.security.auth.ProcessEngineAuthenticationFilter;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
