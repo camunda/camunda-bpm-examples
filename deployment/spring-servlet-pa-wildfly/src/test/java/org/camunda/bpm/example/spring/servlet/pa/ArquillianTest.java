@@ -38,10 +38,8 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,15 +89,14 @@ public class ArquillianTest {
             // web xml that bootstraps spring
         .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
 
+
             // spring application context & libs
         .addAsWebInfResource(new File("src/main/webapp/WEB-INF/applicationContext.xml"), "applicationContext.xml")
-        .addAsLibraries(DependencyResolvers
-            .use(MavenDependencyResolver.class)
-            .goOffline()
-            .loadMetadataFromPom("pom.xml")
-            .artifacts("org.camunda.bpm:camunda-engine-spring", "org.springframework:spring-web")
-            .exclusion("org.camunda.bpm:camunda-engine")
-            .resolveAs(JavaArchive.class));
+        .addAsLibraries(Maven.configureResolver()
+                             .workOffline()
+            .loadPomFromFile("pom.xml")
+            .importCompileAndRuntimeDependencies()
+            .resolve().withTransitivity().asFile());
   }
 
   @Test

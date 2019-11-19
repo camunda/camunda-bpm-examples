@@ -2,60 +2,100 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.camunda.bpm.quickstart</groupId>
-  <artifactId>camunda-quickstart-spring-servlet-pa-jboss</artifactId>
+  <artifactId>camunda-quickstart-spring-servlet-pa-wildfly</artifactId>
   <packaging>war</packaging>
-  <name>camunda BPM - Quickstarts - Spring Servlet Process Application For JBoss</name>
+  <name>camunda BPM - Quickstarts - Spring Servlet Process Application For WildFly</name>
   <version>1.0-SNAPSHOT</version>
   
   <properties>
-    <camunda.version>7.11.0</camunda.version>
-    <spring.version>4.3.24.RELEASE</spring.version>
-    <version.arquillian>1.0.4.Final</version.arquillian>
-    <version.jboss-as>7.2.0.Final</version.jboss-as>
+    <version.camunda>7.12.0-alpha6</version.camunda>
+    <version.spring>4.3.24.RELEASE</version.spring>
+    <version.wildfly>18.0.0.Final</version.wildfly>
+    <version.servlet-api.javax>3.0.1</version.servlet-api.javax>
+
+    <version.wildfly.container.adapter>2.2.0.Final</version.wildfly.container.adapter>
+    <version.arquillian>1.1.10.Final</version.arquillian>
+    <version.junit>4.12</version.junit>
+
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <!-- Needed for ArquillianTest -->
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>${version.arquillian}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-spring</artifactId>
-      <version>${camunda.version}</version>
+      <version>${version.camunda}</version>
+      <!-- Exclude the engine so that the shared process engine is used -->
+      <exclusions>
+        <exclusion>
+          <artifactId>camunda-engine</artifactId>
+          <groupId>org.camunda.bpm</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <version>${version.camunda}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
+      <version>${version.servlet-api.javax}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>${spring.version}</version>
+      <version>${version.spring}</version>
     </dependency>
-
 
     <!-- arquillian testing -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+      <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
-      <version>${version.arquillian}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.jboss.arquillian.protocol</groupId>
       <artifactId>arquillian-protocol-servlet</artifactId>
-      <version>${version.arquillian}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${version.junit}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <repositories>
@@ -68,15 +108,15 @@
 
   <profiles>
     <profile>
-      <id>jboss-managed</id>
+      <id>wildfly-managed</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <dependencies>
         <dependency>
-          <groupId>org.jboss.as</groupId>
-          <artifactId>jboss-as-arquillian-container-managed</artifactId>
-          <version>${version.jboss-as}</version>
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-managed</artifactId>
+          <version>${version.wildfly.container.adapter}</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -88,7 +128,7 @@
           </testResource>
         </testResources>
         <plugins>
-          <!-- clean h2 database from camunda-bpm-jboss -->
+          <!-- clean h2 database from camunda-bpm-wildfly -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-clean-plugin</artifactId>
@@ -106,7 +146,7 @@
               <failOnError>false</failOnError>
             </configuration>
           </plugin>
-          <!-- unpack camunda bpm jboss distro -->
+          <!-- unpack camunda bpm wildfly distro -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
@@ -121,12 +161,12 @@
                 <configuration>
                   <artifactItems>
                     <artifactItem>
-                      <groupId>org.camunda.bpm.jboss</groupId>
-                      <artifactId>camunda-bpm-jboss</artifactId>
-                      <version>${camunda.version}</version>
+                      <groupId>org.camunda.bpm.wildfly</groupId>
+                      <artifactId>camunda-bpm-wildfly</artifactId>
+                      <version>${version.camunda}</version>
                       <type>tar.gz</type>
                       <overWrite>true</overWrite>
-                      <outputDirectory>${project.build.directory}/jboss</outputDirectory>
+                      <outputDirectory>${project.build.directory}/wildfly</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>

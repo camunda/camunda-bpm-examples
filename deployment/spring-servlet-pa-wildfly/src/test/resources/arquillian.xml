@@ -10,7 +10,7 @@
 
   <container qualifier="jboss" default="true">
     <configuration>
-      <property name="jbossHome">target/jboss/server/jboss-as-${version.jboss-as}</property>
+      <property name="jbossHome">target/wildfly/server/wildfly-${version.wildfly}</property>
       <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=256m</property>
       <property name="startupTimeoutInSeconds">300</property>
 <!--       <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=128m -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y</property> -->
