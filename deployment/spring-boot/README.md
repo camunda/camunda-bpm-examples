@@ -12,7 +12,8 @@ The example process looks like:
 
 ### Run it as JUnit Test  
 
-The JUnit test [CamundaSpringBootExampleApplicationTest](src/test/java/org/camunda/bpm/example/CamundaSpringBootExampleApplicationTest.java) starts the application and verifies that a process instance is started.
+The JUnit test [CamundaSpringBootExampleApplicationTest](src/test/java/org/camunda/bpm/example/CamundaSpringBootExampleApplicationTest.java) 
+starts the application and verifies that a process instance is started.
 
 ## How it works
 

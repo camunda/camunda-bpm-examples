@@ -81,14 +81,11 @@ If you clone this repository, use the checkout commands to access the sources fo
 | ----------------------------------------------------------------------------------------------|-----------------------|---------------------------|
 | [Process Application - Servlet](deployment/servlet-pa)                                        | All                   | War, Servlet              |
 | [Process Application - EJB](deployment/ejb-pa)                                                | JavaEE Containers     | Ejb, War                  |
-| [Process Application - Spring Servlet - JBoss](deployment/spring-servlet-pa-jboss)            | JBoss AS 7            | Spring, Servlet, War      |
+| [Process Application - Spring Servlet - WildFly](deployment/spring-servlet-pa-wildfly)        | WildFly               | Spring, Servlet, War      |
 | [Process Application - Spring Servlet - Embedded Tomcat](deployment/spring-servlet-pa-tomcat) | Tomcat                | Spring, Servlet, War      |
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)                         | vanilla Apache Tomcat | Spring, Rest, Embedded    |
-| [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)                      | JBoss AS 7            | Spring, Jndi, War         |
+| [Plain Spring Web application - WildFly](deployment/spring-wildfly-non-pa)                    | WildFly               | Spring, Jndi, War         |
 | [Process Application - Spring Boot](deployment/spring-boot)                                   | Spring Boot           | Spring                    |
-
-Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 7 to run/compile the project. Otherwise the JBoss 7 will not start, just hang. This is a JBoss 7.2 issue and does not affect WildFly.
-
 
 ### Process Engine Plugin Examples
 

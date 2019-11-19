@@ -1,0 +1,17 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- lookup the process engine from local JNDI -->
+    <bean name="processEngine" id="processEngine" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/processEngine/default" />
+    </bean>
+
+    <!-- inject it into a bean -->
+    <bean class="org.camunda.bpm.example.spring.wildfly.ProcessEngineClient">
+        <property name="processEngine" ref="processEngine" />
+    </bean>
+
+</beans>
