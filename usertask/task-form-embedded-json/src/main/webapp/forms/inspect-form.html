@@ -1,0 +1,21 @@
+<form role="form" class="form-horizontal">
+
+  <script cam-script type="text/form-script">
+
+    $scope.genders = [ 'female', 'male' ];
+    camForm.on('form-loaded', function() {
+      // tell the form SDK to fetch the variable named 'customer'
+      camForm.variableManager.fetchVariable('customer');
+    });
+
+    camForm.on('variables-fetched', function() {
+      // work with the variable (bind it to the current AngularJS $scope)
+      $scope.customer = camForm.variableManager.variableValue('customer');
+    });
+
+  </script>
+
+  <p><b>Inspect the raw customer data:</b></p>
+  <p>{{customer}}</p>
+</form>
+
