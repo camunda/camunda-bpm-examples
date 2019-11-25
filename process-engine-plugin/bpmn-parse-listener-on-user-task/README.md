@@ -16,7 +16,7 @@ After having looked through the code, you will understand the behavior of a BPMN
 What is the idea/use case of this demo:
 
 * Assignees of the user tasks are often so busy that they do easily forget to check if they have a user task to complete.
-* Therefore, as soon as a user task is reached, the assignee should be notified that he has work to do :-)
+* Therefore, as soon as a user task is assigned, the assignee should be notified that he has work to do :-)
 
 ## Show me the important parts!
 
@@ -60,7 +60,7 @@ public class InformAssigneeParseListener extends AbstractBpmnParseListener {
       UserTaskActivityBehavior userTaskActivityBehavior = (UserTaskActivityBehavior) activityBehavior;
       userTaskActivityBehavior
         .getTaskDefinition()
-        .addTaskListener("create", InformAssigneeTaskListener.getInstance());
+        .addTaskListener("assignment", InformAssigneeTaskListener.getInstance());
     }
   }
 }
@@ -120,8 +120,8 @@ The Process Engine BPMN Parser parses the process definition. The BPMN Parse Lis
 to the BPMN Parser and adds the Task Listener to the given user task.
 
 After that, the process engine starts the process instance and as soon as user task is entered it invokes the `notify`
-implementation of the Task Listener. We then complete the user task and the other the `notify` method from the Task Listener
-is executed once again.
+implementation of the Task Listener. We then complete the user task and the `notify` method from the Task Listener
+is executed once again. Afterwards, we change the assignee manually and the Task Listener is called a third time.
 
 ## How to use it?
 
