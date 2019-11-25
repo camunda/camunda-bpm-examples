@@ -37,7 +37,7 @@ public class InformAssigneeParseListener extends AbstractBpmnParseListener {
       UserTaskActivityBehavior userTaskActivityBehavior = (UserTaskActivityBehavior) activityBehavior;
       userTaskActivityBehavior
         .getTaskDefinition()
-        .addTaskListener("create", InformAssigneeTaskListener.getInstance());
+        .addTaskListener("assignment", InformAssigneeTaskListener.getInstance());
     }
   }
 }

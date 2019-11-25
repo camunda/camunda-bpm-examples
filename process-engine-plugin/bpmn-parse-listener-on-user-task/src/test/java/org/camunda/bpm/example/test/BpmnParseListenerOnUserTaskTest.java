@@ -72,8 +72,13 @@ public class BpmnParseListenerOnUserTaskTest {
     assertThat(assigneeList.size(), is(2));
     assertThat(assigneeList.get(1), is("Fozzie"));
 
-    // complete second user task
+    // reset the assignee
     task = taskService.createTaskQuery().singleResult();
+    taskService.setAssignee(task.getId(), "Kermit");
+    assertThat(assigneeList.size(), is(3));
+    assertThat(assigneeList.get(2), is("Kermit"));
+
+    // complete second user task
     taskService.complete(task.getId());
 
     // check if process instance ended
