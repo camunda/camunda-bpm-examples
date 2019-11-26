@@ -2,21 +2,21 @@
 
 This example demonstrates how to set up a web application, which
 
-* Bundles the camunda-engine JAR library
+* Bundles the `camunda-engine` JAR library
 * Starts and configures a process engine in a Spring Application context
-* Bundles the camunda-engine-REST library
-* Exposes the process engine API via REST
+* Bundles the `camunda-engine-REST` library
+* Exposes the Process Engine API via REST
 
 > **Note:** This project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from http://camunda.org.
 
 ## Why is this example interesting?
 
-This example demonstrates how to perform a standalone embedded setup with a webapplication which bundles both the
-camunda engine and camunda engine REST JARs.
+This example demonstrates how to perform a standalone embedded setup with a Web application which
+bundles both the Camunda Process Engine and Camunda Engine REST JARs.
 
 ## Show me the important parts!
 
-The process engine is configured in the Spring application context:
+The Process Engine is configured in the Spring application context:
 
 ```xml
 <bean id="processEngineConfiguration"

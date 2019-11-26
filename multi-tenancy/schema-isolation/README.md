@@ -10,31 +10,31 @@
 <li><a href="#build-a-simple-jax-rs-resource">Build a Simple JAX-RS Resource</a></li>
 <li><a href="#make-cdi-injection-tenant-aware">Make CDI Injection Tenant-aware</a></li>
 </ul></li>
-<li><a href="#deploy-the-application-to-jboss">Deploy the Application to JBoss</a></li>
+<li><a href="#deploy-the-application-to-wildfly">Deploy the Application to WildFly</a></li>
 <li><a href="#testing">Testing</a></li>
 
 
-Sometimes it is desired to share one Camunda installation between multiple independent parties, also referred to as *tenants*. While sharing an installation means sharing computational resources, the tenants' data should be separated from each other. This tutorial shows how to work with the [one process engine per tenant approach](https://docs.camunda.org/manual/7.11/user-guide/process-engine/multi-tenancy/#one-process-engine-per-tenant).
+Sometimes it is desired to share one Camunda installation between multiple independent parties, also referred to as *tenants*. While sharing an installation means sharing computational resources, the tenants' data should be separated from each other. This tutorial shows how to work with the [one process engine per tenant approach](https://docs.camunda.org/manual/7.12/user-guide/process-engine/multi-tenancy/#one-process-engine-per-tenant).
 
 In detail it explains how to:
 
-* configure one process engine per tenant on a JBoss Application Server such that data is isolated by database schemas
+* configure one process engine per tenant on a WildFly Application Server such that data is isolated by database schemas
 * develop a process application with tenant-specific deployments
 * access the correct process engine from a REST resource based on a tenant identifier
 
-See the [user guide](https://docs.camunda.org/manual/7.11/user-guide/process-engine/multi-tenancy/) for a general introduction on multi-tenancy and the different options Camunda offers.
+See the [user guide](https://docs.camunda.org/manual/7.12/user-guide/process-engine/multi-tenancy/) for a general introduction on multi-tenancy and the different options Camunda offers.
 
 
 # Before Starting
 
-Before starting, make sure to download the [Camunda BPM JBoss distribution](http://camunda.org/release/camunda-bpm/jboss/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
+Before starting, make sure to download the [Camunda BPM WildFly distribution](http://camunda.org/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
 
 
 # Configuring the Database
 
 Before configuring process engines, we have to set up a database schema for every tenant. In this section we will explain how to do so.
 
-Start up JBoss by running `$CAMUNDA_HOME/start-camunda.{bat/sh}`. After startup, open your browser and go to `http://localhost:8080/h2/h2`. Enter the following configuration before connecting:
+Start up WildFly by running `$CAMUNDA_HOME/start-camunda.{bat/sh}`. After startup, open your browser and go to `http://localhost:8080/h2/h2`. Enter the following configuration before connecting:
 
 * **Driver Class**: org.h2.Driver
 * **JDBC URL**: jdbc:h2:./camunda-h2-dbs/process-engine
@@ -49,21 +49,21 @@ create schema TENANT2;
 ```
 
 Next, inside each schema, create the database tables. To achieve this, get the SQL create scripts
-from the jboss distribution from the `sql/create/` folder inside your distribution.
+from the WildFly distribution from the `sql/create/` folder inside your distribution.
 
-Inside the h2 console, execute the create scripts (`h2_engine_7.11.0.sql` and
-`h2_identity_7.11.0.sql`) scripts after selecting the appropriate schema for the current connection:
+Inside the h2 console, execute the create scripts (`h2_engine_7.12.0.sql` and
+`h2_identity_7.12.0.sql`) scripts after selecting the appropriate schema for the current connection:
 
 ```sql
 set schema TENANT1;
 
-<<paste sql/create/h2_engine_7.11.0.sql here>>
-<<paste sql/create/h2_identity_7.11.0.sql here>>
+<<paste sql/create/h2_engine_7.12.0.sql here>>
+<<paste sql/create/h2_identity_7.12.0.sql here>>
 
 set schema TENANT2;
 
-<<paste sql/create/h2_engine_7.11.0.sql here>>
-<<paste sql/create/h2_identity_7.11.0.sql here>>
+<<paste sql/create/h2_engine_7.12.0.sql here>>
+<<paste sql/create/h2_identity_7.12.0.sql here>>
 ```
 
 The following screenshot illustrates how to create the tables inside the correct schema:
@@ -79,14 +79,14 @@ table structure:
 ![Multi Tenancy Create Schema](img/create-schema2.png)
 
 
-Now, stop JBoss.
+Now, stop WildFly.
 
 
 # Configuring Process Engines
 
 In this step, we configure a process engine for each tenant. We ensure that these engines access the database schemas we have previously created. This way, process data of a tenant cannot interfere with that of another.
 
-Open the file `$CAMUNDA_HOME/server/jboss-as-{version}/standalone/configuration/standalone.xml`. In that file, navigate to the configuration of the Camunda jboss subsystem, declared in an XML element `<subsystem xmlns="urn:org.camunda.bpm.jboss:1.1">`. In this file, add two entries to the `<process-engines>` section (do *not* remove default engine configuration):
+Open the file `$CAMUNDA_HOME/server/wildfly-{version}/standalone/configuration/standalone.xml`. In that file, navigate to the configuration of the Camunda jboss subsystem, declared in an XML element `<subsystem xmlns="urn:org.camunda.bpm.jboss:1.1">`. In this file, add two entries to the `<process-engines>` section (do *not* remove default engine configuration):
 
 The configuration of the process engine for tenant 1:
 
@@ -134,7 +134,7 @@ The configuration of the process engine for tenant 2:
 </process-engine>
 ```
 
-(find the complete `standalone.xml` [here](https://github.com/camunda/camunda-bpm-examples/blob/master/multi-tenancy/schema-isolation/standalone.xml))
+(find the complete `standalone.xml` [here](standalone.xml))
 
 By having a look at the `datasource` configuration, you will notice that the data source is shared between all engines. The property `databaseTablePrefix` points the engines to different database schemas. This makes it possible to shares resources like a database connection pool between both engines. Also have a look at the entry `jobExecutorAcquisitionName`. The job acquisition is part of the job executor, a component responsible for executing asynchronous tasks in the process engine (cf. the `job-executor` element in the subsystem configuration). Again, the `jobExecutorAcquisitionName` configuration enables reuse of one acquisition thread for all engines.
 
@@ -145,14 +145,14 @@ The approach of configuring multiple engines also allows you to differ engine co
 
 In this step, we describe a process application that deploys different processes for the two tenants. It also exposes a REST resource that returns a tenant's process definitions. To identify the tenant, we provide a user name in the REST request. In the implementation, we use CDI to transparently interact with the correct process engine based on the tenant identifier.
 
-The following descriptions highlight the concepts related to implementing multi-tenancy but are not a step-by-step explanation to develop along. Instead, make sure to checkout the <a href="https://github.com/camunda/camunda-bpm-examples/tree/master/multi-tenancy/schema-isolation">code on github</a>. The code can be built and deployed to JBoss right away and contains all the snippets explained in the following sections.
+The following descriptions highlight the concepts related to implementing multi-tenancy in a step-by-step explanation to develop along.
 
 
 ## Set Up the Process Application
 
 In the project, we have set up a plain Camunda EJB process application.
 
-In [pom.xml](https://github.com/camunda/camunda-bpm-examples/blob/master/multi-tenancy/schema-isolation/pom.xml), the `camunda-engine-cdi` and `camunda-ejb-client` dependencies are added:
+In [pom.xml](pom.xml), the `camunda-engine-cdi` and `camunda-ejb-client` dependencies are added:
 
 ```xml
 <dependency>
@@ -171,7 +171,7 @@ These are required to inject process engines via CDI.
 
 ## Configure a Tenant-specific Deployment
 
-In the folder `src/main/resources`, we have added a folder `processes` and two subfolders `tenant1` and `tenant2`. These folders contain a [process for tenant 1](https://github.com/camunda/camunda-bpm-examples/tree/master/multi-tenancy/schema-isolation/src/main/resources/processes/tenant1) and a [process for tenant 2](https://github.com/camunda/camunda-bpm-examples/tree/master/multi-tenancy/schema-isolation/src/main/resources/processes/tenant2), respectively.
+In the folder `src/main/resources`, we have added a folder `processes` and two subfolders `tenant1` and `tenant2`. These folders contain a [process for tenant 1](src/main/resources/processes/tenant1) and a [process for tenant 2](src/main/resources/processes/tenant2), respectively.
 
 In order to deploy the two definitions to the two different engines, we have added a file `src/main/resources/META-INF/processes.xml` with the following content:
 
@@ -208,7 +208,7 @@ This file declares two *process archives*. By the `process-engine` element, we c
 
 ## Build a Simple JAX-RS Resource
 
-To showcase the programming model for multi-tenancy with CDI, we have added a simple REST resource that returns all deployed process definitions for a process engine. The resource has the following [source code](https://github.com/camunda/camunda-bpm-examples/blob/master/multi-tenancy/schema-isolation/src/main/java/org/camunda/bpm/tutorial/multitenancy/ProcessDefinitionResource.java):
+To showcase the programming model for multi-tenancy with CDI, we have added a simple REST resource that returns all deployed process definitions for a process engine. The resource has the following [source code](src/main/java/org/camunda/bpm/tutorial/multitenancy/ProcessDefinitionResource.java):
 
 ```java
 @Path("/process-definition")
@@ -233,7 +233,7 @@ Note that the distinction between tenants is not made in this resource.
 
 ## Make CDI Injection Tenant-aware
 
-We want the injected process engine to always be the one that matches the current tenant making a REST request. For this matter, we have added a request-scoped [tenant bean](https://github.com/camunda/camunda-bpm-examples/blob/master/multi-tenancy/schema-isolation/src/main/java/org/camunda/bpm/tutorial/multitenancy/Tenant.java):
+We want the injected process engine to always be the one that matches the current tenant making a REST request. For this matter, we have added a request-scoped [tenant bean](src/main/java/org/camunda/bpm/tutorial/multitenancy/Tenant.java):
 
 ```java
 @RequestScoped
@@ -251,14 +251,13 @@ public class Tenant {
 }
 ```
 
-To populate this bean with the tenant ID for the current user, we add a [RestEasy interceptor](https://github.com/camunda/camunda-bpm-examples/blob/master/multi-tenancy/schema-isolation/src/main/java/org/camunda/bpm/tutorial/multitenancy/TenantInterceptor.java). This interceptor is called before a REST request is dispatched to the `ProcessDefinitionResource`. It has the following content:
+To populate this bean with the tenant ID for the current user, we add a [RestEasy interceptor](src/main/java/org/camunda/bpm/tutorial/multitenancy/TenantInterceptor.java). This interceptor is called before a REST request is dispatched to the `ProcessDefinitionResource`. It has the following content:
 
 ```java
 @Provider
-@ServerInterceptor
-public class TenantInterceptor implements PreProcessInterceptor {
+public class TenantInterceptor implements ContainerRequestFilter {
 
-  protected static final Map<String, String> USER_TENANT_MAPPING = new HashMap<String, String>();
+  protected static final Map<String, String> USER_TENANT_MAPPING = new HashMap<>();
 
   static {
     USER_TENANT_MAPPING.put("kermit", "tenant1");
@@ -268,8 +267,9 @@ public class TenantInterceptor implements PreProcessInterceptor {
   @Inject
   protected Tenant tenant;
 
-  public ServerResponse preProcess(HttpRequest request, ResourceMethod method) throws Failure, WebApplicationException {
-    List<String> user = request.getUri().getQueryParameters().get("user");
+  @Override
+  public void filter(ContainerRequestContext requestContext) throws IOException {
+    List<String> user = requestContext.getUriInfo().getQueryParameters().get("user");
 
     if (user.size() != 1) {
       throw new WebApplicationException(Status.BAD_REQUEST);
@@ -277,15 +277,13 @@ public class TenantInterceptor implements PreProcessInterceptor {
 
     String tenantForUser = USER_TENANT_MAPPING.get(user.get(0));
     tenant.setId(tenantForUser);
-
-    return null;
   }
 }
 ```
 
 Note that the tenant ID is determined based on a simple static map. Of course, in real-world applications one would implement a more sophisticated lookup procedure here.
 
-To resolve the process engine based on the tenant, we have [specialized the process engine producer](https://github.com/camunda/camunda-bpm-examples/blob/master/multi-tenancy/schema-isolation/src/main/java/org/camunda/bpm/tutorial/multitenancy/TenantAwareProcessEngineServicesProducer.java) bean as follows:
+To resolve the process engine based on the tenant, we have [specialized the process engine producer](src/main/java/org/camunda/bpm/tutorial/multitenancy/TenantAwareProcessEngineServicesProducer.java) bean as follows:
 
 ```java
 @Specializes
@@ -338,9 +336,9 @@ public class TenantAwareProcessEngineServicesProducer extends ProcessEngineServi
 The producer determines the engine based on the current tenant. It encapsulates the logic of resolving the process engine for the current tenant entirely. Every bean can simply declare `@Inject ProcessEngine` without specifying which specific engine is addressed to work with the current tenant's engine.
 
 
-# Deploy the Application to JBoss
+# Deploy the Application to WildFly
 
-Start up JBoss. Build the process application and deploy the resulting war file to JBoss.
+Start up WildFly. Build the process application and deploy the resulting war file to WildFly.
 
 Make a GET request (e.g., by entering the URL in your browser) against the following URL to get all process definitions deployed to tenant 1's engine: http://localhost:8080/multi-tenancy-tutorial/process-definition?user=kermit
 
@@ -365,10 +363,10 @@ The test class [ProcessIntegrationTest](src/test/java/org/camunda/bpm/tutorial/m
 
 Follow the steps to run the test:
 
-* download the [Camunda BPM JBoss distribution](http://camunda.org/release/camunda-bpm/jboss/)
-* replace the `camunda-bpm-jboss-{version}/server/jboss-as-{version}/standalone/configuration/standalone.xml` with
+* download the [Camunda BPM WildFly distribution](http://camunda.org/release/camunda-bpm/wildfly/)
+* replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
   * [standalone.xml](standalone.xml) (two schemas - requires manual schema creation) or 
   * [standalone_test.xml](standalone_test.xml) (two databases - auto schema creation)
-* start the server using the script `camunda-bpm-jboss-{version}/start-camunda.bat`
+* start the server using the script `camunda-bpm-wildfly-{version}/start-camunda.bat`
 * go to project directory and run the test with the Maven command `mvn test` 
 

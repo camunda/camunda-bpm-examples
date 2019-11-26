@@ -24,7 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;

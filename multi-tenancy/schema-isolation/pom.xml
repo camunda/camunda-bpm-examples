@@ -8,9 +8,9 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.11.0</camunda.version>
-    <arquillian.version>1.1.2.Final</arquillian.version>
-    <jboss.version>7.2.1.Final</jboss.version>
+    <camunda.version>7.12.0</camunda.version>
+    <arquillian.version>1.1.10.Final</arquillian.version>
+    <wildfly.container.adapter.version>2.2.0.Final</wildfly.container.adapter.version>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -62,16 +62,16 @@
     <dependency>
       <groupId>org.jboss.spec</groupId>
       <artifactId>jboss-javaee-web-6.0</artifactId>
-      <version>3.0.1.Final</version>
+      <version>3.0.2.Final</version>
       <type>pom</type>
       <scope>provided</scope>
     </dependency>
     
-    <!-- Resteasy 2.3.5-Final is an implicit module dependency on JBoss 7.2.0-Final -->
+    <!--  Resteasy 3.9.0-Final is an implicit module dependency on WildFly 18.0.0.Final -->
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jaxrs</artifactId>
-      <version>2.3.5.Final</version>
+      <version>3.9.0.Final</version>
       <scope>provided</scope>
     </dependency>
     
@@ -81,7 +81,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
-      <version>4.11</version>
+      <version>4.12</version>
     </dependency>
     
     <!-- Required to use Connectors in unit tests -->
@@ -136,17 +136,17 @@
 
   <profiles>
     <profile>
-      <id>jbossas-remote</id>
+      <id>wildfly-remote</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <dependencies>
         <dependency>
           <!-- Needed for ArquillianTest -->
-          <!-- Requires a running JBoss AS7 with Camunda BPM -->
-          <groupId>org.jboss.as</groupId>
-          <artifactId>jboss-as-arquillian-container-remote</artifactId>
-          <version>7.2.0.FINAL</version>
+          <!-- Requires a running WildFly with Camunda BPM -->
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-remote</artifactId>
+          <version>${wildfly.container.adapter.version}</version>
           <scope>test</scope>
         </dependency>
       </dependencies>

@@ -8,6 +8,7 @@ Camunda BPM examples is a collection of focused usage examples for the [camunda 
 | Camunda Version  | Link                                                                 | Checkout command      |
 | -----------------|----------------------------------------------------------------------|-----------------------|
 | Latest           | [Master branch](https://github.com/camunda/camunda-bpm-examples)     | `git checkout master` |
+| 7.12             | [7.12 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.12)| `git checkout 7.12`   |
 | 7.11             | [7.11 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.11)| `git checkout 7.11`   |
 | 7.10             | [7.10 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.10)| `git checkout 7.10`   |
 | 7.9              | [7.9 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.9)  | `git checkout 7.9`    |
@@ -40,6 +41,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [SDK-JS Examples](#sdk-js-examples)
 * [Authentication](#authentication)
 * [Spring Boot Starter examples](#spring-boot-starter-examples)
+* [External Task Client examples](#external-task-client-examples)
 
 ### Getting Started with camunda BPM
 
@@ -60,9 +62,10 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Service Invocation Asynchronous](/servicetask/service-invocation-asynchronous)   | Unit Test     | Signal, Async             |
 | [User Task Assignment Email](/usertask/task-assignment-email) *            | All                  | Email, Usertask           |
 | [User Task Form Embedded](/usertask/task-form-embedded) *                  | All                  | Html, Form, Usertask      |
-| [User Task Form Embedded - Serialized Java Object](/usertask/task-form-embedded-serialized-java-object) *                  | All                  | Html, Form, Usertask      |
+| [User Task Form Embedded - Serialized Java Object](/usertask/task-form-embedded-serialized-java-object) * | All    | Html, Form, Usertask      |
 | [User Task Form Embedded - JSON](/usertask/task-form-embedded-json) *      | All                  | Html, Form, Usertask      |
 | [User Task Form Embedded - Bpmn Elements](/usertask/task-form-embedded-bpmn-events) *  | All      | Html, Form, Usertask      |
+| [User Task Form Embedded - React](/usertask/task-form-embedded-react) *    | All                  | Html, Form, Usertask      |
 | [User Task Form Generated](/usertask/task-form-generated) *                | All                  | Html, Form, Usertask      |
 | [User Task Form JSF](/usertask/task-form-external-jsf) *                   | JavaEE Containers    | JSF, Form, Usertask       |
 | [Script Task XSLT](/scripttask/xslt-scripttask)                            | Unit Test            | XSLT Scripttask           |
@@ -78,14 +81,11 @@ If you clone this repository, use the checkout commands to access the sources fo
 | ----------------------------------------------------------------------------------------------|-----------------------|---------------------------|
 | [Process Application - Servlet](deployment/servlet-pa)                                        | All                   | War, Servlet              |
 | [Process Application - EJB](deployment/ejb-pa)                                                | JavaEE Containers     | Ejb, War                  |
-| [Process Application - Spring Servlet - JBoss](deployment/spring-servlet-pa-jboss)            | JBoss AS 7            | Spring, Servlet, War      |
+| [Process Application - Spring Servlet - WildFly](deployment/spring-servlet-pa-wildfly)        | WildFly               | Spring, Servlet, War      |
 | [Process Application - Spring Servlet - Embedded Tomcat](deployment/spring-servlet-pa-tomcat) | Tomcat                | Spring, Servlet, War      |
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)                         | vanilla Apache Tomcat | Spring, Rest, Embedded    |
-| [Plain Spring Webapplication JBoss AS 7](deployment/spring-jboss-non-pa)                      | JBoss AS 7            | Spring, Jndi, War         |
+| [Plain Spring Web application - WildFly](deployment/spring-wildfly-non-pa)                    | WildFly               | Spring, Jndi, War         |
 | [Process Application - Spring Boot](deployment/spring-boot)                                   | Spring Boot           | Spring                    |
-
-Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 7 to run/compile the project. Otherwise the JBoss 7 will not start, just hang. This is a JBoss 7.2 issue and does not affect WildFly.
-
 
 ### Process Engine Plugin Examples
 
@@ -196,13 +196,29 @@ Hint: Any example using the JBoss 7 Camunda BPM distribution **must** use JDK 7 
  | [Twitter](spring-boot-starter/example-twitter)             | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, Webapps, Twitter  |
  | [REST API DMN](spring-boot-starter/example-dmn-rest)       | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, REST API |
 
+### External Task Client Examples
+
+| Name                                                                                                                         | Environment                         | Keywords                          |
+|------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|-----------------------------------|
+| [Loan Granting - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/loan-granting)      | Java External Task Client           | External Task Client, Servicetask |
+| [Order Handling - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/order-handling)    | Java External Task Client           | External Task Client, Servicetask |
+| [Loan Granting - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/granting-loans) | JavaScript External Task Client     | External Task Client, Servicetask |
+| [Order Handling - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/order)         | JavaScript External Task Client     | External Task Client, Servicetask |
+
+### Container Specifics
+
+| Name                                                                                          | Container             |  Keywords                 |
+| ----------------------------------------------------------------------------------------------|-----------------------|---------------------------|
+| [Jackson Annotation Example for WildFly](wildfly/jackson-annotations)                         | Wildfly               | War, Servlet              |
+
+
 
 ### Contribute!
 
-  * Website: http://www.camunda.org/
+  * Website: http://www.camunda.com/
   * Getting Started: https://docs.camunda.org/get-started/
-  * Issue Tracker: https://app.camunda.com/jira
-  * Contribution Guidelines: http://www.camunda.org/community/contribute.html
+  * Issue Tracker: https://jira.camunda.com/projects/CAM/issues
+  * Contribution Guidelines: https://camunda.com/learn/community/#contribute
 
 ### License
 The source files in this repository are made available under the [Apache License Version 2.0](./LICENSE).

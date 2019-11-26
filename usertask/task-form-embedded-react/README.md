@@ -1,3 +1,5 @@
+This example works with Chrome and Firefox.
+
 # Using React Forms with Tasklist
 React is a popular library to build user interfaces. If you want to use react to build custom Tasklist forms, you can use this example as a starting point. We adapted the [React Multiple Inputs Example](https://reactjs.org/docs/forms.html#handling-multiple-inputs) and integrated it into a process.
 
@@ -20,7 +22,7 @@ React is a popular library to build user interfaces. If you want to use react to
 That's it, you can now use react in your custom forms.
 
 ### How can I get access to process variables?
-All process variables will be managed with the `camForm.variableManager`. You need to load existing and create new variables. How this is done is described in detail in the [Embedded Forms Reference](https://docs.camunda.org/manual/7.11/reference/embedded-forms/javascript/lifecycle/).
+All process variables will be managed with the `camForm.variableManager`. You need to load existing and create new variables. How this is done is described in detail in the [Embedded Forms Reference](https://docs.camunda.org/manual/7.12/reference/embedded-forms/javascript/lifecycle/).
 
 Keep in mind that you also have to update the variables this way if they change. You can do this in the `componentDidUpdate()` method of you form component. 
 

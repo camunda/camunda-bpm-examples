@@ -12,21 +12,21 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<camunda.version>7.11.0</camunda.version>
+		<camunda.version>7.12.0</camunda.version>
 		<cxf.version>3.0.3</cxf.version>
 		<cglib.version>2.2.2</cglib.version>
 		<spring.version>4.3.24.RELEASE</spring.version>
 		<groovy.version>2.4.3</groovy.version>
 
 		<logback.version>1.1.3</logback.version>
-		<slf4j.version>1.7.12</slf4j.version>
+		<slf4j.version>1.7.26</slf4j.version>
 
 		<!-- test -->
 		<junit.version>4.12</junit.version>
 		<tempus-fugit.version>1.1</tempus-fugit.version>
 		<mockito.version>1.10.19</mockito.version>
 		<hamcrest.version>1.3</hamcrest.version>
-		<h2.version>1.3.171</h2.version>
+		<h2.version>1.4.190</h2.version>
 
 
 		<!-- tools -->
@@ -73,19 +73,12 @@
 			<artifactId>camunda-template-engines-freemarker</artifactId>
 		</dependency>
 
-    <!-- redirect slf4j logging to jdk logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.12</version>
-    </dependency>
-
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-jsr223</artifactId>
 			<version>${groovy.version}</version>
 		</dependency>
-    
+
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -119,34 +112,21 @@
 
         <dependency>
           <groupId>org.springframework</groupId>
-          <artifactId>spring-beans</artifactId>
-          <version>${spring.version}</version>
-        </dependency>
-    
-        <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-          <version>${spring.version}</version>
-        </dependency>
-    
-        <dependency>
-          <groupId>org.springframework</groupId>
           <artifactId>spring-jdbc</artifactId>
           <version>${spring.version}</version>
         </dependency>
-    
+
         <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-tx</artifactId>
           <version>${spring.version}</version>
         </dependency>
-    
+
         <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-orm</artifactId>
           <version>${spring.version}</version>
         </dependency>
-
 
 		<dependency>
 			<groupId>cglib</groupId>
@@ -209,6 +189,13 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.version}</version>
 		</dependency>
+
+        <!-- redirect slf4j logging to jdk logging -->
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-jdk14</artifactId>
+          <version>${slf4j.version}</version>
+        </dependency>
 
 		<!-- test -->
 		<dependency>

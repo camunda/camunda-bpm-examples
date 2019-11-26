@@ -66,7 +66,7 @@ public class ProcessDefinitionDto {
   }
 
   public static List<ProcessDefinitionDto> fromProcessDefinitions(List<ProcessDefinition> definitions) {
-    List<ProcessDefinitionDto> dtos = new ArrayList<ProcessDefinitionDto>();
+    List<ProcessDefinitionDto> dtos = new ArrayList<>();
 
     for (ProcessDefinition definition : definitions) {
       dtos.add(fromProcessDefinition(definition));

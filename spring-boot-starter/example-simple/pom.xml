@@ -6,8 +6,8 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <spring.boot.version>2.1.5.RELEASE</spring.boot.version>
-    <camunda.spring.boot.starter.version>3.3.1</camunda.spring.boot.starter.version>
+    <spring.boot.version>2.2.1.RELEASE</spring.boot.version>
+    <camunda.spring.boot.starter.version>3.4.0</camunda.spring.boot.starter.version>
   </properties>
 
   <dependencyManagement>
@@ -57,20 +57,19 @@
     <dependency>
       <groupId>org.camunda.bpm.extension.mockito</groupId>
       <artifactId>camunda-bpm-mockito</artifactId>
-      <version>3.1.0</version>
+      <version>4.11.0</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.camunda.bpm.assert</groupId>
       <artifactId>camunda-bpm-assert</artifactId>
-      <version>4.0.0</version>
+      <version>5.0.0</version>
     </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.11.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -45,5 +45,5 @@ It excludes the JAX-RS subsystem and adds the Jackson dependencies with the corr
 These version corresponds to the version which is used by Camunda Spin for de-/serialization.
 
 See the [Camunda forum post](https://forum.camunda.org/t/camunda-json-marshalling-and-jsonignore/271/19)
-and the [documentation](https://docs.camunda.org/manual/7.11/installation/full/jboss/manual/#problems-with-jackson-annotations) for more information's.
+and the [documentation](https://docs.camunda.org/manual/7.12/installation/full/jboss/manual/#problems-with-jackson-annotations) for more information's.
 
