@@ -28,6 +28,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
+      <dependency>
+        <groupId>org.camunda.bpm.springboot</groupId>
+        <artifactId>camunda-bpm-spring-boot-starter-bom</artifactId>
+        <version>${camunda.spring.boot.starter.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -35,7 +43,6 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-      <version>${camunda.spring.boot.starter.version}</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
