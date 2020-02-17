@@ -122,7 +122,7 @@
         <repository>
             <id>springsource-repo</id>
             <name>SpringSource Repository</name>
-            <url>http://repo.springsource.org/release</url>
+            <url>https://repo.springsource.org/release</url>
         </repository>
         <!-- camunda maven repository -->
         <repository>
