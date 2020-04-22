@@ -47,7 +47,7 @@ public class BlockingCommandInterceptorPlugin extends AbstractProcessEnginePlugi
       customPreCommandInterceptorsTxRequiresNew = new ArrayList<CommandInterceptor>();
       processEngineConfiguration.setCustomPreCommandInterceptorsTxRequiresNew(customPreCommandInterceptorsTxRequiresNew);
     }
-    customPreCommandInterceptorsTxRequired.add(blockingCommandInterceptor);
+    customPreCommandInterceptorsTxRequiresNew.add(blockingCommandInterceptor);
   }
 
   public void postProcessEngineBuild(ProcessEngine processEngine) {
