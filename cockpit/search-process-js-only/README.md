@@ -2,6 +2,8 @@
 
 A simple plugin to search for a process by its process instance id.
 
+Built and tested against Camunda BPM version `7.13.0`.
+
 ## Installation
 
 - Copy the `searchProcess.js` file into the `app/cockpit/scripts/` folder of the Camunda Webapp.
