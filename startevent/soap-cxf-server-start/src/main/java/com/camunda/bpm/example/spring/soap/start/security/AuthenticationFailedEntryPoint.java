@@ -16,9 +16,6 @@
  */
 package com.camunda.bpm.example.spring.soap.start.security;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,7 +33,7 @@ public class AuthenticationFailedEntryPoint implements AuthenticationEntryPoint 
   private String realmName;
 
   @Override
-  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); 
     response.addHeader("WWW-Authenticate", "Basic realm=\"" + realmName + "\"");
   }

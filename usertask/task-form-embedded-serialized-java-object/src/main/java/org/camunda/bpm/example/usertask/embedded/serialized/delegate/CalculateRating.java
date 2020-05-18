@@ -26,7 +26,7 @@ import org.camunda.bpm.example.usertask.embedded.serialized.model.CustomerData;
  */
 public class CalculateRating implements JavaDelegate {
 
-  public void execute(DelegateExecution execution) throws Exception {
+  public void execute(DelegateExecution execution) {
 
     CustomerData customerData = (CustomerData) execution.getVariable("customerData");
 

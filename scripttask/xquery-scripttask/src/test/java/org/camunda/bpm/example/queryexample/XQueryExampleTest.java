@@ -56,7 +56,7 @@ public class XQueryExampleTest {
 
   @Test
   @Deployment(resources = { "xquery-example.bpmn" })
-  public void testScriptletTransform() {
+  public void shouldTransformScriptlet() {
     RuntimeService runtimeService = processEngineRule.getRuntimeService();
     HistoryService historyService = processEngineRule.getHistoryService();
 
@@ -70,7 +70,10 @@ public class XQueryExampleTest {
     runtimeService.startProcessInstanceByKey("xquery-example", variables);
 
     // get variable which contains our xmlOutput after transformation
-    String output = (String) historyService.createHistoricVariableInstanceQuery().variableName("xmlOutput").singleResult().getValue();
+    String output = (String) historyService.createHistoricVariableInstanceQuery()
+        .variableName("xmlOutput")
+        .singleResult()
+        .getValue();
 
     System.out.println("Transform result:");
     System.out.println(output);
@@ -81,8 +84,11 @@ public class XQueryExampleTest {
   }
 
   @Test
-  public void testTransform() throws Exception {
-    String output = variableXQueryOperator.evaluateToString("skills", IoUtil.fileAsString(input1), "names", IoUtil.fileAsString(input2));
+  public void shouldTransform() throws Exception {
+    String skillsAsString = IoUtil.fileAsString(input1);
+    String namesAsString = IoUtil.fileAsString(input2);
+    String output =
+        variableXQueryOperator.evaluateToString("skills", skillsAsString, "names", namesAsString);
 
     System.out.println("Transform result:");
     System.out.println(output);

@@ -61,10 +61,10 @@ public class AsynchronousServiceTask extends AbstractBpmnActivityBehavior {
 
   public static final String EXECUTION_ID = "executionId";
   
-	public void execute(final ActivityExecution execution) throws Exception {
+	public void execute(final ActivityExecution execution) {
 	  
 	  // Build the payload for the message: 
-	  Map<String, Object> payload = new HashMap<String, Object>(execution.getVariables());
+	  Map<String, Object> payload = new HashMap<>(execution.getVariables());
 	  // Add the execution id to the payload:
 	  payload.put(EXECUTION_ID, execution.getId());
 	  
@@ -75,7 +75,7 @@ public class AsynchronousServiceTask extends AbstractBpmnActivityBehavior {
 	  
 	}
 			
-	public void signal(ActivityExecution execution, String signalName, Object signalData) throws Exception {
+	public void signal(ActivityExecution execution, String signalName, Object signalData) {
 	  
 	  // leave the service task activity:
 	  leave(execution);

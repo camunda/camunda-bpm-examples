@@ -39,6 +39,7 @@ import com.camunda.bpm.example.spring.soap.start.v1.InvalidValueException_Except
 import com.camunda.bpm.example.spring.soap.start.v1.SetAccountNameRequest;
 import com.camunda.bpm.example.spring.soap.start.v1.SetAccountNameResponse;
 import com.camunda.bpm.example.spring.soap.start.v1.StatusType;
+import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -49,15 +50,16 @@ import com.camunda.bpm.example.spring.soap.start.v1.StatusType;
  * @author Thomas Skjolberg 
  */
 
+@Service
 @WebService(endpointInterface = "com.camunda.bpm.example.spring.soap.start.v1.BankAccountServicePortType")
 public class BankAccountService implements BankAccountServicePortType {
 
-  private Logger logger = LoggerFactory.getLogger(BankAccountService.class.getName());
-  
+  protected Logger logger = LoggerFactory.getLogger(BankAccountService.class.getName());
+
   @Autowired
-  private ProcessEngine processEngine;
-  
-  private FormService formService;
+  protected ProcessEngine processEngine;
+
+  protected FormService formService;
   
   @PostConstruct
   protected void init() {
@@ -102,12 +104,16 @@ public class BankAccountService implements BankAccountServicePortType {
   }
 
   
-  public ProcessDefinition getLastestProcessDefinition(String processDefinitionKey) {
+  protected ProcessDefinition getLastestProcessDefinition(String processDefinitionKey) {
     Set<String> registeredDeployments = processEngine.getManagementService().getRegisteredDeployments();
     
     ProcessDefinition latestProcessDefintion = null;
     for(String deploymentId : registeredDeployments) {
-      List<ProcessDefinition> list = processEngine.getRepositoryService().createProcessDefinitionQuery().deploymentId(deploymentId).processDefinitionKey(processDefinitionKey).list();
+      List<ProcessDefinition> list = processEngine.getRepositoryService()
+          .createProcessDefinitionQuery()
+          .deploymentId(deploymentId)
+          .processDefinitionKey(processDefinitionKey)
+          .list();
 
       for(ProcessDefinition processDefinition : list) {
         if(latestProcessDefintion == null || latestProcessDefintion.getVersion() < processDefinition.getVersion()) {

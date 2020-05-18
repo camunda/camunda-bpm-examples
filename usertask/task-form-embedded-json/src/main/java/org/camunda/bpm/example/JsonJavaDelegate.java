@@ -27,14 +27,14 @@ public class JsonJavaDelegate implements JavaDelegate {
   private static final Logger LOG = LoggerFactory.getLogger(JsonJavaDelegate.class);
 
   @Override
-  public void execute(DelegateExecution execution) throws Exception {
+  public void execute(DelegateExecution execution) {
     JsonValue jsonCustomer = execution.getVariableTyped("customer");
     jsonCustomer.getValue().prop("isValid", randomValid());
     LOG.info("JSON customer: {}", jsonCustomer);
     execution.setVariable("customer", jsonCustomer);
   }
   
-  private boolean randomValid() {
+  protected boolean randomValid() {
     return Math.random() > 0.5 ? true : false;
   }
 

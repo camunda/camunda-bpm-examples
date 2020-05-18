@@ -1,3 +1,5 @@
+package org.camunda.bpm.example.xsltexample
+
 import org.camunda.commons.utils.IoUtil
 
 xmlData = IoUtil.fileAsString('org/camunda/bpm/example/xsltexample/example.xml')

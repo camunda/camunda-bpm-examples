@@ -37,7 +37,9 @@ public class JacksonAnnotationApplication extends ServletProcessApplication {
     //create typed variable with json as serialization format
     Map<String, Object> vars = Variables.createVariables();
     ExampleDto exampleDto = new ExampleDto("prop1", "shouldBeIgnored", "prop3");
-    ObjectValue typedObjectValue = Variables.objectValue(exampleDto).serializationDataFormat(Variables.SerializationDataFormats.JSON).create();
+    ObjectValue typedObjectValue = Variables.objectValue(exampleDto)
+        .serializationDataFormat(Variables.SerializationDataFormats.JSON)
+        .create();
     vars.put("variable", typedObjectValue);
     // start a new instance of our process with that variable
     processEngine.getRuntimeService().startProcessInstanceByKey("waitingProcess", vars);

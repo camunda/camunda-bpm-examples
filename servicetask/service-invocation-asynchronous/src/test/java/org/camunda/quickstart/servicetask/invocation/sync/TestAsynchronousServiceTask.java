@@ -16,12 +16,11 @@
  */
 package org.camunda.quickstart.servicetask.invocation.sync;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -50,7 +49,7 @@ public class TestAsynchronousServiceTask {
 
   @Test
   @Deployment(resources = { "asynchronousServiceInvocation.bpmn" })
-  public void testServiceInvocationSuccessful() {
+  public void shouldCallServiceSuccessfully() {
 
     final ProcessEngine processEngine = processEngineRule.getProcessEngine();
     final RuntimeService runtimeService = processEngineRule.getRuntimeService();
@@ -75,7 +74,7 @@ public class TestAsynchronousServiceTask {
     taskService.complete(waitStateBefore.getId());
 
     // the process instance is now waiting in the service task activity:
-    assertEquals(Arrays.asList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
+    assertEquals(Collections.singletonList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
     
     // the message is present in the Queue:
     Message message = MockMessageQueue.INSTANCE.getNextMessage();
@@ -101,7 +100,7 @@ public class TestAsynchronousServiceTask {
 
   @Test
   @Deployment(resources = { "asynchronousServiceInvocation.bpmn" })
-  public void testServiceInvocationFailure() {
+  public void shouldCallServiceWithFailure() {
 
     final ProcessEngine processEngine = processEngineRule.getProcessEngine();
     final RuntimeService runtimeService = processEngine.getRuntimeService();
@@ -126,7 +125,7 @@ public class TestAsynchronousServiceTask {
     taskService.complete(waitStateBefore.getId());
 
     // the process instance is now waiting in the service task activity:
-    assertEquals(Arrays.asList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
+    assertEquals(Collections.singletonList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
     
     // the message is present in the Queue:
     Message message = MockMessageQueue.INSTANCE.getNextMessage();
@@ -142,7 +141,7 @@ public class TestAsynchronousServiceTask {
     }
 
     // the process instance is still waiting in the service task activity:
-    assertEquals(Arrays.asList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
+    assertEquals(Collections.singletonList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
 
   }
 

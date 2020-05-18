@@ -16,11 +16,11 @@
  */
 package org.camunda.quickstart.servicetask.invocation.sync;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collections;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class TestSynchronousServiceTask {
 
   @Test
   @Deployment(resources = { "synchronousServiceInvocation.bpmn" })
-  public void testServiceInvocationSuccessful() {
+  public void shouldCallServiceSuccessfully() {
 
     final RuntimeService runtimeService = processEngineRule.getRuntimeService();
     final TaskService taskService = processEngineRule.getTaskService();
@@ -83,7 +83,7 @@ public class TestSynchronousServiceTask {
 
   @Test
   @Deployment(resources = { "synchronousServiceInvocation.bpmn" })
-  public void testServiceInvocationFailure() {
+  public void shouldCallServiceWithFailure() {
 
     final RuntimeService runtimeService = processEngineRule.getRuntimeService();
     final TaskService taskService = processEngineRule.getTaskService();

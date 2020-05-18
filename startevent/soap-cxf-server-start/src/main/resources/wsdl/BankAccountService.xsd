@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://start.soap.spring.example.bpm.camunda.com/v1"
-  xmlns:tns="http://start.soap.spring.example.bpm.camunda.com/v1"
-  elementFormDefault="qualified">
+        targetNamespace="http://start.soap.spring.example.bpm.camunda.com/v1"
+        xmlns:tns="http://start.soap.spring.example.bpm.camunda.com/v1"
+        elementFormDefault="qualified">
 
   <annotation>
     <documentation>Example of web service.</documentation>
