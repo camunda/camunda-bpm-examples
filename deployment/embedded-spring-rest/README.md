@@ -114,7 +114,7 @@ Reference all required libraries in pom.xml:
 <dependency>
   <groupId>org.jboss.resteasy</groupId>
   <artifactId>resteasy-jaxrs</artifactId>
-  <version>3.0.8.Final</version>
+  <version>3.10.0.Final</version>
 </dependency>
 
 <dependency>
