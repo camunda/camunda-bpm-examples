@@ -2,21 +2,21 @@
 
 This example demonstrates how to deploy a spring powered web application which
 
-  * Includes a @ProcessApplication class and some BPMN 2.0 processes
+  * Includes a `@ProcessApplication` class and some BPMN 2.0 processes
   * Starts a Spring Web application context based on a shared, container managed process engine
   * Uses Spring Beans and delegation code in expressions within processes
 
-Note: The example does not work with JDK 9+.
-
 ## Why is this example interesting?
 
-This example shows how to combine a @ProcessApplication class, a `processes.xml` and a spring applicationContext into a fully-fledged process application with all its
-advantages, including a shared, container managed process engine paired with the power of Spring Beans inside your processes.
+This example shows how to combine a `@ProcessApplication class`, a `processes.xml` and a spring applicationContext into 
+a fully-fledged process application with all its advantages, including a shared, container managed process engine paired 
+with the power of Spring Beans inside your processes.
 
 ## Show me the important parts!
 
-A process application class was created which extends the `ServletProcessApplication` class. The class was annotated with @ProcessApplication.
-This allow the camunda BPM platform to pick it up and register the process application without any further action:
+A process application class was created which extends the `ServletProcessApplication` class. The class was annotated 
+with `@ProcessApplication`. This allows the Camunda BPM Platform to pick it up and register the process application 
+without any further action:
 
 ```java
 @ProcessApplication
@@ -25,7 +25,8 @@ public class SpringServletProcessApplication extends ServletProcessApplication {
 }
 ```
 
-Through the `META-INF/processes.xml`, we can define process archives and additional options, like creating new engines when deploying the process application:
+Through the `META-INF/processes.xml`, we can define process archives and additional options, like creating new engines 
+when deploying the process application:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -46,7 +47,8 @@ Through the `META-INF/processes.xml`, we can define process archives and additio
 
 ### Maven dependencies
 
-The scope attributes of the dependency nodes are set to *provided* since the dependencies have to be loaded into the root classloader of the web container:
+The scope attributes of the dependency nodes are set to *provided* since the dependencies have to be loaded into the 
+root classloader of the web container:
 
 ```xml
 <dependency>
@@ -57,7 +59,8 @@ The scope attributes of the dependency nodes are set to *provided* since the dep
 </dependency>
 ```
 
-The embedded tomcat server will be run with our pre-configured `server.xml`. This configuration file will be preprocessed so that variables with the name `${project.build.directory}` are being replaced with the proper path:
+The embedded tomcat server will be run with our pre-configured `server.xml`. This configuration file will be 
+preprocessed so that variables with the name `${project.build.directory}` are being replaced with the proper path:
 
 ```xml
 <Resource 
@@ -81,7 +84,7 @@ The configuration files `server.xml` and `bpm-platform.xml` are being copied to 
 
 ## How to use it?
 
-1. Build it with maven.
+1. Build it with Maven.
 
 ```bash
 mvn clean verify
@@ -95,7 +98,7 @@ This will start the embedded tomcat server.
 [INFO] ENGINE-08046 Found camunda bpm platform configuration in
 ...
 [INFO] ENGINE-07015 Detected @ProcessApplication class 'org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication'
-Nov 30, 2016 10:43:33 AM org.apache.catalina.core.ApplicationContext log
+May 18, 2020 4:46:36 PM org.apache.catalina.core.ApplicationContext log
 INFO: Initializing Spring root WebApplicationContext
 ...
 Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
