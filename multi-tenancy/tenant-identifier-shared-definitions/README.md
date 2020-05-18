@@ -15,7 +15,7 @@ The example contains two shared process definitions (main proces and sub-process
 
 ## How it works
 
-Please refer to the [User Guide](http://docs.camunda.org/manual/7.12/user-guide/process-engine/multi-tenancy/) for details about multi-tenancy.
+Please refer to the [User Guide](http://docs.camunda.org/manual/7.13/user-guide/process-engine/multi-tenancy/) for details about multi-tenancy.
 
 ### Provide Tenant Ids for Instances of Shared Process Definitions
 
