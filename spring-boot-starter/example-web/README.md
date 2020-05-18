@@ -38,13 +38,13 @@ public class RestApplication {
 
 3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within a process application.
 
->Note: Basic authentication is configured on Spring Boot level, this is NOT a Camunda Engine authentication. Check [this docs](https://docs.camunda.org/manual/7.12/reference/rest/overview/authentication/) 
+>Note: Basic authentication is configured on Spring Boot level, this is NOT a Camunda Engine authentication. Check [this docs](https://docs.camunda.org/manual/latest/reference/rest/overview/authentication/) 
 to configure Basic Authentication for Camunda Engine REST API.
  
 ## Run the application and call the REST API
 
 You can then build the application with `mvn clean install` and then run it with `java -jar` command.
 
-Then you can access the REST API in the browser through: `http://localhost:8080/rest/engine` (provide login/password: user/password).
+Then you can access the REST API in the browser through: `http://localhost:8080/engine-rest/engine` (provide login/password from `application.yaml`, default: demo/demo).
 
-Another endpoint to test: `http://localhost:8080/rest/engine/default/process-definition` - this will show you the deployed process definition.
+Another endpoint to test: `http://localhost:8080/engine-rest/engine/default/process-definition` - this will show you the deployed process definition.

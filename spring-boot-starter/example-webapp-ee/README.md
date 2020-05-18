@@ -73,4 +73,4 @@ public class EnterpriseWebappExampleApplication {
 
 You can build the application with `mvn clean install` and then run it with the `java -jar` command.
 
-Then you can access the Camunda Webapps in your browser: `http://localhost:8080` (provide login/password from `application.yaml`)
+Then you can access the Camunda Webapps in your browser: `http://localhost:8080` (provide login/password from `application.yaml`, default: demo/demo)

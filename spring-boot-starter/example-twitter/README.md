@@ -6,7 +6,7 @@ It uses `camunda-bpm-spring-boot-starter-webapp` and thus embed Tomcat as a web 
 The example contains:
 - a process application with one process deployed on the Camunda engine
 - custom forms to create and review the Tweet
-- creates on startup an admin user "kermit" (password: kermit)
+- creates on startup an admin user "demo" (password: demo)
 
 It also demonstrates the usage of the `application.yaml` configuration file.
 
@@ -61,5 +61,4 @@ the BPMN diagram via "Delegate expression" in a service task:
 
 You can build the application by `mvn clean install` and then run it with `java -jar` command.
 
-Go to `http://localhost:8080`, log in with "kermit/kermit", go to Tasklist and try to start the process and complete the tasks, observe log entries 
-or the real tweet when `TweetContentDelegate` is used.
+Go to `http://localhost:8080` (provide login/password from `application.yaml`, default: demo/demo) then go to Tasklist and try to start the process and complete the tasks, observe log entries or the real tweet when `TweetContentDelegate` is used.

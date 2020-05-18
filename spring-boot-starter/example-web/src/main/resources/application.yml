@@ -1,0 +1,9 @@
+camunda.bpm.metrics:
+    enabled: false
+    db-reporter-activate: false
+
+spring:
+  main.allow-bean-definition-overriding: true
+  security.user: 
+    name: demo
+    password: demo
