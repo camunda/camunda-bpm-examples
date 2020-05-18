@@ -7,7 +7,8 @@ This example demonstrates how to set up a web application, which
 * Bundles the `camunda-engine-REST` library
 * Exposes the Process Engine API via REST
 
-> **Note:** This project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from http://camunda.org.
+> **Note:** This project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution
+> which can be downloaded from http://camunda.org.
 
 ## Why is this example interesting?
 
@@ -131,7 +132,7 @@ Reference all required libraries in pom.xml:
 
 ## How to use it?
 
-1. Build it with maven
+1. Build it with Maven
 2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from http://camunda.org!!
 3. Access the REST Endpoint:
 [http://localhost:8080/camunda-quickstart-embedded-spring-rest-1.0-SNAPSHOT/engine/default/process-definition][1]
