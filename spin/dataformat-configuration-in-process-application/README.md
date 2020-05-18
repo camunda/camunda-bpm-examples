@@ -117,7 +117,7 @@ public class ProcessInstanceStarterBean {
 }
 ```
 
-As the process engine is not able to guess by itself which JSON data format to use for serializing the variable, we have to tell it that we want to use the format defined in the process application. This is solved here by defining a custom CDI annotation `@InProcessApplicationContext`. A custom CDI interceptor [ProcessApplicationContextInterceptor](src/main/java/org/camunda/bpm/example/spin/dataformat/servlet/ProcessApplicationContextInterceptor.java) is notified whenever this annotation is present. This interceptor determines the context process application and declares it using the utility class [ProcessApplicationContext](http://stage.docs.camunda.org/javadoc/camunda-bpm-platform/7.5-SNAPSHOT/org/camunda/bpm/application/ProcessApplicationContext.html):
+As the process engine is not able to guess by itself which JSON data format to use for serializing the variable, we have to tell it that we want to use the format defined in the process application. This is solved here by defining a custom CDI annotation `@InProcessApplicationContext`. A custom CDI interceptor [ProcessApplicationContextInterceptor](src/main/java/org/camunda/bpm/example/spin/dataformat/servlet/ProcessApplicationContextInterceptor.java) is notified whenever this annotation is present. This interceptor determines the context process application and declares it using the utility class [ProcessApplicationContext](https://github.com/camunda/camunda-bpm-platform/blob/master/engine/src/main/java/org/camunda/bpm/application/ProcessApplicationContext.java):
 
 ```java
 @InProcessApplicationContext
@@ -153,7 +153,7 @@ public class ProcessApplicationContextInterceptor {
 
 For this to work on Tomcat (a non-Java-EE server), we have include Weld in the process application. However, note that using CDI is not required for this feature to work. The lowest common denominator is the utility class `ProcessApplicationContext`. It can be used in any context to declare process application context before invoking engine API.
 
-Read the documentation on [Process Application Resource Access](https://docs.camunda.org/manual/7.12/user-guide/process-applications/process-application-resources/) for why it is required to declare process application context.
+Read the documentation on [Process Application Resource Access](https://docs.camunda.org/manual/7.13/user-guide/process-applications/process-application-resources/) for why it is required to declare process application context.
 
 ### Delegation Code
 
