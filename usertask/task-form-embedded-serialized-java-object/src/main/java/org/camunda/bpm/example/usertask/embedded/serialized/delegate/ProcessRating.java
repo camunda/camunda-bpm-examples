@@ -30,7 +30,7 @@ public class ProcessRating implements JavaDelegate {
 
   private final static Logger LOG = Logger.getLogger(ProcessRating.class.getName());
 
-  public void execute(DelegateExecution execution) throws Exception {
+  public void execute(DelegateExecution execution) {
 
     CustomerData customerData = (CustomerData) execution.getVariable("customerData");
 

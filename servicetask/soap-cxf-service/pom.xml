@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.camunda.bpm.example</groupId>
 	<artifactId>soap-cxf-service</artifactId>
@@ -8,15 +8,15 @@
 	<name>Service Invocation - SOAP using CXF and Spring</name>
 
 	<properties>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<camunda.version>7.12.0</camunda.version>
-		<cxf.version>3.0.3</cxf.version>
+		<camunda.version>7.13.0</camunda.version>
+		<cxf.version>3.3.6</cxf.version>
 		<cglib.version>2.2.2</cglib.version>
 		<spring.version>4.3.24.RELEASE</spring.version>
-		<groovy.version>2.4.3</groovy.version>
+		<groovy.version>2.4.13</groovy.version>
 
 		<logback.version>1.1.3</logback.version>
 		<slf4j.version>1.7.26</slf4j.version>
@@ -67,7 +67,7 @@
 			<groupId>org.camunda.spin</groupId>
 			<artifactId>camunda-spin-dataformat-xml-dom</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.camunda.template-engines</groupId>
 			<artifactId>camunda-template-engines-freemarker</artifactId>
@@ -110,23 +110,23 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-        <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-jdbc</artifactId>
-          <version>${spring.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
-        <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-tx</artifactId>
-          <version>${spring.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
-        <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-orm</artifactId>
-          <version>${spring.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>cglib</groupId>
@@ -145,8 +145,8 @@
 					<groupId>asm</groupId>
 				</exclusion>
 			</exclusions>
-
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
@@ -178,6 +178,7 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
@@ -190,12 +191,12 @@
 			<version>${logback.version}</version>
 		</dependency>
 
-        <!-- redirect slf4j logging to jdk logging -->
-        <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-jdk14</artifactId>
-          <version>${slf4j.version}</version>
-        </dependency>
+		<!-- redirect slf4j logging to jdk logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
 
 		<!-- test -->
 		<dependency>
@@ -218,17 +219,26 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 			<version>${hamcrest.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-ri</artifactId>
+			<version>2.3.0</version>
+			<type>pom</type>
 		</dependency>
 
 	</dependencies>
@@ -297,5 +307,23 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>jdk9-plus</id>
+
+			<activation>
+				<jdk>(1.8,)</jdk>
+			</activation>
+
+			<dependencies>
+				<dependency>
+					<groupId>javax.activation</groupId>
+					<artifactId>activation</artifactId>
+					<version>1.1.1</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 </project>

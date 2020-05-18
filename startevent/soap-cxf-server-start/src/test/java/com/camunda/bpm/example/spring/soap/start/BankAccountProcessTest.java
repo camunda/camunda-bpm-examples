@@ -57,7 +57,7 @@ public class BankAccountProcessTest {
   protected BankAccountServicePortType client;
 
   @Test
-  public void callServiceReturnSuccess() throws Exception {
+  public void shouldCallServiceReturnSuccess() throws Exception {
     SetAccountNameRequest request = new SetAccountNameRequest();
     request.setAccountNumber("1");
     request.setAccountName("myAccount");
@@ -71,7 +71,7 @@ public class BankAccountProcessTest {
   }
 
   @Test
-  public void callServiceWithInvalidAccountNumberReturnAccountNumberInvalidValueException() throws Exception {
+  public void shouldCallServiceWithInvalidAccountNumberReturnAccountNumberInvalidValueException() {
     SetAccountNameRequest request = new SetAccountNameRequest();
     request.setAccountNumber("ABC");
     request.setAccountName("myAccount");
@@ -91,7 +91,7 @@ public class BankAccountProcessTest {
   }
   
   @Test
-  public void callServiceWithInvalidSecretReturnError() throws Exception {
+  public void shouldCallServiceWithInvalidSecretReturnError() throws Exception {
     exception.expect(RuntimeException.class);
     SetAccountNameRequest request = new SetAccountNameRequest();
     request.setAccountNumber("1");

@@ -27,8 +27,8 @@ import org.camunda.bpm.application.impl.ServletProcessApplication;
  * an application which interacts with the process engine,
  * provides BPMN deployment resources and delegate code.</p>
  * 
- * <p>See also: 
- * <a href="https://docs.camunda.org/manual/latest/user-guide/process-applications/the-process-application-class/#the-servletprocessapplication">User Guide on the Servlet Process Application</a>
+ * <p>See also:
+ * <a href="https://docs.camunda.org/manual/7.13/user-guide/process-applications/the-process-application-class/#the-servletprocessapplication">User Guide on the Servlet Process Application</a>
  * </p>
  * 
  * <p>From a technical perspective, this a class is a 

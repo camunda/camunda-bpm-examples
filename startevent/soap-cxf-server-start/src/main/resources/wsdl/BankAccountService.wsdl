@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="LoggerService"
-  targetNamespace="http://start.soap.spring.example.bpm.camunda.com/v1"
-  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:e="http://start.soap.spring.example.bpm.camunda.com/v1"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+                 targetNamespace="http://start.soap.spring.example.bpm.camunda.com/v1"
+                 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:e="http://start.soap.spring.example.bpm.camunda.com/v1"
+                 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
     <xsd:schema>
       <xsd:import namespace="http://start.soap.spring.example.bpm.camunda.com/v1"
