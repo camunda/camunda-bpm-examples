@@ -1,6 +1,6 @@
 # Standalone usage of JS SDK
 
-This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-sdk-js) to work with user task forms.
+This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-webapp/tree/7.13/camunda-bpm-sdk-js) to work with user task forms.
 
 ![SDK JS standalone usage](screenshot.png)
 
@@ -8,7 +8,6 @@ Supported browsers are:
 - Firefox
 - Google Chrome
 - Edge
-- Internet Explorer 11+
 
 ## Setup
 
@@ -28,7 +27,7 @@ Note: you can find the complete code of this example in the `scripts.js` file.
 
 ### Client
 
-The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](http://docs.camunda.org/latest/api-references/rest/)):
+The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](http://docs.camunda.org/7.13/api-references/rest/)):
 
 ```js
 var camClient = new CamSDK.Client({

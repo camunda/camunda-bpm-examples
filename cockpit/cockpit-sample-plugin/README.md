@@ -3,7 +3,7 @@ Sample Plugin for Camunda Cockpit
 
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda BPM](http://docs.camunda.org).
 
-Built and tested against Camunda BPM version `7.12.0`.
+Built and tested against Camunda BPM version `7.13.0`.
 
 ![Screenshot](screenshot.png)
 
@@ -26,7 +26,7 @@ Built and tested against Camunda BPM version `7.12.0`.
 ![Cockpit Plugin](cockpit-plugin.png)
 
 
-> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.12/webapps/cockpit/extend/plugins/) for the basics first.
+> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.13/webapps/cockpit/extend/plugins/) for the basics first.
 
 1. [Server Side](#server-side)
 	  1. [Plug-in Archive](#plug-in-archive)
@@ -608,7 +608,7 @@ As the file is loaded as a RequireJS module, dependencies (in terms of other Req
 
 The plug-in must register itself with the `ViewsProvider` via a [module configuration hook](http://docs.angularjs.org/api/angular.Module).
 
-From within Cockpit, views are included using the [view directive](https://github.com/camunda/camunda-commons-ui/blob/master/lib/plugin/view.js):
+From within Cockpit, views are included using the [view directive](https://github.com/camunda/camunda-bpm-webapp/blob/7.13/camunda-commons-ui/lib/plugin/view.js):
 
 ```html
 <view provider="viewProvider" vars="viewProviderVars" />
