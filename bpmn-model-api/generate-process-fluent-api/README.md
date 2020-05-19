@@ -182,4 +182,4 @@ Bpmn.writeModelToStream(System.out, modelInstance);
 [1]: https://github.com/camunda/camunda-bpm-platform/tree/master/examples/invoice
 [3]: invoice.png
 [4]: src/test/java/org/camunda/bpm/quickstart/CreateInvoiceProcessTest.java
-[5]: https://github.com/camunda/camunda-bpmn-model
+[5]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/bpmn-model
