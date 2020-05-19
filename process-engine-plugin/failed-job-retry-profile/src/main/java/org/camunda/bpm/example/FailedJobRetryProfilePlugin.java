@@ -40,7 +40,7 @@ public class FailedJobRetryProfilePlugin extends AbstractProcessEnginePlugin {
   public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
     List<BpmnParseListener> parseListeners = processEngineConfiguration.getCustomPreBPMNParseListeners();
     if (parseListeners == null) {
-      parseListeners = new ArrayList<BpmnParseListener>();
+      parseListeners = new ArrayList<>();
       processEngineConfiguration.setCustomPreBPMNParseListeners(parseListeners);
     }
     FailedJobRetryProfileParseListener failedJobRetryProfileParseListener = new FailedJobRetryProfileParseListener(retryProfiles);

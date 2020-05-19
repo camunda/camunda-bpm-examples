@@ -1,8 +1,10 @@
 # Job Retry Profile Parse Listener
 
-This example demonstrates how to configure "job retry profile" for each external system as Process Engine Plugin.
+This example demonstrates how to configure a "job retry profile" for each external system as a Process Engine Plugin.
 
-Usually there are specific patterns during communication between the process engine and external systems. Let's imagine you want to configure that every time a job fails trying to connect to specific external system (for example CRM system) to retry at least 10 times within duration 5 minutes. This is your right example to do so.
+Usually there are specific patterns during communication between the process engine and external systems. Let's imagine 
+that you want to configure that every time a job fails to connect to a specific external system (for example a
+CRM system) to retry at least 10 times within a 5 minutes duration. This is your right example to do so.
 
 ## Show me the important parts!
 
@@ -10,7 +12,8 @@ The process model is composed of four service tasks communicating with two diffe
 
 ![Process Model][1]
 
-* Every ServiceTask contains custom extension property `retryProfile` which defines the profile name of the external system in this case - CRM and ERP.
+* Every ServiceTask contains custom extension property `retryProfile` which defines the profile name of the external 
+system in this case - CRM and ERP.
 
 ### Create a Process Engine Plugin Implementation
 
@@ -102,7 +105,8 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
 }
 ```
 
-This listener helps us during the parsing of the bpmn to set the retry value if we have specified attribute for the current task. 
+This listener helps us during the parsing of the bpmn to set the retry value if we have specified attribute for 
+the current task. 
 
 ### Activate the Plugin
 
@@ -123,7 +127,8 @@ The BPMN Parse Listener can be activated in the `camunda.cfg.xml`:
 </property>
 ```
 
-It is important to define the profiles for your external systems. You can use a map as shown and define the names of the profile as keys and the retries as values of the map.
+It is important to define the profiles for your external systems. You can use a map as shown and define the names of 
+the profile as keys and the retries as values of the map.
 
 ### Configure Extension Properties on Service Task
 
@@ -139,7 +144,7 @@ Configure the `retryProfile` property into the extensionElements.
 </bpmn:serviceTask>
 ```
 
-Using the camunda Modeler, you can configure the service task using the properties panel:
+Using the Camunda Modeler, you can configure the service task using the properties panel:
 
 ![Configure Service Task using the camunda Modeler][2]
 
@@ -149,17 +154,19 @@ Using the camunda Modeler, you can configure the service task using the properti
 If you are impatient, just have a look at the [unit test][3].
 
 In this example, the unit test triggers the process engine to deploy and parse the BPMN Process Model.
-The Process Engine BPMN Parser parses the process definition. The Failed Job Retry Profile Parse Listener additionally parses the service task
-to the BPMN Parser and adds failed job retry configuration according to the defined profile.
+The Process Engine BPMN Parser parses the process definition. The Failed Job Retry Profile Parse Listener additionally 
+parses the service task to the BPMN Parser and adds a failed job retry configuration according to the defined profile.
 
-After that, the process engine starts the process instance and invokes the `execute()`-method provided by the `Java Delegate`
-implementation. When the service task fails, the process engine retries the job according the failed job retry configuration.
+After that, the process engine starts the process instance and invokes the `execute()` method provided by 
+the `Java Delegate` implementation. When the service task fails, the process engine retries the job according to
+the failed job retry configuration.
 
 ## How to use it?
 
 1. Checkout the project with Git
 2. Import the project into your IDE
-3. Inspect the sources and run the unit test.
+3. Inspect the sources and run the unit test in your IDE or with Maven: `mvn clean verify`
+4. You should expect that all test cases pass.
 
 [1]: docs/retry-example.JPG
 [2]: docs/extension-property.JPG
