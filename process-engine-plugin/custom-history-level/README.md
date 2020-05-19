@@ -174,7 +174,8 @@ redeployed to change the history level of new process instances.
 
 1. Checkout the project with Git
 2. Import the project into your IDE
-3. Inspect the sources and run the unit test.
+3. Inspect the sources and run the unit test in your IDE or with Maven: `mvn clean verify`
+4. You should expect that all test cases pass.
 
 [1]: src/main/resources/process.png
 [2]: src/main/resources/properties.png
