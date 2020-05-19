@@ -24,7 +24,7 @@ public class ServiceTaskTwoDelegate implements JavaDelegate {
 
   public static boolean firstAttempt = true;
 
-  public void execute(DelegateExecution execution) throws Exception {
+  public void execute(DelegateExecution execution) {
     if (firstAttempt) {
       throw new BpmnError("It is supposed to fail.");
     }
