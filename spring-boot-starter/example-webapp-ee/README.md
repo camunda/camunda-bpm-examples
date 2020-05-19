@@ -23,7 +23,7 @@ You will need:
 ```xml
 ...
   <properties>
-    <camunda.version>7.12.0-ee</camunda.version>
+    <camunda.version>7.13.0-ee</camunda.version>
   </properties>
 
   <dependencyManagement>
@@ -43,7 +43,6 @@ You will need:
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-      <version>3.4.0</version>
     </dependency>
     ...
   </dependencies>
@@ -73,4 +72,4 @@ public class EnterpriseWebappExampleApplication {
 
 You can build the application with `mvn clean install` and then run it with the `java -jar` command.
 
-Then you can access the Camunda Webapps in your browser: `http://localhost:8080` (provide login/password from `application.yaml`)
+Then you can access the Camunda Webapps in your browser: `http://localhost:8080` (provide login/password from `application.yaml`, default: demo/demo)

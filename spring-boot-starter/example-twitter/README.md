@@ -6,7 +6,7 @@ It uses `camunda-bpm-spring-boot-starter-webapp` and thus embed Tomcat as a web 
 The example contains:
 - a process application with one process deployed on the Camunda engine
 - custom forms to create and review the Tweet
-- creates on startup an admin user "kermit" (password: kermit)
+- creates on startup an admin user "demo" (password: demo)
 
 It also demonstrates the usage of the `application.yaml` configuration file.
 
@@ -19,7 +19,7 @@ It also demonstrates the usage of the `application.yaml` configuration file.
 <dependency>
  <groupId>org.camunda.bpm.springboot</groupId>
  <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
- <version>3.4.0</version>
+ <version>7.13.0</version>
 </dependency>
 ...
 ```
@@ -40,7 +40,7 @@ public class TwitterServletProcessApplication {
 
 3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within the process application.
 
-4. You can configure your Spring Boot application using `application.yaml` file. All possible Camunda-specific configuration parameters are listed [here](https://stage.docs.camunda.org/manual/7.12/user-guide/spring-boot-integration/configuration/)
+4. You can configure your Spring Boot application using `application.yaml` file. All possible Camunda-specific configuration parameters are listed [here](https://docs.camunda.org/manual/7.13/user-guide/spring-boot-integration/configuration/)
 
 5. This example provides two implementations for posting a Tweet:
 * `TweetContentOfflineDelegate` (default) - will just print the tweet content on console
@@ -61,5 +61,4 @@ the BPMN diagram via "Delegate expression" in a service task:
 
 You can build the application by `mvn clean install` and then run it with `java -jar` command.
 
-Go to `http://localhost:8080`, log in with "kermit/kermit", go to Tasklist and try to start the process and complete the tasks, observe log entries 
-or the real tweet when `TweetContentDelegate` is used.
+Go to `http://localhost:8080` (provide login/password from `application.yaml`, default: demo/demo) then go to Tasklist and try to start the process and complete the tasks, observe log entries or the real tweet when `TweetContentDelegate` is used.

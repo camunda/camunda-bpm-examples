@@ -1,5 +1,5 @@
-camunda:
-  bpm:
+camunda.bpm:
     admin-user:
-      id: kermit
-      password: kermit
+      id: demo
+      password: demo
+    filter.create: All

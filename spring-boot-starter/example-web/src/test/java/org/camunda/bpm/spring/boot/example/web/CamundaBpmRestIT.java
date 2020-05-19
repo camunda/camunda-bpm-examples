@@ -50,7 +50,7 @@ public class CamundaBpmRestIT {
 
   @Test
   public void processDefinitionTest() {
-    ResponseEntity<ProcessDefinitionDto[]> entity = restTemplate.getForEntity("http://localhost:" + this.port + "/rest/engine/{engineName}/process-definition", ProcessDefinitionDto[].class,
+    ResponseEntity<ProcessDefinitionDto[]> entity = restTemplate.getForEntity("http://localhost:" + this.port + "/engine-rest/engine/{engineName}/process-definition", ProcessDefinitionDto[].class,
       camundaBpmProperties.getProcessEngineName());
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals("Sample", entity.getBody()[0].getKey());

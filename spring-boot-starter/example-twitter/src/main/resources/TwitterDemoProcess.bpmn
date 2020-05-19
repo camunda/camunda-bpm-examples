@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="http://www.signavio.com/bpmn20" exporter="Camunda Modeler" exporterVersion="1.3.0" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+<definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="http://www.signavio.com/bpmn20" exporter="Camunda Modeler" exporterVersion="3.5.0" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
   <process id="TwitterDemoProcess" name="TwitterDemoProcess" isExecutable="true">
     <serviceTask id="service_task_send_rejection_notification" name="Send rejection notification" camunda:delegateExpression="#{emailAdapter}">
       <extensionElements>
@@ -65,7 +65,7 @@
       <outgoing>SequenceFlow_9</outgoing>
     </startEvent>
     <sequenceFlow id="SequenceFlow_9" name="" sourceRef="start_event_new_tweet" targetRef="user_task_review_tweet" />
-    <userTask id="user_task_review_tweet" name="Review Tweet" camunda:formKey="embedded:app:forms/reviewTweet.html" camunda:assignee="kermit">
+    <userTask id="user_task_review_tweet" name="Review Tweet" camunda:formKey="embedded:app:forms/reviewTweet.html" camunda:assignee="demo">
       <extensionElements>
         <camunda:properties>
           <camunda:property name="durationMean" value="10000" />
@@ -80,87 +80,87 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_TwitterDemoProcess">
     <bpmndi:BPMNPlane id="BPMNPlane_TwitterDemoProcess" bpmnElement="TwitterDemoProcess">
       <bpmndi:BPMNShape id="BPMNShape_new_tweet_3" bpmnElement="start_event_new_tweet">
-        <omgdc:Bounds x="48" y="119" width="30" height="30" />
+        <omgdc:Bounds x="178" y="179" width="30" height="30" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="22" y="151" width="82" height="22" />
+          <omgdc:Bounds x="161" y="211" width="64" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Review_Tweet_3" bpmnElement="user_task_review_tweet">
-        <omgdc:Bounds x="156" y="94" width="100" height="80" />
+        <omgdc:Bounds x="286" y="154" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Approved__3" bpmnElement="gateway_approved" isMarkerVisible="true">
-        <omgdc:Bounds x="387" y="114" width="40" height="40" />
+        <omgdc:Bounds x="517" y="174" width="40" height="40" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="420" y="147" width="66" height="22" />
+          <omgdc:Bounds x="557" y="207" width="53" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Publish_on_Twitter_3" bpmnElement="service_task_publish_on_twitter">
-        <omgdc:Bounds x="492" y="174" width="100" height="80" />
+        <omgdc:Bounds x="622" y="234" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Send_rejection_notification_3" bpmnElement="service_task_send_rejection_notification">
-        <omgdc:Bounds x="492" y="24" width="100" height="80" />
+        <omgdc:Bounds x="622" y="84" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Exclusive_Databased_Gateway_3" bpmnElement="gateway_join" isMarkerVisible="true">
-        <omgdc:Bounds x="627" y="114" width="40" height="40" />
+        <omgdc:Bounds x="757" y="174" width="40" height="40" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="663" y="147" width="29" height="22" />
+          <omgdc:Bounds x="797" y="207" width="21" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndNoneEvent_3" bpmnElement="end_event_tweet_handled">
-        <omgdc:Bounds x="782" y="120" width="28" height="28" />
+        <omgdc:Bounds x="912" y="180" width="28" height="28" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="752" y="150" width="89" height="22" />
+          <omgdc:Bounds x="891" y="210" width="71" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_Publish_on_Twitter_3" targetElement="BPMNShape_Exclusive_Databased_Gateway_3">
-        <omgdi:waypoint xsi:type="omgdc:Point" x="592" y="214" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="647" y="214" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="647" y="154" />
+        <omgdi:waypoint x="722" y="274" />
+        <omgdi:waypoint x="777" y="274" />
+        <omgdi:waypoint x="777" y="214" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="639" y="226" width="6" height="6" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_Send_rejection_notification_3" targetElement="BPMNShape_Exclusive_Databased_Gateway_3">
-        <omgdi:waypoint xsi:type="omgdc:Point" x="592" y="64" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="647" y="64" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="647" y="114" />
+        <omgdi:waypoint x="722" y="124" />
+        <omgdi:waypoint x="777" y="124" />
+        <omgdi:waypoint x="777" y="174" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="872" y="102" width="6" height="6" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_Exclusive_Databased_Gateway_3" targetElement="BPMNShape_EndNoneEvent_3">
-        <omgdi:waypoint xsi:type="omgdc:Point" x="667" y="134" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="782" y="134" />
+        <omgdi:waypoint x="797" y="194" />
+        <omgdi:waypoint x="912" y="194" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="722" y="127" width="6" height="6" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_no" bpmnElement="no" sourceElement="BPMNShape_Approved__3" targetElement="BPMNShape_Send_rejection_notification_3">
-        <omgdi:waypoint xsi:type="omgdc:Point" x="407" y="114" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="407" y="64" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="492" y="64" />
+        <omgdi:waypoint x="537" y="174" />
+        <omgdi:waypoint x="537" y="124" />
+        <omgdi:waypoint x="622" y="124" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="407" y="72" width="30" height="22" />
+          <omgdc:Bounds x="546" y="132" width="13" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_yes" bpmnElement="yes" sourceElement="BPMNShape_Approved__3" targetElement="BPMNShape_Publish_on_Twitter_3">
-        <omgdi:waypoint xsi:type="omgdc:Point" x="407" y="154" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="407" y="214" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="492" y="214" />
+        <omgdi:waypoint x="537" y="214" />
+        <omgdi:waypoint x="537" y="274" />
+        <omgdi:waypoint x="622" y="274" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="409" y="192" width="27" height="22" />
+          <omgdc:Bounds x="544" y="252" width="17" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_new_tweet_3" targetElement="BPMNShape_Review_Tweet_3">
-        <omgdi:waypoint xsi:type="omgdc:Point" x="78" y="134" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="156" y="134" />
+        <omgdi:waypoint x="208" y="194" />
+        <omgdi:waypoint x="286" y="194" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="103" y="119" width="6" height="6" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_Review_Tweet_3" targetElement="BPMNShape_Approved__3">
-        <omgdi:waypoint xsi:type="omgdc:Point" x="256" y="134" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="387" y="134" />
+        <omgdi:waypoint x="386" y="194" />
+        <omgdi:waypoint x="517" y="194" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="337" y="134" width="6" height="6" />
         </bpmndi:BPMNLabel>

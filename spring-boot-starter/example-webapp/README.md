@@ -17,7 +17,7 @@ It also contains a simple integration test, showing how this can be tested.
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-  <version>3.4.0</version>
+  <version>7.13.0</version>
 </dependency>
 ...
 ```
@@ -43,5 +43,5 @@ public class WebappExampleApplication {
 
 You can build the application with `mvn clean install` and then run it with `java -jar` command.
 
-Then you can access Camunda Webapps in browser: `http://localhost:8080` (provide login/password from `application.yaml`)
+Then you can access Camunda Webapps in browser: `http://localhost:8080` (provide login/password from `application.yaml`, default: demo/demo)
 

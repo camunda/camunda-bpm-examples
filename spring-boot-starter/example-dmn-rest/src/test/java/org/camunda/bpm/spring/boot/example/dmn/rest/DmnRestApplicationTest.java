@@ -66,7 +66,7 @@ public class DmnRestApplicationTest {
 
     HttpEntity<String> request = new HttpEntity<String>(JSONInput, headers);
 
-    final String check = testRestTemplate.postForObject("/rest/engine/{engineName}/decision-definition/key/{key}/evaluate", request, String.class,
+    final String check = testRestTemplate.postForObject("/engine-rest/engine/{engineName}/decision-definition/key/{key}/evaluate", request, String.class,
         camundaBpmProperties.getProcessEngineName(), CHECK_ORDER);
 
     assertThat(new JSONArray(check).getJSONObject(0).getJSONObject("result").getString("value")).isEqualTo("ok");

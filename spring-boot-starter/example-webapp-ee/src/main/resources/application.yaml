@@ -5,6 +5,5 @@ camunda:
     job-execution:
       core-pool-size: 10
     admin-user:
-      id: kermit
-      password: demodemo
-
+      id: demo
+      password: demo
