@@ -23,7 +23,7 @@ You will need:
 ```xml
 ...
   <properties>
-    <camunda.version>7.12.0-ee</camunda.version>
+    <camunda.version>7.13.0-ee</camunda.version>
   </properties>
 
   <dependencyManagement>
@@ -43,7 +43,6 @@ You will need:
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-      <version>3.4.0</version>
     </dependency>
     ...
   </dependencies>

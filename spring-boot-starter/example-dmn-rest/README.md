@@ -14,7 +14,7 @@ This example demonstrates how you can build Spring Boot Web application having f
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-  <version>3.4.0</version>
+  <version>7.13.0</version>
 </dependency>
 ...
 ```
