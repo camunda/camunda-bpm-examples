@@ -65,10 +65,10 @@ A CMMN transform listener is the CMMN equivalent to a BPMN parse listener. That 
 
 In [KPITransformListener][kpi-transform-listener], access to the custom model elements is implemented.
 
-[bpmn-model]: https://github.com/camunda/camunda-bpmn-model
-[dmn-model]: https://github.com/camunda/camunda-dmn-model
-[xml-model]: https://github.com/camunda/camunda-xml-model
-[cmmn-model]: https://github.com/camunda/camunda-cmmn-model
+[bpmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/bpmn-model
+[dmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/dmn-model
+[xml-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/xml-model
+[cmmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/cmmn-model
 [test-case]: src/test/java/org/camunda/bpm/example/modelapi/TransformListenerCustomElementsTest.java
 [kpi-transform-listener]: src/main/java/org/camunda/bpm/example/modelapi/KPITransformListener.java
 [cmmn-transform-listener]: https://docs.camunda.org/javadoc/camunda-bpm-platform/7.12/org/camunda/bpm/engine/impl/cmmn/transformer/CmmnTransformListener.html
