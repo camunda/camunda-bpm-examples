@@ -18,8 +18,8 @@ Also be aware that you can use:
 1. Checkout the project with Git
 2. Read and run the [unit test case][test-case]
 
-[bpmn-model]: https://github.com/camunda/camunda-bpmn-model
-[xml-model]: https://github.com/camunda/camunda-xml-model
-[cmmn-model]: https://github.com/camunda/camunda-cmmn-model
+[bpmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/bpmn-model
+[xml-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/xml-model
+[cmmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/cmmn-model
+[dmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/dmn-model
 [test-case]: src/test/java/org/camunda/bpm/example/modelapi/ParseBpmnTest.java
-[dmn-model]: https://github.com/camunda/camunda-dmn-model
