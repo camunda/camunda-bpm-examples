@@ -12,7 +12,7 @@
           <camunda:connectorId>soap-http-connector</camunda:connectorId>
           <camunda:inputOutput>
 
-            <camunda:inputParameter name="url">http://www.webservicex.net/globalweather.asmx</camunda:inputParameter>
+            <camunda:inputParameter name="url">${base_url.concat(service_path)}</camunda:inputParameter>
 
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="freemarker" resource="soapEnvelope.ftl" />
@@ -20,7 +20,7 @@
 
             <camunda:inputParameter name="headers">
               <camunda:map>
-                <camunda:entry key="Content-Type">application/soap+xml;charset=UTF-8;action="http://www.webserviceX.NET/GetWeather"</camunda:entry>
+                <camunda:entry key="Content-Type">application/soap+xml;charset=UTF-8;action="${soap_action}"</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
 
@@ -28,7 +28,7 @@
               <![CDATA[
                 ${S(response)
                     .childElement("Body")
-                    .childElement("http://www.webserviceX.NET", "GetWeatherResponse")
+                    .childElement(base_url, "GetWeatherResponse")
                     .childElement("GetWeatherResult")
                     .textContent()}
               ]]>

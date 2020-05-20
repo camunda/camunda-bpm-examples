@@ -1,10 +1,8 @@
-**Note: This Example might not work due to irregularities of the called web service. The called SOAP service [Get Weather Forecast](http://www.webservicex.net/globalweather.asmx?op=GetWeather) is known to be down on a regular basis.**
-
 # SOAP Service Task
 
-This quickstart demonstrates how to use the built-in SOAP HTTP connector for invoking SOAP services in camunda BPM. The example is *classless*, relying entirely on scripting and expression language. It makes use of the camunda Connect and the camunda Spin extensions.
+This quickstart demonstrates how to use the built-in SOAP HTTP connector for invoking SOAP services in Camunda BPM. The example is *classless*, relying entirely on scripting and expression language. It makes use of the Camunda Connect and the Camunda Spin extensions.
 
-The example includes a BPMN 2.0 process which invokes a weather forecast service, parses the result and takes a decision based on the result:
+The example includes a BPMN 2.0 process which calls a weather forecast service, parses the result and takes a decision based on the result:
 
 ![SOAP Example Process][1]
 
@@ -12,16 +10,16 @@ The example includes a BPMN 2.0 process which invokes a weather forecast service
 
 ## How to run it
 
-1. Checkout the project with Git
+1. Check out the project with Git
 2. Read and run the [unit test][2]
 
 ## How it works
 
-The important part of this example is the service task *Get Weather Forecast (Soap)*. It uses the SOAP connector provided by camunda Connect and processes the returned XML using camunda Spin. For reference, have a look at the complete [BPMN XML][3].
+The important part of this example is the service task *Get Weather Forecast (Soap)*. It uses the SOAP connector provided by Camunda Connect and processes the returned XML using Camunda Spin. For reference, have a look at the complete [BPMN XML][3].
 
 ### Configuring Connect and Spin
 
-Since Connect and Spin are optional extensions to the camunda platform, they have to be added as dependencies in [pom.xml][4]:
+Since Connect and Spin are optional extensions to the Camunda platform, they have to be added as dependencies in [pom.xml][4]:
 
 ```xml
 ...
@@ -63,7 +61,7 @@ Since Connect and Spin are optional extensions to the camunda platform, they hav
 ...
 ```
 
-Note the `dependencyManagement` entry. It declares the camunda bill of material (BOM) that provides managed dependencies for all camunda artifacts. These are referenced in the *dependencies* section. The BOM ensures that the version of the dependencies are consistent with each other.
+Note the `dependencyManagement` entry. It declares the Camunda bill of material (BOM) that provides managed dependencies for all Camunda artifacts. These are referenced in the *dependencies* section. The BOM ensures that the version of the dependencies are consistent with each other.
 
 Next, the process engine plugins provided by Spin and Connect are registered with the engine in [camunda.cfg.xml][5]:
 
@@ -93,9 +91,9 @@ This ensures that connectors can be used with service tasks and that the Spin fu
 The task *Get Weather Forecast (Soap)* makes use of Connect's SOAP connector. It does the following things:
 
 1. Create a SOAP envelope based on the process variables `city` and `country` using the Freemarker template language.
-2. Invoke a SOAP web service using the SOAP connector provided by camunda Connect.
-3. Extract a weather forecast element from the service's XML response using Javascript and camunda Spin
-4. Extract the temperature from the forecase and map it to a process variable `temperature`. This variable is used on the follow-up exclusive gateway.
+2. Call a mocked SOAP web service using the SOAP connector provided by Camunda Connect.
+3. Extract a weather forecast element from the service's XML response using Javascript and Camunda Spin
+4. Extract the temperature from the forecast and map it to a process variable `temperature`. This variable is used on the follow-up exclusive gateway.
 
 In detail, the task is declared as follows (see the [process model][3]):
 
@@ -115,30 +113,30 @@ In detail, the task is declared as follows (see the [process model][3]):
 </bpmn2:serviceTask>
 ```
 
-The task uses two extension elements. The first is the `camunda:connector` element. It means that a connector should be invoked when the service task is executed. In detail, the connector is declared as follows:
+The task uses two extension elements. The first is the `camunda:connector` element. It means that a connector should be called when the service task is executed. In detail, the connector is declared as follows:
 
 ```xml
 <camunda:connector>
   <camunda:connectorId>soap-http-connector</camunda:connectorId>
   <camunda:inputOutput>
 
-    <camunda:inputParameter name="url">http://www.webservicex.net/globalweather.asmx</camunda:inputParameter>
+    <camunda:inputParameter name="url">${base_url.concat(service_path)}</camunda:inputParameter>
 
     <camunda:inputParameter name="payload">
       <camunda:script scriptFormat="freemarker" resource="soapEnvelope.ftl" />
     </camunda:inputParameter>
 
     <camunda:inputParameter name="headers">
-      <map>
-        <entry key="Content-Type">application/soap+xml;charset=UTF-8;action="http://www.webserviceX.NET/GetWeather"</entry>
-      </map>
+      <camunda:map>
+        <camunda:entry key="Content-Type">application/soap+xml;charset=UTF-8;action="${soap_action}"</camunda:entry>
+      </camunda:map>
     </camunda:inputParameter>
 
     <camunda:outputParameter name="forecast">
       <![CDATA[
         ${S(response)
             .childElement("Body")
-            .childElement("http://www.webserviceX.NET", "GetWeatherResponse")
+            .childElement(base_url, "GetWeatherResponse")
             .childElement("GetWeatherResult")
             .textContent()}
       ]]>
@@ -148,11 +146,17 @@ The task uses two extension elements. The first is the `camunda:connector` eleme
 </camunda:connector>
 ```
 
-The `connector-id` element identifies the SOAP connector. The `inputOutput` element defines a mapping of values to connector parameters. For example, the `url` parameter identifies which SOAP service is called. Note that the `payload` parameter uses a transformation with the Freemarker template language to create a SOAP envelope. See the [template file][7] for details.
+The `connector-id` element identifies the SOAP connector. The `inputOutput` element defines a mapping of values to connector parameters. For example, the `url` parameter identifies which SOAP service is called.
+The `url` is obtained from the variables `base_url` and `service_path`.
 
-The *outputParameter* element maps the response obtained by the connector to a variable `forecast`. The mapping makes use of camunda Spin to extract an element from the returned XML.
+Note that the `payload` parameter uses a transformation with the Freemarker template language to create a SOAP envelope. See the [template file][7] for details.
 
-On the task itself, an output mapping is defined that further processes the `forecast` XML and sets a process variable `temperature`. This is done by the `inputOutput` declaration of the service task:
+The *inputParameter* element with the name `headers` sets the SOAP content-type and obtains the SOAP action from the variable `soap_action`. 
+
+The *outputParameter* element maps the response obtained by the connector to a variable `forecast`. The mapping makes use of Camunda Spin to extract an element from the returned XML.
+The variable `base_url` resolves the XML namespace of the `GetWeatherResponse` tag.
+
+An output mapping is defined on the task itself, which further processes the `forecast` XML and sets a process variable `temperature`. This is done by the `inputOutput` declaration of the service task:
 
 ```xml
 <camunda:inputOutput>
