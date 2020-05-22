@@ -8,7 +8,6 @@ Supported browsers are:
 - Firefox
 - Google Chrome
 - Edge
-- Internet Explorer 11+
 
 ## Setup
 
