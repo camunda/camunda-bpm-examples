@@ -2,7 +2,7 @@
 
 This example demonstrates how to deploy a plain web application which
 
-  * Does not include a @ProcessApplication class and does not provide any BPMN 2.0 processes
+  * Does not include a `@ProcessApplication` class and does not provide any BPMN 2.0 processes
   * Starts a Spring WebApplication context
   * Binds a shared, container managed Process Engine as Spring Bean
 
@@ -79,7 +79,7 @@ We also add an entry to the manifest, so that the Process Engine classes are add
 
 ## How to use it?
 
-  1. Build it with maven
+  1. Build it with Maven
   2. Deploy it to WildFly (download it from [here][1])
   3. Watch out for this console log:
 
