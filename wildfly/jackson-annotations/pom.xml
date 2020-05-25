@@ -7,10 +7,10 @@
     <packaging>war</packaging>
 
     <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <!-- set the version for camunda BPM here -->
-        <version.camunda>7.12.0</version.camunda>
+        <version.camunda>7.13.0</version.camunda>
         <version.junit>4.12</version.junit>
         <version.h2>1.4.190</version.h2>
     </properties>

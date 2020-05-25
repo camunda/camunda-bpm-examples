@@ -1,9 +1,10 @@
 # Camunda Process Engine and Spring Boot
 
-This example demonstrates how to bootstrap the Camunda process engine with [Spring Boot](http://projects.spring.io/spring-boot/). You learn
+This example demonstrates how to bootstrap the Camunda Process Engine with [Spring Boot](http://projects.spring.io/spring-boot/). 
+You will learn:
 
 * How to create a POM with the required dependencies,
-* How to configure the process engine via Java Config,
+* How to configure the Process Engine via Java Config,
 * How to create the application class and start a process instance on startup
 
 The example process looks like:
@@ -17,9 +18,9 @@ starts the application and verifies that a process instance is started.
 
 ## How it works
 
-Follow steps to create a basic setup for your Spring Boot application which embeds the Camunda Process Engine.
+Follow the steps to create a basic setup for your Spring Boot application which embeds the Camunda Process Engine.
 
-Note that you can generate your project skeleton using the [Spring Initializr](https://start.spring.io/).
+> Note that you can generate your project skeleton using the [Spring Initializr](https://start.spring.io/).
 
 ### Add required dependencies to POM
 
@@ -71,7 +72,7 @@ Also add the following Spring Boot plugin to build the JAR.
 
 ### Configure the Process Engine
 
-Create the following Java Config class to bootstrap and configure the process engine.
+Create the following Java Config class to bootstrap and configure the Process Engine.
 
 ```java
 @Configuration
@@ -127,7 +128,8 @@ public class CamundaProcessEngineConfiguration {
 }
 ```
 
-In this configuration the data source and the history level of the process engine are configured by the `application.properties`. Add the following lines to use an In-Memory H2 database and `audit` history level.
+In this configuration the data source, and the history level of the Process Engine are configured by the 
+`application.properties`. Add the following lines to use an In-Memory H2 database and `audit` history level.
 
 ```properties
 # data source config
@@ -143,11 +145,11 @@ logging.level.org.springframework=INFO
 camunda.bpm.history-level=audit
 ```
 
-Note that you can add even more configuration (e.g. for logging).
+> Note that you can add even more configuration (e.g. for logging).
 
 ### Create an Application Class
 
-Create an application class which is annotated with `SpringBootApplication` and implement the main method as follow:
+Create an application class which is annotated with `SpringBootApplication` and implement the main method as follows:
 
 ```java
 @SpringBootApplication
@@ -168,12 +170,16 @@ public class CamundaSpringBootExampleApplication {
 }
 ```
 
-On startup, the application loads the configuration and initialize all beans. After initialization, it creates an instance of the process with id 'loanRequest'.
+On startup, the application loads the configuration and initialize all beans. After initialization, it creates an 
+instance of the process with id 'loanRequest'.
 
 ## How to use it?
 
 1. Checkout the project with Git
 2. Import the project into your IDE
-3. Build it with Maven `clean install`
+3. Build it with Maven: `mvn clean install`
 4. Execute the JAR `java -jar target/camunda-spring-boot-example-1.0.0-SNAPSHOT.jar`
 5. Check the console if you can find the line `calculating interest`
+
+> Alternatively, you can use the Spring Boot Maven plugin to build and execute the application with: 
+> `mvn spring-boot:run`

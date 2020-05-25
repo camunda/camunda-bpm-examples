@@ -62,17 +62,17 @@ dependency like:
 
   1. Checkout the project with Git;
   2. Import the project into your IDE;
-  3. Build it with maven, it will download the Camunda BPM WildFly distribution and execute
+  3. Build it with Maven, it will download the Camunda BPM WildFly distribution and execute
      the included Arquillian test.
   4. Watch out for this console log:
 
 ```bash
-Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.jboss.servlet.SpringServletProcessApplication
+Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
 Starting testResolveBean processdefinition
-org.camunda.bpm.example.spring.jboss.servlet.ExampleBean is currently invoked.
+org.camunda.bpm.example.spring.servlet.pa.ExampleBean is currently invoked.
 Starting testResolveBeanFromJobExecutor processdefinition
-org.camunda.bpm.example.spring.jboss.servlet.ExampleDelegateBean is currently invoked.
+org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean is currently invoked.
 ...
-Invoking @PreUndeploy annotation in org.camunda.bpm.example.spring.jboss.servlet.SpringServletProcessApplication
+Invoking @PreUndeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
 Undeploying SpringServletProcessApplication-Example
 ```

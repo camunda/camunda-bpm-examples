@@ -43,7 +43,7 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
     parseActivity(serviceTaskElement, activity);
   }
 
-  private Element getProfileElement(Element element) {
+  protected Element getProfileElement(Element element) {
     Element extensionElement = element.element("extensionElements");
     if (extensionElement != null) {
       Element propertiesElement = extensionElement.element("properties");

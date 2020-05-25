@@ -36,5 +36,6 @@ After executing this, all subsequent API calls will work again.
 
 1. Checkout the project with Git
 2. Import the project into your IDE
-3. Inspect the sources and run the unit test.
+3. Inspect the sources and run the unit test in your IDE or with Maven: `mvn clean verify`
+4. You should expect a passing test case.
 

@@ -127,7 +127,7 @@ is executed once again. Afterwards, we change the assignee manually and the Task
 
 1. Checkout the project with Git
 2. Import the project into your IDE
-3. Inspect the sources and run the unit test.
+3. Inspect the sources and run the unit test, or run it with Maven: `mvn clean verify`
 4. Check the console if you can find: `Hello Kermit! Please start to work on your task User Task 1`
 
 [1]: docs/bpmnParseListenerOnUserTask.png

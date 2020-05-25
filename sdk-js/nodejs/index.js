@@ -79,7 +79,7 @@ function readFiles(dirPath, filenames) {
 /*************************************\
  * camunda BPM SDK JS implementation *
 \*************************************/
-var CamSDK = require('camunda-bpm-sdk-js');
+var CamSDK = require('camunda-bpm-webapp/camunda-bpm-sdk-js');
 
 var camClient = new CamSDK.Client({
   mock: false,

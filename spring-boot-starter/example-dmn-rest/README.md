@@ -14,7 +14,7 @@ This example demonstrates how you can build Spring Boot Web application having f
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-  <version>3.4.0</version>
+  <version>7.13.0</version>
 </dependency>
 ...
 ```
@@ -41,11 +41,11 @@ This example deploys a [decision definition](./src/main/resources/dmn/check-orde
 
 You can then build the application with `mvn clean install` and then run it with `java -jar` command.
 
-Then you can access REST API in browser: `http://localhost:8080/rest/decision-definition` - this will show you the deployed decision definition.
+Then you can access REST API in browser: `http://localhost:8080/engine-rest/decision-definition` - this will show you the deployed decision definition.
 
 In order to evaluate a decision, execute the following:
 
-`POST http://localhost:8080/rest/decision-definition/key/checkOrder/evaluate`
+`POST http://localhost:8080/engine-rest/decision-definition/key/checkOrder/evaluate`
 
 ```json
 {

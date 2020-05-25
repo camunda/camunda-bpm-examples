@@ -16,7 +16,6 @@
  */
 package org.camunda.quickstart.servicetask.invocation;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class MockMessageQueue {
   /** a Message with payload */
   public static class Message {
     
-    protected Map<String, Object> payload = new HashMap<String, Object>();
+    protected Map<String, Object> payload;
 
     public Message(Map<String, Object> payload) {
       this.payload = payload;
@@ -44,7 +43,7 @@ public class MockMessageQueue {
      
   }
   
-  protected List<Message> queue = new LinkedList<MockMessageQueue.Message>();
+  protected List<Message> queue = new LinkedList<>();
   
   public final static MockMessageQueue INSTANCE = new MockMessageQueue();
   

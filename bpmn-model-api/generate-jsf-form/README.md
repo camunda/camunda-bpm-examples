@@ -215,7 +215,7 @@ User task form:
 [2]: src/main/resources/feature.png
 [3]: src/main/webapp/forms/start-form.xhtml
 [4]: src/main/webapp/forms/user-form.xhtml
-[5]: https://github.com/camunda/camunda-bpmn-model
+[5]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/bpmn-model
 [6]: docs/support-start-form.png
 [7]: docs/support-task-form.png
 [8]: docs/feature-start-form.png

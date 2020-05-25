@@ -1,20 +1,3 @@
-/*
- * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
- * under one or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information regarding copyright
- * ownership. Camunda licenses this file to you under the Apache License,
- * Version 2.0; you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.CamSDK = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
@@ -292,7 +275,7 @@ var AbstractClientResource = BaseClass.extend(
 Events.attach(AbstractClientResource);
 module.exports = AbstractClientResource;
 
-},{"./../base-class":33,"./../events":34,"q":62}],2:[function(require,module,exports){
+},{"./../base-class":33,"./../events":34,"q":121}],2:[function(require,module,exports){
 "use strict";
 
 /*
@@ -547,7 +530,7 @@ HttpClient.prototype.options = function (path, options) {
 module.exports = HttpClient;
 
 }).call(this,require("buffer").Buffer)
-},{"./../events":34,"./../utils":46,"buffer":48,"q":62,"superagent":64}],4:[function(require,module,exports){
+},{"./../events":34,"./../utils":48,"buffer":50,"q":121,"superagent":123}],4:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -1205,7 +1188,7 @@ CaseExecution.modifyVariables = function (data, done) {
 
 module.exports = CaseExecution;
 
-},{"../../utils":46,"./../abstract-client-resource":1}],9:[function(require,module,exports){
+},{"../../utils":48,"./../abstract-client-resource":1}],9:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -1290,7 +1273,7 @@ CaseInstance.setVariable = function (id, params, done) {
 
 module.exports = CaseInstance;
 
-},{"../../utils":46,"./../abstract-client-resource":1}],10:[function(require,module,exports){
+},{"../../utils":48,"./../abstract-client-resource":1}],10:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -1839,7 +1822,7 @@ DRD.getXMLByKey = function (key, tenantId, done) {
 
 module.exports = DRD;
 
-},{"../../utils":46,"../abstract-client-resource":1}],13:[function(require,module,exports){
+},{"../../utils":48,"../abstract-client-resource":1}],13:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -1902,7 +1885,7 @@ Execution.modifyVariables = function (data, done) {
 
 module.exports = Execution;
 
-},{"../../utils":46,"./../abstract-client-resource":1}],14:[function(require,module,exports){
+},{"../../utils":48,"./../abstract-client-resource":1}],14:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -2299,7 +2282,7 @@ Filter["delete"] = function (id, done) {
 
 
 Filter.authorizations = function (id, done) {
-  if (arguments.length === 1) {
+  if (typeof id === 'function') {
     return this.http.options(this.path, {
       done: id,
       headers: {
@@ -2371,7 +2354,7 @@ Group.path = 'group';
 Group.options = function (options, done) {
   var id;
 
-  if (arguments.length === 1) {
+  if (typeof options === 'function') {
     done = options;
     id = '';
   } else {
@@ -2419,7 +2402,7 @@ Group.create = function (options, done) {
 
 
 Group.count = function (options, done) {
-  if (arguments.length === 1) {
+  if (typeof options === 'function') {
     done = options;
     options = {};
   } else {
@@ -2451,6 +2434,7 @@ Group.get = function (options, done) {
  * The size of the result set can be retrieved by using the get groups count method
  *
  * @param {String} [options.id]           Filter by the id of the group.
+ * @param {String} [options.idIn]         Filter by multiple ids.
  * @param {String} [options.name]         Filter by the name of the group.
  * @param {String} [options.nameLike]     Filter by the name that the parameter is a substring of.
  * @param {String} [options.type]         Filter by the type of the group.
@@ -2472,15 +2456,23 @@ Group.get = function (options, done) {
 
 
 Group.list = function (options, done) {
-  if (arguments.length === 1) {
+  if (typeof options === 'function') {
     done = options;
     options = {};
   } else {
     options = options || {};
   }
 
-  return this.http.get(this.path, {
+  var query = {};
+
+  if (options.maxResults) {
+    query.maxResults = options.maxResults;
+    query.firstResult = options.firstResult;
+  }
+
+  return this.http.post(this.path, {
     data: options,
+    query: query,
     done: done || noop
   });
 };
@@ -2545,7 +2537,7 @@ Group["delete"] = function (options, done) {
 
 module.exports = Group;
 
-},{"../../utils":46,"./../abstract-client-resource":1}],17:[function(require,module,exports){
+},{"../../utils":48,"./../abstract-client-resource":1}],17:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -2633,6 +2625,35 @@ History.userOperation = function (params, done) {
 
   return this.http.get(this.path + '/user-operation', {
     data: params,
+    done: done
+  });
+};
+/**
+ *  Set an annotation for auditing reasons.
+ *
+ * @param {Object}   [params]
+ * @param {String}   [params.id]            Operation ID to set the Annotation
+ * @param {String}   [params.annotation]    An arbitrary text annotation set by a user for auditing reasons.
+ * @param {Function} done
+ */
+
+
+History.setUserOperationAnnotation = function (params, done) {
+  return this.http.put(this.path + '/user-operation/' + params.id + '/set-annotation', {
+    data: params,
+    done: done
+  });
+};
+/**
+ *  Clear the annotation which was previously set for auditing reasons.
+ *
+ * @param {String}   [id]                   The operation id of the operation log to be updated.
+ * @param {Function} done
+ */
+
+
+History.clearUserOperationAnnotation = function (id, done) {
+  return this.http.put(this.path + '/user-operation/' + id + '/clear-annotation', {
     done: done
   });
 };
@@ -3396,6 +3417,78 @@ History.caseActivityInstanceCount = function (params, done) {
   });
 };
 /**
+ * Queries for historic activity instances that fulfill the given parameters.
+ * @param {Object}  [params]
+ * @param {String}  params.activityInstanceId	    Filter by activity instance id.
+ * @param {String}  params.processInstanceId      Filter by process instance id.
+ * @param {String}  params.processDefinitionId    Filter by process definition id.
+ * @param {String}  params.executionId            Filter by the id of the execution that executed the activity instance.
+ * @param {String}  params.activityId             Filter by the activity id (according to BPMN 2.0 XML).
+ * @param {String}  params.activityName           Filter by the activity name (according to BPMN 2.0 XML).
+ * @param {String}  params.activityType           Filter by activity type.
+ * @param {String}  params.taskAssignee           Only include activity instances that are user tasks and assigned to a given user.
+ * @param {Boolean} params.finished               Only include finished activity instances. Value may only be true, as false behaves the same as when the property is not set.
+ * @param {Boolean} params.unfinished             Only include unfinished activity instances. Value may only be true, as false behaves the same as when the property is not set.
+ * @param {Boolean} params.canceled               Only include canceled activity instances. Value may only be true, as false behaves the same as when the property is not set.
+ * @param {Boolean} params.completeScope          Only include activity instances which completed a scope. Value may only be true, as false behaves the same as when the property is not set.
+ * @param {String}  params.startedBefore          Restrict to instances that were started before the given date. By default*, the date must have the format yyyy-MM-dd'T'HH:mm:ss.SSSZ, e.g., 2013-01-23T14:42:45.000+0200.
+ * @param {String}  params.startedAfter           Restrict to instances that were started after the given date. By default*, the date must have the format yyyy-MM-dd'T'HH:mm:ss.SSSZ, e.g., 2013-01-23T14:42:45.000+0200.
+ * @param {String}  params.finishedBefore         Restrict to instances that were finished before the given date. By default*, the date must have the format yyyy-MM-dd'T'HH:mm:ss.SSSZ, e.g., 2013-01-23T14:42:45.000+0200.
+ * @param {String}  params.finishedAfter          Restrict to instances that were finished after the given date. By default*, the date must have the format yyyy-MM-dd'T'HH:mm:ss.SSSZ, e.g., 2013-01-23T14:42:45.000+0200.
+ * @param {String}  params.tenantIdIn             Filter by a comma-separated list of tenant ids. An activity instance must have one of the given tenant ids.
+ * @param {String}  params.sortBy                 Sort the results by a given criterion. Valid values are activityInstanceId, instanceId, executionId, activityId, activityName, activityType, startTime, endTime, duration, definitionId, occurrence and tenantId. Must be used in conjunction with the sortOrder parameter.
+ * @param {String}  params.sortOrder              Sort the results in a given order. Values may be asc for ascending order or desc for descending order. Must be used in conjunction with the sortBy parameter.
+ * @param {Number}  params.firstResult            Pagination of results. Specifies the index of the first result to return.
+ * @param {Number}  params.maxResults             Pagination of results. Specifies the maximum number of results to return. Will return less results if there are no more results left.
+ */
+
+
+History.activityInstance = function (params, done) {
+  if (typeof params === 'function') {
+    done = arguments[0];
+    params = {};
+  }
+
+  return this.http.get(this.path + '/activity-instance', {
+    data: params,
+    done: done
+  });
+};
+/**
+ * Queries for historic activity instances that fulfill the given parameters.
+ * @param {Object}  [params]
+ * @param {String}  params.incidentId           Restricts to incidents that have the given id.
+ * @param {String}  params.incidentType         Restricts to incidents that belong to the given incident type. See the User Guide for a list of incident types.
+ * @param {String}  params.incidentMessage      Restricts to incidents that have the given incident message.
+ * @param {String}  params.processDefinitionId  Restricts to incidents that belong to a process definition with the given id.
+ * @param {String}  params.processInstanceId    Restricts to incidents that belong to a process instance with the given id.
+ * @param {String}  params.executionId          Restricts to incidents that belong to an execution with the given id.
+ * @param {String}  params.activityId           Restricts to incidents that belong to an activity with the given id.
+ * @param {String}  params.causeIncidentId      Restricts to incidents that have the given incident id as cause incident.
+ * @param {String}  params.rootCauseIncidentId  Restricts to incidents that have the given incident id as root cause incident.
+ * @param {String}  params.configuration        Restricts to incidents that have the given parameter set as configuration.
+ * @param {String}  params.tenantIdIn           Restricts to incidents that have one of the given comma-separated tenant ids.
+ * @param {String}  params.jobDefinitionIdIn    Restricts to incidents that have one of the given comma-separated job definition ids.
+ * @param {String}  params.open             	  Restricts to incidents that are open.
+ * @param {String}  params.deleted              Restricts to incidents that are deleted.
+ * @param {String}  params.resolved             Restricts to incidents that are resolved.
+ * @param {String}  params.sortBy               Sort the results lexicographically by a given criterion. Valid values are incidentId, incidentMessage, createTime, endTime, incidentType, executionId, activityId, processInstanceId, processDefinitionId, causeIncidentId, rootCauseIncidentId, configuration, tenantId and incidentState. Must be used in conjunction with the sortOrder parameter.
+ * @param {String}  params.sortOrder            Sort the results in a given order. Values may be asc for ascending order or desc for descending order. Must be used in conjunction with the sortBy parameter.
+ */
+
+
+History.incident = function (params, done) {
+  if (typeof params === 'function') {
+    done = arguments[0];
+    params = {};
+  }
+
+  return this.http.get(this.path + '/incident', {
+    data: params,
+    done: done
+  });
+};
+/**
  * Query for historic variable instances that fulfill the given parameters.
  *
  * @param  {Object}   [params]
@@ -3717,6 +3810,34 @@ History.cleanableBatchCount = function (params, done) {
 
 History.cleanableBatch = function (params, done) {
   var url = this.path + '/batch/cleanable-batch-report';
+
+  if (typeof params === 'function') {
+    done = params;
+    params = {};
+  }
+
+  return this.http.get(url, {
+    data: params,
+    done: done
+  });
+};
+
+History.jobLogList = function (params, done) {
+  var url = this.path + '/job-log';
+
+  if (typeof params === 'function') {
+    done = params;
+    params = {};
+  }
+
+  return this.http.get(url, {
+    data: params,
+    done: done
+  });
+};
+
+History.jobLogCount = function (params, done) {
+  var url = this.path + '/job-log/count';
 
   if (typeof params === 'function') {
     done = params;
@@ -4332,6 +4453,7 @@ Modification.path = 'modification';
  * @param  {String}   [params.processInstanceIds]
  * @param  {String}   [params.processInstanceQuery]
  * @param  {String}   [params.instructions]
+ * @param  {String}   [params.annotation]
  * @param  {Function} done
  */
 
@@ -4351,6 +4473,7 @@ Modification.execute = function (params, done) {
  * @param  {String}   [params.processInstanceIds]
  * @param  {String}   [params.processInstanceQuery]
  * @param  {String}   [params.instructions]
+ * @param  {String}   [params.annotation]
  * @param  {Function} done
  */
 
@@ -4907,7 +5030,7 @@ var ProcessDefinition = AbstractClientResource.extend(
 });
 module.exports = ProcessDefinition;
 
-},{"./../abstract-client-resource":1,"q":62}],27:[function(require,module,exports){
+},{"./../abstract-client-resource":1,"q":121}],27:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -4989,6 +5112,11 @@ var ProcessInstance = AbstractClientResource.extend(
       done: done
     });
   },
+  getActivityInstances: function getActivityInstances(id, done) {
+    return this.http.get(this.path + '/' + id + '/activity-instances', {
+      done: done
+    });
+  },
 
   /**
    * Post process instance modifications
@@ -5008,25 +5136,19 @@ var ProcessInstance = AbstractClientResource.extend(
    *                                                          are started or ended as part of
    *                                                          this request.
    *
+   * @param  {String}          [params.annotation]            Add Annotation to the user operation log
+   *
    * @param  {requestCallback}  done
    */
   modify: function modify(params, done) {
     return this.http.post(this.path + '/' + params.id + '/modification', {
-      data: {
-        instructions: params.instructions,
-        skipCustomListeners: params.skipCustomListeners,
-        skipIoMappings: params.skipIoMappings
-      },
+      data: params,
       done: done
     });
   },
   modifyAsync: function modifyAsync(params, done) {
     return this.http.post(this.path + '/' + params.id + '/modification-async', {
-      data: {
-        instructions: params.instructions,
-        skipCustomListeners: params.skipCustomListeners,
-        skipIoMappings: params.skipIoMappings
-      },
+      data: params,
       done: done
     });
   },
@@ -5129,7 +5251,7 @@ var ProcessInstance = AbstractClientResource.extend(
 });
 module.exports = ProcessInstance;
 
-},{"../../utils":46,"./../abstract-client-resource":1}],28:[function(require,module,exports){
+},{"../../utils":48,"./../abstract-client-resource":1}],28:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -5655,6 +5777,64 @@ Task.complete = function (params, done) {
     done: done
   });
 };
+/**
+ * Reports an escalation in the context of a running task by id.
+ *
+ * @param  {Object}             [data]
+ * @param  {uuid}               [data.id]             Id of the task. This value is mandatory.
+ * @param  {String}             [data.escalationCode] An escalation code that indicates the predefined escalation. This value is mandatory.
+ * @param  {Object.<String, *>} [data.variables]      Process variables which need to be updated.
+ * @param  {Function}           done
+ */
+
+
+Task.bpmnEscalation = function (data, done) {
+  done = done || noop;
+
+  if (!data.id || !data.escalationCode) {
+    var err = new Error('Task bpmnEscalation needs a task id and escalation code.');
+    done(err);
+    return Q.reject(err);
+  }
+
+  return this.http.post(this.path + '/' + data.id + '/bpmnEscalation', {
+    data: {
+      escalationCode: data.escalationCode,
+      variables: data.variables
+    },
+    done: done
+  });
+};
+/**
+ * Reports an error in the context of a running task by id.
+ *
+ * @param  {Object}             [data]
+ * @param  {uuid}               [data.id]           Id of the task. This value is mandatory.
+ * @param  {String}             [data.errorCode]    An error code that indicates the predefined error. This value is mandatory.
+ * @param  {String}             [data.errorMessage] An error message that describes the error.
+ * @param  {Object.<String, *>} [data.variables]    Process variables which need to be updated.
+ * @param  {Function}           done
+ */
+
+
+Task.bpmnError = function (data, done) {
+  done = done || noop;
+
+  if (!data.id || !data.errorCode) {
+    var err = new Error('Task bpmnError needs a task id and error code.');
+    done(err);
+    return Q.reject(err);
+  }
+
+  return this.http.post(this.path + '/' + data.id + '/bpmnError', {
+    data: {
+      variables: data.variables,
+      errorCode: data.errorCode,
+      errorMessage: data.errorMessage
+    },
+    done: done
+  });
+};
 
 Task.formVariables = function (data, done) {
   done = done || noop;
@@ -5751,7 +5931,7 @@ Task.deleteVariable = function (data, done) {
 
 module.exports = Task;
 
-},{"../../utils":46,"./../abstract-client-resource":1,"q":62}],30:[function(require,module,exports){
+},{"../../utils":48,"./../abstract-client-resource":1,"q":121}],30:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -5822,7 +6002,7 @@ Tenant.create = function (options, done) {
 
 
 Tenant.count = function (options, done) {
-  if (arguments.length === 1) {
+  if (typeof options === 'function') {
     done = options;
     options = {};
   } else {
@@ -5884,7 +6064,7 @@ Tenant.get = function (options, done) {
 
 
 Tenant.list = function (options, done) {
-  if (arguments.length === 1) {
+  if (typeof options === 'function') {
     done = options;
     options = {};
   } else {
@@ -5988,7 +6168,7 @@ Tenant["delete"] = function (options, done) {
 Tenant.options = function (options, done) {
   var id;
 
-  if (arguments.length === 1) {
+  if (typeof options === 'function') {
     done = options;
     id = '';
   } else {
@@ -6009,7 +6189,7 @@ Tenant.options = function (options, done) {
 
 module.exports = Tenant;
 
-},{"../../utils":46,"./../abstract-client-resource":1}],31:[function(require,module,exports){
+},{"../../utils":48,"./../abstract-client-resource":1}],31:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -6064,7 +6244,7 @@ User.path = 'user';
 User.options = function (options, done) {
   var id;
 
-  if (arguments.length === 1) {
+  if (typeof options === 'function') {
     done = options;
     id = '';
   } else {
@@ -6176,7 +6356,7 @@ User.list = function (options, done) {
 
 
 User.count = function (options, done) {
-  if (arguments.length === 1) {
+  if (typeof options === 'function') {
     done = options;
     options = {};
   } else {
@@ -6299,7 +6479,7 @@ User.unlock = function (options, done) {
 
 module.exports = User;
 
-},{"../../utils":46,"./../abstract-client-resource":1,"q":62}],32:[function(require,module,exports){
+},{"../../utils":48,"./../abstract-client-resource":1,"q":121}],32:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -6790,6 +6970,10 @@ var ChoicesFieldHandler = require('./controls/choices-field-handler');
 
 var FileDownloadHandler = require('./controls/file-download-handler');
 
+var ErrorButtonHandler = require('./controls/error-button-handler');
+
+var EscalationButtonHandler = require('./controls/escalation-button-handler');
+
 var BaseClass = require('./../base-class');
 
 var constants = require('./constants');
@@ -6873,7 +7057,7 @@ function CamundaForm(options) {
    * @type {FormFieldHandlers[]}
    */
 
-  this.formFieldHandlers = options.formFieldHandlers || [InputFieldHandler, ChoicesFieldHandler, FileDownloadHandler];
+  this.formFieldHandlers = options.formFieldHandlers || [InputFieldHandler, ChoicesFieldHandler, FileDownloadHandler, ErrorButtonHandler, EscalationButtonHandler];
   this.businessKey = null;
   this.fields = [];
   this.scripts = [];
@@ -6891,7 +7075,7 @@ CamundaForm.prototype.initializeHandler = function (FieldHandler) {
   var self = this;
   var selector = FieldHandler.selector;
   $(selector, self.formElement).each(function () {
-    self.fields.push(new FieldHandler(this, self.variableManager));
+    self.fields.push(new FieldHandler(this, self.variableManager, self));
   });
 };
 /**
@@ -7224,6 +7408,95 @@ CamundaForm.prototype.submit = function (callback) {
     });
   });
 };
+/**
+ * @memberof CamSDK.form.CamundaForm.prototype
+ */
+
+
+CamundaForm.prototype.error = function (errorCode, errorMessage, callback) {
+  var formId = this.taskId || this.processDefinitionId;
+  this.errorPrevented = false;
+  this.fireEvent('error');
+
+  if (this.errorPrevented) {
+    var err = new Error('camForm error prevented');
+    this.fireEvent('error-failed', err);
+    return callback && callback(err);
+  }
+
+  try {
+    // get values from form fields
+    this.retrieveVariables();
+  } catch (error) {
+    return callback && callback(error);
+  }
+
+  var self = this;
+  this.transformFiles(function () {
+    // submit the form variables
+    var data = {
+      variables: self.parseVariables(),
+      id: self.taskId,
+      errorCode: errorCode,
+      errorMessage: errorMessage
+    };
+    self.client.resource('task').bpmnError(data, function (err, result) {
+      if (err) {
+        self.fireEvent('error-failed', err);
+        return callback && callback(err);
+      } // clear the local storage for this form
+
+
+      localStorage.removeItem('camForm:' + formId);
+      self.fireEvent('error-success');
+      return callback && callback(null, result);
+    });
+  });
+};
+/**
+ * @memberof CamSDK.form.CamundaForm.prototype
+ */
+
+
+CamundaForm.prototype.escalate = function (escalationCode, callback) {
+  var formId = this.taskId || this.processDefinitionId;
+  this.escalationPrevented = false;
+  this.fireEvent('escalation');
+
+  if (this.escalationPrevented) {
+    var err = new Error('camForm escalation prevented');
+    this.fireEvent('escalation-failed', err);
+    return callback && callback(err);
+  }
+
+  try {
+    // get values from form fields
+    this.retrieveVariables();
+  } catch (error) {
+    return callback && callback(error);
+  }
+
+  var self = this;
+  this.transformFiles(function () {
+    // submit the form variables
+    var data = {
+      variables: self.parseVariables(),
+      id: self.taskId,
+      escalationCode: escalationCode
+    };
+    self.client.resource('task').bpmnEscalation(data, function (err, result) {
+      if (err) {
+        self.fireEvent('escalation-failed', err);
+        return callback && callback(err);
+      } // clear the local storage for this form
+
+
+      localStorage.removeItem('camForm:' + formId);
+      self.fireEvent('escalation-success');
+      return callback && callback(null, result);
+    });
+  });
+};
 
 CamundaForm.prototype.transformFiles = function (callback) {
   var that = this;
@@ -7328,19 +7601,28 @@ CamundaForm.prototype.fetchVariables = function (done) {
  */
 
 
-CamundaForm.prototype.submitVariables = function (done) {
-  done = done || function () {};
-
+CamundaForm.prototype.parseVariables = function () {
   var varManager = this.variableManager;
-  var vars = varManager.variables;
+  var vars = varManager.variables; // The default display value is different from the original value in varManager
+
+  this.fields.forEach(function (field) {
+    if (vars[field.variableName]) {
+      vars[field.variableName].defaultValue = field.originalValue;
+
+      if (field.originalValue === '' || typeof field.originalValue === 'undefined') {
+        vars[field.variableName].defaultValue = vars[field.variableName].value;
+      }
+    }
+  });
   var variableData = {};
 
   for (var v in vars) {
     // only submit dirty variables
     // LIMITATION: dirty checking is not performed for complex object variables
-    if (varManager.isDirty(v)) {
-      var val = vars[v].value; // if variable is JSON, serialize
+    var val = vars[v].value; // We want implicit type conversion in this case, the defaultValue is always a string
 
+    if (varManager.isDirty(v) || vars[v].defaultValue != val) {
+      // if variable is JSON, serialize
       if (varManager.isJsonVariable(v)) {
         val = JSON.stringify(val);
       } // if variable is Date, add timezone info
@@ -7358,8 +7640,18 @@ CamundaForm.prototype.submitVariables = function (done) {
     }
   }
 
+  return variableData;
+};
+/**
+ * @memberof CamSDK.form.CamundaForm.prototype
+ */
+
+
+CamundaForm.prototype.submitVariables = function (done) {
+  done = done || function () {};
+
   var data = {
-    variables: variableData
+    variables: this.parseVariables()
   }; // pass either the taskId, processDefinitionId or processDefinitionKey
 
   if (this.taskId) {
@@ -7486,7 +7778,7 @@ CamundaForm.cleanLocalStorage = function (timestamp) {
 CamundaForm.extend = BaseClass.extend;
 module.exports = CamundaForm;
 
-},{"./../base-class":33,"./../events":34,"./constants":36,"./controls/choices-field-handler":38,"./controls/file-download-handler":39,"./controls/input-field-handler":40,"./dom-lib":41,"./variable-manager":44,"moment":60}],36:[function(require,module,exports){
+},{"./../base-class":33,"./../events":34,"./constants":36,"./controls/choices-field-handler":38,"./controls/error-button-handler":39,"./controls/escalation-button-handler":40,"./controls/file-download-handler":41,"./controls/input-field-handler":42,"./dom-lib":43,"./variable-manager":46,"moment":119}],36:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -7511,7 +7803,10 @@ module.exports = {
   DIRECTIVE_CAM_VARIABLE_TYPE: 'cam-variable-type',
   DIRECTIVE_CAM_FILE_DOWNLOAD: 'cam-file-download',
   DIRECTIVE_CAM_CHOICES: 'cam-choices',
-  DIRECTIVE_CAM_SCRIPT: 'cam-script'
+  DIRECTIVE_CAM_SCRIPT: 'cam-script',
+  DIRECTIVE_CAM_ERROR_CODE: 'cam-error-code',
+  DIRECTIVE_CAM_ERROR_MESSAGE: 'cam-error-message',
+  DIRECTIVE_CAM_ESCALATION_CODE: 'cam-escalation-code'
 };
 
 },{}],37:[function(require,module,exports){
@@ -7548,9 +7843,10 @@ function noop() {}
  */
 
 
-function AbstractFormField(element, variableManager) {
+function AbstractFormField(element, variableManager, camForm) {
   this.element = $(element);
   this.variableManager = variableManager;
+  this.form = camForm;
   this.variableName = null;
   this.initialize();
 }
@@ -7598,7 +7894,7 @@ AbstractFormField.prototype.applyValue = noop;
 AbstractFormField.prototype.getValue = noop;
 module.exports = AbstractFormField;
 
-},{"../../base-class":33,"./../dom-lib":41}],38:[function(require,module,exports){
+},{"../../base-class":33,"./../dom-lib":43}],38:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -7699,12 +7995,20 @@ var ChoicesFieldHandler = AbstractFormField.extend(
     this.element[0].selectedIndex = selectedIndex; // select option referenced in cam-variable-name (if any)
 
     this.previousValue = this.element.val() || '';
-    var variableValue = this.variableManager.variableValue(this.variableName);
+    var variableValue = this.variableManager.variableValue(this.variableName); // check if variable is defined before writing values to the html
+    // variableValue can be the Number 0 or negative, so `|| ''` does not work here
+
+    variableValue = variableValue === null ? '' : variableValue;
 
     if (variableValue !== this.previousValue) {
       // write value to html control
       this.element.val(variableValue);
-      this.element.trigger('camFormVariableApplied', variableValue);
+      this.element.trigger('camFormVariableApplied', variableValue); // Update the ui after the current digest cycle
+
+      var that = this;
+      window.setTimeout(function () {
+        that.element.change();
+      }, 0);
     }
 
     return this;
@@ -7726,7 +8030,7 @@ var ChoicesFieldHandler = AbstractFormField.extend(
         value.push($(this).val());
       });
     } else {
-      value = this.element.find('option:selected').attr('value'); //.val();
+      value = this.element.find('option:selected').attr('value');
     } // write value to variable
 
 
@@ -7740,7 +8044,104 @@ var ChoicesFieldHandler = AbstractFormField.extend(
 });
 module.exports = ChoicesFieldHandler;
 
-},{"./../constants":36,"./../dom-lib":41,"./abstract-form-field":37}],39:[function(require,module,exports){
+},{"./../constants":36,"./../dom-lib":43,"./abstract-form-field":37}],39:[function(require,module,exports){
+/*
+ * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
+ * under one or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information regarding copyright
+ * ownership. Camunda licenses this file to you under the Apache License,
+ * Version 2.0; you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+'use strict';
+
+var constants = require('../constants'),
+    AbstractFormField = require('./abstract-form-field');
+/**
+ * A field control handler for file downloads
+ * @class
+ * @memberof CamSDK.form
+ * @augments {CamSDK.form.AbstractFormField}
+ */
+
+
+var ErrorButtonHandler = AbstractFormField.extend({
+  /**
+   * Prepares an instance
+   */
+  initialize: function initialize() {
+    this.errorCode = this.element.attr(constants.DIRECTIVE_CAM_ERROR_CODE);
+    this.errorMessage = this.element.attr(constants.DIRECTIVE_CAM_ERROR_MESSAGE);
+  },
+  applyValue: function applyValue() {
+    var self = this;
+    this.element.on('click', function () {
+      self.form.error(self.errorCode, self.errorMessage);
+    });
+    return this;
+  }
+}, {
+  selector: 'button[' + constants.DIRECTIVE_CAM_ERROR_CODE + ']'
+});
+module.exports = ErrorButtonHandler;
+
+},{"../constants":36,"./abstract-form-field":37}],40:[function(require,module,exports){
+/*
+ * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
+ * under one or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information regarding copyright
+ * ownership. Camunda licenses this file to you under the Apache License,
+ * Version 2.0; you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+'use strict';
+
+var constants = require('../constants'),
+    AbstractFormField = require('./abstract-form-field');
+/**
+ * A field control handler for file downloads
+ * @class
+ * @memberof CamSDK.form
+ * @augments {CamSDK.form.AbstractFormField}
+ */
+
+
+var ErrorButtonHandler = AbstractFormField.extend({
+  /**
+   * Prepares an instance
+   */
+  initialize: function initialize() {
+    this.escalationCode = this.element.attr(constants.DIRECTIVE_CAM_ESCALATION_CODE);
+  },
+  applyValue: function applyValue() {
+    var self = this;
+    this.element.on('click', function () {
+      self.form.escalate(self.escalationCode);
+    });
+    return this;
+  }
+}, {
+  selector: 'button[' + constants.DIRECTIVE_CAM_ESCALATION_CODE + ']'
+});
+module.exports = ErrorButtonHandler;
+
+},{"../constants":36,"./abstract-form-field":37}],41:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -7794,7 +8195,7 @@ var InputFieldHandler = AbstractFormField.extend({
 });
 module.exports = InputFieldHandler;
 
-},{"./../constants":36,"./abstract-form-field":37}],40:[function(require,module,exports){
+},{"./../constants":36,"./abstract-form-field":37}],42:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -7907,7 +8308,7 @@ var InputFieldHandler = AbstractFormField.extend(
 });
 module.exports = InputFieldHandler;
 
-},{"../type-util":43,"./../constants":36,"./abstract-form-field":37}],41:[function(require,module,exports){
+},{"../type-util":45,"./../constants":36,"./abstract-form-field":37}],43:[function(require,module,exports){
 (function (global){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
@@ -7936,7 +8337,7 @@ module.exports = InputFieldHandler;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 "use strict";
 
 /*
@@ -7957,7 +8358,7 @@ module.exports = InputFieldHandler;
  */
 module.exports = require('./camunda-form');
 
-},{"./camunda-form":35}],43:[function(require,module,exports){
+},{"./camunda-form":35}],45:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -7976,7 +8377,7 @@ module.exports = require('./camunda-form');
  */
 'use strict';
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var INTEGER_PATTERN = /^-?[\d]+$/;
 var FLOAT_PATTERN = /^(0|(-?(((0|[1-9]\d*)\.\d+)|([1-9]\d*))))([eE][-+]?[0-9]+)?$/;
@@ -8084,7 +8485,7 @@ module.exports = {
   dateToString: dateToString
 };
 
-},{"fast-xml-parser":54}],44:[function(require,module,exports){
+},{"fast-xml-parser":113}],46:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -8226,7 +8627,7 @@ VariableManager.prototype.variableNames = function () {
 
 module.exports = VariableManager;
 
-},{"./type-util":43,"moment":60}],45:[function(require,module,exports){
+},{"./type-util":45,"moment":119}],47:[function(require,module,exports){
 "use strict";
 
 /*
@@ -8253,7 +8654,7 @@ module.exports = {
   utils: require('./utils')
 };
 
-},{"./api-client":4,"./forms":42,"./utils":46}],46:[function(require,module,exports){
+},{"./api-client":4,"./forms":44,"./utils":48}],48:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -8274,6 +8675,8 @@ module.exports = {
 /**
  * @exports CamSDK.utils
  */
+
+require("core-js/modules/es.string.replace");
 
 var utils = module.exports = {
   typeUtils: require('./forms/type-util')
@@ -8415,7 +8818,7 @@ utils.escapeUrl = function (string) {
   return encodeURIComponent(string).replace(/\//g, '%2F').replace(/%2F/g, '%252F').replace(/\*/g, '%2A').replace(/%5C/g, '%255C');
 };
 
-},{"./forms/type-util":43}],47:[function(require,module,exports){
+},{"./forms/type-util":45,"core-js/modules/es.string.replace":107}],49:[function(require,module,exports){
 'use strict';
 
 exports.byteLength = byteLength;
@@ -8472,8 +8875,9 @@ function toByteArray(b64) {
   var curByte = 0; // if there are placeholders, only get up to the last complete 4 chars
 
   var len = placeHoldersLen > 0 ? validLen - 4 : validLen;
+  var i;
 
-  for (var i = 0; i < len; i += 4) {
+  for (i = 0; i < len; i += 4) {
     tmp = revLookup[b64.charCodeAt(i)] << 18 | revLookup[b64.charCodeAt(i + 1)] << 12 | revLookup[b64.charCodeAt(i + 2)] << 6 | revLookup[b64.charCodeAt(i + 3)];
     arr[curByte++] = tmp >> 16 & 0xFF;
     arr[curByte++] = tmp >> 8 & 0xFF;
@@ -8535,7 +8939,7 @@ function fromByteArray(uint8) {
   return parts.join('');
 }
 
-},{}],48:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 (function (Buffer){
 /*!
  * The buffer module from node.js, for the browser.
@@ -8547,12 +8951,15 @@ function fromByteArray(uint8) {
 /* eslint-disable no-proto */
 'use strict';
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+require("core-js/modules/es.string.replace");
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var base64 = require('base64-js');
 
 var ieee754 = require('ieee754');
 
+var customInspectSymbol = typeof Symbol === 'function' && typeof Symbol["for"] === 'function' ? Symbol["for"]('nodejs.util.inspect.custom') : null;
 exports.Buffer = Buffer;
 exports.SlowBuffer = SlowBuffer;
 exports.INSPECT_MAX_BYTES = 50;
@@ -8583,12 +8990,13 @@ function typedArraySupport() {
   // Can typed array instances can be augmented?
   try {
     var arr = new Uint8Array(1);
-    arr.__proto__ = {
-      __proto__: Uint8Array.prototype,
+    var proto = {
       foo: function foo() {
         return 42;
       }
     };
+    Object.setPrototypeOf(proto, Uint8Array.prototype);
+    Object.setPrototypeOf(arr, proto);
     return arr.foo() === 42;
   } catch (e) {
     return false;
@@ -8617,7 +9025,7 @@ function createBuffer(length) {
 
 
   var buf = new Uint8Array(length);
-  buf.__proto__ = Buffer.prototype;
+  Object.setPrototypeOf(buf, Buffer.prototype);
   return buf;
 }
 /**
@@ -8666,7 +9074,7 @@ function from(value, encodingOrOffset, length) {
   }
 
   if (value == null) {
-    throw TypeError('The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' + 'or Array-like Object. Received type ' + _typeof(value));
+    throw new TypeError('The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' + 'or Array-like Object. Received type ' + _typeof(value));
   }
 
   if (isInstance(value, ArrayBuffer) || value && isInstance(value.buffer, ArrayBuffer)) {
@@ -8708,8 +9116,8 @@ Buffer.from = function (value, encodingOrOffset, length) {
 // https://github.com/feross/buffer/pull/148
 
 
-Buffer.prototype.__proto__ = Uint8Array.prototype;
-Buffer.__proto__ = Uint8Array;
+Object.setPrototypeOf(Buffer.prototype, Uint8Array.prototype);
+Object.setPrototypeOf(Buffer, Uint8Array);
 
 function assertSize(size) {
   if (typeof size !== 'number') {
@@ -8820,7 +9228,7 @@ function fromArrayBuffer(array, byteOffset, length) {
   } // Return an augmented `Uint8Array` instance
 
 
-  buf.__proto__ = Buffer.prototype;
+  Object.setPrototypeOf(buf, Buffer.prototype);
   return buf;
 }
 
@@ -9164,6 +9572,10 @@ Buffer.prototype.inspect = function inspect() {
   if (this.length > max) str += ' ... ';
   return '<Buffer ' + str + '>';
 };
+
+if (customInspectSymbol) {
+  Buffer.prototype[customInspectSymbol] = Buffer.prototype.inspect;
+}
 
 Buffer.prototype.compare = function compare(target, start, end, thisStart, thisEnd) {
   if (isInstance(target, Uint8Array)) {
@@ -9639,7 +10051,7 @@ function hexSlice(buf, start, end) {
   var out = '';
 
   for (var i = start; i < end; ++i) {
-    out += toHex(buf[i]);
+    out += hexSliceLookupTable[buf[i]];
   }
 
   return out;
@@ -9678,7 +10090,7 @@ Buffer.prototype.slice = function slice(start, end) {
   if (end < start) end = start;
   var newBuf = this.subarray(start, end); // Return an augmented `Uint8Array` instance
 
-  newBuf.__proto__ = Buffer.prototype;
+  Object.setPrototypeOf(newBuf, Buffer.prototype);
   return newBuf;
 };
 /*
@@ -10162,6 +10574,8 @@ Buffer.prototype.fill = function fill(val, start, end, encoding) {
     }
   } else if (typeof val === 'number') {
     val = val & 255;
+  } else if (typeof val === 'boolean') {
+    val = Number(val);
   } // Invalid ranges are not set to a default, so can range check early.
 
 
@@ -10215,11 +10629,6 @@ function base64clean(str) {
   }
 
   return str;
-}
-
-function toHex(n) {
-  if (n < 16) return '0' + n.toString(16);
-  return n.toString(16);
 }
 
 function utf8ToBytes(string, units) {
@@ -10337,10 +10746,27 @@ function isInstance(obj, type) {
 function numberIsNaN(obj) {
   // For IE11 support
   return obj !== obj; // eslint-disable-line no-self-compare
-}
+} // Create lookup table for `toString('hex')`
+// See: https://github.com/feross/buffer/issues/219
+
+
+var hexSliceLookupTable = function () {
+  var alphabet = '0123456789abcdef';
+  var table = new Array(256);
+
+  for (var i = 0; i < 16; ++i) {
+    var i16 = i * 16;
+
+    for (var j = 0; j < 16; ++j) {
+      table[i16 + j] = alphabet[i] + alphabet[j];
+    }
+  }
+
+  return table;
+}();
 
 }).call(this,require("buffer").Buffer)
-},{"base64-js":47,"buffer":48,"ieee754":59}],49:[function(require,module,exports){
+},{"base64-js":49,"buffer":50,"core-js/modules/es.string.replace":107,"ieee754":118}],51:[function(require,module,exports){
 "use strict";
 
 /**
@@ -10514,10 +10940,1183 @@ Emitter.prototype.hasListeners = function (event) {
   return !!this.listeners(event).length;
 };
 
-},{}],50:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
+module.exports = function (it) {
+  if (typeof it != 'function') {
+    throw TypeError(String(it) + ' is not a function');
+  } return it;
+};
+
+},{}],53:[function(require,module,exports){
+'use strict';
+var charAt = require('../internals/string-multibyte').charAt;
+
+// `AdvanceStringIndex` abstract operation
+// https://tc39.github.io/ecma262/#sec-advancestringindex
+module.exports = function (S, index, unicode) {
+  return index + (unicode ? charAt(S, index).length : 1);
+};
+
+},{"../internals/string-multibyte":97}],54:[function(require,module,exports){
+var isObject = require('../internals/is-object');
+
+module.exports = function (it) {
+  if (!isObject(it)) {
+    throw TypeError(String(it) + ' is not an object');
+  } return it;
+};
+
+},{"../internals/is-object":77}],55:[function(require,module,exports){
+var toIndexedObject = require('../internals/to-indexed-object');
+var toLength = require('../internals/to-length');
+var toAbsoluteIndex = require('../internals/to-absolute-index');
+
+// `Array.prototype.{ indexOf, includes }` methods implementation
+var createMethod = function (IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = toIndexedObject($this);
+    var length = toLength(O.length);
+    var index = toAbsoluteIndex(fromIndex, length);
+    var value;
+    // Array#includes uses SameValueZero equality algorithm
+    // eslint-disable-next-line no-self-compare
+    if (IS_INCLUDES && el != el) while (length > index) {
+      value = O[index++];
+      // eslint-disable-next-line no-self-compare
+      if (value != value) return true;
+    // Array#indexOf ignores holes, Array#includes - not
+    } else for (;length > index; index++) {
+      if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
+    } return !IS_INCLUDES && -1;
+  };
+};
+
+module.exports = {
+  // `Array.prototype.includes` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.includes
+  includes: createMethod(true),
+  // `Array.prototype.indexOf` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.indexof
+  indexOf: createMethod(false)
+};
+
+},{"../internals/to-absolute-index":99,"../internals/to-indexed-object":100,"../internals/to-length":102}],56:[function(require,module,exports){
+var aFunction = require('../internals/a-function');
+
+// optional / simple context binding
+module.exports = function (fn, that, length) {
+  aFunction(fn);
+  if (that === undefined) return fn;
+  switch (length) {
+    case 0: return function () {
+      return fn.call(that);
+    };
+    case 1: return function (a) {
+      return fn.call(that, a);
+    };
+    case 2: return function (a, b) {
+      return fn.call(that, a, b);
+    };
+    case 3: return function (a, b, c) {
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function (/* ...args */) {
+    return fn.apply(that, arguments);
+  };
+};
+
+},{"../internals/a-function":52}],57:[function(require,module,exports){
+var toString = {}.toString;
+
+module.exports = function (it) {
+  return toString.call(it).slice(8, -1);
+};
+
+},{}],58:[function(require,module,exports){
+var has = require('../internals/has');
+var ownKeys = require('../internals/own-keys');
+var getOwnPropertyDescriptorModule = require('../internals/object-get-own-property-descriptor');
+var definePropertyModule = require('../internals/object-define-property');
+
+module.exports = function (target, source) {
+  var keys = ownKeys(source);
+  var defineProperty = definePropertyModule.f;
+  var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (!has(target, key)) defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+  }
+};
+
+},{"../internals/has":69,"../internals/object-define-property":81,"../internals/object-get-own-property-descriptor":82,"../internals/own-keys":87}],59:[function(require,module,exports){
+module.exports = function (bitmap, value) {
+  return {
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
+  };
+};
+
+},{}],60:[function(require,module,exports){
+var fails = require('../internals/fails');
+
+// Thank's IE8 for his funny defineProperty
+module.exports = !fails(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+},{"../internals/fails":64}],61:[function(require,module,exports){
+var global = require('../internals/global');
+var isObject = require('../internals/is-object');
+
+var document = global.document;
+// typeof document.createElement is 'object' in old IE
+var EXISTS = isObject(document) && isObject(document.createElement);
+
+module.exports = function (it) {
+  return EXISTS ? document.createElement(it) : {};
+};
+
+},{"../internals/global":68,"../internals/is-object":77}],62:[function(require,module,exports){
+// IE8- don't enum bug keys
+module.exports = [
+  'constructor',
+  'hasOwnProperty',
+  'isPrototypeOf',
+  'propertyIsEnumerable',
+  'toLocaleString',
+  'toString',
+  'valueOf'
+];
+
+},{}],63:[function(require,module,exports){
+var global = require('../internals/global');
+var getOwnPropertyDescriptor = require('../internals/object-get-own-property-descriptor').f;
+var hide = require('../internals/hide');
+var redefine = require('../internals/redefine');
+var setGlobal = require('../internals/set-global');
+var copyConstructorProperties = require('../internals/copy-constructor-properties');
+var isForced = require('../internals/is-forced');
+
+/*
+  options.target      - name of the target object
+  options.global      - target is the global object
+  options.stat        - export as static methods of target
+  options.proto       - export as prototype methods of target
+  options.real        - real prototype method for the `pure` version
+  options.forced      - export even if the native feature is available
+  options.bind        - bind methods to the target, required for the `pure` version
+  options.wrap        - wrap constructors to preventing global pollution, required for the `pure` version
+  options.unsafe      - use the simple assignment of property instead of delete + defineProperty
+  options.sham        - add a flag to not completely full polyfills
+  options.enumerable  - export as enumerable property
+  options.noTargetGet - prevent calling a getter on target
+*/
+module.exports = function (options, source) {
+  var TARGET = options.target;
+  var GLOBAL = options.global;
+  var STATIC = options.stat;
+  var FORCED, target, key, targetProperty, sourceProperty, descriptor;
+  if (GLOBAL) {
+    target = global;
+  } else if (STATIC) {
+    target = global[TARGET] || setGlobal(TARGET, {});
+  } else {
+    target = (global[TARGET] || {}).prototype;
+  }
+  if (target) for (key in source) {
+    sourceProperty = source[key];
+    if (options.noTargetGet) {
+      descriptor = getOwnPropertyDescriptor(target, key);
+      targetProperty = descriptor && descriptor.value;
+    } else targetProperty = target[key];
+    FORCED = isForced(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
+    // contained in target
+    if (!FORCED && targetProperty !== undefined) {
+      if (typeof sourceProperty === typeof targetProperty) continue;
+      copyConstructorProperties(sourceProperty, targetProperty);
+    }
+    // add a flag to not completely full polyfills
+    if (options.sham || (targetProperty && targetProperty.sham)) {
+      hide(sourceProperty, 'sham', true);
+    }
+    // extend global
+    redefine(target, key, sourceProperty, options);
+  }
+};
+
+},{"../internals/copy-constructor-properties":58,"../internals/global":68,"../internals/hide":71,"../internals/is-forced":76,"../internals/object-get-own-property-descriptor":82,"../internals/redefine":89,"../internals/set-global":94}],64:[function(require,module,exports){
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (error) {
+    return true;
+  }
+};
+
+},{}],65:[function(require,module,exports){
+'use strict';
+var hide = require('../internals/hide');
+var redefine = require('../internals/redefine');
+var fails = require('../internals/fails');
+var wellKnownSymbol = require('../internals/well-known-symbol');
+var regexpExec = require('../internals/regexp-exec');
+
+var SPECIES = wellKnownSymbol('species');
+
+var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
+  // #replace needs built-in support for named groups.
+  // #match works fine because it just return the exec results, even if it has
+  // a "grops" property.
+  var re = /./;
+  re.exec = function () {
+    var result = [];
+    result.groups = { a: '7' };
+    return result;
+  };
+  return ''.replace(re, '$<a>') !== '7';
+});
+
+// Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
+// Weex JS has frozen built-in prototypes, so use try / catch wrapper
+var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !fails(function () {
+  var re = /(?:)/;
+  var originalExec = re.exec;
+  re.exec = function () { return originalExec.apply(this, arguments); };
+  var result = 'ab'.split(re);
+  return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
+});
+
+module.exports = function (KEY, length, exec, sham) {
+  var SYMBOL = wellKnownSymbol(KEY);
+
+  var DELEGATES_TO_SYMBOL = !fails(function () {
+    // String methods call symbol-named RegEp methods
+    var O = {};
+    O[SYMBOL] = function () { return 7; };
+    return ''[KEY](O) != 7;
+  });
+
+  var DELEGATES_TO_EXEC = DELEGATES_TO_SYMBOL && !fails(function () {
+    // Symbol-named RegExp methods call .exec
+    var execCalled = false;
+    var re = /a/;
+    re.exec = function () { execCalled = true; return null; };
+
+    if (KEY === 'split') {
+      // RegExp[@@split] doesn't call the regex's exec method, but first creates
+      // a new one. We need to return the patched regex when creating the new one.
+      re.constructor = {};
+      re.constructor[SPECIES] = function () { return re; };
+    }
+
+    re[SYMBOL]('');
+    return !execCalled;
+  });
+
+  if (
+    !DELEGATES_TO_SYMBOL ||
+    !DELEGATES_TO_EXEC ||
+    (KEY === 'replace' && !REPLACE_SUPPORTS_NAMED_GROUPS) ||
+    (KEY === 'split' && !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC)
+  ) {
+    var nativeRegExpMethod = /./[SYMBOL];
+    var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
+      if (regexp.exec === regexpExec) {
+        if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
+          // The native String method already delegates to @@method (this
+          // polyfilled function), leasing to infinite recursion.
+          // We avoid it by directly calling the native @@method method.
+          return { done: true, value: nativeRegExpMethod.call(regexp, str, arg2) };
+        }
+        return { done: true, value: nativeMethod.call(str, regexp, arg2) };
+      }
+      return { done: false };
+    });
+    var stringMethod = methods[0];
+    var regexMethod = methods[1];
+
+    redefine(String.prototype, KEY, stringMethod);
+    redefine(RegExp.prototype, SYMBOL, length == 2
+      // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
+      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
+      ? function (string, arg) { return regexMethod.call(string, this, arg); }
+      // 21.2.5.6 RegExp.prototype[@@match](string)
+      // 21.2.5.9 RegExp.prototype[@@search](string)
+      : function (string) { return regexMethod.call(string, this); }
+    );
+    if (sham) hide(RegExp.prototype[SYMBOL], 'sham', true);
+  }
+};
+
+},{"../internals/fails":64,"../internals/hide":71,"../internals/redefine":89,"../internals/regexp-exec":91,"../internals/well-known-symbol":106}],66:[function(require,module,exports){
+var shared = require('../internals/shared');
+
+module.exports = shared('native-function-to-string', Function.toString);
+
+},{"../internals/shared":96}],67:[function(require,module,exports){
+var path = require('../internals/path');
+var global = require('../internals/global');
+
+var aFunction = function (variable) {
+  return typeof variable == 'function' ? variable : undefined;
+};
+
+module.exports = function (namespace, method) {
+  return arguments.length < 2 ? aFunction(path[namespace]) || aFunction(global[namespace])
+    : path[namespace] && path[namespace][method] || global[namespace] && global[namespace][method];
+};
+
+},{"../internals/global":68,"../internals/path":88}],68:[function(require,module,exports){
+(function (global){
+var O = 'object';
+var check = function (it) {
+  return it && it.Math == Math && it;
+};
+
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+module.exports =
+  // eslint-disable-next-line no-undef
+  check(typeof globalThis == O && globalThis) ||
+  check(typeof window == O && window) ||
+  check(typeof self == O && self) ||
+  check(typeof global == O && global) ||
+  // eslint-disable-next-line no-new-func
+  Function('return this')();
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],69:[function(require,module,exports){
+var hasOwnProperty = {}.hasOwnProperty;
+
+module.exports = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+},{}],70:[function(require,module,exports){
+module.exports = {};
+
+},{}],71:[function(require,module,exports){
+var DESCRIPTORS = require('../internals/descriptors');
+var definePropertyModule = require('../internals/object-define-property');
+var createPropertyDescriptor = require('../internals/create-property-descriptor');
+
+module.exports = DESCRIPTORS ? function (object, key, value) {
+  return definePropertyModule.f(object, key, createPropertyDescriptor(1, value));
+} : function (object, key, value) {
+  object[key] = value;
+  return object;
+};
+
+},{"../internals/create-property-descriptor":59,"../internals/descriptors":60,"../internals/object-define-property":81}],72:[function(require,module,exports){
+var getBuiltIn = require('../internals/get-built-in');
+
+module.exports = getBuiltIn('document', 'documentElement');
+
+},{"../internals/get-built-in":67}],73:[function(require,module,exports){
+var DESCRIPTORS = require('../internals/descriptors');
+var fails = require('../internals/fails');
+var createElement = require('../internals/document-create-element');
+
+// Thank's IE8 for his funny defineProperty
+module.exports = !DESCRIPTORS && !fails(function () {
+  return Object.defineProperty(createElement('div'), 'a', {
+    get: function () { return 7; }
+  }).a != 7;
+});
+
+},{"../internals/descriptors":60,"../internals/document-create-element":61,"../internals/fails":64}],74:[function(require,module,exports){
+var fails = require('../internals/fails');
+var classof = require('../internals/classof-raw');
+
+var split = ''.split;
+
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+module.exports = fails(function () {
+  // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
+  // eslint-disable-next-line no-prototype-builtins
+  return !Object('z').propertyIsEnumerable(0);
+}) ? function (it) {
+  return classof(it) == 'String' ? split.call(it, '') : Object(it);
+} : Object;
+
+},{"../internals/classof-raw":57,"../internals/fails":64}],75:[function(require,module,exports){
+var NATIVE_WEAK_MAP = require('../internals/native-weak-map');
+var global = require('../internals/global');
+var isObject = require('../internals/is-object');
+var hide = require('../internals/hide');
+var objectHas = require('../internals/has');
+var sharedKey = require('../internals/shared-key');
+var hiddenKeys = require('../internals/hidden-keys');
+
+var WeakMap = global.WeakMap;
+var set, get, has;
+
+var enforce = function (it) {
+  return has(it) ? get(it) : set(it, {});
+};
+
+var getterFor = function (TYPE) {
+  return function (it) {
+    var state;
+    if (!isObject(it) || (state = get(it)).type !== TYPE) {
+      throw TypeError('Incompatible receiver, ' + TYPE + ' required');
+    } return state;
+  };
+};
+
+if (NATIVE_WEAK_MAP) {
+  var store = new WeakMap();
+  var wmget = store.get;
+  var wmhas = store.has;
+  var wmset = store.set;
+  set = function (it, metadata) {
+    wmset.call(store, it, metadata);
+    return metadata;
+  };
+  get = function (it) {
+    return wmget.call(store, it) || {};
+  };
+  has = function (it) {
+    return wmhas.call(store, it);
+  };
+} else {
+  var STATE = sharedKey('state');
+  hiddenKeys[STATE] = true;
+  set = function (it, metadata) {
+    hide(it, STATE, metadata);
+    return metadata;
+  };
+  get = function (it) {
+    return objectHas(it, STATE) ? it[STATE] : {};
+  };
+  has = function (it) {
+    return objectHas(it, STATE);
+  };
+}
+
+module.exports = {
+  set: set,
+  get: get,
+  has: has,
+  enforce: enforce,
+  getterFor: getterFor
+};
+
+},{"../internals/global":68,"../internals/has":69,"../internals/hidden-keys":70,"../internals/hide":71,"../internals/is-object":77,"../internals/native-weak-map":80,"../internals/shared-key":95}],76:[function(require,module,exports){
+var fails = require('../internals/fails');
+
+var replacement = /#|\.prototype\./;
+
+var isForced = function (feature, detection) {
+  var value = data[normalize(feature)];
+  return value == POLYFILL ? true
+    : value == NATIVE ? false
+    : typeof detection == 'function' ? fails(detection)
+    : !!detection;
+};
+
+var normalize = isForced.normalize = function (string) {
+  return String(string).replace(replacement, '.').toLowerCase();
+};
+
+var data = isForced.data = {};
+var NATIVE = isForced.NATIVE = 'N';
+var POLYFILL = isForced.POLYFILL = 'P';
+
+module.exports = isForced;
+
+},{"../internals/fails":64}],77:[function(require,module,exports){
+module.exports = function (it) {
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+},{}],78:[function(require,module,exports){
+module.exports = false;
+
+},{}],79:[function(require,module,exports){
+var fails = require('../internals/fails');
+
+module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
+  // Chrome 38 Symbol has incorrect toString conversion
+  // eslint-disable-next-line no-undef
+  return !String(Symbol());
+});
+
+},{"../internals/fails":64}],80:[function(require,module,exports){
+var global = require('../internals/global');
+var nativeFunctionToString = require('../internals/function-to-string');
+
+var WeakMap = global.WeakMap;
+
+module.exports = typeof WeakMap === 'function' && /native code/.test(nativeFunctionToString.call(WeakMap));
+
+},{"../internals/function-to-string":66,"../internals/global":68}],81:[function(require,module,exports){
+var DESCRIPTORS = require('../internals/descriptors');
+var IE8_DOM_DEFINE = require('../internals/ie8-dom-define');
+var anObject = require('../internals/an-object');
+var toPrimitive = require('../internals/to-primitive');
+
+var nativeDefineProperty = Object.defineProperty;
+
+// `Object.defineProperty` method
+// https://tc39.github.io/ecma262/#sec-object.defineproperty
+exports.f = DESCRIPTORS ? nativeDefineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return nativeDefineProperty(O, P, Attributes);
+  } catch (error) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+},{"../internals/an-object":54,"../internals/descriptors":60,"../internals/ie8-dom-define":73,"../internals/to-primitive":104}],82:[function(require,module,exports){
+var DESCRIPTORS = require('../internals/descriptors');
+var propertyIsEnumerableModule = require('../internals/object-property-is-enumerable');
+var createPropertyDescriptor = require('../internals/create-property-descriptor');
+var toIndexedObject = require('../internals/to-indexed-object');
+var toPrimitive = require('../internals/to-primitive');
+var has = require('../internals/has');
+var IE8_DOM_DEFINE = require('../internals/ie8-dom-define');
+
+var nativeGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptor
+exports.f = DESCRIPTORS ? nativeGetOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
+  O = toIndexedObject(O);
+  P = toPrimitive(P, true);
+  if (IE8_DOM_DEFINE) try {
+    return nativeGetOwnPropertyDescriptor(O, P);
+  } catch (error) { /* empty */ }
+  if (has(O, P)) return createPropertyDescriptor(!propertyIsEnumerableModule.f.call(O, P), O[P]);
+};
+
+},{"../internals/create-property-descriptor":59,"../internals/descriptors":60,"../internals/has":69,"../internals/ie8-dom-define":73,"../internals/object-property-is-enumerable":86,"../internals/to-indexed-object":100,"../internals/to-primitive":104}],83:[function(require,module,exports){
+var internalObjectKeys = require('../internals/object-keys-internal');
+var enumBugKeys = require('../internals/enum-bug-keys');
+
+var hiddenKeys = enumBugKeys.concat('length', 'prototype');
+
+// `Object.getOwnPropertyNames` method
+// https://tc39.github.io/ecma262/#sec-object.getownpropertynames
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+  return internalObjectKeys(O, hiddenKeys);
+};
+
+},{"../internals/enum-bug-keys":62,"../internals/object-keys-internal":85}],84:[function(require,module,exports){
+exports.f = Object.getOwnPropertySymbols;
+
+},{}],85:[function(require,module,exports){
+var has = require('../internals/has');
+var toIndexedObject = require('../internals/to-indexed-object');
+var indexOf = require('../internals/array-includes').indexOf;
+var hiddenKeys = require('../internals/hidden-keys');
+
+module.exports = function (object, names) {
+  var O = toIndexedObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) !has(hiddenKeys, key) && has(O, key) && result.push(key);
+  // Don't enum bug & hidden keys
+  while (names.length > i) if (has(O, key = names[i++])) {
+    ~indexOf(result, key) || result.push(key);
+  }
+  return result;
+};
+
+},{"../internals/array-includes":55,"../internals/has":69,"../internals/hidden-keys":70,"../internals/to-indexed-object":100}],86:[function(require,module,exports){
+'use strict';
+var nativePropertyIsEnumerable = {}.propertyIsEnumerable;
+var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// Nashorn ~ JDK8 bug
+var NASHORN_BUG = getOwnPropertyDescriptor && !nativePropertyIsEnumerable.call({ 1: 2 }, 1);
+
+// `Object.prototype.propertyIsEnumerable` method implementation
+// https://tc39.github.io/ecma262/#sec-object.prototype.propertyisenumerable
+exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
+  var descriptor = getOwnPropertyDescriptor(this, V);
+  return !!descriptor && descriptor.enumerable;
+} : nativePropertyIsEnumerable;
+
+},{}],87:[function(require,module,exports){
+var getBuiltIn = require('../internals/get-built-in');
+var getOwnPropertyNamesModule = require('../internals/object-get-own-property-names');
+var getOwnPropertySymbolsModule = require('../internals/object-get-own-property-symbols');
+var anObject = require('../internals/an-object');
+
+// all object keys, includes non-enumerable and symbols
+module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
+  var keys = getOwnPropertyNamesModule.f(anObject(it));
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  return getOwnPropertySymbols ? keys.concat(getOwnPropertySymbols(it)) : keys;
+};
+
+},{"../internals/an-object":54,"../internals/get-built-in":67,"../internals/object-get-own-property-names":83,"../internals/object-get-own-property-symbols":84}],88:[function(require,module,exports){
+module.exports = require('../internals/global');
+
+},{"../internals/global":68}],89:[function(require,module,exports){
+var global = require('../internals/global');
+var shared = require('../internals/shared');
+var hide = require('../internals/hide');
+var has = require('../internals/has');
+var setGlobal = require('../internals/set-global');
+var nativeFunctionToString = require('../internals/function-to-string');
+var InternalStateModule = require('../internals/internal-state');
+
+var getInternalState = InternalStateModule.get;
+var enforceInternalState = InternalStateModule.enforce;
+var TEMPLATE = String(nativeFunctionToString).split('toString');
+
+shared('inspectSource', function (it) {
+  return nativeFunctionToString.call(it);
+});
+
+(module.exports = function (O, key, value, options) {
+  var unsafe = options ? !!options.unsafe : false;
+  var simple = options ? !!options.enumerable : false;
+  var noTargetGet = options ? !!options.noTargetGet : false;
+  if (typeof value == 'function') {
+    if (typeof key == 'string' && !has(value, 'name')) hide(value, 'name', key);
+    enforceInternalState(value).source = TEMPLATE.join(typeof key == 'string' ? key : '');
+  }
+  if (O === global) {
+    if (simple) O[key] = value;
+    else setGlobal(key, value);
+    return;
+  } else if (!unsafe) {
+    delete O[key];
+  } else if (!noTargetGet && O[key]) {
+    simple = true;
+  }
+  if (simple) O[key] = value;
+  else hide(O, key, value);
+// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
+})(Function.prototype, 'toString', function toString() {
+  return typeof this == 'function' && getInternalState(this).source || nativeFunctionToString.call(this);
+});
+
+},{"../internals/function-to-string":66,"../internals/global":68,"../internals/has":69,"../internals/hide":71,"../internals/internal-state":75,"../internals/set-global":94,"../internals/shared":96}],90:[function(require,module,exports){
+var classof = require('./classof-raw');
+var regexpExec = require('./regexp-exec');
+
+// `RegExpExec` abstract operation
+// https://tc39.github.io/ecma262/#sec-regexpexec
+module.exports = function (R, S) {
+  var exec = R.exec;
+  if (typeof exec === 'function') {
+    var result = exec.call(R, S);
+    if (typeof result !== 'object') {
+      throw TypeError('RegExp exec method returned something other than an Object or null');
+    }
+    return result;
+  }
+
+  if (classof(R) !== 'RegExp') {
+    throw TypeError('RegExp#exec called on incompatible receiver');
+  }
+
+  return regexpExec.call(R, S);
+};
+
+
+},{"./classof-raw":57,"./regexp-exec":91}],91:[function(require,module,exports){
+'use strict';
+var regexpFlags = require('./regexp-flags');
+
+var nativeExec = RegExp.prototype.exec;
+// This always refers to the native implementation, because the
+// String#replace polyfill uses ./fix-regexp-well-known-symbol-logic.js,
+// which loads this file before patching the method.
+var nativeReplace = String.prototype.replace;
+
+var patchedExec = nativeExec;
+
+var UPDATES_LAST_INDEX_WRONG = (function () {
+  var re1 = /a/;
+  var re2 = /b*/g;
+  nativeExec.call(re1, 'a');
+  nativeExec.call(re2, 'a');
+  return re1.lastIndex !== 0 || re2.lastIndex !== 0;
+})();
+
+// nonparticipating capturing group, copied from es5-shim's String#split patch.
+var NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
+
+var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED;
+
+if (PATCH) {
+  patchedExec = function exec(str) {
+    var re = this;
+    var lastIndex, reCopy, match, i;
+
+    if (NPCG_INCLUDED) {
+      reCopy = new RegExp('^' + re.source + '$(?!\\s)', regexpFlags.call(re));
+    }
+    if (UPDATES_LAST_INDEX_WRONG) lastIndex = re.lastIndex;
+
+    match = nativeExec.call(re, str);
+
+    if (UPDATES_LAST_INDEX_WRONG && match) {
+      re.lastIndex = re.global ? match.index + match[0].length : lastIndex;
+    }
+    if (NPCG_INCLUDED && match && match.length > 1) {
+      // Fix browsers whose `exec` methods don't consistently return `undefined`
+      // for NPCG, like IE8. NOTE: This doesn' work for /(.?)?/
+      nativeReplace.call(match[0], reCopy, function () {
+        for (i = 1; i < arguments.length - 2; i++) {
+          if (arguments[i] === undefined) match[i] = undefined;
+        }
+      });
+    }
+
+    return match;
+  };
+}
+
+module.exports = patchedExec;
+
+},{"./regexp-flags":92}],92:[function(require,module,exports){
+'use strict';
+var anObject = require('../internals/an-object');
+
+// `RegExp.prototype.flags` getter implementation
+// https://tc39.github.io/ecma262/#sec-get-regexp.prototype.flags
+module.exports = function () {
+  var that = anObject(this);
+  var result = '';
+  if (that.global) result += 'g';
+  if (that.ignoreCase) result += 'i';
+  if (that.multiline) result += 'm';
+  if (that.dotAll) result += 's';
+  if (that.unicode) result += 'u';
+  if (that.sticky) result += 'y';
+  return result;
+};
+
+},{"../internals/an-object":54}],93:[function(require,module,exports){
+// `RequireObjectCoercible` abstract operation
+// https://tc39.github.io/ecma262/#sec-requireobjectcoercible
+module.exports = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on " + it);
+  return it;
+};
+
+},{}],94:[function(require,module,exports){
+var global = require('../internals/global');
+var hide = require('../internals/hide');
+
+module.exports = function (key, value) {
+  try {
+    hide(global, key, value);
+  } catch (error) {
+    global[key] = value;
+  } return value;
+};
+
+},{"../internals/global":68,"../internals/hide":71}],95:[function(require,module,exports){
+var shared = require('../internals/shared');
+var uid = require('../internals/uid');
+
+var keys = shared('keys');
+
+module.exports = function (key) {
+  return keys[key] || (keys[key] = uid(key));
+};
+
+},{"../internals/shared":96,"../internals/uid":105}],96:[function(require,module,exports){
+var global = require('../internals/global');
+var setGlobal = require('../internals/set-global');
+var IS_PURE = require('../internals/is-pure');
+
+var SHARED = '__core-js_shared__';
+var store = global[SHARED] || setGlobal(SHARED, {});
+
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: '3.1.3',
+  mode: IS_PURE ? 'pure' : 'global',
+  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
+});
+
+},{"../internals/global":68,"../internals/is-pure":78,"../internals/set-global":94}],97:[function(require,module,exports){
+var toInteger = require('../internals/to-integer');
+var requireObjectCoercible = require('../internals/require-object-coercible');
+
+// `String.prototype.{ codePointAt, at }` methods implementation
+var createMethod = function (CONVERT_TO_STRING) {
+  return function ($this, pos) {
+    var S = String(requireObjectCoercible($this));
+    var position = toInteger(pos);
+    var size = S.length;
+    var first, second;
+    if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
+    first = S.charCodeAt(position);
+    return first < 0xD800 || first > 0xDBFF || position + 1 === size
+      || (second = S.charCodeAt(position + 1)) < 0xDC00 || second > 0xDFFF
+        ? CONVERT_TO_STRING ? S.charAt(position) : first
+        : CONVERT_TO_STRING ? S.slice(position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+  };
+};
+
+module.exports = {
+  // `String.prototype.codePointAt` method
+  // https://tc39.github.io/ecma262/#sec-string.prototype.codepointat
+  codeAt: createMethod(false),
+  // `String.prototype.at` method
+  // https://github.com/mathiasbynens/String.prototype.at
+  charAt: createMethod(true)
+};
+
+},{"../internals/require-object-coercible":93,"../internals/to-integer":101}],98:[function(require,module,exports){
+var global = require('../internals/global');
+var fails = require('../internals/fails');
+var classof = require('../internals/classof-raw');
+var bind = require('../internals/bind-context');
+var html = require('../internals/html');
+var createElement = require('../internals/document-create-element');
+
+var location = global.location;
+var set = global.setImmediate;
+var clear = global.clearImmediate;
+var process = global.process;
+var MessageChannel = global.MessageChannel;
+var Dispatch = global.Dispatch;
+var counter = 0;
+var queue = {};
+var ONREADYSTATECHANGE = 'onreadystatechange';
+var defer, channel, port;
+
+var run = function (id) {
+  // eslint-disable-next-line no-prototype-builtins
+  if (queue.hasOwnProperty(id)) {
+    var fn = queue[id];
+    delete queue[id];
+    fn();
+  }
+};
+
+var runner = function (id) {
+  return function () {
+    run(id);
+  };
+};
+
+var listener = function (event) {
+  run(event.data);
+};
+
+var post = function (id) {
+  // old engines have not location.origin
+  global.postMessage(id + '', location.protocol + '//' + location.host);
+};
+
+// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
+if (!set || !clear) {
+  set = function setImmediate(fn) {
+    var args = [];
+    var i = 1;
+    while (arguments.length > i) args.push(arguments[i++]);
+    queue[++counter] = function () {
+      // eslint-disable-next-line no-new-func
+      (typeof fn == 'function' ? fn : Function(fn)).apply(undefined, args);
+    };
+    defer(counter);
+    return counter;
+  };
+  clear = function clearImmediate(id) {
+    delete queue[id];
+  };
+  // Node.js 0.8-
+  if (classof(process) == 'process') {
+    defer = function (id) {
+      process.nextTick(runner(id));
+    };
+  // Sphere (JS game engine) Dispatch API
+  } else if (Dispatch && Dispatch.now) {
+    defer = function (id) {
+      Dispatch.now(runner(id));
+    };
+  // Browsers with MessageChannel, includes WebWorkers
+  } else if (MessageChannel) {
+    channel = new MessageChannel();
+    port = channel.port2;
+    channel.port1.onmessage = listener;
+    defer = bind(port.postMessage, port, 1);
+  // Browsers with postMessage, skip WebWorkers
+  // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
+  } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts && !fails(post)) {
+    defer = post;
+    global.addEventListener('message', listener, false);
+  // IE8-
+  } else if (ONREADYSTATECHANGE in createElement('script')) {
+    defer = function (id) {
+      html.appendChild(createElement('script'))[ONREADYSTATECHANGE] = function () {
+        html.removeChild(this);
+        run(id);
+      };
+    };
+  // Rest old browsers
+  } else {
+    defer = function (id) {
+      setTimeout(runner(id), 0);
+    };
+  }
+}
+
+module.exports = {
+  set: set,
+  clear: clear
+};
+
+},{"../internals/bind-context":56,"../internals/classof-raw":57,"../internals/document-create-element":61,"../internals/fails":64,"../internals/global":68,"../internals/html":72}],99:[function(require,module,exports){
+var toInteger = require('../internals/to-integer');
+
+var max = Math.max;
+var min = Math.min;
+
+// Helper for a popular repeating case of the spec:
+// Let integer be ? ToInteger(index).
+// If integer < 0, let result be max((length + integer), 0); else let result be min(length, length).
+module.exports = function (index, length) {
+  var integer = toInteger(index);
+  return integer < 0 ? max(integer + length, 0) : min(integer, length);
+};
+
+},{"../internals/to-integer":101}],100:[function(require,module,exports){
+// toObject with fallback for non-array-like ES3 strings
+var IndexedObject = require('../internals/indexed-object');
+var requireObjectCoercible = require('../internals/require-object-coercible');
+
+module.exports = function (it) {
+  return IndexedObject(requireObjectCoercible(it));
+};
+
+},{"../internals/indexed-object":74,"../internals/require-object-coercible":93}],101:[function(require,module,exports){
+var ceil = Math.ceil;
+var floor = Math.floor;
+
+// `ToInteger` abstract operation
+// https://tc39.github.io/ecma262/#sec-tointeger
+module.exports = function (argument) {
+  return isNaN(argument = +argument) ? 0 : (argument > 0 ? floor : ceil)(argument);
+};
+
+},{}],102:[function(require,module,exports){
+var toInteger = require('../internals/to-integer');
+
+var min = Math.min;
+
+// `ToLength` abstract operation
+// https://tc39.github.io/ecma262/#sec-tolength
+module.exports = function (argument) {
+  return argument > 0 ? min(toInteger(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+};
+
+},{"../internals/to-integer":101}],103:[function(require,module,exports){
+var requireObjectCoercible = require('../internals/require-object-coercible');
+
+// `ToObject` abstract operation
+// https://tc39.github.io/ecma262/#sec-toobject
+module.exports = function (argument) {
+  return Object(requireObjectCoercible(argument));
+};
+
+},{"../internals/require-object-coercible":93}],104:[function(require,module,exports){
+var isObject = require('../internals/is-object');
+
+// `ToPrimitive` abstract operation
+// https://tc39.github.io/ecma262/#sec-toprimitive
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
+module.exports = function (input, PREFERRED_STRING) {
+  if (!isObject(input)) return input;
+  var fn, val;
+  if (PREFERRED_STRING && typeof (fn = input.toString) == 'function' && !isObject(val = fn.call(input))) return val;
+  if (typeof (fn = input.valueOf) == 'function' && !isObject(val = fn.call(input))) return val;
+  if (!PREFERRED_STRING && typeof (fn = input.toString) == 'function' && !isObject(val = fn.call(input))) return val;
+  throw TypeError("Can't convert object to primitive value");
+};
+
+},{"../internals/is-object":77}],105:[function(require,module,exports){
+var id = 0;
+var postfix = Math.random();
+
+module.exports = function (key) {
+  return 'Symbol(' + String(key === undefined ? '' : key) + ')_' + (++id + postfix).toString(36);
+};
+
+},{}],106:[function(require,module,exports){
+var global = require('../internals/global');
+var shared = require('../internals/shared');
+var uid = require('../internals/uid');
+var NATIVE_SYMBOL = require('../internals/native-symbol');
+
+var Symbol = global.Symbol;
+var store = shared('wks');
+
+module.exports = function (name) {
+  return store[name] || (store[name] = NATIVE_SYMBOL && Symbol[name]
+    || (NATIVE_SYMBOL ? Symbol : uid)('Symbol.' + name));
+};
+
+},{"../internals/global":68,"../internals/native-symbol":79,"../internals/shared":96,"../internals/uid":105}],107:[function(require,module,exports){
+'use strict';
+var fixRegExpWellKnownSymbolLogic = require('../internals/fix-regexp-well-known-symbol-logic');
+var anObject = require('../internals/an-object');
+var toObject = require('../internals/to-object');
+var toLength = require('../internals/to-length');
+var toInteger = require('../internals/to-integer');
+var requireObjectCoercible = require('../internals/require-object-coercible');
+var advanceStringIndex = require('../internals/advance-string-index');
+var regExpExec = require('../internals/regexp-exec-abstract');
+
+var max = Math.max;
+var min = Math.min;
+var floor = Math.floor;
+var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d\d?|<[^>]*>)/g;
+var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d\d?)/g;
+
+var maybeToString = function (it) {
+  return it === undefined ? it : String(it);
+};
+
+// @@replace logic
+fixRegExpWellKnownSymbolLogic('replace', 2, function (REPLACE, nativeReplace, maybeCallNative) {
+  return [
+    // `String.prototype.replace` method
+    // https://tc39.github.io/ecma262/#sec-string.prototype.replace
+    function replace(searchValue, replaceValue) {
+      var O = requireObjectCoercible(this);
+      var replacer = searchValue == undefined ? undefined : searchValue[REPLACE];
+      return replacer !== undefined
+        ? replacer.call(searchValue, O, replaceValue)
+        : nativeReplace.call(String(O), searchValue, replaceValue);
+    },
+    // `RegExp.prototype[@@replace]` method
+    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@replace
+    function (regexp, replaceValue) {
+      var res = maybeCallNative(nativeReplace, regexp, this, replaceValue);
+      if (res.done) return res.value;
+
+      var rx = anObject(regexp);
+      var S = String(this);
+
+      var functionalReplace = typeof replaceValue === 'function';
+      if (!functionalReplace) replaceValue = String(replaceValue);
+
+      var global = rx.global;
+      if (global) {
+        var fullUnicode = rx.unicode;
+        rx.lastIndex = 0;
+      }
+      var results = [];
+      while (true) {
+        var result = regExpExec(rx, S);
+        if (result === null) break;
+
+        results.push(result);
+        if (!global) break;
+
+        var matchStr = String(result[0]);
+        if (matchStr === '') rx.lastIndex = advanceStringIndex(S, toLength(rx.lastIndex), fullUnicode);
+      }
+
+      var accumulatedResult = '';
+      var nextSourcePosition = 0;
+      for (var i = 0; i < results.length; i++) {
+        result = results[i];
+
+        var matched = String(result[0]);
+        var position = max(min(toInteger(result.index), S.length), 0);
+        var captures = [];
+        // NOTE: This is equivalent to
+        //   captures = result.slice(1).map(maybeToString)
+        // but for some reason `nativeSlice.call(result, 1, result.length)` (called in
+        // the slice polyfill when slicing native arrays) "doesn't work" in safari 9 and
+        // causes a crash (https://pastebin.com/N21QzeQA) when trying to debug it.
+        for (var j = 1; j < result.length; j++) captures.push(maybeToString(result[j]));
+        var namedCaptures = result.groups;
+        if (functionalReplace) {
+          var replacerArgs = [matched].concat(captures, position, S);
+          if (namedCaptures !== undefined) replacerArgs.push(namedCaptures);
+          var replacement = String(replaceValue.apply(undefined, replacerArgs));
+        } else {
+          replacement = getSubstitution(matched, S, position, captures, namedCaptures, replaceValue);
+        }
+        if (position >= nextSourcePosition) {
+          accumulatedResult += S.slice(nextSourcePosition, position) + replacement;
+          nextSourcePosition = position + matched.length;
+        }
+      }
+      return accumulatedResult + S.slice(nextSourcePosition);
+    }
+  ];
+
+  // https://tc39.github.io/ecma262/#sec-getsubstitution
+  function getSubstitution(matched, str, position, captures, namedCaptures, replacement) {
+    var tailPos = position + matched.length;
+    var m = captures.length;
+    var symbols = SUBSTITUTION_SYMBOLS_NO_NAMED;
+    if (namedCaptures !== undefined) {
+      namedCaptures = toObject(namedCaptures);
+      symbols = SUBSTITUTION_SYMBOLS;
+    }
+    return nativeReplace.call(replacement, symbols, function (match, ch) {
+      var capture;
+      switch (ch.charAt(0)) {
+        case '$': return '$';
+        case '&': return matched;
+        case '`': return str.slice(0, position);
+        case "'": return str.slice(tailPos);
+        case '<':
+          capture = namedCaptures[ch.slice(1, -1)];
+          break;
+        default: // \d\d?
+          var n = +ch;
+          if (n === 0) return match;
+          if (n > m) {
+            var f = floor(n / 10);
+            if (f === 0) return match;
+            if (f <= m) return captures[f - 1] === undefined ? ch.charAt(1) : captures[f - 1] + ch.charAt(1);
+            return match;
+          }
+          capture = captures[n - 1];
+      }
+      return capture === undefined ? '' : capture;
+    });
+  }
+});
+
+},{"../internals/advance-string-index":53,"../internals/an-object":54,"../internals/fix-regexp-well-known-symbol-logic":65,"../internals/regexp-exec-abstract":90,"../internals/require-object-coercible":93,"../internals/to-integer":101,"../internals/to-length":102,"../internals/to-object":103}],108:[function(require,module,exports){
+var global = require('../internals/global');
+var task = require('../internals/task');
+
+var FORCED = !global.setImmediate || !global.clearImmediate;
+
+// http://w3c.github.io/setImmediate/
+require('../internals/export')({ global: true, bind: true, enumerable: true, forced: FORCED }, {
+  // `setImmediate` method
+  // http://w3c.github.io/setImmediate/#si-setImmediate
+  setImmediate: task.set,
+  // `clearImmediate` method
+  // http://w3c.github.io/setImmediate/#si-clearImmediate
+  clearImmediate: task.clear
+});
+
+},{"../internals/export":63,"../internals/global":68,"../internals/task":98}],109:[function(require,module,exports){
 'use strict'; //parse Empty Node as self closing node
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+require("core-js/modules/es.string.replace");
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var buildOptions = require('./util').buildOptions;
 
@@ -10608,6 +12207,8 @@ Parser.prototype.j2x = function (jObj, level) {
     if (typeof jObj[key] === 'undefined') {// supress undefined node
     } else if (jObj[key] === null) {
       val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+    } else if (jObj[key] instanceof Date) {
+      val += this.buildTextNode(jObj[key], key, '', level);
     } else if (_typeof(jObj[key]) !== 'object') {
       //premitive type
       var attr = this.isAttribute(key);
@@ -10726,7 +12327,7 @@ function buildEmptyObjNode(val, key, attrStr, level) {
 }
 
 function buildTextValNode(val, key, attrStr, level) {
-  return this.indentate(level) + '<' + key + attrStr + '>' + this.options.tagValueProcessor('' + val) + '</' + key + this.tagEndChar;
+  return this.indentate(level) + '<' + key + attrStr + '>' + this.options.tagValueProcessor(val) + '</' + key + this.tagEndChar;
 }
 
 function buildEmptyTextNode(val, key, attrStr, level) {
@@ -10760,7 +12361,7 @@ function isCDATA(name) {
 
 module.exports = Parser;
 
-},{"./util":55}],51:[function(require,module,exports){
+},{"./util":114,"core-js/modules/es.string.replace":107}],110:[function(require,module,exports){
 'use strict';
 
 var _char = function _char(a) {
@@ -10905,8 +12506,10 @@ var convert2nimn = function convert2nimn(node, e_schema, options) {
 
 exports.convert2nimn = convert2nimn;
 
-},{"./util":55,"./xmlstr2xmlnode":58}],52:[function(require,module,exports){
+},{"./util":114,"./xmlstr2xmlnode":117}],111:[function(require,module,exports){
 'use strict';
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var util = require('./util');
 
@@ -10919,12 +12522,16 @@ var convertToJson = function convertToJson(node, options) {
     //otherwise create a textnode if node has some text
     if (util.isExist(node.val)) {
       if (!(typeof node.val === 'string' && (node.val === '' || node.val === options.cdataPositionChar))) {
-        jObj[options.textNodeName] = node.val;
+        if (options.arrayMode === "strict") {
+          jObj[options.textNodeName] = [node.val];
+        } else {
+          jObj[options.textNodeName] = node.val;
+        }
       }
     }
   }
 
-  util.merge(jObj, node.attrsMap);
+  util.merge(jObj, node.attrsMap, options.arrayMode);
   var keys = Object.keys(node.child);
 
   for (var index = 0; index < keys.length; index++) {
@@ -10937,7 +12544,14 @@ var convertToJson = function convertToJson(node, options) {
         jObj[tagname].push(convertToJson(node.child[tagname][tag], options));
       }
     } else {
-      jObj[tagname] = convertToJson(node.child[tagname][0], options);
+      if (options.arrayMode === true) {
+        var result = convertToJson(node.child[tagname][0], options);
+        if (_typeof(result) === 'object') jObj[tagname] = [result];else jObj[tagname] = result;
+      } else if (options.arrayMode === "strict") {
+        jObj[tagname] = [convertToJson(node.child[tagname][0], options)];
+      } else {
+        jObj[tagname] = convertToJson(node.child[tagname][0], options);
+      }
     }
   } //add value
 
@@ -10947,7 +12561,7 @@ var convertToJson = function convertToJson(node, options) {
 
 exports.convertToJson = convertToJson;
 
-},{"./util":55}],53:[function(require,module,exports){
+},{"./util":114}],112:[function(require,module,exports){
 'use strict';
 
 var util = require('./util');
@@ -11018,7 +12632,7 @@ function indentate(options, level) {
 
 exports.convertToJsonString = convertToJsonString;
 
-},{"./util":55,"./xmlstr2xmlnode":58}],54:[function(require,module,exports){
+},{"./util":114,"./xmlstr2xmlnode":117}],113:[function(require,module,exports){
 'use strict';
 
 var nodeToJson = require('./node2json');
@@ -11029,7 +12643,18 @@ var x2xmlnode = require('./xmlstr2xmlnode');
 
 var buildOptions = require('./util').buildOptions;
 
-exports.parse = function (xmlData, options) {
+var validator = require('./validator');
+
+exports.parse = function (xmlData, options, validationOption) {
+  if (validationOption) {
+    if (validationOption === true) validationOption = {};
+    var result = validator.validate(xmlData, validationOption);
+
+    if (result !== true) {
+      throw Error(result.err.msg);
+    }
+  }
+
   options = buildOptions(options, x2xmlnode.defaultOptions, x2xmlnode.props);
   return nodeToJson.convertToJson(xmlToNodeobj.getTraversalObj(xmlData, options), options);
 };
@@ -11038,15 +12663,20 @@ exports.convertTonimn = require('../src/nimndata').convert2nimn;
 exports.getTraversalObj = xmlToNodeobj.getTraversalObj;
 exports.convertToJson = nodeToJson.convertToJson;
 exports.convertToJsonString = require('./node2json_str').convertToJsonString;
-exports.validate = require('./validator').validate;
+exports.validate = validator.validate;
 exports.j2xParser = require('./json2xml');
 
 exports.parseToNimn = function (xmlData, schema, options) {
   return exports.convertTonimn(exports.getTraversalObj(xmlData, options), schema, options);
 };
 
-},{"../src/nimndata":51,"./json2xml":50,"./node2json":52,"./node2json_str":53,"./util":55,"./validator":56,"./xmlstr2xmlnode":58}],55:[function(require,module,exports){
+},{"../src/nimndata":110,"./json2xml":109,"./node2json":111,"./node2json_str":112,"./util":114,"./validator":115,"./xmlstr2xmlnode":117}],114:[function(require,module,exports){
 'use strict';
+
+var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
+var nameChar = nameStartChar + "\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040";
+var nameRegexp = '[' + nameStartChar + '][' + nameChar + ']*';
+var regexName = new RegExp('^' + nameRegexp + '$');
 
 var getAllMatches = function getAllMatches(string, regex) {
   var matches = [];
@@ -11067,13 +12697,9 @@ var getAllMatches = function getAllMatches(string, regex) {
   return matches;
 };
 
-var doesMatch = function doesMatch(string, regex) {
-  var match = regex.exec(string);
+var isName = function isName(string) {
+  var match = regexName.exec(string);
   return !(match === null || typeof match === 'undefined');
-};
-
-var doesNotMatch = function doesNotMatch(string, regex) {
-  return !doesMatch(string, regex);
 };
 
 exports.isExist = function (v) {
@@ -11090,14 +12716,18 @@ exports.isEmptyObject = function (obj) {
  */
 
 
-exports.merge = function (target, a) {
+exports.merge = function (target, a, arrayMode) {
   if (a) {
     var keys = Object.keys(a); // will return an array of own properties
 
     var len = keys.length; //don't make it inline
 
     for (var i = 0; i < len; i++) {
-      target[keys[i]] = a[keys[i]];
+      if (arrayMode === 'strict') {
+        target[keys[i]] = [a[keys[i]]];
+      } else {
+        target[keys[i]] = a[keys[i]];
+      }
     }
   }
 };
@@ -11134,21 +12764,22 @@ exports.buildOptions = function (options, defaultOptions, props) {
   return newOptions;
 };
 
-exports.doesMatch = doesMatch;
-exports.doesNotMatch = doesNotMatch;
+exports.isName = isName;
 exports.getAllMatches = getAllMatches;
+exports.nameRegexp = nameRegexp;
 
-},{}],56:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
+
+require("core-js/modules/es.string.replace");
 
 var util = require('./util');
 
 var defaultOptions = {
-  allowBooleanAttributes: false,
-  //A tag can have attributes without any value
-  localeRange: 'a-zA-Z'
+  allowBooleanAttributes: false //A tag can have attributes without any value
+
 };
-var props = ['allowBooleanAttributes', 'localeRange']; //const tagsPattern = new RegExp("<\\/?([\\w:\\-_\.]+)\\s*\/?>","g");
+var props = ['allowBooleanAttributes']; //const tagsPattern = new RegExp("<\\/?([\\w:\\-_\.]+)\\s*\/?>","g");
 
 exports.validate = function (xmlData, options) {
   options = util.buildOptions(options, defaultOptions, props); //xmlData = xmlData.replace(/(\r\n|\n|\r)/gm,"");//make it single line
@@ -11156,15 +12787,14 @@ exports.validate = function (xmlData, options) {
   //xmlData = xmlData.replace(/(<!DOCTYPE[\s\w\"\.\/\-\:]+(\[.*\])*\s*>)/g,"");//Remove DOCTYPE
 
   var tags = [];
-  var tagFound = false;
+  var tagFound = false; //indicates that the root tag has been closed (aka. depth 0 has been reached)
+
+  var reachedRoot = false;
 
   if (xmlData[0] === "\uFEFF") {
     // check for byte order mark (BOM)
     xmlData = xmlData.substr(1);
   }
-
-  var regxAttrName = new RegExp('^[_w][\\w\\-.:]*$'.replace('_w', '_' + options.localeRange));
-  var regxTagName = new RegExp('^([w]|_)[\\w.\\-_:]*'.replace('([w', '([' + options.localeRange));
 
   for (var i = 0; i < xmlData.length; i++) {
     if (xmlData[i] === '<') {
@@ -11193,7 +12823,7 @@ exports.validate = function (xmlData, options) {
 
         var tagName = '';
 
-        for (; i < xmlData.length && xmlData[i] !== '>' && xmlData[i] !== ' ' && xmlData[i] !== '\t'; i++) {
+        for (; i < xmlData.length && xmlData[i] !== '>' && xmlData[i] !== ' ' && xmlData[i] !== '\t' && xmlData[i] !== '\n' && xmlData[i] !== '\r'; i++) {
           tagName += xmlData[i];
         }
 
@@ -11201,28 +12831,27 @@ exports.validate = function (xmlData, options) {
 
         if (tagName[tagName.length - 1] === '/') {
           //self closing tag without attributes
-          tagName = tagName.substring(0, tagName.length - 1);
-          continue;
+          tagName = tagName.substring(0, tagName.length - 1); //continue;
+
+          i--;
         }
 
-        if (!validateTagName(tagName, regxTagName)) {
-          return {
-            err: {
-              code: 'InvalidTag',
-              msg: 'Tag ' + tagName + ' is an invalid name.'
-            }
-          };
+        if (!validateTagName(tagName)) {
+          var msg = void 0;
+
+          if (tagName.trim().length === 0) {
+            msg = "There is an unnecessary space between tag name and backward slash '</ ..'.";
+          } else {
+            msg = "Tag '".concat(tagName, "' is an invalid name.");
+          }
+
+          return getErrorObject('InvalidTag', msg, getLineNumberForPosition(xmlData, i));
         }
 
         var result = readAttributeStr(xmlData, i);
 
         if (result === false) {
-          return {
-            err: {
-              code: 'InvalidAttr',
-              msg: 'Attributes for ' + tagName + ' have open quote'
-            }
-          };
+          return getErrorObject('InvalidAttr', "Attributes for '".concat(tagName, "' have open quote."), getLineNumberForPosition(xmlData, i));
         }
 
         var attrStr = result.value;
@@ -11231,41 +12860,50 @@ exports.validate = function (xmlData, options) {
         if (attrStr[attrStr.length - 1] === '/') {
           //self closing tag
           attrStr = attrStr.substring(0, attrStr.length - 1);
-          var isValid = validateAttributeString(attrStr, options, regxAttrName);
+          var isValid = validateAttributeString(attrStr, options);
 
           if (isValid === true) {
             tagFound = true; //continue; //text may presents after self closing tag
           } else {
-            return isValid;
+            //the result from the nested function returns the position of the error within the attribute
+            //in order to get the 'true' error line, we need to calculate the position where the attribute begins (i - attrStr.length) and then add the position within the attribute
+            //this gives us the absolute index in the entire xml, which we can use to find the line at last
+            return getErrorObject(isValid.err.code, isValid.err.msg, getLineNumberForPosition(xmlData, i - attrStr.length + isValid.err.line));
           }
         } else if (closingTag) {
-          if (attrStr.trim().length > 0) {
-            return {
-              err: {
-                code: 'InvalidTag',
-                msg: 'closing tag ' + tagName + " can't have attributes or invalid starting."
-              }
-            };
+          if (!result.tagClosed) {
+            return getErrorObject('InvalidTag', "Closing tag '".concat(tagName, "' doesn't have proper closing."), getLineNumberForPosition(xmlData, i));
+          } else if (attrStr.trim().length > 0) {
+            return getErrorObject('InvalidTag', "Closing tag '".concat(tagName, "' can't have attributes or invalid starting."), getLineNumberForPosition(xmlData, i));
           } else {
             var otg = tags.pop();
 
             if (tagName !== otg) {
-              return {
-                err: {
-                  code: 'InvalidTag',
-                  msg: 'closing tag ' + otg + ' is expected inplace of ' + tagName + '.'
-                }
-              };
+              return getErrorObject('InvalidTag', "Closing tag '".concat(otg, "' is expected inplace of '").concat(tagName, "'."), getLineNumberForPosition(xmlData, i));
+            } //when there are no more tags, we reached the root level.
+
+
+            if (tags.length == 0) {
+              reachedRoot = true;
             }
           }
         } else {
-          var _isValid = validateAttributeString(attrStr, options, regxAttrName);
+          var _isValid = validateAttributeString(attrStr, options);
 
           if (_isValid !== true) {
-            return _isValid;
+            //the result from the nested function returns the position of the error within the attribute
+            //in order to get the 'true' error line, we need to calculate the position where the attribute begins (i - attrStr.length) and then add the position within the attribute
+            //this gives us the absolute index in the entire xml, which we can use to find the line at last
+            return getErrorObject(_isValid.err.code, _isValid.err.msg, getLineNumberForPosition(xmlData, i - attrStr.length + _isValid.err.line));
+          } //if the root level has been reached before ...
+
+
+          if (reachedRoot === true) {
+            return getErrorObject('InvalidXml', 'Multiple possible root nodes found.', getLineNumberForPosition(xmlData, i));
+          } else {
+            tags.push(tagName);
           }
 
-          tags.push(tagName);
           tagFound = true;
         } //skip tag text value
         //It may include comments and CDATA value
@@ -11281,6 +12919,10 @@ exports.validate = function (xmlData, options) {
             } else {
               break;
             }
+          } else if (xmlData[i] === '&') {
+            var afterAmp = validateAmpersand(xmlData, i);
+            if (afterAmp == -1) return getErrorObject('InvalidChar', "char '&' is not expected.", getLineNumberForPosition(xmlData, i));
+            i = afterAmp;
           }
         } //end of reading tag text value
 
@@ -11294,29 +12936,14 @@ exports.validate = function (xmlData, options) {
         continue;
       }
 
-      return {
-        err: {
-          code: 'InvalidChar',
-          msg: 'char ' + xmlData[i] + ' is not expected .'
-        }
-      };
+      return getErrorObject('InvalidChar', "char '".concat(xmlData[i], "' is not expected."), getLineNumberForPosition(xmlData, i));
     }
   }
 
   if (!tagFound) {
-    return {
-      err: {
-        code: 'InvalidXml',
-        msg: 'Start tag expected.'
-      }
-    };
+    return getErrorObject('InvalidXml', 'Start tag expected.', 1);
   } else if (tags.length > 0) {
-    return {
-      err: {
-        code: 'InvalidXml',
-        msg: 'Invalid ' + JSON.stringify(tags, null, 4).replace(/\r?\n/g, '') + ' found.'
-      }
-    };
+    return getErrorObject('InvalidXml', "Invalid '".concat(JSON.stringify(tags, null, 4).replace(/\r?\n/g, ''), "' found."), 1);
   }
 
   return true;
@@ -11337,12 +12964,7 @@ function readPI(xmlData, i) {
       var tagname = xmlData.substr(start, i - start);
 
       if (i > 5 && tagname === 'xml') {
-        return {
-          err: {
-            code: 'InvalidXml',
-            msg: 'XML declaration allowed only at the start of the document.'
-          }
-        };
+        return getErrorObject('InvalidXml', 'XML declaration allowed only at the start of the document.', getLineNumberForPosition(xmlData, i));
       } else if (xmlData[i] == '?' && xmlData[i + 1] == '>') {
         //check if valid attribut string
         i++;
@@ -11402,6 +13024,7 @@ var singleQuote = "'";
 function readAttributeStr(xmlData, i) {
   var attrStr = '';
   var startChar = '';
+  var tagClosed = false;
 
   for (; i < xmlData.length; i++) {
     if (xmlData[i] === doubleQuote || xmlData[i] === singleQuote) {
@@ -11415,6 +13038,7 @@ function readAttributeStr(xmlData, i) {
       }
     } else if (xmlData[i] === '>') {
       if (startChar === '') {
+        tagClosed = true;
         break;
       }
     }
@@ -11428,7 +13052,8 @@ function readAttributeStr(xmlData, i) {
 
   return {
     value: attrStr,
-    index: i
+    index: i,
+    tagClosed: tagClosed
   };
 }
 /**
@@ -11438,30 +13063,19 @@ function readAttributeStr(xmlData, i) {
 
 var validAttrStrRegxp = new RegExp('(\\s*)([^\\s=]+)(\\s*=)?(\\s*([\'"])(([\\s\\S])*?)\\5)?', 'g'); //attr, ="sd", a="amit's", a="sd"b="saf", ab  cd=""
 
-function validateAttributeString(attrStr, options, regxAttrName) {
+function validateAttributeString(attrStr, options) {
   //console.log("start:"+attrStr+":end");
   //if(attrStr.trim().length === 0) return true; //empty string
   var matches = util.getAllMatches(attrStr, validAttrStrRegxp);
   var attrNames = {};
 
   for (var i = 0; i < matches.length; i++) {
-    //console.log(matches[i]);
     if (matches[i][1].length === 0) {
       //nospace before attribute name: a="sd"b="saf"
-      return {
-        err: {
-          code: 'InvalidAttr',
-          msg: 'attribute ' + matches[i][2] + ' has no space in starting.'
-        }
-      };
+      return getErrorObject('InvalidAttr', "Attribute '".concat(matches[i][2], "' has no space in starting."), getPositionFromMatch(attrStr, matches[i][0]));
     } else if (matches[i][3] === undefined && !options.allowBooleanAttributes) {
       //independent attribute: ab
-      return {
-        err: {
-          code: 'InvalidAttr',
-          msg: 'boolean attribute ' + matches[i][2] + ' is not allowed.'
-        }
-      };
+      return getErrorObject('InvalidAttr', "boolean attribute '".concat(matches[i][2], "' is not allowed."), getPositionFromMatch(attrStr, matches[i][0]));
     }
     /* else if(matches[i][6] === undefined){//attribute without value: ab=
                     return { err: { code:"InvalidAttr",msg:"attribute " + matches[i][2] + " has no value assigned."}};
@@ -11470,46 +13084,93 @@ function validateAttributeString(attrStr, options, regxAttrName) {
 
     var attrName = matches[i][2];
 
-    if (!validateAttrName(attrName, regxAttrName)) {
-      return {
-        err: {
-          code: 'InvalidAttr',
-          msg: 'attribute ' + attrName + ' is an invalid name.'
-        }
-      };
+    if (!validateAttrName(attrName)) {
+      return getErrorObject('InvalidAttr', "Attribute '".concat(attrName, "' is an invalid name."), getPositionFromMatch(attrStr, matches[i][0]));
     }
 
     if (!attrNames.hasOwnProperty(attrName)) {
       //check for duplicate attribute.
       attrNames[attrName] = 1;
     } else {
-      return {
-        err: {
-          code: 'InvalidAttr',
-          msg: 'attribute ' + attrName + ' is repeated.'
-        }
-      };
+      return getErrorObject('InvalidAttr', "Attribute '".concat(attrName, "' is repeated."), getPositionFromMatch(attrStr, matches[i][0]));
     }
   }
 
   return true;
-} // const validAttrRegxp = /^[_a-zA-Z][\w\-.:]*$/;
+}
 
+function validateNumberAmpersand(xmlData, i) {
+  var re = /\d/;
 
-function validateAttrName(attrName, regxAttrName) {
-  // const validAttrRegxp = new RegExp(regxAttrName);
-  return util.doesMatch(attrName, regxAttrName);
+  if (xmlData[i] === 'x') {
+    i++;
+    re = /[\da-fA-F]/;
+  }
+
+  for (; i < xmlData.length; i++) {
+    if (xmlData[i] === ';') return i;
+    if (!xmlData[i].match(re)) break;
+  }
+
+  return -1;
+}
+
+function validateAmpersand(xmlData, i) {
+  // https://www.w3.org/TR/xml/#dt-charref
+  i++;
+  if (xmlData[i] === ';') return -1;
+
+  if (xmlData[i] === '#') {
+    i++;
+    return validateNumberAmpersand(xmlData, i);
+  }
+
+  var count = 0;
+
+  for (; i < xmlData.length; i++, count++) {
+    if (xmlData[i].match(/\w/) && count < 20) continue;
+    if (xmlData[i] === ';') break;
+    return -1;
+  }
+
+  return i;
+}
+
+function getErrorObject(code, message, lineNumber) {
+  return {
+    err: {
+      code: code,
+      msg: message,
+      line: lineNumber
+    }
+  };
+}
+
+function validateAttrName(attrName) {
+  return util.isName(attrName);
 } //const startsWithXML = new RegExp("^[Xx][Mm][Ll]");
 //  startsWith = /^([a-zA-Z]|_)[\w.\-_:]*/;
 
 
-function validateTagName(tagname, regxTagName) {
+function validateTagName(tagname) {
   /*if(util.doesMatch(tagname,startsWithXML)) return false;
     else*/
-  return !util.doesNotMatch(tagname, regxTagName);
+  //return !tagname.toLowerCase().startsWith("xml") || !util.doesNotMatch(tagname, regxTagName);
+  return util.isName(tagname);
+} //this function returns the line number for the character at the given index
+
+
+function getLineNumberForPosition(xmlData, index) {
+  var lines = xmlData.substring(0, index).split(/\r?\n/);
+  return lines.length;
+} //this function returns the position of the last character of match within attrStr
+
+
+function getPositionFromMatch(attrStr, match) {
+  return attrStr.indexOf(match) + match.length;
 }
 
-},{"./util":55}],57:[function(require,module,exports){
+},{"./util":114,"core-js/modules/es.string.replace":107}],116:[function(require,module,exports){
 'use strict';
 
 module.exports = function (tagname, parent, val) {
@@ -11531,8 +13192,10 @@ module.exports = function (tagname, parent, val) {
   };
 };
 
-},{}],58:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
+
+require("core-js/modules/es.string.replace");
 
 var util = require('./util');
 
@@ -11546,7 +13209,7 @@ var TagType = {
   SELF: 3,
   CDATA: 4
 };
-var regx = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)'; //const tagsRegx = new RegExp("<(\\/?[\\w:\\-\._]+)([^>]*)>(\\s*"+cdataRegx+")*([^<]+)?","g");
+var regx = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|((NAME:)?(NAME))([^>]*)>|((\\/)(NAME)\\s*>))([^<]*)'.replace(/NAME/g, util.nameRegexp); //const tagsRegx = new RegExp("<(\\/?[\\w:\\-\._]+)([^>]*)>(\\s*"+cdataRegx+")*([^<]+)?","g");
 //const tagsRegx = new RegExp("<(\\/?)((\\w*:)?([\\w:\\-\._]+))([^>]*)>([^<]*)("+cdataRegx+"([^<]*))*([^<]+)?","g");
 //polyfill
 
@@ -11574,17 +13237,17 @@ var defaultOptions = {
   //Trim string values of tag and attributes
   cdataTagName: false,
   cdataPositionChar: '\\c',
-  localeRange: '',
-  tagValueProcessor: function tagValueProcessor(a) {
+  tagValueProcessor: function tagValueProcessor(a, tagName) {
     return a;
   },
-  attrValueProcessor: function attrValueProcessor(a) {
+  attrValueProcessor: function attrValueProcessor(a, attrName) {
     return a;
-  } //decodeStrict: false,
+  },
+  stopNodes: [] //decodeStrict: false,
 
 };
 exports.defaultOptions = defaultOptions;
-var props = ['attributeNamePrefix', 'attrNodeName', 'textNodeName', 'ignoreAttributes', 'ignoreNameSpace', 'allowBooleanAttributes', 'parseNodeValue', 'parseAttributeValue', 'arrayMode', 'trimValues', 'cdataTagName', 'cdataPositionChar', 'localeRange', 'tagValueProcessor', 'attrValueProcessor', 'parseTrueNumberOnly'];
+var props = ['attributeNamePrefix', 'attrNodeName', 'textNodeName', 'ignoreAttributes', 'ignoreNameSpace', 'allowBooleanAttributes', 'parseNodeValue', 'parseAttributeValue', 'arrayMode', 'trimValues', 'cdataTagName', 'cdataPositionChar', 'tagValueProcessor', 'attrValueProcessor', 'parseTrueNumberOnly', 'stopNodes'];
 exports.props = props;
 
 var getTraversalObj = function getTraversalObj(xmlData, options) {
@@ -11594,7 +13257,6 @@ var getTraversalObj = function getTraversalObj(xmlData, options) {
 
   var xmlObj = new xmlNode('!xml');
   var currentNode = xmlObj;
-  regx = regx.replace(/\[\\w/g, '[' + options.localeRange + '\\w');
   var tagsRegx = new RegExp(regx, 'g');
   var tag = tagsRegx.exec(xmlData);
   var nextTag = tagsRegx.exec(xmlData);
@@ -11604,8 +13266,18 @@ var getTraversalObj = function getTraversalObj(xmlData, options) {
 
     if (tagType === TagType.CLOSING) {
       //add parsed data to parent node
-      if (currentNode.parent && tag[14]) {
-        currentNode.parent.val = util.getValue(currentNode.parent.val) + '' + processTagValue(tag[14], options);
+      if (currentNode.parent && tag[12]) {
+        currentNode.parent.val = util.getValue(currentNode.parent.val) + '' + processTagValue(tag, options, currentNode.parent.tagname);
+      }
+
+      if (options.stopNodes.length && options.stopNodes.includes(currentNode.tagname)) {
+        currentNode.child = [];
+
+        if (currentNode.attrsMap == undefined) {
+          currentNode.attrsMap = {};
+        }
+
+        currentNode.val = xmlData.substr(currentNode.startIndex + 1, tag.index - currentNode.startIndex - 1);
       }
 
       currentNode = currentNode.parent;
@@ -11618,15 +13290,15 @@ var getTraversalObj = function getTraversalObj(xmlData, options) {
 
         currentNode.val = util.getValue(currentNode.val) + options.cdataPositionChar; //add rest value to parent node
 
-        if (tag[14]) {
-          currentNode.val += processTagValue(tag[14], options);
+        if (tag[12]) {
+          currentNode.val += processTagValue(tag, options);
         }
       } else {
-        currentNode.val = (currentNode.val || '') + (tag[3] || '') + processTagValue(tag[14], options);
+        currentNode.val = (currentNode.val || '') + (tag[3] || '') + processTagValue(tag, options);
       }
     } else if (tagType === TagType.SELF) {
-      if (currentNode && tag[14]) {
-        currentNode.val = util.getValue(currentNode.val) + '' + processTagValue(tag[14], options);
+      if (currentNode && tag[12]) {
+        currentNode.val = util.getValue(currentNode.val) + '' + processTagValue(tag, options);
       }
 
       var _childNode = new xmlNode(options.ignoreNameSpace ? tag[7] : tag[5], currentNode, '');
@@ -11639,7 +13311,11 @@ var getTraversalObj = function getTraversalObj(xmlData, options) {
       currentNode.addChild(_childNode);
     } else {
       //TagType.OPENING
-      var _childNode2 = new xmlNode(options.ignoreNameSpace ? tag[7] : tag[5], currentNode, processTagValue(tag[14], options));
+      var _childNode2 = new xmlNode(options.ignoreNameSpace ? tag[7] : tag[5], currentNode, processTagValue(tag, options));
+
+      if (options.stopNodes.length && options.stopNodes.includes(_childNode2.tagname)) {
+        _childNode2.startIndex = tag.index + tag[1].length;
+      }
 
       _childNode2.attrsMap = buildAttributesMap(tag[8], options);
       currentNode.addChild(_childNode2);
@@ -11653,13 +13329,16 @@ var getTraversalObj = function getTraversalObj(xmlData, options) {
   return xmlObj;
 };
 
-function processTagValue(val, options) {
+function processTagValue(parsedTags, options, parentTagName) {
+  var tagName = parsedTags[7] || parentTagName;
+  var val = parsedTags[12];
+
   if (val) {
     if (options.trimValues) {
       val = val.trim();
     }
 
-    val = options.tagValueProcessor(val);
+    val = options.tagValueProcessor(val, tagName);
     val = parseValue(val, options.parseNodeValue, options.parseTrueNumberOnly);
   }
 
@@ -11707,6 +13386,7 @@ function parseValue(val, shouldParse, parseTrueNumberOnly) {
         parsed = Number.parseInt(val, 16);
       } else if (val.indexOf('.') !== -1) {
         parsed = Number.parseFloat(val);
+        val = val.replace(/0+$/, "");
       } else {
         parsed = Number.parseInt(val, 10);
       }
@@ -11748,7 +13428,7 @@ function buildAttributesMap(attrStr, options) {
             matches[i][4] = matches[i][4].trim();
           }
 
-          matches[i][4] = options.attrValueProcessor(matches[i][4]);
+          matches[i][4] = options.attrValueProcessor(matches[i][4], attrName);
           attrs[options.attributeNamePrefix + attrName] = parseValue(matches[i][4], options.parseAttributeValue, options.parseTrueNumberOnly);
         } else if (options.allowBooleanAttributes) {
           attrs[options.attributeNamePrefix + attrName] = true;
@@ -11772,7 +13452,7 @@ function buildAttributesMap(attrStr, options) {
 
 exports.getTraversalObj = getTraversalObj;
 
-},{"./util":55,"./xmlNode":57}],59:[function(require,module,exports){
+},{"./util":114,"./xmlNode":116,"core-js/modules/es.string.replace":107}],118:[function(require,module,exports){
 "use strict";
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -11864,10 +13544,12 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],60:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+require("core-js/modules/es.string.replace");
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 //! moment.js
 ;
@@ -16453,7 +18135,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   return hooks;
 });
 
-},{}],61:[function(require,module,exports){
+},{"core-js/modules/es.string.replace":107}],120:[function(require,module,exports){
 "use strict";
 
 // shim for using process in browser
@@ -16665,11 +18347,13 @@ process.umask = function () {
   return 0;
 };
 
-},{}],62:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 (function (process,setImmediate){
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+require("core-js/modules/web.immediate");
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // vim:ts=4:sts=4:sw=4:
 
@@ -18869,7 +20553,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 });
 
 }).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":61,"timers":69}],63:[function(require,module,exports){
+},{"_process":120,"core-js/modules/web.immediate":108,"timers":128}],122:[function(require,module,exports){
 "use strict";
 
 function Agent() {
@@ -18900,10 +20584,12 @@ Agent.prototype._setDefaults = function (req) {
 
 module.exports = Agent;
 
-},{}],64:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+require("core-js/modules/es.string.replace");
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
  * Root reference for iframes.
@@ -19853,7 +21539,7 @@ request.put = function (url, data, fn) {
   return req;
 };
 
-},{"./agent-base":63,"./is-object":65,"./request-base":66,"./response-base":67,"component-emitter":49}],65:[function(require,module,exports){
+},{"./agent-base":122,"./is-object":124,"./request-base":125,"./response-base":126,"component-emitter":51,"core-js/modules/es.string.replace":107}],124:[function(require,module,exports){
 'use strict';
 /**
  * Check if `obj` is an object.
@@ -19863,7 +21549,7 @@ request.put = function (url, data, fn) {
  * @api private
  */
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function isObject(obj) {
   return null !== obj && 'object' === _typeof(obj);
@@ -19871,13 +21557,13 @@ function isObject(obj) {
 
 module.exports = isObject;
 
-},{}],66:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 'use strict';
 /**
  * Module of mixed-in functions shared between node and client code
  */
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var isObject = require('./is-object');
 /**
@@ -20605,7 +22291,7 @@ RequestBase.prototype._setTimeouts = function () {
   }
 };
 
-},{"./is-object":65}],67:[function(require,module,exports){
+},{"./is-object":124}],126:[function(require,module,exports){
 'use strict';
 /**
  * Module dependencies.
@@ -20736,7 +22422,7 @@ ResponseBase.prototype._setStatusProperties = function (status) {
   this.unprocessableEntity = 422 == status;
 };
 
-},{"./utils":68}],68:[function(require,module,exports){
+},{"./utils":127}],127:[function(require,module,exports){
 'use strict';
 /**
  * Return the mime type for the given `str`.
@@ -20808,9 +22494,11 @@ exports.cleanHeader = function (header, changesOrigin) {
   return header;
 };
 
-},{}],69:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 "use strict";
+
+require("core-js/modules/web.immediate");
 
 var nextTick = require('process/browser.js').nextTick;
 
@@ -20890,5 +22578,5 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
 };
 
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":61,"timers":69}]},{},[45])(45)
+},{"core-js/modules/web.immediate":108,"process/browser.js":120,"timers":128}]},{},[47])(47)
 });

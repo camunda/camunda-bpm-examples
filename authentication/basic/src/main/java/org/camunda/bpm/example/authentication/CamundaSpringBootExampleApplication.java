@@ -32,7 +32,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.Filter;
 
 @SpringBootApplication
 @Configuration
@@ -65,24 +64,27 @@ public class CamundaSpringBootExampleApplication extends SpringBootServletInitia
 	}
 
 	@Bean
-	public FilterRegistrationBean authenticationFilter() {
-		FilterRegistrationBean registration = new FilterRegistrationBean();
-		Filter myFilter = new ProcessEngineAuthenticationFilter();
+	public FilterRegistrationBean<ProcessEngineAuthenticationFilter> authenticationFilter() {
+		FilterRegistrationBean<ProcessEngineAuthenticationFilter> registration =
+				new FilterRegistrationBean<>();
+		ProcessEngineAuthenticationFilter myFilter = new ProcessEngineAuthenticationFilter();
 		registration.setFilter(myFilter);
 		registration.addUrlPatterns("/*");
-		registration.addInitParameter("authentication-provider","org.camunda.bpm.engine.rest.security.auth.impl.HttpBasicAuthenticationProvider");
+		registration.addInitParameter("authentication-provider",
+				"org.camunda.bpm.engine.rest.security.auth.impl.HttpBasicAuthenticationProvider");
 		registration.setName("camunda-auth");
 		registration.setOrder(1);
 		return registration;
 	}
 
 	@Bean
-	public FilterRegistrationBean restEasyFilter() {
-		FilterRegistrationBean registration = new FilterRegistrationBean();
-		Filter myFilter = new FilterDispatcher();
+	public FilterRegistrationBean<FilterDispatcher> restEasyFilter() {
+		FilterRegistrationBean<FilterDispatcher> registration = new FilterRegistrationBean<>();
+		FilterDispatcher myFilter = new FilterDispatcher();
 		registration.setFilter(myFilter);
 		registration.addUrlPatterns("/*");
-		registration.addInitParameter("javax.ws.rs.Application","org.camunda.bpm.example.authentication.rest.RestProcessEngineDeployment");
+		registration.addInitParameter("javax.ws.rs.Application",
+				"org.camunda.bpm.example.authentication.rest.RestProcessEngineDeployment");
 		registration.setName("Resteasy");
 		registration.setOrder(10);
 		return registration;

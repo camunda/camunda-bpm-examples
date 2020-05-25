@@ -45,7 +45,7 @@ public class SynchronousServiceTask implements JavaDelegate {
 	public static final String PRICE_VAR_NAME = "price";
 	public static final float PRICE = 199.00f;
 
-	public void execute(DelegateExecution execution) throws Exception {
+	public void execute(DelegateExecution execution) {
 		
 		// Here you could either add the business logic of the service task 
 		// or delegate to the actual business logic implementation provided 

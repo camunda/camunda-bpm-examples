@@ -19,7 +19,6 @@ package org.camunda.bpm.example.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,15 +40,15 @@ import org.junit.Test;
 
 public class FailedJobRetryProfileTest {
 
-  private static final int DEFAULT_RETRIES = 3;
+  protected static final int DEFAULT_RETRIES = 3;
 
   @Rule
   public ProcessEngineRule processEngineRule = new ProcessEngineRule();
 
-  private ManagementService managementService;
-  private RuntimeService runtimeService;
+  protected ManagementService managementService;
+  protected RuntimeService runtimeService;
 
-  private Date currentTime;
+  protected Date currentTime;
 
   @Before
   public void setUp() throws ParseException {
@@ -61,7 +60,7 @@ public class FailedJobRetryProfileTest {
 
   @Test
   @Deployment(resources = { "retry-example.bpmn" })
-  public void testProfileParseListener() throws IOException, ParseException {
+  public void shouldUseProfileParseListener() throws ParseException {
     // start the process instance
     ClockUtil.setCurrentTime(currentTime);
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("process");
@@ -73,7 +72,7 @@ public class FailedJobRetryProfileTest {
     jobRetries = executeJob(processInstanceId);
     assertEquals(4, jobRetries);
     // 10 minutes offset as the retry conf. is "R5/PT10M"
-    assertLockExpirationTime(10);
+    assertDueDate(10);
     ServiceTaskOneDelegate.firstAttempt = false;
 
     // successful execution of the first service task
@@ -88,7 +87,7 @@ public class FailedJobRetryProfileTest {
     jobRetries = executeJob(processInstanceId);
     assertEquals(6, jobRetries);
     // 5 minutes offset as the retry conf. is "R7/PT5M"
-    assertLockExpirationTime(5);
+    assertDueDate(5);
     ServiceTaskTwoDelegate.firstAttempt = false;
 
     // successful execution of the third service task
@@ -96,7 +95,7 @@ public class FailedJobRetryProfileTest {
     assertEquals(DEFAULT_RETRIES, jobRetries);
   }
 
-  private int executeJob(String processInstanceId) {
+  protected int executeJob(String processInstanceId) {
     Job job = managementService.createJobQuery().processInstanceId(processInstanceId).singleResult();
 
     try {
@@ -110,10 +109,10 @@ public class FailedJobRetryProfileTest {
     return job.getRetries();
   }
 
-  private void assertLockExpirationTime(int minutesOffset) throws ParseException {
+  protected void assertDueDate(int minutesOffset) throws ParseException {
     currentTime = DateUtils.addMinutes(currentTime, minutesOffset);
-    Date lockExpirationTime = ((JobEntity) managementService.createJobQuery().singleResult()).getLockExpirationTime();
-    assertEquals(currentTime, lockExpirationTime);
+    Date dueDate = ((JobEntity) managementService.createJobQuery().singleResult()).getDuedate();
+    assertEquals(currentTime, dueDate);
     ClockUtil.setCurrentTime(currentTime);
   }
 }
