@@ -18,14 +18,9 @@ spring.datasource:
 
 camunda:
   bpm:
-    filter:
-      create: All
     job-execution:
       core-pool-size: 10
     authorization.enabled: true
-    admin-user:
-      id: demo
-      password: demo
 # Uncomment to add additional properties,
 # not directly implemented by the Camunda Spring Boot Starter
 #    generic-properties.properties:
