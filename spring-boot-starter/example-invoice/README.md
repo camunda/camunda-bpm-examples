@@ -1,7 +1,7 @@
 # The Camunda Invoice example in a Spring Boot Web Application
 
 The Invoice example is provided in all of the pre-packaged distros that Camunda provides.
-This Camunda examples provides the Invoice application inside a Spring Boot application together with all
+This Camunda example provides the Invoice application inside a Spring Boot application together with all
 the necessary adjustments needed to run it out of the box. This includes:
 
 * The Camunda EE Webapps

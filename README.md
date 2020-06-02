@@ -196,6 +196,7 @@ If you clone this repository, use the checkout commands to access the sources fo
  | [Autodeployment](spring-boot-starter/example-autodeployment) | Spring boot with embedded engine and Webapps                             |  Spring Boot Starter           |
  | [Twitter](spring-boot-starter/example-twitter)             | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, Webapps, Twitter  |
  | [REST API DMN](spring-boot-starter/example-dmn-rest)       | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, REST API |
+ | [Camunda Invoice Example](spring-boot-starter/example-invoice) | Spring boot with embedded engine, Webapps and Rest API                 |  Spring Boot Starter, REST API |
 
 ### External Task Client Examples
 
