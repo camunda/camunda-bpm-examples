@@ -119,6 +119,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin                    |
 | [Failed Jobs Plugin](/cockpit/cockpit-failed-jobs-plugin)                  | Plugin                    |
 | [Javascript Only Plugin](/cockpit/js-only-plugin)                          | Plugin, Custom Script     |
+| [JQuery 3.4 Behavior Patch](/cockpit/jquery-34-behavior)                  | Plugin, Custom Script     |
 | [Request Interceptor](/cockpit/request-interceptor)                        | Custom Script             |
 | [Cockpit bpmn.js module](/cockpit/cockpit-bpmn-js-module)                  | bpmn.js                   |
 
