@@ -14,28 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.cockpit.plugin.failedjobs;
 
-import java.util.HashSet;
-import java.util.Set;
+export default {
+  id: "Cats Plugin",
+  pluginPoint: "cockpit.dashboard",
+  priority: 5,
+  render: container => {
+    const header = document.createElement("h1");
+    header.innerHTML = "<h1>Cats!</h1>";
 
-import org.camunda.bpm.cockpit.plugin.failedjobs.resources.FailedJobsPluginRootResource;
-import org.camunda.bpm.cockpit.plugin.spi.impl.AbstractCockpitPlugin;
+    const mainContent = document.createElement("div");
+    mainContent.innerHTML = "<img src=\"http://thecatapi.com/api/images/get?size=medium\" width=\"400\" />";
 
-public class FailedJobsPlugin extends AbstractCockpitPlugin {
-
-  public static final String ID = "failed-jobs-plugin";
-
-  public String getId() {
-    return ID;
+    container.appendChild(header);
+    container.appendChild(mainContent);
   }
-
-  @Override
-  public Set<Class<?>> getResourceClasses() {
-    Set<Class<?>> classes = new HashSet<Class<?>>();
-
-    classes.add(FailedJobsPluginRootResource.class);
-
-    return classes;
-  }
-}
+};

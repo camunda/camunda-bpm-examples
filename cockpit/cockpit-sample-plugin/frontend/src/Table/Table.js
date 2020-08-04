@@ -14,19 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.cockpit.plugin.failedjobs.resources;
 
-import javax.ws.rs.Path;
-//import javax.ws.rs.PathParam;
+import React from "react";
 
-import org.camunda.bpm.cockpit.plugin.failedjobs.FailedJobsPlugin;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginRootResource;
+import "./Table.scss";
 
-@Path("plugin/" + FailedJobsPlugin.ID)
-public class FailedJobsPluginRootResource extends AbstractPluginRootResource {
-
-  public FailedJobsPluginRootResource() {
-    super(FailedJobsPlugin.ID);
-  }
-
+export default function Table({ head, children }) {
+  return (
+    <table className="Table">
+      <thead>
+        <tr>{head}</tr>
+      </thead>
+      <tbody>{children}</tbody>
+    </table>
+  );
 }
+
+Table.Head = function Head({ children }) {
+  return <th className="TableHead">{children}</th>;
+};
+
+Table.Row = function Row({ children }) {
+  return <tr className="TableRow">{children}</tr>;
+};
+
+Table.Cell = function Cell({ children }) {
+  return <td className="TableCell">{children}</td>;
+};

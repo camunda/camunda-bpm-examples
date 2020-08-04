@@ -15,25 +15,27 @@
  * limitations under the License.
  */
 
-function EmojiOverlay(elementRegistry, overlays, eventBus) {
+import React from "react";
+import ReactDOM from "react-dom";
 
-  this._overlays = overlays;
-  this._elementRegistry = elementRegistry;
+import ProcessInstanceCount from "./ProcessInstanceCount";
 
-  var self = this;
-
-  eventBus.on('canvas.viewbox.changed', function() {
-    self._elementRegistry.forEach(function(flowElement) {
-      self._overlays.add(flowElement, 'emoji', {
-        position: { left:0, top: 0 },
-        html: '<span style="font-size:40px">😁</span>'
-      });
-    });
-  });
-
-}
+let container = null;
 
 export default {
-  __init__: [ 'emojiOverlay' ],
-  'emojiOverlay': [ 'type', EmojiOverlay ]
+  id: "process-instance-count",
+  pluginPoint: "cockpit.dashboard",
+  render: node => {
+    container = node;
+    ReactDOM.render(
+      <ProcessInstanceCount />,
+      container
+    );
+  },
+  unmount: () => {
+    ReactDOM.unmountComponentAtNode(container);
+  },
+
+  // make sure we have a higher priority than the default plugin
+  priority: 12,
 };

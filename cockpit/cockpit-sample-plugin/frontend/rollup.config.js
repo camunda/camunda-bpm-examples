@@ -15,25 +15,30 @@
  * limitations under the License.
  */
 
-function EmojiOverlay(elementRegistry, overlays, eventBus) {
-
-  this._overlays = overlays;
-  this._elementRegistry = elementRegistry;
-
-  var self = this;
-
-  eventBus.on('canvas.viewbox.changed', function() {
-    self._elementRegistry.forEach(function(flowElement) {
-      self._overlays.add(flowElement, 'emoji', {
-        position: { left:0, top: 0 },
-        html: '<span style="font-size:40px">😁</span>'
-      });
-    });
-  });
-
-}
+import babel from "@rollup/plugin-babel";
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
+import replace from "@rollup/plugin-replace";
+import scss from "rollup-plugin-scss";
 
 export default {
-  __init__: [ 'emojiOverlay' ],
-  'emojiOverlay': [ 'type', EmojiOverlay ]
+  input: "src/plugin.js",
+  output: {
+    file: "dist/plugin.js"
+  },
+  plugins: [
+    resolve(),
+    babel({
+      babelHelpers: "runtime",
+      skipPreflightCheck: true,
+      compact: true
+    }),
+    commonjs({
+      include: "node_modules/**"
+    }),
+    replace({
+      "process.env.NODE_ENV": JSON.stringify("production")
+    }),
+    scss()
+  ]
 };

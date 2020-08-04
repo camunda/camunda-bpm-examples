@@ -17,31 +17,16 @@
 
 define(['angular'], function(angular) {
 
-  var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
+  var ngModule = angular.module('tasklist.cats', []);
 
-    $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
-      .then(function(res) {
-        $scope.processInstanceCounts = res.data;
-      });
-  }];
-
-  var Configuration = ['ViewsProvider', function(ViewsProvider) {
-
-    ViewsProvider.registerDefaultView('cockpit.dashboard', {
-      id: 'process-definitions',
-      label: 'Deployed Processes',
-      url: 'plugin://sample-plugin/static/app/dashboard.html',
-      dashboardMenuLabel: 'Sample',
-      controller: DashboardController,
-
-      // make sure we have a higher priority than the default plugin
-      priority: 12
+  ngModule.config(['ViewsProvider', function(ViewsProvider) {
+    ViewsProvider.registerDefaultView('tasklist.task.detail', {
+      label: 'Cats!',
+      id: 'cockpit.cats',
+      priority: 9001,
+      template: '<h1>Cats!</h1><img src="http://thecatapi.com/api/images/get?size=medium" width="400" />'
     });
-  }];
-
-  var ngModule = angular.module('cockpit.plugin.sample-plugin', []);
-
-  ngModule.config(Configuration);
+  }]);
 
   return ngModule;
 });
