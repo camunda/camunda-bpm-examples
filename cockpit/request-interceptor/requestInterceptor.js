@@ -29,5 +29,3 @@
     // this.setRequestHeader('X-Something-I-Need-Just-To-Test', 'works');
   };
 })(XMLHttpRequest.prototype.open);
-
-export default [];
