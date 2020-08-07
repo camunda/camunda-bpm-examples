@@ -1,0 +1,24 @@
+<div>
+    <span *ngIf="!userOperationMap || !hasOperations">
+        No User Operations!
+    </span>
+    <table *ngIf="userOperationMap && hasOperations">
+        <thead>
+            <td>User</td>
+            <td>Activity ID</td>
+            <td>Open Task Count</td>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let user of userOperationMap | keyvalue">
+                <ng-container *ngFor="let activity of user.value | keyvalue">
+                    <tr>
+                        <td>{{user.key}}</td>
+                        <td>{{activity.key}}</td>
+                        <td>{{activity.value}}</td>
+                    </tr>
+                </ng-container>
+            </ng-container>
+        </tbody>
+    </table>
+
+</div>
