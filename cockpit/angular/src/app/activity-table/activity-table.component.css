@@ -1,0 +1,20 @@
+table { 
+  width: 100%
+}
+
+thead {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+thead > td {
+  padding-bottom: 5px;
+  padding-top: 3px;
+}
+
+tbody td {
+  padding-bottom: 2px;
+  padding-top: 2px;
+  width: 33%;
+}
