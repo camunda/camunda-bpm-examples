@@ -1,5 +1,5 @@
-Request Interceptor for Camunda Cockpit
-=================================
+"Request Interceptor" Cockpit Script
+====================================
 
 This example shows how to intercept requests made by Camunda Cockpit. This might be useful if you need to set additional properties or request headers on all requests made by Cockpit against the rest API.
 

@@ -114,12 +114,17 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 ### Cockpit Examples
 
-| Name                                                                       | Keywords                  |
-| ---------------------------------------------------------------------------|---------------------------|
-| [Cockpit Sample Plugin](/cockpit/cockpit-sample-plugin)                    | Plugin                    |
-| [Javascript Only Plugin](/cockpit/cats-plugin)                             | Plugin, Custom Script     |
-| [Request Interceptor](/cockpit/request-interceptor)                        | Custom Script             |
-| [Cockpit bpmn.js module](/cockpit/cockpit-bpmn-js-module)                  | bpmn.js                   |
+| Name                                                                                                            | Keywords                                  |
+| ----------------------------------------------------------------------------------------------------------------|-------------------------------------------|
+| [Fullstack (ReactJS 16.x & Java) "Count Processes" Cockpit Plugin](/cockpit/cockpit-fullstack-count-processes)  | Plugin, Custom Script, Fullstack, ReactJS |
+| [Angular 10 "Open Usertasks" Cockpit Tab](/cockpit/cockpit-angular-open-usertasks)                              | Plugin, Custom Script, Angular            |
+| [AngularJS 1.x "Search Processes" Cockpit Plugin](/cockpit/cockpit-angularjs-search-processes)                  | Plugin, Custom Script, AngularJS          |
+| [ReactJS 16.x "Involved Users" Cockpit Plugin](/cockpit/cockpit-react-involved-users)                           | Plugin, Custom Script, ReactJS            |
+| ["Cats" Cockpit Plugin](/cockpit/cockpit-cats)                                                                  | Plugin, Custom Script                     |
+| ["Diagram interactions" Cockpit Plugin](/cockpit/cockpit-diagram-interactions)                                  | Plugin, Custom Script                     |
+| ["Open Incidents" Cockpit Plugin](/cockpit/cockpit-open-incidents)                                              | Plugin, Custom Script                     |
+| ["Request Interceptor" Cockpit Script](/cockpit/cockpit-request-interceptor)                                    | Plugin, Custom Script                     |
+| [bpmn.js Cockpit module](/cockpit/cockpit-bpmn-js-module)                                                       | Plugin, Custom Script, bpmn-js            |
 
 ### Tasklist Examples
 

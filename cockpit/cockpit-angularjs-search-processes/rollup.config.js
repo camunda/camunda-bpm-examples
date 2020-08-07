@@ -21,7 +21,7 @@ import commonjs from "@rollup/plugin-commonjs";
 export default {
   input: "plugin.js",
   output: {
-    file: "dist/angularJsPlugin.js"
+    file: "dist/plugin.js"
   },
   plugins: [resolve(), commonjs()]
 };

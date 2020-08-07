@@ -1,5 +1,5 @@
-Angular 10 "Open Usertasks" Tab
-=================================
+Angular 10 "Open Usertasks" Cockpit Tab
+=======================================
 
 This example shows how to develop a Cockpit plugin in Angular 10.
 Click on an activity in the BPMN diagram to apply a filter to the table.
@@ -12,12 +12,12 @@ Built and tested against Camunda BPM version `7.14.0-alpha2`.
 Building the Project
 --------------------
 
-Install the project with `npm i` and build the plugin with `npm run buildPlugin`. Your plugin will be created in `dist/camunda-plugin.js`.
+Install the project with `npm i` and build the plugin with `npm run buildPlugin`. Your plugin will be created in `dist/plugin.js`.
 
 Integrate into Camunda Webapp
 -----------------------------
 
-Copy the `camunda-plugin.js` file into the `app/cockpit/scripts/` folder in your Camunda webapp distribution.
+Copy the `plugin.js` file into the `app/cockpit/scripts/` folder in your Camunda webapp distribution.
 For the Tomcat distribution, this would be `server/apache-tomcat-X.X.XX/webapps/camunda/app/cockpit/scripts/`.
 
 Add the following content to the `app/cockpit/scripts/config.js` file:
@@ -25,7 +25,7 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
 ```
 // …
   customScripts: [
-    'scripts/camunda-plugin.js'
+    'scripts/plugin.js'
   ]
 // …
 ```

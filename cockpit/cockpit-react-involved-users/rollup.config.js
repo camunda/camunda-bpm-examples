@@ -15,13 +15,27 @@
  * limitations under the License.
  */
 
-const concat = require("concat");
-(async function build() {
-  const files = [
-    "./dist/demo/runtime.js",
-    "./dist/demo/polyfills.js",
-    "./dist/demo/main.js",
-    "./plugin/plugin.js"
-  ];
-  await concat(files, "./dist/camunda-plugin.js");
-})();
+import resolve from "@rollup/plugin-node-resolve";
+import replace from "@rollup/plugin-replace";
+
+import babel from "rollup-plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
+import scss from "rollup-plugin-scss";
+
+export default {
+  input: "src/plugin.js",
+  output: {
+    file: "dist/plugin.js"
+  },
+  plugins: [
+    resolve(),
+    babel(),
+    commonjs({
+      include: "node_modules/**"
+    }),
+    replace({
+      "process.env.NODE_ENV": JSON.stringify("production")
+    }),
+    scss()
+  ]
+};

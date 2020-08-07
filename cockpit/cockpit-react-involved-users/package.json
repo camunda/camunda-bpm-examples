@@ -2,7 +2,7 @@
   "name": "reactjs",
   "version": "1.0.0",
   "description": "",
-  "main": "reactJsScript.js",
+  "main": "plugin.js",
   "scripts": {
     "build": "rollup -c"
   },
