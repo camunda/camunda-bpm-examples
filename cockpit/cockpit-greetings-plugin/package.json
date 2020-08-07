@@ -1,0 +1,22 @@
+{
+  "name": "cockpit-greetings-plugin",
+  "version": "0.0.1",
+  "main": "src/plugin.js",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-react": "^7.10.4",
+    "@rollup/plugin-babel": "^5.1.0",
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@rollup/plugin-replace": "^2.3.3",
+    "rollup": "^2.23.0",
+    "rollup-plugin-scss": "^2.5.0"
+  }
+}
