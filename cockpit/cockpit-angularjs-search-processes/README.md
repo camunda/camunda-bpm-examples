@@ -1,5 +1,5 @@
-AngularJS 1.x "Search Processes" Plugin
-=======================================
+AngularJS 1.x "Search Processes" Cockpit Plugin
+===============================================
 
 This is an example of how to migrate an existing angularJS Plugin to the new Plugin system. The original plugin can be found in `original-plugin.js`.
 
@@ -11,12 +11,12 @@ Note that `localConf` is a service that was provided by the Camunda framework an
 Building the Project
 --------------------
 
-Install the project with `npm i` and build the plugin with `npm run build`. Your plugin will be created in `dist/angularJsPlugin.js`.
+Install the project with `npm i` and build the plugin with `npm run build`. Your plugin will be created in `dist/plugin.js`.
 
 Integrate into Camunda Webapp
 -----------------------------
 
-Copy the `angularJsPlugin.js` file into the `app/cockpit/scripts/` folder in your Camunda webapp distribution.
+Copy the `plugin.js` file into the `app/cockpit/scripts/` folder in your Camunda webapp distribution.
 For the Tomcat distribution, this would be `server/apache-tomcat-X.X.XX/webapps/camunda/app/cockpit/scripts/`.
 
 Add the following content to the `app/cockpit/scripts/config.js` file:
@@ -24,7 +24,7 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
 ```
 // …
   customScripts: [
-    'scripts/angularJsPlugin.js'
+    'scripts/plugin.js'
   ]
 // …
 ```

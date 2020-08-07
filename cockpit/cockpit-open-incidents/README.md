@@ -1,5 +1,5 @@
-VanillaJS "Open Incidents" Plugin
-=================================
+"Open Incidents" Cockpit Plugin
+===============================
 
 This example shows you how to build a plugin without a frontend library.
 
@@ -9,7 +9,7 @@ This example shows you how to build a plugin without a frontend library.
 Integrate into Camunda Webapp
 -----------------------------
 
-Copy the `vanillaJsPlugin.js` file into the `app/cockpit/scripts/` folder in your Camunda webapp distribution.
+Copy the `plugin.js` file into the `app/cockpit/scripts/` folder in your Camunda webapp distribution.
 For the Tomcat distribution, this would be `server/apache-tomcat-X.X.XX/webapps/camunda/app/cockpit/scripts/`.
 
 Add the following content to the `app/cockpit/scripts/config.js` file:
@@ -17,7 +17,7 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
 ```
 // …
   customScripts: [
-    'scripts/vanillaJsPlugin.js'
+    'scripts/plugin.js'
   ]
 // …
 ```

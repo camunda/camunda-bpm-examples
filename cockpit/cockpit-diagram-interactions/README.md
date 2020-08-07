@@ -1,5 +1,5 @@
-Diagram interactions with custom plugins
-========================================
+"Diagram interactions" Cockpit Plugin
+=====================================
 
 This example shows how you can achieve diagram interactions with custom plugins.
 Click on an activity in the BPMN diagram to apply a filter to the table.
@@ -39,7 +39,7 @@ In the second plugin, we can create a callback function which the diagram plugin
 Integrate into Camunda Webapp
 -----------------------------
 
-Copy the `diagramInteractions.js` file into the `app/cockpit/scripts/` folder in your Camunda webapp distribution.
+Copy the `plugin.js` file into the `app/cockpit/scripts/` folder in your Camunda webapp distribution.
 For the Tomcat distribution, this would be `server/apache-tomcat-X.X.XX/webapps/camunda/app/cockpit/scripts/`.
 
 Add the following content to the `app/cockpit/scripts/config.js` file:
@@ -47,7 +47,7 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
 ```
 // …
   customScripts: [
-    'scripts/diagramInteractions.js'
+    'scripts/plugin.js'
   ]
 // …
 ```

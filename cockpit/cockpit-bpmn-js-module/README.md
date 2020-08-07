@@ -1,5 +1,5 @@
-Cockpit bpmn.js module
-=================================
+bpmn.js Cockpit module
+======================
 
 This example shows how to develop a Cockpit bpmn.js module.
 
