@@ -20,13 +20,7 @@ export default {
   pluginPoint: "cockpit.dashboard",
   priority: 5,
   render: container => {
-    const header = document.createElement("h1");
-    header.innerHTML = "<h1>Cats!</h1>";
-
-    const mainContent = document.createElement("div");
-    mainContent.innerHTML = "<img src=\"http://thecatapi.com/api/images/get?size=medium\" width=\"400\" />";
-
-    container.appendChild(header);
-    container.appendChild(mainContent);
-  }
+    container.innerHTML = `<h1>Cats!</h1>
+    <img src="http://thecatapi.com/api/images/get?size=medium" width="400" />`;
+  },
 };

@@ -7,28 +7,12 @@ Built and tested against Camunda BPM version `7.14.0-alpha2`.
 
 ![Screenshot](screenshot.png)
 
-# Integrate into Camunda webapp
-
-1. Build this demo: `mvn clean install`
-2. Clone the [camunda-bpm-webapp][1] repository
-3. Add the plugin as a dependency to the camunda-bpm-webapp `pom.xml` and rebuild the Camunda web application.
-```xml
-<dependencies>
-  <!-- ... -->
-  <dependency>
-    <groupId>org.camunda.bpm.cockpit.plugin</groupId>
-    <artifactId>cockpit-sample-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <scope>runtime</scope>
-  </dependency>
-```
-
-![Cockpit Plugin](cockpit-plugin.png)
-
-
 > Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.13/webapps/cockpit/extend/plugins/) for the basics first.
 
-1. [Server Side](#server-side)
+# Table of contents
+
+1. [Integrate into Camunda BPM Webapp](#integrate-into-camunda-bpm-webapp)
+2. [Server Side](#server-side)
 	  1. [Plug-in Archive](#plug-in-archive)
 	  2. [Plug-in Main Class](#plug-in-main-class)
 			* [Testing Plug-in Discovery](#testing-plug-in-discovery)
@@ -37,14 +21,26 @@ Built and tested against Camunda BPM version `7.14.0-alpha2`.
 	  4. [Defining and Publishing Plug-in Services](#defining-and-publishing-plug-in-services)
 			* [Use Tenant Check](#use-tenant-check)
 			* [Testing JAX-RS Resources](#testing-jax-rs-resources)
-2. [Client Side](#client-side)
+3. [Client Side](#client-side)
 	  1. [Static Plugin Assets](#static-plugin-assets)
 			* [Testing Assets](#testing-assets)
 	  2. [Integration into Cockpit](#integration-into-cockpit)
 	  3. [plugin.js Main File](#pluginjs-main-file)
 	  4. [HTML View](#html-view)
-3. [Summary](#summary)
-4. [How Client-Side Plugins Work](#how-client-side-plugins-work)
+4. [Summary](#summary)
+5. [How Client-Side Plugins Work](#how-client-side-plugins-work)
+
+## Integrate into Camunda BPM Webapp
+
+1. Build this demo: `mvn clean install`
+2. There are two ways to add your plugin to the Camunda BPM webapp.
+   
+   1. You can copy `./target/cockpit-sample-plugin-1.0-SNAPSHOT.jar` to the `WEB-INF/lib` folder of the Camunda webapp.
+   2. You can set up a maven war overlay for the Camunda webapp.
+   
+   The first solution is the simplest: if you dowloaded the tomcat distribution, you can copy the plugin
+   jar file to the `/server/apache-tomcat-${tomcat-version}/webapps/camunda/WEB-INF/lib/` folder and
+   restart the server.
 
 ## Server Side
 
@@ -475,17 +471,6 @@ FOO BAR
 #### Testing Assets
 
 To test that the assets are served, we can either implement a test case or test the matter manually after we integrated the plug-in into the Cockpit webapp.
-
-### Integration into Cockpit
-
-There are two ways to add your plugin to the Camunda BPM webapp.
-
-1. You can copy it to the `WEB-INF/lib` folder of the Camunda webapp.
-2. You can set up a maven war overlay for the Camunda webapp.
-
-The first solution is the simplest: if you dowloaded the tomcat distribution, you can copy the plugin
-jar file to the `/server/apache-tomcat-${tomcat-version}/webapps/camunda/WEB-INF/lib/` folder and
-restart the server.
 
 ### plugin.js Main File
 
