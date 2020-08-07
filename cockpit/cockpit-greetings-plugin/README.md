@@ -28,7 +28,7 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
 // …
 ```
 
-After that start the server, login to cockpit and navigate to the process definition view to check the result.
+After that start the server, login to Cockpit and navigate to the process definition view to check the result.
 
 License
 -------

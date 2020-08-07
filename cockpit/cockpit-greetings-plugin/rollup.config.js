@@ -10,12 +10,16 @@ export default {
   },
   plugins: [
     resolve(),
-    babel({"presets": ["@babel/preset-react"]}),
+    babel({
+      presets: ["@babel/preset-react"],
+      compact: false,
+      babelHelpers: "bundled",
+    }),
     commonjs({
       include: "node_modules/**"
     }),
     replace({
-       "process.env.NODE_ENV": JSON.stringify("production")
+      "process.env.NODE_ENV": JSON.stringify("production")
     })
   ]
 };
