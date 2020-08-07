@@ -3,32 +3,16 @@ Sample Plugin for Camunda Cockpit
 
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda BPM](http://docs.camunda.org).
 
-Built and tested against Camunda BPM version `7.13.0`.
+Built and tested against Camunda BPM version `7.14.0-alpha2`.
 
 ![Screenshot](screenshot.png)
 
-# Integrate into Camunda webapp
-
-1. Build this demo: `mvn clean install`
-2. Clone the [camunda-bpm-webapp][1] repository
-3. Add the plugin as a dependency to the camunda-bpm-webapp `pom.xml` and rebuild the Camunda web application.
-```xml
-<dependencies>
-  <!-- ... -->
-  <dependency>
-    <groupId>org.camunda.bpm.cockpit.plugin</groupId>
-    <artifactId>cockpit-sample-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <scope>runtime</scope>
-  </dependency>
-```
-
-![Cockpit Plugin](cockpit-plugin.png)
-
-
 > Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.13/webapps/cockpit/extend/plugins/) for the basics first.
 
-1. [Server Side](#server-side)
+# Table of contents
+
+1. [Integrate into Camunda BPM Webapp](#integrate-into-camunda-bpm-webapp)
+2. [Server Side](#server-side)
 	  1. [Plug-in Archive](#plug-in-archive)
 	  2. [Plug-in Main Class](#plug-in-main-class)
 			* [Testing Plug-in Discovery](#testing-plug-in-discovery)
@@ -37,14 +21,26 @@ Built and tested against Camunda BPM version `7.13.0`.
 	  4. [Defining and Publishing Plug-in Services](#defining-and-publishing-plug-in-services)
 			* [Use Tenant Check](#use-tenant-check)
 			* [Testing JAX-RS Resources](#testing-jax-rs-resources)
-2. [Client Side](#client-side)
+3. [Client Side](#client-side)
 	  1. [Static Plugin Assets](#static-plugin-assets)
 			* [Testing Assets](#testing-assets)
 	  2. [Integration into Cockpit](#integration-into-cockpit)
 	  3. [plugin.js Main File](#pluginjs-main-file)
 	  4. [HTML View](#html-view)
-3. [Summary](#summary)
-4. [How Client-Side Plugins Work](#how-client-side-plugins-work)
+4. [Summary](#summary)
+5. [How Client-Side Plugins Work](#how-client-side-plugins-work)
+
+## Integrate into Camunda BPM Webapp
+
+1. Build this demo: `mvn clean install`
+2. There are two ways to add your plugin to the Camunda BPM webapp.
+   
+   1. You can copy `./target/cockpit-sample-plugin-1.0-SNAPSHOT.jar` to the `WEB-INF/lib` folder of the Camunda webapp.
+   2. You can set up a maven war overlay for the Camunda webapp.
+   
+   The first solution is the simplest: if you dowloaded the tomcat distribution, you can copy the plugin
+   jar file to the `/server/apache-tomcat-${tomcat-version}/webapps/camunda/WEB-INF/lib/` folder and
+   restart the server.
 
 ## Server Side
 
@@ -65,13 +61,13 @@ As a first step we create a maven jar project that represents our plug-in librar
   <packaging>jar</packaging>
 
   <name>cockpit-sample-plugin</name>
-
-  <dependency>
-    <groupId>org.camunda.bpm.webapp</groupId>
-    <artifactId>camunda-webapp</artifactId>
-    <classifier>classes</classifier>
-    <version>${camunda.version}</version>
-  </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>org.camunda.bpm.webapp</groupId>
+      <artifactId>camunda-webapp</artifactId>
+      <classifier>classes</classifier>
+      <version>${camunda.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>junit</groupId>
@@ -476,82 +472,30 @@ FOO BAR
 
 To test that the assets are served, we can either implement a test case or test the matter manually after we integrated the plug-in into the Cockpit webapp.
 
-### Integration into Cockpit
-
-There are two ways to add your plugin to the Camunda BPM webapp.
-
-1. You can copy it to the `WEB-INF/lib` folder of the Camunda webapp.
-2. You can set up a maven war overlay for the Camunda webapp.
-
-The first solution is the simplest: if you dowloaded the tomcat distribution, you can copy the plugin
-jar file to the `/server/apache-tomcat-${tomcat-version}/webapps/camunda/WEB-INF/lib/` folder and
-restart the server.
-
 ### plugin.js Main File
 
-Each plug-in must contain a file `app/plugin.js` in the plug-ins assets directory (i.e., `plugin-webapp/$plugin_id`). That file bootstraps the client-side plug-in and registers it with Cockpit. To do so it must declare and return an [angular module](http://docs.angularjs.org/guide/module) named `cockpit.plugin.$plugin_id` using [requireJS](http://requirejs.org/).
+Each plug-in must contain a file `app/plugin.js` in the plug-ins assets directory (i.e., `plugin-webapp/$plugin_id`). That file bootstraps the client-side plug-in and registers it with Cockpit. To do so it must declare and export a default module.
 
 Without going too deeply into detail, our plugins `plugin.js` may look like this:
 
 ```javascript
-define(['angular'], function(angular) {
+//...
+export default {
+  id: "process-instance-count",
+  pluginPoint: "cockpit.dashboard",
+  render: node => {
+    // render plugin
+  },
+  unmount: () => {
+    // unmount plugin
+  },
 
-  var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
-
-    $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
-      .then(function(res) {
-        $scope.processInstanceCounts = res.data;
-      });
-  }];
-
-  var Configuration = ['ViewsProvider', function(ViewsProvider) {
-
-    ViewsProvider.registerDefaultView('cockpit.dashboard', {
-      id: 'process-definitions',
-      label: 'Deployed Processes',
-      url: 'plugin://sample-plugin/static/app/dashboard.html',
-      controller: DashboardController,
-
-      // make sure we have a higher priority than the default plugin
-      priority: 12
-    });
-  }];
-
-  var ngModule = angular.module('cockpit.plugin.sample-plugin', []);
-
-  ngModule.config(Configuration);
-
-  return ngModule;
-});
+  // make sure we have a higher priority than the default plugin
+  priority: 12,
+};
 ```
 
-The file defines the angular module `cockpit.plugin.sample-plugin` and registers a plug-in with the Cockpit plug-in service (`ViewsProvider#registerDefaultView()`).
-
-### HTML View
-
-To complete the example, we need to define the HTML file `app/dashboard.html` as a plug-in asset:
-
-```html
-<div>
-  <h1>Process Instances per Definition</h1>
-  <table class="table table-bordered table-hover table-condensed">
-    <thead>
-      <tr>
-        <th>Key</th>
-        <th>Instances</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr data-ng-repeat="count in processInstanceCounts">
-        <td>{{ count.key }}</td>
-        <td>{{ count.instanceCount }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-```
-
-This file provides the actual view to the user.
+The file defines a plugin with the id `process-instance-count` which is automatically registered at the plugin point `cockpit.dashboard`.
 
 When deploying the extended Camunda webapplication on the Camunda BPM platform, we can see the plug-in in action.
 
@@ -559,74 +503,8 @@ When deploying the extended Camunda webapplication on the Camunda BPM platform, 
 
 You made it! In this example we walked through all important steps required to build a Cockpit plug-in, from creating a plug-in skeleton through defining server-side plug-in parts up to implementing the client-side portions of the plug-in.
 
-
-## Appendix
-
-### How Client-Side Plugins Work
-
-Some experience in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">JavaScript</a> development as well as knowledge about <a href="http://angularjs.org/">AngularJS</a> and <a href="http://requirejs.org">RequireJS</a> is beneficial to understanding this subsection.
-
-The client-side plug-in infrastructure provides extensions to the Cockpit core application through views that expose data provided by a plugins server-side API. We'll quickly elaborate on how the interaction between a plug-in and the Camunda webapplication happens.
-
-A plug-in is defined in an `app/plugin.js` file that gets served as static plug-in asset:
-
-```javascript
-define([
-  'jquery',
-  'angular',
-  'http://some-url/some-library.js',
-  './someOtherModule.js'
-], function($, angular) {
-
-  var ViewController = ['$scope', function($scope, Uri) {
-    // perform logic
-
-    // uris to plugin assets and apis may be resolved via Uri#appUri
-    // by prefixing those apis with 'plugin://'
-    var pluginServiceUrl = Uri.appUri('plugin://myPlugin/default/process-definition');
-
-  }];
-
-  var ngModule = angular.module('cockpit.plugin.myPlugin', ['some.other.angularModule']);
-
-  // publish the plugin to cockpit
-  ngModule.config(function(ViewsProvider) {
-
-    ViewsProvider.registerDefaultView('cockpit.some-view', {
-      id: 'some-view-special-plugin',
-      label: 'Very Special Plugin',
-      url: 'plugin://myPlugin/static/app/view.html',
-      controller: ViewController
-    });
-  });
-
-  return ngModule;
-});
-```
-
-As the file is loaded as a RequireJS module, dependencies (in terms of other RequireJS modules) may be specified.
-
-The plug-in must register itself with the `ViewsProvider` via a [module configuration hook](http://docs.angularjs.org/api/angular.Module).
-
-From within Cockpit, views are included using the [view directive](https://github.com/camunda/camunda-bpm-webapp/blob/7.13/camunda-commons-ui/lib/plugin/view.js):
-
-```html
-<view provider="viewProvider" vars="viewProviderVars" />
-```
-
-The actual provider that defines the view as well as the published variables are defined by the responsible controller in the surrounding scope:
-
-```javascript
-function SomeCockpitController($scope, Views) {
-  $scope.viewProvider = Views.getProvider({ component: 'cockpit.some-view'});
-
-  // variable 'foo' will be available in the view provider scope
-  $scope.viewProviderVars = { read: [ 'foo' ]};
-}
-```
 # License
 
 Use under terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 [1]: https://github.com/camunda/camunda-bpm-webapp
-[2]: https://docs.camunda.org/manual/examples/tutorials/develop-cockpit-plugin/

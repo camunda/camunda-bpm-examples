@@ -15,17 +15,27 @@
  * limitations under the License.
  */
 
-// inject original open function of the native XMLHttpRequest
-(function(open) {
-  // override native opening function of XMLHttpRequest prototype
-  XMLHttpRequest.prototype.open = function() {
-    // call the original open function
-    open.apply(this, arguments);
+import React from "react";
+import ReactDOM from "react-dom";
 
-    // set the withCredentials property of the request
-    this.withCredentials = true;
+import ProcessInstanceCount from "./ProcessInstanceCount";
 
-    // optionally set request headers, if needed
-    // this.setRequestHeader('X-Something-I-Need-Just-To-Test', 'works');
-  };
-})(XMLHttpRequest.prototype.open);
+let container = null;
+
+export default {
+  id: "process-instance-count",
+  pluginPoint: "cockpit.dashboard",
+  render: node => {
+    container = node;
+    ReactDOM.render(
+      <ProcessInstanceCount />,
+      container
+    );
+  },
+  unmount: () => {
+    ReactDOM.unmountComponentAtNode(container);
+  },
+
+  // make sure we have a higher priority than the default plugin
+  priority: 12,
+};

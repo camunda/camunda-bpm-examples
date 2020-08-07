@@ -3,7 +3,7 @@ Javascript Only Plugin for Camunda Cockpit
 
 This example shows how to develop a Cockpit plugin without the need to register it with the Camunda BPM server. It makes use of the `customScript` property of the webapp configurations.
 
-Built and tested against Camunda BPM version `7.13.0`.
+Built and tested against Camunda BPM version `7.14.0-alpha2`.
 
 ![Screenshot](screenshot.png)
 
@@ -17,16 +17,9 @@ Add the following content to the `customScripts` object in the `app/cockpit/scri
 
 ```
   // …
-  customScripts: {
-    ngDeps: ['cockpit.cats'],
-
-    deps: ['cats'],
-
-    // RequreJS path definitions
-    paths: {
-      'cats': 'scripts/cats'
-    }
-  }
+  customScripts: [
+    'scripts/cats'
+  ]
   // …
 ```
 

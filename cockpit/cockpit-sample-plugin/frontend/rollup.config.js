@@ -15,17 +15,30 @@
  * limitations under the License.
  */
 
-// inject original open function of the native XMLHttpRequest
-(function(open) {
-  // override native opening function of XMLHttpRequest prototype
-  XMLHttpRequest.prototype.open = function() {
-    // call the original open function
-    open.apply(this, arguments);
+import babel from "@rollup/plugin-babel";
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
+import replace from "@rollup/plugin-replace";
+import scss from "rollup-plugin-scss";
 
-    // set the withCredentials property of the request
-    this.withCredentials = true;
-
-    // optionally set request headers, if needed
-    // this.setRequestHeader('X-Something-I-Need-Just-To-Test', 'works');
-  };
-})(XMLHttpRequest.prototype.open);
+export default {
+  input: "src/plugin.js",
+  output: {
+    file: "dist/plugin.js"
+  },
+  plugins: [
+    resolve(),
+    babel({
+      babelHelpers: "runtime",
+      skipPreflightCheck: true,
+      compact: true
+    }),
+    commonjs({
+      include: "node_modules/**"
+    }),
+    replace({
+      "process.env.NODE_ENV": JSON.stringify("production")
+    }),
+    scss()
+  ]
+};

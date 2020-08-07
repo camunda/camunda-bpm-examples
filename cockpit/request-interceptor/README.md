@@ -3,7 +3,7 @@ Request Interceptor for Camunda Cockpit
 
 This example shows how to intercept requests made by Camunda Cockpit. This might be useful if you need to set additional properties or request headers on all requests made by Cockpit against the rest API.
 
-Built and tested against Camunda BPM version `7.13.0`.
+Built and tested against Camunda BPM version `7.14.0-alpha2`.
 
 
 Integrate into Camunda Webapp
@@ -15,16 +15,9 @@ Add the following content to the `customScripts` object in the `app/cockpit/scri
 
 ```
   // …
-  customScripts: {
-    ngDeps: [],
-
-    deps: ['requestInterceptor'],
-
-    // RequreJS path definitions
-    paths: {
-      'requestInterceptor': 'scripts/requestInterceptor'
-    }
-  }
+  customScripts: [
+    'scripts/requestInterceptor'
+  ]
   // …
 ```
 

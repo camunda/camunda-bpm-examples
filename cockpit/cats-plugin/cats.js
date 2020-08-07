@@ -14,19 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.cockpit.plugin.failedjobs.resources;
 
-import javax.ws.rs.Path;
-//import javax.ws.rs.PathParam;
-
-import org.camunda.bpm.cockpit.plugin.failedjobs.FailedJobsPlugin;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginRootResource;
-
-@Path("plugin/" + FailedJobsPlugin.ID)
-public class FailedJobsPluginRootResource extends AbstractPluginRootResource {
-
-  public FailedJobsPluginRootResource() {
-    super(FailedJobsPlugin.ID);
-  }
-
-}
+export default {
+  id: "Cats Plugin",
+  pluginPoint: "cockpit.dashboard",
+  priority: 5,
+  render: container => {
+    container.innerHTML = `<h1>Cats!</h1>
+    <img src="http://thecatapi.com/api/images/get?size=medium" width="400" />`;
+  },
+};

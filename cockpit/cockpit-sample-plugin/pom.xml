@@ -26,6 +26,14 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
+    <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+    <node.version>v14.7.0</node.version>
+
+    <frontend.working.directory>frontend/</frontend.working.directory>
+    <frontend.build.path>${frontend.working.directory}dist/</frontend.build.path>
+    <frontend.target.path>plugin-webapp/sample-plugin/app</frontend.target.path>
   </properties>
 
   <dependencies>
@@ -69,6 +77,66 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${frontend-maven-plugin.version}</version>
+        <configuration>
+          <nodeVersion>${node.version}</nodeVersion>
+          <workingDirectory>${frontend.working.directory}</workingDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>Install node and npm locally to the project</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>Build frontend</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>Copy frontend build to target</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/${frontend.target.path}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/${frontend.build.path}</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <repositories>
     <repository>

@@ -14,28 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.cockpit.plugin.failedjobs;
 
-import java.util.HashSet;
-import java.util.Set;
+import React from "react";
 
-import org.camunda.bpm.cockpit.plugin.failedjobs.resources.FailedJobsPluginRootResource;
-import org.camunda.bpm.cockpit.plugin.spi.impl.AbstractCockpitPlugin;
+import "./Table.scss";
 
-public class FailedJobsPlugin extends AbstractCockpitPlugin {
-
-  public static final String ID = "failed-jobs-plugin";
-
-  public String getId() {
-    return ID;
-  }
-
-  @Override
-  public Set<Class<?>> getResourceClasses() {
-    Set<Class<?>> classes = new HashSet<Class<?>>();
-
-    classes.add(FailedJobsPluginRootResource.class);
-
-    return classes;
-  }
+export default function Table({ head, children }) {
+  return (
+    <table className="Table">
+      <thead>
+        <tr>{head}</tr>
+      </thead>
+      <tbody>{children}</tbody>
+    </table>
+  );
 }
+
+Table.Head = function Head({ children }) {
+  return <th className="TableHead">{children}</th>;
+};
+
+Table.Row = function Row({ children }) {
+  return <tr className="TableRow">{children}</tr>;
+};
+
+Table.Cell = function Cell({ children }) {
+  return <td className="TableCell">{children}</td>;
+};
