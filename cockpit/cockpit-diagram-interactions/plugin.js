@@ -16,7 +16,7 @@
  */
 
 const engineApi = document.querySelector("base").getAttribute("engine-api");
-const apiUrl = `${engineApi}/engine/default`;
+const apiUrl = `${engineApi}engine/default`;
 
 const renderTable = async (operationMap, node) => {
   if (!Object.keys(operationMap).length) {
