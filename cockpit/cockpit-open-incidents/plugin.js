@@ -16,7 +16,7 @@
  */
 
 const engineApi = document.querySelector("base").getAttribute("engine-api");
-const apiUrl = `${engineApi}/engine/default/`;
+const apiUrl = `${engineApi}engine/default/`;
 
 export default {
   id: "vanillaJS Plugin",
