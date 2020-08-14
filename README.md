@@ -220,13 +220,9 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Jackson Annotation Example for WildFly](wildfly/jackson-annotations)                         | Wildfly               | War, Servlet              |
 
 
+### Contributing
 
-### Contribute!
-
-  * Website: http://www.camunda.com/
-  * Getting Started: https://docs.camunda.org/get-started/
-  * Issue Tracker: https://jira.camunda.com/projects/CAM/issues
-  * Contribution Guidelines: https://camunda.com/learn/community/#contribute
+Have a look at our [contribution guide](https://github.com/camunda/camunda-bpm-platform/blob/master/CONTRIBUTING.md) for how to contribute to this repository.
 
 ### License
 The source files in this repository are made available under the [Apache License Version 2.0](./LICENSE).
