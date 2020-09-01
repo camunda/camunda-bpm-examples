@@ -26,7 +26,6 @@ export default {
   id: "involvedUsers",
   pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 9,
-  label: "Involved Users",
   render: (node, { processDefinitionId }) => {
     container = node;
     ReactDOM.render(
@@ -36,5 +35,8 @@ export default {
   },
   unmount: () => {
     ReactDOM.unmountComponentAtNode(container);
+  },
+  properties: {
+    label: "Involved Users"
   }
 };

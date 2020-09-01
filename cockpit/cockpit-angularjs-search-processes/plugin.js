@@ -33,7 +33,6 @@ export default {
   id: "cockpit.searchProcess",
   pluginPoint: "cockpit.processes.dashboard",
   priority: 9,
-  label: "Search Processes",
   render: node => {
     var searchProcessViewController = [
       "$scope",
@@ -64,5 +63,8 @@ export default {
     node.innerHTML = template;
 
     angular.bootstrap(node, [ngModule.name]);
+  },
+  properties: {
+    label: "Search Processes"
   }
 };

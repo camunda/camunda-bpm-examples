@@ -76,7 +76,6 @@ const tabPlugin = {
   id: "tabPlugin",
   pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 5,
-  label: "Open User Tasks",
   render: (node, { processDefinitionId }) => {
     async function getUsertasks(taskId) {
       let result;
@@ -112,6 +111,9 @@ const tabPlugin = {
   },
   unmount: () => {
     cb = () => {};
+  },
+  properties: {
+    label: "Open User Tasks"
   }
 };
 

@@ -26,7 +26,7 @@ function UserOperationCount({ processDefinitionId }) {
 
   useEffect(() => {
     fetch(
-      `${engineApi}/engine/default/history/user-operation?maxResults=2000&processDefinitionId=${processDefinitionId}`
+      `${engineApi}engine/default/history/user-operation?maxResults=2000&processDefinitionId=${processDefinitionId}`
     )
       .then(async res => {
         setOpLog(await res.json());
