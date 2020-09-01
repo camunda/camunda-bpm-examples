@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-const engineApi = document.querySelector("base").getAttribute("engine-api");
-const apiUrl = `${engineApi}engine/default`;
-
 const renderTable = async (operationMap, node) => {
   if (!Object.keys(operationMap).length) {
     node.innerHTML = "No open Tasks";
@@ -76,10 +73,11 @@ const tabPlugin = {
   id: "tabPlugin",
   pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 5,
-  label: "Open User Tasks",
-  render: (node, { processDefinitionId }) => {
+  render: (node, { processDefinitionId, api }) => {
     async function getUsertasks(taskId) {
+      const apiUrl = engine.engineApi;
       let result;
+
       if (taskId) {
         result = await fetch(
           `${apiUrl}/task?processDefinitionId=${processDefinitionId}&taskDefinitionKey=${taskId}&maxResults=500`
@@ -112,6 +110,9 @@ const tabPlugin = {
   },
   unmount: () => {
     cb = () => {};
+  },
+  properties: {
+    label: "Open User Tasks"
   }
 };
 

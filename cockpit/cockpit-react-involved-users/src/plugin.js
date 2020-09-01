@@ -26,15 +26,17 @@ export default {
   id: "involvedUsers",
   pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 9,
-  label: "Involved Users",
-  render: (node, { processDefinitionId }) => {
+  render: (node, { processDefinitionId, api }) => {
     container = node;
     ReactDOM.render(
-      <UserOperationCount processDefinitionId={processDefinitionId} />,
+      <UserOperationCount processDefinitionId={processDefinitionId} camundaApi={api} />,
       container
     );
   },
   unmount: () => {
     ReactDOM.unmountComponentAtNode(container);
+  },
+  properties: {
+    label: "Involved Users"
   }
 };

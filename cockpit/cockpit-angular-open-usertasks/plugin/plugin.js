@@ -33,8 +33,7 @@ const diagramPlugin = {
 
 const tabPlugin = {
   id: "Angular9 Plugin",
-  pluginPoint: "cockpit.processDefinition.runtime.tab",
-  label: "Open User Tasks",
+  pluginPoint: "cockpit.processDefinition.runtime.tab",  
   priority: 5,
   render: (container, { processDefinitionId }) => {
     container.innerHTML = `<activity-table id="myActivityTable" process-definition-id="${processDefinitionId}"></activity-table>`;
@@ -48,6 +47,9 @@ const tabPlugin = {
           .getElementById("myActivityTable")
           .removeAttribute("activity-id");
     };
+  },
+  properties: {
+    label: "Open User Tasks"
   }
 };
 
