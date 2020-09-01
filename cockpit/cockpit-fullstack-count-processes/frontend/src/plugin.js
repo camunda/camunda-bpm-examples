@@ -25,10 +25,10 @@ let container = null;
 export default {
   id: "process-instance-count",
   pluginPoint: "cockpit.dashboard",
-  render: node => {
+  render: (node, { api }) => {
     container = node;
     ReactDOM.render(
-      <ProcessInstanceCount />,
+      <ProcessInstanceCount camundaAPI={ api } />,
       container
     );
   },

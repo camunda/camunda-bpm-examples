@@ -26,10 +26,10 @@ export default {
   id: "involvedUsers",
   pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 9,
-  render: (node, { processDefinitionId }) => {
+  render: (node, { processDefinitionId, api }) => {
     container = node;
     ReactDOM.render(
-      <UserOperationCount processDefinitionId={processDefinitionId} />,
+      <UserOperationCount processDefinitionId={processDefinitionId} camundaApi={api} />,
       container
     );
   },

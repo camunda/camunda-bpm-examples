@@ -8,10 +8,10 @@ export default {
   id: "myDemoPlugin",
   pluginPoint: "cockpit.dashboard",
   priority: 9,
-  render: (node, { CSRFToken }) => {
+  render: (node, { api }) => {
     container = node;
     ReactDOM.render(
-      <Greetings CSRFToken={CSRFToken} />,
+      <Greetings camundaAPI={api} />,
       container
     );
   },

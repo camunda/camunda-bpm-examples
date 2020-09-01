@@ -15,14 +15,11 @@
  * limitations under the License.
  */
 
-const engineApi = document.querySelector("base").getAttribute("engine-api");
-const apiUrl = `${engineApi}engine/default/`;
-
 export default {
   id: "vanillaJS Plugin",
   pluginPoint: "cockpit.dashboard",
   priority: 5,
-  render: container => {
+  render: (container, { api }) => {
     const header = document.createElement("h1");
     header.innerHTML = "Open Incidents";
 
@@ -32,7 +29,7 @@ export default {
     container.appendChild(header);
     container.appendChild(mainContent);
 
-    fetch(apiUrl + "incident/?maxResults=500").then(async res => {
+    fetch(api.engineApi + "/incident/?maxResults=500").then(async res => {
       const result = await res.json();
       if (!result.length) {
         mainContent.innerHTML = "No incidents";

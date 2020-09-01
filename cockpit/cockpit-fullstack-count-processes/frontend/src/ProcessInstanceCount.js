@@ -19,11 +19,11 @@ import React, { useState, useEffect } from "react";
 
 import { Table } from "./Table";
 
-function ProcessInstanceCount() {
+function ProcessInstanceCount({ camundaAPI }) {
   const [processInstanceCounts, setProcessInstanceCounts] = useState();
 
-  const cockpitApi = document.querySelector("base").getAttribute("cockpit-api");
-  const engine = window.location.href.replace(/.*cockpit\/([^/]*).*/, "$1");
+  const cockpitApi = camundaAPI.cockpitApi;
+  const engine = camundaAPI.engine;
 
   useEffect(() => {
     fetch(

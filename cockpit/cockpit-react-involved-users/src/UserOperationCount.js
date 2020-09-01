@@ -19,14 +19,14 @@ import React, { useState, useEffect } from "react";
 
 import { Table } from "./Table";
 
-function UserOperationCount({ processDefinitionId }) {
+function UserOperationCount({ processDefinitionId, camundaApi }) {
   const [opLog, setOpLog] = useState();
 
-  const engineApi = document.querySelector("base").getAttribute("engine-api");
+  const engineApi = camundaApi.engineApi;
 
   useEffect(() => {
     fetch(
-      `${engineApi}engine/default/history/user-operation?maxResults=2000&processDefinitionId=${processDefinitionId}`
+      `${engineApi}/history/user-operation?maxResults=2000&processDefinitionId=${processDefinitionId}`
     )
       .then(async res => {
         setOpLog(await res.json());

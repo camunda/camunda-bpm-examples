@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-const base = document.querySelector("base");
-const adminApi = base.getAttribute("admin-api");
 
-function Greetings({ CSRFToken }) {
+function Greetings({ camundaAPI }) {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    fetch(adminApi + "auth/user/default", {
+    fetch(camundaAPI.adminApi + "/auth/user/default", {
       headers: {
         "Accept": "application/json",
-        "X-XSRF-TOKEN": CSRFToken,
+        "X-XSRF-TOKEN": camundaAPI.CSRFToken,
       },
     }).then(async (res) => {
       setUser(await res.json());
