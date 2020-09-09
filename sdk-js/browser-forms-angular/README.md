@@ -63,6 +63,30 @@ taskService.form(taskId, function(err, taskFormInfo) {
 });
 ```
 
+**NOTE/ISSUE**: I don't know how to report this, but there are two issues
+here, both with the most recent code from GitHub (cloned this afternoon):
+1. `taskFormInfo.contextPath` is null, so nothing is ever replaced.
+2. `scripts.js` needs a similar line for `embedded:deployment:`, but simply copying
+the line above is unlikely to do the trick.
+
+Background:
+ - This afternoon, I cloned the repo as recommended herein, 
+ - Copied browser-forms-angular to server/apache-tomcat.../webapps
+ - Loaded localhost:8080/browser-forms-angular
+and got a lot of console errors. I eliminated all errors related to CORS by
+running Chrome with web security disabled, but that didn't eliminate the
+UNKNOWN_URL_SCHEME errors caused by attempting to retrieve
+`embedded:deployment:...etc.`
+ 
+Either there are missing dependencies and one needs to copy more than just
+`browser-forms-angular` or there are bugs in either `script.js` or
+`camunda-bpm-angular-sdk.js`, I cannot really tell which at this point:
+All I know is that `camunda-bpm-angular-sdk.js` was attempting to retrieve either
+`embedded:app:forms:myAppForm.html` or `embedded:deployment:myRESTForm.html`
+directly, without providing any sort of appropriate path.
+
+**END OF NOTE/ISSUE**
+
 and then
 
 ```js
