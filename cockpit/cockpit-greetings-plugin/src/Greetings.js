@@ -13,7 +13,7 @@ function Greetings({ camundaAPI }) {
     }).then(async (res) => {
       setUser(await res.json());
     });
-  }, [setUser, CSRFToken]);
+  }, [setUser, camundaAPI.CSRFToken]);
 
   if (!user) {
     return <span>Loading...</span>;
