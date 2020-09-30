@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
+import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
-import replace from "@rollup/plugin-replace";
-
-import babel from "rollup-plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
+import replace from "@rollup/plugin-replace";
 import scss from "rollup-plugin-scss";
 
 export default {
@@ -29,7 +28,11 @@ export default {
   },
   plugins: [
     resolve(),
-    babel(),
+    babel({
+      babelHelpers: "runtime",
+      skipPreflightCheck: true,
+      compact: true
+    }),
     commonjs({
       include: "node_modules/**"
     }),
