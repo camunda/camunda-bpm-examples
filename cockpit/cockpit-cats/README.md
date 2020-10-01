@@ -3,7 +3,7 @@
 
 This example shows how to develop a Cockpit plugin without the need to register it with the Camunda BPM server. It makes use of the `customScript` property of the webapp configurations.
 
-Built and tested against Camunda BPM version `7.14.0-alpha2`.
+Built and tested against Camunda BPM version `7.14.0`.
 
 ![Screenshot](screenshot.png)
 
