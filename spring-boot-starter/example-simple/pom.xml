@@ -6,8 +6,8 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
-    <camunda.spring.boot.starter.version>7.13.0</camunda.spring.boot.starter.version>
+    <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
+    <camunda.spring.boot.starter.version>7.14.0</camunda.spring.boot.starter.version>
   </properties>
 
   <dependencyManagement>
@@ -57,14 +57,14 @@
     <dependency>
       <groupId>org.camunda.bpm.extension.mockito</groupId>
       <artifactId>camunda-bpm-mockito</artifactId>
-      <version>4.11.0</version>
+      <version>4.13.0</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.camunda.bpm.assert</groupId>
       <artifactId>camunda-bpm-assert</artifactId>
-      <version>6.0.0</version>
+      <version>8.0.0</version>
     </dependency>
 
     <dependency>
