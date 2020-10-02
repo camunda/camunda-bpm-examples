@@ -3,11 +3,11 @@ Fullstack (ReactJS & Java) "Count Processes" Cockpit Plugin
 
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda BPM](http://docs.camunda.org).
 
-Built and tested against Camunda BPM version `7.14.0-alpha2`.
+Built and tested against Camunda BPM version `7.14.0`.
 
 ![Screenshot](screenshot.png)
 
-> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.13/webapps/cockpit/extend/plugins/) for the basics first.
+> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.14/webapps/cockpit/extend/plugins/) for the basics first.
 
 # Table of contents
 

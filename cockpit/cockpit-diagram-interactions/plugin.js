@@ -75,7 +75,7 @@ const tabPlugin = {
   priority: 5,
   render: (node, { processDefinitionId, api }) => {
     async function getUsertasks(taskId) {
-      const apiUrl = engine.engineApi;
+      const apiUrl = api.engineApi;
       let result;
 
       if (taskId) {
