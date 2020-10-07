@@ -1,6 +1,6 @@
 # Standalone usage of JS SDK with AngularJS
 
-This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-webapp/tree/7.13/camunda-bpm-sdk-js) to work with user task forms.
+This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-webapp/tree/7.13/camunda-bpm-sdk-js) to work with user task forms. Please note that the example covers the use case of user task forms that are deployed only within process application (for more information, please visit our [User guide](https://docs.camunda.org/manual/latest/user-guide/task-forms/#embedded-task-forms).
 
 ![SDK JS standalone usage with AngularJS](screenshot.png)
 
