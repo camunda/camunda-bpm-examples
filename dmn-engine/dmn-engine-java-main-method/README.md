@@ -196,11 +196,11 @@ Dish Decision:
 ```
 
 
-[Camunda DMN engine]: https://docs.camunda.org/manual/7.13/user-guide/dmn-engine/
+[Camunda DMN engine]: https://docs.camunda.org/manual/7.14/user-guide/dmn-engine/
 [DMN tutorial]: https://camunda.org/dmn/tutorial/
 [Dish Decision]: src/main/resources/org/camunda/bpm/example/dish-decision.png
 [dish-decision.dmn11.xml]: src/main/resources/org/camunda/bpm/example/dish-decision.dmn11.xml
 [Camunda Modeler]: https://camunda.org/dmn/tool/
 [DishDecider.java]: src/main/java/org/camunda/bpm/example/DishDecider.java
-[User Guide]: https://docs.camunda.org/manual/7.13/user-guide/dmn-engine/testing/
+[User Guide]: https://docs.camunda.org/manual/7.14/user-guide/dmn-engine/testing/
 [DishDecisionTest.java]: src/test/java/org/camunda/bpm/example/DishDecisionTest.java
