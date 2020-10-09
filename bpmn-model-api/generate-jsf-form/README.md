@@ -209,7 +209,12 @@ User task form:
 
 ![Handle Feature Request Form][9]
 
+## How to use it?
 
+1. Checkout the project with Git
+2. Download [Camunda BPM Wildfly][10]
+3. Unpack and execute ```start-camunda.(bat/sh)```
+4. Read and run the [unit test cases][11]
 
 [1]: src/main/resources/support.png
 [2]: src/main/resources/feature.png
@@ -220,3 +225,5 @@ User task form:
 [7]: docs/support-task-form.png
 [8]: docs/feature-start-form.png
 [9]: docs/features-task-form.png
+[10]: https://downloads.camunda.cloud/release/camunda-bpm/wildfly/7.14/
+[11]: src/test/java/org/camunda/bpm
