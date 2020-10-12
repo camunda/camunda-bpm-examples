@@ -1,6 +1,6 @@
 # Standalone usage of JS SDK
 
-This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-webapp/tree/7.13/camunda-bpm-sdk-js) to work with user task forms.
+This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-webapp/tree/7.14/camunda-bpm-sdk-js) to work with user task forms.
 Please note that the example only covers the use case of user task forms that are deployed within process application. Forms which are deployed using the REST or Java API are not supported. For more information, please visit our [User guide](https://docs.camunda.org/manual/latest/user-guide/task-forms/#embedded-task-forms).
 
 ![SDK JS standalone usage](screenshot.png)
