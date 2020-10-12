@@ -10,7 +10,7 @@
   <name>Spin - Configuring a Data Format Per Process Application</name>
 
   <properties>
-    <version.camunda>7.13.0</version.camunda>
+    <version.camunda>7.14.0</version.camunda>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>6.0</version>
+      <version>7.0</version>
       <scope>provided</scope>
     </dependency>
 

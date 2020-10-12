@@ -27,7 +27,7 @@ function ProcessInstanceCount({ camundaAPI }) {
 
   useEffect(() => {
     fetch(
-      `${cockpitApi}plugin/sample-plugin/${engine}/process-instance`,
+      `${cockpitApi}/plugin/sample-plugin/${engine}/process-instance`,
       {
         headers: {
           'Accept': 'application/json'

@@ -32,6 +32,7 @@
     <property name="jobExecutorActivate" value="false" />
     <property name="deploymentResources" value="classpath*:*.bpmn" />
     <property name="metricsEnabled" value="false"/>
+    <property name="telemetryReporterActivate" value="false" />
   </bean>
 
   <bean id="processEngine" class="org.camunda.bpm.engine.spring.ProcessEngineFactoryBean">

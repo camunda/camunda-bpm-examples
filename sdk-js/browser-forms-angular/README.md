@@ -1,6 +1,6 @@
 # Standalone usage of JS SDK with AngularJS
 
-This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-webapp/tree/7.13/camunda-bpm-sdk-js) to work with user task forms. Please note that the example only covers the use case of user task forms that are deployed within process application. Forms which are deployed using the REST or Java API are not supported. For more information, please visit our [User guide](https://docs.camunda.org/manual/latest/user-guide/task-forms/#embedded-task-forms).
+This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-webapp/tree/7.14/camunda-bpm-sdk-js) to work with user task forms. Please note that the example only covers the use case of user task forms that are deployed within process application. Forms which are deployed using the REST or Java API are not supported. For more information, please visit our [User guide](https://docs.camunda.org/manual/latest/user-guide/task-forms/#embedded-task-forms).
 
 ![SDK JS standalone usage with AngularJS](screenshot.png)
 
@@ -14,10 +14,10 @@ Supported browsers are:
 As you can see in the `index.html` of this folder, you will need a DOM library (jQuery in this example) and the Javascript SDK to start.
 
 ```html
-  <script src="./jquery-1.11.2.js"
+  <script src="./jquery-3.5.1.js"
           type="text/javascript"></script>
 
-  <script src="./angular-1.2.16.min.js"
+  <script src="./angular-1.8.0.min.js"
           type="text/javascript"></script>
 
   <script src="./camunda-bpm-sdk-angular.js"
@@ -30,7 +30,7 @@ Note: you can find the complete code of this example in the `scripts.js` file.
 
 ### Client
 
-The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](http://docs.camunda.org/7.13/api-references/rest/)):
+The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](https://docs.camunda.org/manual/7.14/reference/rest/)):
 
 ```js
 var camClient = new CamSDK.Client({
@@ -99,6 +99,6 @@ camFormInstance.submit(function (err) {
 # Running this example
 
 1. Clone the respository
-2. Copy this folder to the `server/apache-tomcat-X.X.XX/webapps` directory of a [camunda BPM platform distribution](http://camunda.org/download/)
+2. Copy this folder to the `server/apache-tomcat-X.X.XX/webapps` directory of a [camunda BPM platform distribution](http://camunda.com/download/)
 3. Start the platform
 4. Go to http://localhost:8080/browser-forms-angular and play around

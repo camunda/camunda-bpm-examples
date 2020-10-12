@@ -14,7 +14,7 @@
 <li><a href="#testing">Testing</a></li>
 
 
-Sometimes it is desired to share one Camunda installation between multiple independent parties, also referred to as *tenants*. While sharing an installation means sharing computational resources, the tenants' data should be separated from each other. This tutorial shows how to work with the [one process engine per tenant approach](https://docs.camunda.org/manual/7.13/user-guide/process-engine/multi-tenancy/#one-process-engine-per-tenant).
+Sometimes it is desired to share one Camunda installation between multiple independent parties, also referred to as *tenants*. While sharing an installation means sharing computational resources, the tenants' data should be separated from each other. This tutorial shows how to work with the [one process engine per tenant approach](https://docs.camunda.org/manual/7.14/user-guide/process-engine/multi-tenancy/#one-process-engine-per-tenant).
 
 In detail it explains how to:
 
@@ -22,12 +22,12 @@ In detail it explains how to:
 * develop a process application with tenant-specific deployments
 * access the correct process engine from a REST resource based on a tenant identifier
 
-See the [user guide](https://docs.camunda.org/manual/7.13/user-guide/process-engine/multi-tenancy/) for a general introduction on multi-tenancy and the different options Camunda offers.
+See the [user guide](https://docs.camunda.org/manual/7.14/user-guide/process-engine/multi-tenancy/) for a general introduction on multi-tenancy and the different options Camunda offers.
 
 
 # Before Starting
 
-Before starting, make sure to download the [Camunda BPM WildFly distribution](http://camunda.org/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
+Before starting, make sure to download the [Camunda BPM WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
 
 
 # Configuring the Database
@@ -51,19 +51,19 @@ create schema TENANT2;
 Next, inside each schema, create the database tables. To achieve this, get the SQL create scripts
 from the WildFly distribution from the `sql/create/` folder inside your distribution.
 
-Inside the h2 console, execute the create scripts (`h2_engine_7.13.0.sql` and
-`h2_identity_7.13.0.sql`) scripts after selecting the appropriate schema for the current connection:
+Inside the h2 console, execute the create scripts (`h2_engine_7.14.0.sql` and
+`h2_identity_7.14.0.sql`) scripts after selecting the appropriate schema for the current connection:
 
 ```sql
 set schema TENANT1;
 
-<<paste sql/create/h2_engine_7.13.0.sql here>>
-<<paste sql/create/h2_identity_7.13.0.sql here>>
+<<paste sql/create/h2_engine_7.14.0.sql here>>
+<<paste sql/create/h2_identity_7.14.0.sql here>>
 
 set schema TENANT2;
 
-<<paste sql/create/h2_engine_7.13.0.sql here>>
-<<paste sql/create/h2_identity_7.13.0.sql here>>
+<<paste sql/create/h2_engine_7.14.0.sql here>>
+<<paste sql/create/h2_identity_7.14.0.sql here>>
 ```
 
 The following screenshot illustrates how to create the tables inside the correct schema:
@@ -363,7 +363,7 @@ The test class [ProcessIntegrationTest](src/test/java/org/camunda/bpm/tutorial/m
 
 Follow the steps to run the test:
 
-* download the [Camunda BPM WildFly distribution](http://camunda.org/release/camunda-bpm/wildfly/)
+* download the [Camunda BPM WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/)
 * replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
   * [standalone.xml](standalone.xml) (two schemas - requires manual schema creation) or 
   * [standalone_test.xml](standalone_test.xml) (two databases - auto schema creation)
