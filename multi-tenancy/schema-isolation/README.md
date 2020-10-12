@@ -27,7 +27,7 @@ See the [user guide](https://docs.camunda.org/manual/7.14/user-guide/process-eng
 
 # Before Starting
 
-Before starting, make sure to download the [Camunda BPM WildFly distribution](http://camunda.org/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
+Before starting, make sure to download the [Camunda BPM WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
 
 
 # Configuring the Database
