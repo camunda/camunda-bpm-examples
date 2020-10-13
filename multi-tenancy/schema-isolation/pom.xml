@@ -81,7 +81,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
-      <version>4.12</version>
+      <version>4.13.1</version>
     </dependency>
     
     <!-- Required to use Connectors in unit tests -->
