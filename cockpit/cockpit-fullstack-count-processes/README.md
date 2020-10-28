@@ -507,4 +507,4 @@ You made it! In this example we walked through all important steps required to b
 
 Use under terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-[1]: https://github.com/camunda/camunda-bpm-webapp
+[1]: https://github.com/camunda/camunda-bpm-platform/tree/master/webapps
