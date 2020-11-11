@@ -1,6 +1,6 @@
 # Node.js usage of JS SDK
 
-This example attempts to illustrate the usage of the [JS SDK](https://github.com/camunda/camunda-bpm-webapp/camunda-bpm-sdk-js) in a [node.js](http://nodejs.org) environement.
+This example attempts to illustrate the usage of the [JS SDK](https://github.com/camunda/camunda-bpm-platform/tree/master/webapps/camunda-bpm-sdk-js) in a [node.js](http://nodejs.org) environement.
 
 ![SDK JS node.js usage](screenshot.gif)
 
