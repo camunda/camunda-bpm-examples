@@ -2,7 +2,7 @@
   "name": "camunda-sdk-js-example-node",
   "private": true,
   "dependencies": {
-    "camunda-bpm-webapp": "git://github.com/camunda/camunda-bpm-webapp#7.14.0",
+    "camunda-bpm-webapp": "git://github.com/camunda/camunda-bpm-webapp#7.15.0",
     "cli-table": "^0.3.1",
     "inquirer": "^0.8.0"
   }

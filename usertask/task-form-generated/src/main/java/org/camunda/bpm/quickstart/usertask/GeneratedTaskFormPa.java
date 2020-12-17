@@ -28,7 +28,7 @@ import org.camunda.bpm.application.impl.ServletProcessApplication;
  * provides BPMN deployment resources and delegate code.</p>
  * 
  * <p>See also:
- * <a href="https://docs.camunda.org/manual/7.14/user-guide/process-applications/the-process-application-class/#the-servletprocessapplication">User Guide on the Servlet Process Application</a>
+ * <a href="https://docs.camunda.org/manual/7.15/user-guide/process-applications/the-process-application-class/#the-servletprocessapplication">User Guide on the Servlet Process Application</a>
  * </p>
  * 
  * <p>From a technical perspective, this a class is a 
