@@ -14,7 +14,7 @@ This example demonstrates how you can build a Spring Boot application having fol
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter</artifactId>
-  <version>7.14.0</version>
+  <version>7.15.0</version>
 </dependency>
 ...
 ```
@@ -36,7 +36,7 @@ public class AutoDeploymentApplication {
 
 3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within the process application.
 
-4. When implementing the process application in [standard manner](https://docs.camunda.org/manual/7.14/user-guide/process-applications/the-process-application-class/),
+4. When implementing the process application in [standard manner](https://docs.camunda.org/manual/7.15/user-guide/process-applications/the-process-application-class/),
  you can use method-level annotations `@PostDeploy` and `@PreUndeploy` to process corresponding events. In case of a Spring Boot 
  process application you can handle this events by using Spring @EventListener annotation with following event classes: 
 `PostDeployEvent` and `PreUndeployEvent`.

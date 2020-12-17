@@ -7,7 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.14.0-ee</camunda.version>
+    <camunda.version>7.15.0-ee</camunda.version>
     <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
   </properties>
 
