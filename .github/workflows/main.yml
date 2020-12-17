@@ -1,0 +1,29 @@
+name: Bump versions
+on:
+  workflow_dispatch:
+    inputs:
+      oldVersion:
+        description: 'Old Version (search)'
+        required: true
+        default: '7.X.0'
+      newVersion:
+        description: 'New Version (replace)'
+        required: true
+        default: '7.X.0'
+      ignoredFiles:
+        description: 'Files to ignore (comma separated)'
+        required: true
+        default: 'README.md,**/package-lock.json'
+
+jobs:
+  bump-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Bump versions
+        uses: camunda/bump-versions-action@v1
+        with:
+          oldVersion: ${{ github.event.inputs.oldVersion }}
+          newVersion: ${{ github.event.inputs.newVersion }}
+          ignoredFiles: ${{ github.event.inputs.ignoredFiles }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
