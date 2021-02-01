@@ -28,7 +28,6 @@ Built and tested against Camunda BPM version `7.14.0`.
 	  3. [plugin.js Main File](#pluginjs-main-file)
 	  4. [HTML View](#html-view)
 4. [Summary](#summary)
-5. [How Client-Side Plugins Work](#how-client-side-plugins-work)
 
 ## Integrate into Camunda BPM Webapp
 
@@ -453,7 +452,7 @@ Now we are done with the server-side parts of the plug-in. Next, we will go ahea
 
 
 >This section only provides a short overview of the client-side plug-in mechanism in Cockpit.
->Consider reading [How client-side plug-ins work](#how-client-side-plugins-work) if you are interested in more details.
+>Consider reading about the [Structure of a Frontend Module](https://docs.camunda.org/manual/7.14/webapps/cockpit/extend/plugins/#structure-of-a-frontend-module) if you are interested in more details.
 
 
 The client-side part of a Cockpit plug-in consists of an extension to the Cockpit webapp client application. It is served through the plug-in serverside extension as a static plug-in asset.
