@@ -16,7 +16,7 @@ managed container shared Process Engine paired with the power of Spring Beans in
 ## Show me the important parts!
 
 We create a Process Application class which extends the `ServletProcessApplication` and annotate
-it with `@ProcessApplication`, so the Camunda BPM Platform can pick it up and register the Process 
+it with `@ProcessApplication`, so the Camunda Platform can pick it up and register the Process 
 Application without any further action:
 
 ```java
@@ -62,7 +62,7 @@ dependency like:
 
   1. Checkout the project with Git;
   2. Import the project into your IDE;
-  3. Build it with Maven, it will download the Camunda BPM WildFly distribution and execute
+  3. Build it with Maven, it will download the Camunda Platform WildFly distribution and execute
      the included Arquillian test.
   4. Watch out for this console log:
 

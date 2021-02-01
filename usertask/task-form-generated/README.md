@@ -56,7 +56,7 @@ From this form metadata, an HTML Taskform is generated and displayed in the Task
 
 1. Checkout the project with Git
 2. Build the project with maven
-3. Deploy the war file to a camunda BPM platform distribution
+3. Deploy the war file to a Camunda Platform distribution
 4. Go to the Tasklist and start a process instance for the process named "Generated Forms Quickstart"
 
 [1]: docs/screenshot.png

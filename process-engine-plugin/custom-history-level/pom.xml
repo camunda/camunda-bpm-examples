@@ -4,7 +4,7 @@
   <artifactId>custom-history-level</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Custom History Level</name>
-  <description>an example project that shows how to implement a custom history level for camunda BPM platform</description>
+  <description>an example project that shows how to implement a custom history level for Camunda Platform</description>
 
   <properties>
     <version.camunda>7.14.0</version.camunda>

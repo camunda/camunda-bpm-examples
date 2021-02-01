@@ -1,6 +1,6 @@
 # REST Service Task
 
-This quickstart demonstrates how to use the built-in REST HTTP connector for invoking REST services in camunda BPM. The example is *classless*, relying entirely on scripting and expression language. It makes use of the camunda Connect and the camunda Spin extensions.
+This quickstart demonstrates how to use the built-in REST HTTP connector for invoking REST services in Camunda Platform. The example is *classless*, relying entirely on scripting and expression language. It makes use of the camunda Connect and the camunda Spin extensions.
 
 The example includes a BPMN 2.0 process which invokes a holiday service, parses the result and takes a decision based on the result:
 

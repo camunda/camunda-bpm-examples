@@ -113,7 +113,7 @@ registered within the process application. Forms HTML needs to be added in the `
 6. Adjust the `src/main/resorces/application.yaml` file according to your preferences. The default setup will use an
  embedded H2 instance.
 
-## Run the application and use Camunda BPM Platform
+## Run the application and use Camunda Platform
 
 You can build the application with `mvn clean install` and then run it with the `java -jar` command.
 You can also execute the application with `mvn spring-boot:run`.

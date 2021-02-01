@@ -77,7 +77,7 @@ function readFiles(dirPath, filenames) {
 
 
 /*************************************\
- * camunda BPM SDK JS implementation *
+ * Camunda Platform SDK JS implementation *
 \*************************************/
 var CamSDK = require('camunda-bpm-webapp/camunda-bpm-sdk-js');
 

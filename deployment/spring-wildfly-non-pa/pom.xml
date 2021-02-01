@@ -5,7 +5,7 @@
   <groupId>org.camunda.bpm.quickstart</groupId>
   <artifactId>camunda-quickstart-wildfly-spring-nonpa</artifactId>
   <packaging>war</packaging>
-  <name>camunda BPM - Quickstarts - WildFly - Spring Non Process Application</name>
+  <name>Camunda Platform - Quickstarts - WildFly - Spring Non Process Application</name>
   <version>1.0-SNAPSHOT</version>
 
   <properties>

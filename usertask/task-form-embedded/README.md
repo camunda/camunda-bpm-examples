@@ -80,7 +80,7 @@ This quickstart demonstrates the use of most of the supported form controls. See
 
 1. Checkout the project with Git
 2. Build the project with maven
-3. Deploy the war file to a camunda BPM platform distribution
+3. Deploy the war file to a Camunda Platform distribution
 4. Go the the Tasklist and start a process instance for the process named "Embedded Forms Quickstart"
 
 [1]: docs/screenshot.png

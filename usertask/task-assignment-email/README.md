@@ -21,9 +21,9 @@ This listener will retrieve the email address of the user that has been assigned
 ## How to use it?
 
 1. Set Properties according to your mail server in TaskAssignmentListener
-2. Set an email address for User 'demo' using Camunda BPM User Management
+2. Set an email address for User 'demo' using Camunda Platform User Management
 3. Build the project with maven
-4. Deploy the project to your server (tested in the Camunda BPM distribution for WildFly)
+4. Deploy the project to your server (tested in the Camunda Platform distribution for WildFly)
 5. Start the Process "Task Assignment Email" from Camunda Tasklist
 6. Watch your inbox!
 

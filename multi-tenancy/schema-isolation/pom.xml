@@ -4,7 +4,7 @@
   <groupId>org.camunda.bpm.tutorial</groupId>
   <artifactId>camunda-tutorial-multi-tenancy-schema-isolation</artifactId>
   <packaging>war</packaging>
-  <name>camunda BPM - Tutorial - Tenant-Aware Process Application</name>
+  <name>Camunda Platform - Tutorial - Tenant-Aware Process Application</name>
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
@@ -143,7 +143,7 @@
       <dependencies>
         <dependency>
           <!-- Needed for ArquillianTest -->
-          <!-- Requires a running WildFly with Camunda BPM -->
+          <!-- Requires a running WildFly with Camunda Platform -->
           <groupId>org.wildfly.arquillian</groupId>
           <artifactId>wildfly-arquillian-container-remote</artifactId>
           <version>${wildfly.container.adapter.version}</version>
@@ -162,7 +162,7 @@
   <repositories>
     <repository>
       <id>camunda-bpm-nexus</id>
-      <name>Camunda BPM Maven Repository</name>
+      <name>Camunda Platform Maven Repository</name>
       <url>https://app.camunda.com/nexus/content/groups/public</url>
     </repository>
     <repository>
