@@ -1,6 +1,6 @@
 # SOAP Service Task
 
-This quickstart demonstrates how to use the built-in SOAP HTTP connector for invoking SOAP services in Camunda BPM. The example is *classless*, relying entirely on scripting and expression language. It makes use of the Camunda Connect and the Camunda Spin extensions.
+This quickstart demonstrates how to use the built-in SOAP HTTP connector for invoking SOAP services in Camunda Platform. The example is *classless*, relying entirely on scripting and expression language. It makes use of the Camunda Connect and the Camunda Spin extensions.
 
 The example includes a BPMN 2.0 process which calls a weather forecast service, parses the result and takes a decision based on the result:
 

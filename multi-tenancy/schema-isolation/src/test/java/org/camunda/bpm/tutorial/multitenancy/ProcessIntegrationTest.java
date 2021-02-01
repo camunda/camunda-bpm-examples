@@ -66,7 +66,7 @@ public class ProcessIntegrationTest {
       .create(WebArchive.class, "multi-tenancy-tutorial.war")
       // add needed dependencies
       .addAsLibraries(libs)
-      // prepare as process application archive for Camunda BPM Platform
+      // prepare as process application archive for Camunda Platform
       .addAsResource("META-INF/processes.xml", "META-INF/processes.xml")
       // enable CDI
       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")

@@ -2,7 +2,7 @@
 
 > Note: This example only works with the XQuery scriptengine extension. 
 
-This quickstart demonstrates how to use the Saxon XQuery script engine extension to transform data in camunda BPM.
+This quickstart demonstrates how to use the Saxon XQuery script engine extension to transform data in Camunda Platform.
 
 The example includes a BPMN 2.0 process which invokes a simple script task which transforms two input XML documents into a single output XML output.
 

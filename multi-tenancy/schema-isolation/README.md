@@ -27,7 +27,7 @@ See the [user guide](https://docs.camunda.org/manual/7.14/user-guide/process-eng
 
 # Before Starting
 
-Before starting, make sure to download the [Camunda BPM WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
+Before starting, make sure to download the [Camunda Platform WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
 
 
 # Configuring the Database
@@ -363,7 +363,7 @@ The test class [ProcessIntegrationTest](src/test/java/org/camunda/bpm/tutorial/m
 
 Follow the steps to run the test:
 
-* download the [Camunda BPM WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/)
+* download the [Camunda Platform WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/)
 * replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
   * [standalone.xml](standalone.xml) (two schemas - requires manual schema creation) or 
   * [standalone_test.xml](standalone_test.xml) (two databases - auto schema creation)

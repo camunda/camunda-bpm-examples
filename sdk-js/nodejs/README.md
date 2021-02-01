@@ -11,7 +11,7 @@ The [`index.js`](./index.js) file of this directory should be clear enough to gi
 You will need to install [node.js](http://nodejs.org) to run this example and then:
 
 1. Clone the respository
-2. Start a [camunda BPM platform distribution](http://camunda.com/download/)
+2. Start a [Camunda Platform distribution](http://camunda.com/download/)
 3. Go to the directory of this example
 4. Install the dependencies with `npm install`
 5. Run the example with `node index.js`

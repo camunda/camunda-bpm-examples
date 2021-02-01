@@ -1,9 +1,9 @@
-Camunda BPM examples
+Camunda Platform examples
 ====================
 
 > Looking for the "invoice" example contained in the distribution?  You can find it here: https://github.com/camunda/camunda-bpm-platform/tree/master/examples/invoice
 
-Camunda BPM examples is a collection of focused usage examples for the [camunda BPM platform](https://github.com/camunda/camunda-bpm-platform), intended to get you started quickly. The sources on the master branch work with the current Camunda release. Follow the links below to browse the examples for the Camunda version you use:
+Camunda Platform examples is a collection of focused usage examples for the [Camunda Platform](https://github.com/camunda/camunda-bpm-platform), intended to get you started quickly. The sources on the master branch work with the current Camunda release. Follow the links below to browse the examples for the Camunda version you use:
 
 | Camunda Version  | Link                                                                 | Checkout command      |
 | -----------------|----------------------------------------------------------------------|-----------------------|
@@ -27,7 +27,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 ## Overview
 
-* [Getting Started with camunda BPM](#getting-started-with-camunda-bpm)
+* [Getting Started with Camunda Platform](#getting-started-with-camunda-bpm)
 * [BPMN 2.0 & Process Implementation](#bpmn-20--process-implementation-examples)
 * [Deployment & Project Setup](#deployment--project-setup-examples)
 * [Process Engine Plugin](#process-engine-plugin-examples)
@@ -45,12 +45,12 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [Spring Boot Starter examples](#spring-boot-starter-examples)
 * [External Task Client examples](#external-task-client-examples)
 
-### Getting Started with camunda BPM
+### Getting Started with Camunda Platform
 
 | Name                                                                                                   | Container          |
 | -------------------------------------------------------------------------------------------------------|--------------------|
 | [Simple Process Applications](https://docs.camunda.org/get-started/bpmn20/)                            | All                |
-| [camunda BPM and the Spring Framework](https://docs.camunda.org/get-started/spring/)                   | Tomcat             |
+| [Camunda Platform and the Spring Framework](https://docs.camunda.org/get-started/spring/)              | Tomcat             |
 | [Process Applications with JavaEE 6](https://docs.camunda.org/get-started/javaee6/)                    | JavaEE Containers  |
 
 ### BPMN 2.0 & Process Implementation Examples

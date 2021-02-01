@@ -49,7 +49,7 @@ public class ArquillianTest {
             .create(WebArchive.class, "generic-jsf-form.war")
             // add needed dependencies
             .addAsLibraries(libs)
-            // prepare as process application archive for camunda BPM Platform
+            // prepare as process application archive for Camunda Platform
             .addAsWebResource("META-INF/processes.xml", "WEB-INF/classes/META-INF/processes.xml")
             // enable CDI
             .addAsWebResource("WEB-INF/beans.xml", "WEB-INF/beans.xml")

@@ -5,7 +5,7 @@
   <groupId>org.camunda.bpm.quickstart</groupId>
   <artifactId>camunda-quickstart-embedded-spring-rest</artifactId>
   <packaging>war</packaging>
-  <name>camunda BPM - Quickstarts - EMBEDDED - Spring REST</name>
+  <name>Camunda Platform - Quickstarts - EMBEDDED - Spring REST</name>
   <version>1.0-SNAPSHOT</version>
 
   <properties>

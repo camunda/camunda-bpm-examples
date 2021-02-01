@@ -9,7 +9,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <!-- set the version for camunda BPM here -->
+        <!-- set the version for Camunda Platform here -->
         <version.camunda>7.14.0</version.camunda>
         <version.junit>4.12</version.junit>
         <version.h2>1.4.190</version.h2>

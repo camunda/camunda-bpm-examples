@@ -1,9 +1,9 @@
 # Script Task which uses XSLT
 
 > Note: This example works also only with the XSLT scriptengine extension which is part of the
-> camunda bpm **enterprise edition**.
+> Camunda Platform **enterprise edition**.
 
-This quickstart demonstrates how to use the XSLT script engine extension to transform data in camunda BPM.
+This quickstart demonstrates how to use the XSLT script engine extension to transform data in Camunda Platform.
 The example is *classless*, relying entirely on scripting and expression language.
 
 The example includes a BPMN 2.0 process which invokes a simple script task which transforms the input data

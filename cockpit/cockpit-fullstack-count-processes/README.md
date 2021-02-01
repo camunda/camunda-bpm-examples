@@ -1,9 +1,9 @@
 Fullstack (ReactJS & Java) "Count Processes" Cockpit Plugin
 ===========================================================
 
-This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda BPM](http://docs.camunda.org).
+This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda Platform](http://docs.camunda.org).
 
-Built and tested against Camunda BPM version `7.14.0`.
+Built and tested against Camunda Platform version `7.14.0`.
 
 ![Screenshot](screenshot.png)
 
@@ -11,7 +11,7 @@ Built and tested against Camunda BPM version `7.14.0`.
 
 # Table of contents
 
-1. [Integrate into Camunda BPM Webapp](#integrate-into-camunda-bpm-webapp)
+1. [Integrate into Camunda Platform Webapp](#integrate-into-camunda-bpm-webapp)
 2. [Server Side](#server-side)
 	  1. [Plug-in Archive](#plug-in-archive)
 	  2. [Plug-in Main Class](#plug-in-main-class)
@@ -30,10 +30,10 @@ Built and tested against Camunda BPM version `7.14.0`.
 4. [Summary](#summary)
 5. [How Client-Side Plugins Work](#how-client-side-plugins-work)
 
-## Integrate into Camunda BPM Webapp
+## Integrate into Camunda Platform Webapp
 
 1. Build this demo: `mvn clean install`
-2. There are two ways to add your plugin to the Camunda BPM webapp.
+2. There are two ways to add your plugin to the Camunda Platform webapp.
    
    1. You can copy `./target/cockpit-sample-plugin-1.0-SNAPSHOT.jar` to the `WEB-INF/lib` folder of the Camunda webapp.
    2. You can set up a maven war overlay for the Camunda webapp.
@@ -345,7 +345,7 @@ public class SamplePluginRootResource extends AbstractPluginRootResource {
 }
 ```
 
-Note that a sub resource gets initialized by the plug-in when requests to `{engineName}/process-instance` are being made. That ensures that a Cockpit service is multi-tenancy ready out of the box (i.e. capable to work with all process engines provided by the Camunda BPM platform).
+Note that a sub resource gets initialized by the plug-in when requests to `{engineName}/process-instance` are being made. That ensures that a Cockpit service is multi-tenancy ready out of the box (i.e. capable to work with all process engines provided by the Camunda Platform).
 
 A sub-resource may extend `org.camunda.bpm.cockpit.plugin.resource.AbstractPluginResource` to get initialized with the correct process engine mappings. The resource shown below exposes our custom SQL query to the client when accessing the resource via `GET`.
 
@@ -497,7 +497,7 @@ export default {
 
 The file defines a plugin with the id `process-instance-count` which is automatically registered at the plugin point `cockpit.dashboard`.
 
-When deploying the extended Camunda webapplication on the Camunda BPM platform, we can see the plug-in in action.
+When deploying the extended Camunda webapplication on the Camunda Platform, we can see the plug-in in action.
 
 ## Summary
 

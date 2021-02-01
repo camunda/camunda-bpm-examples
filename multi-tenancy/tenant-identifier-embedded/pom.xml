@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.camunda.bpm.example</groupId>
   <artifactId>camunda-example-multi-tenancy-tenant-identifier-embedded</artifactId>
-  <name>camunda BPM - Example - Multi Tenancy - Tenant Identifier - Embedded</name>
+  <name>Camunda Platform - Example - Multi Tenancy - Tenant Identifier - Embedded</name>
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>

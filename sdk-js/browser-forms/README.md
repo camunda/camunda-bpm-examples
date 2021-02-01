@@ -96,7 +96,7 @@ camFormInstance.submit(function (err) {
 # Running this example
 
 1. Clone the repository
-2. Copy this folder to the `server/apache-tomcat-X.X.XX/webapps` directory of a [camunda BPM platform distribution](https://camunda.com/download/)
+2. Copy this folder to the `server/apache-tomcat-X.X.XX/webapps` directory of a [Camunda Platform distribution](https://camunda.com/download/)
 3. Start the platform
 4. Go to http://localhost:8080/browser-forms and play around
 

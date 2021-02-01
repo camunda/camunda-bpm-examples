@@ -4,7 +4,7 @@
   <groupId>org.camunda.bpm.quickstart</groupId>
   <artifactId>camunda-quickstart-spring-servlet-pa-tomcat</artifactId>
   <packaging>war</packaging>
-  <name>camunda BPM - Quickstarts - Spring Servlet Process Application For Tomcat</name>
+  <name>Camunda Platform - Quickstarts - Spring Servlet Process Application For Tomcat</name>
   <version>1.0-SNAPSHOT</version>
 
   <properties>

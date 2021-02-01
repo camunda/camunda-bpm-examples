@@ -15,7 +15,7 @@ with the power of Spring Beans inside your processes.
 ## Show me the important parts!
 
 A process application class was created which extends the `ServletProcessApplication` class. The class was annotated 
-with `@ProcessApplication`. This allows the Camunda BPM Platform to pick it up and register the process application 
+with `@ProcessApplication`. This allows the Camunda Platform to pick it up and register the process application 
 without any further action:
 
 ```java
@@ -95,7 +95,7 @@ This will start the embedded tomcat server.
 2. Watch out for this console log:
 
 ```bash
-[INFO] ENGINE-08046 Found camunda bpm platform configuration in
+[INFO] ENGINE-08046 Found Camunda Platform configuration in
 ...
 [INFO] ENGINE-07015 Detected @ProcessApplication class 'org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication'
 May 18, 2020 4:46:36 PM org.apache.catalina.core.ApplicationContext log

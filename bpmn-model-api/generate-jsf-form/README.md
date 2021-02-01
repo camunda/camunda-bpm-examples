@@ -212,7 +212,7 @@ User task form:
 ## How to use it?
 
 1. Checkout the project with Git
-2. Download [Camunda BPM Wildfly][10]
+2. Download [Camunda Platform Wildfly][10]
 3. Unpack and execute ```start-camunda.(bat/sh)```
 4. Read and run the [unit test cases][11]
 

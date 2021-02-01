@@ -4,7 +4,7 @@
   <groupId>org.camunda.bpm.quickstart</groupId>
   <artifactId>camunda-quickstart-ejb-pa</artifactId>
   <packaging>war</packaging>
-  <name>camunda BPM - Quickstarts - Ejb Process Application</name>
+  <name>Camunda Platform - Quickstarts - Ejb Process Application</name>
   <version>1.0-SNAPSHOT</version>
 
   <properties>

@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>Camunda Cockpit Plugin: Sample</name>
-  <description>This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of Camunda BPM.</description>
+  <description>This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of Camunda Platform.</description>
   <url>https://github.com/camunda/camunda-bpm-examples/tree/7.14/cockpit/cockpit-sample-plugin</url>
 
   <properties>
