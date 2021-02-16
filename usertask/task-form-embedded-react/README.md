@@ -6,18 +6,12 @@ React is a popular library to build user interfaces. If you want to use react to
 ## Overview
 ### How can I add React to my Tasklist?
   1. Download [React](https://unpkg.com/react@16.8.6/umd/react.development.js) and [reactDOM](https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js) into the `app/tasklist/scripts/react` of your webapp.
-  2. Add [loadReact.js](config/react/loadReact.js) to the same folder. This will add React and ReactDOM to the global scope
-  3. Add everything as a custom script in `app/tasklist/scripts/config.js`. If you use the production build of react, change the path accordingly.
+  2. Add [loadReact.js](config/react/loadReact.js) to the same folder. This will add React and ReactDOM to the global scope. If you use the production build of react, adjust the imports accordingly. 
+  3. Add the loader as a custom script in `app/tasklist/scripts/config.js`. 
   ```javascript
-    customScripts: {
-      ngDeps: [],
-      deps: ['loadReact', 'react', 'react-dom'],
-      paths: {
-        'loadReact': 'scripts/react/loadReact',
-        'react': 'scripts/react/react.development',
-        'react-dom': 'scripts/react/react-dom.development'
-      }
-    }
+    customScripts: [
+      'scripts/react/loadReact.js'
+    ]
   ```
 That's it, you can now use react in your custom forms.
 

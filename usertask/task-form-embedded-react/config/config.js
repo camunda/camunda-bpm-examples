@@ -15,18 +15,10 @@
  * limitations under the License.
  */
 
-window.camTasklistConf = {
+export default {
   // // custom libraries and scripts loading and initialization,
   // // see: http://docs.camunda.org/guides/user-guide/#tasklist-customizing-custom-scripts
-  customScripts: {
-    ngDeps: [],
-    // RequireJS configuration for a complete configuration documentation see:
-    // http://requirejs.org/docs/api.html#config
-    deps: ['loadReact', 'react', 'react-dom'],
-    paths: {
-      'loadReact': 'scripts/react/loadReact',
-      'react': 'scripts/react/react.development',
-      'react-dom': 'scripts/react/react-dom.development'
-    }
-  }
+  customScripts: [
+    'scripts/react/loadReact',
+  ]
 };

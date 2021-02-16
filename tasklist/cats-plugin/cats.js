@@ -15,18 +15,15 @@
  * limitations under the License.
  */
 
-define(['angular'], function(angular) {
 
-  var ngModule = angular.module('tasklist.cats', []);
-
-  ngModule.config(['ViewsProvider', function(ViewsProvider) {
-    ViewsProvider.registerDefaultView('tasklist.task.detail', {
-      label: 'Cats!',
-      id: 'cockpit.cats',
-      priority: 9001,
-      template: '<h1>Cats!</h1><img src="http://thecatapi.com/api/images/get?size=medium" width="400" />'
-    });
-  }]);
-
-  return ngModule;
-});
+export default {
+  id: 'tasklist.cats',
+  pluginPoint: 'tasklist.task.detail',
+  priority: 9001,
+  render: (node) => {
+    node.innerHTML = '<h1>Cats!</h1><img src="http://thecatapi.com/api/images/get?size=medium" width="400" />';
+  },
+  properties: {
+    label: 'Cats!'
+  }
+}

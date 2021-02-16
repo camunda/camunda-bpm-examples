@@ -15,9 +15,5 @@
  * limitations under the License.
  */
 
- require( ['react', 'react-dom'],
-  function(React, ReactDOM) {
-    window.React = React;
-    window.ReactDOM = ReactDOM;
-  }
-);
+window.React = import('./react.development.js');
+window.ReactDOM = import('./react-dom.development.js');

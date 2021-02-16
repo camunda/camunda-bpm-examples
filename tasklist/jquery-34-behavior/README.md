@@ -5,7 +5,7 @@ This example enables JQuery 3.4 behavior in the Camunda Webapps 7.14+ . It makes
 
 You can read more about the JQuery 3.5 release in the [JQuery release blog](https://blog.jquery.com/2020/04/10/jquery-3-5-0-released/).
 
-Built and tested against Camunda Platform version `7.14.0`.
+Built and tested against Camunda Platform version `7.15.0`.
 
 
 Integrate into Camunda Webapp
@@ -19,16 +19,9 @@ Add the following content to the `customScripts` object in the `app/tasklist/scr
 
 ```
   // …
-  customScripts: {
-    ngDeps: [],
-
-    deps: ['jquery-patch'],
-
-    // RequireJS path definitions
-    paths: {
-      'jquery-patch': 'scripts/jquery-patch'
-    }
-  }
+  customScripts: [
+    'scripts/jquery-patch'
+  ]
   // …
 ```
 
