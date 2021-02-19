@@ -209,8 +209,9 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 | Name                                                                                                                         | Environment                         | Keywords                          |
 |------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|-----------------------------------|
-| [Loan Granting - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/loan-granting)      | Java External Task Client           | External Task Client, Servicetask |
-| [Order Handling - Java](https://github.com/camunda/camunda-external-task-client-java/tree/master/examples/order-handling)    | Java External Task Client           | External Task Client, Servicetask |
+| [Loan Granting - Java](./clients/java/loan-granting)                                                                         | Java External Task Client           | External Task Client, Servicetask |
+| [Order Handling - Java](./clients/java/order-handling)                                                                       | Java External Task Client           | External Task Client, Servicetask |
+| [Dataformat - Java](./clients/java/dataformat)                                                                               | Java External Task Client           | External Task Client, Servicetask |
 | [Loan Granting - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/granting-loans) | JavaScript External Task Client     | External Task Client, Servicetask |
 | [Order Handling - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/order)         | JavaScript External Task Client     | External Task Client, Servicetask |
 
