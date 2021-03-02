@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-external-task-client</artifactId>
-      <version>7.15.0</version>
+      <version>1.4.1</version>
     </dependency>
 
     <dependency>
