@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <logger name="org.springframework " level="info" />
+  <logger name="org.camunda" level="info" />
+  <logger name="org.camunda.bpm.client" level="debug" />
+</configuration>

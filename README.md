@@ -43,7 +43,9 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [SDK-JS Examples](#sdk-js-examples)
 * [Authentication](#authentication)
 * [Spring Boot Starter examples](#spring-boot-starter-examples)
-* [External Task Client examples](#external-task-client-examples)
+* [External Task Client](#external-task-client)
+* [External Task Client Spring](#external-task-client-spring)
+* [External Task Client Spring Boot](#external-task-client-spring-boot)
 
 ### Getting Started with Camunda Platform
 
@@ -205,7 +207,7 @@ If you clone this repository, use the checkout commands to access the sources fo
  | [REST API DMN](spring-boot-starter/example-dmn-rest)       | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, REST API |
  | [Camunda Invoice Example](spring-boot-starter/example-invoice) | Spring boot with embedded engine, Webapps and Rest API                 |  Spring Boot Starter, REST API |
 
-### External Task Client Examples
+### External Task Client
 
 | Name                                                                                                                         | Environment                         | Keywords                          |
 |------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|-----------------------------------|
@@ -214,6 +216,21 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Dataformat - Java](./clients/java/dataformat)                                                                               | Java External Task Client           | External Task Client, Servicetask |
 | [Loan Granting - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/granting-loans) | JavaScript External Task Client     | External Task Client, Servicetask |
 | [Order Handling - JavaScript](https://github.com/camunda/camunda-external-task-client-js/tree/master/examples/order)         | JavaScript External Task Client     | External Task Client, Servicetask |
+
+ 
+### External Task Client Spring
+
+| Name                                                                                     | Keywords                          |
+|------------------------------------------------------------------------------------------|-----------------------------------|
+| [Loan Granting Example](./spring-boot-starter/external-task-client/loan-granting-spring) | External Task Client, Servicetask |
+
+### External Task Client Spring Boot
+
+| Name                                                                                                                      | Container                                           | Keywords                                               |
+|---------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|--------------------------------------------------------|
+| [Order Handling Example](./spring-boot-starter/external-task-client/order-handling-spring-boot)                           | Spring Boot with embedded Client                    | External Task Client, Servicetask, Spring Boot Starter |
+| [Loan Granting w/ REST API & Webapp Example](./spring-boot-starter/external-task-client/loan-granting-spring-boot-webapp) | Spring Boot with embedded Client, REST API & Webapp | External Task Client, Servicetask, Spring Boot Starter |
+| [Request Interceptor Example](./spring-boot-starter/external-task-client/request-interceptor-spring-boot)                 | Spring Boot with embedded Client                    | External Task Client, Servicetask, Spring Boot Starter |
 
 ### Container Specifics
 

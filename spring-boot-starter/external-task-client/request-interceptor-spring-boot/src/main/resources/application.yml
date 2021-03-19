@@ -1,0 +1,5 @@
+camunda.bpm.client:
+  base-url: http://localhost:8080/engine-rest # The URL pointing to the Camunda Platform Runtime REST API
+  worker-id: spring-boot-client # Identifies the worker towards the Engine
+
+logging.level.org.camunda.bpm.client: info
