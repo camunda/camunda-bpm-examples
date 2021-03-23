@@ -1,0 +1,31 @@
+{
+  "components": [
+    {
+      "key": "creditor",
+      "label": "Creditor",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "key": "amount",
+      "label": "Amount",
+      "type": "textfield",
+      "validate": {
+        "required": true,
+        "pattern": "^[0-9]+$"
+      }
+    },
+    {
+      "description": "An invoice number in the format: C-123.",
+      "key": "invoiceNumber",
+      "label": "Invoice Number",
+      "type": "textfield",
+      "validate": {
+        "pattern": "^C-[0-9]+$"
+      }
+    }
+  ],
+  "type": "default"
+}
