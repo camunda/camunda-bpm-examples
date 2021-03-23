@@ -12,7 +12,7 @@ Camunda Forms can be added to the web resources of a web application. As we use 
 
 ## How are Camunda Forms referenced?
 
-Camunda Forms are referenced using the `camunda:taskKey` property of a BPMN `<startEvent>` or a BPMN `<userTask>`:
+Camunda Forms are referenced using the `camunda:formKey` property of a BPMN `<startEvent>` or a BPMN `<userTask>`:
 
 ```xml
 <startEvent id="startEvent" camunda:formKey="camunda-forms:app:start-form.form" name="Invoice Received">
@@ -28,7 +28,7 @@ The attribute can also be set through the properties panel using the camunda Mod
 
 1. Checkout the project with Git
 2. Build the project with maven
-3. Deploy the war file to a camunda BPM platform distribution
+3. Deploy the war file to a Camunda Platform Runtime distribution
 4. Go the the Tasklist and start a process instance for the process named "Camunda Forms Quickstart"
 
 [1]: docs/screenshot.png

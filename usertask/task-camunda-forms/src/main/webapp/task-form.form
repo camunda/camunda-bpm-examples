@@ -14,7 +14,7 @@
       "type": "textfield",
       "validate": {
         "required": true,
-	      "pattern": "^[0-9]+$"
+        "pattern": "^[0-9]+$"
       }
     },
     {
@@ -23,7 +23,7 @@
       "label": "Invoice Number",
       "type": "textfield",
       "validate": {
-      "pattern": "^C-[0-9]+$"
+        "pattern": "^C-[0-9]+$"
       }
     },
     {
@@ -31,7 +31,8 @@
       "label": "Approved?",
       "type": "textfield",
       "validate": {
-      "pattern": "(true|false)"
+        "required": true,
+        "pattern": "(true|false)"
       }
     },
     {

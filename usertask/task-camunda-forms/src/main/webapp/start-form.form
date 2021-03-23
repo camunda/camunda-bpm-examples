@@ -14,7 +14,7 @@
       "type": "textfield",
       "validate": {
         "required": true,
-	      "pattern": "^[0-9]+$"
+        "pattern": "^[0-9]+$"
       }
     },
     {
