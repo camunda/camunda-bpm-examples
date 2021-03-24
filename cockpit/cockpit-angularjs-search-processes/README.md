@@ -48,7 +48,7 @@ define(["angular"], function(angular) {
 
 ```
 
-The 7.14 Cockpit Plugin System is framework agnostic, so we will have to create and bootstrap our own AngularJS application. require.js was replaced with the JavaScript module system, and the plugin-point definitions are moved to the top level. Template and Controller are still present, but need to be adjusted to work in a standalone AngularJS app: 
+The 7.15 Cockpit Plugin System is framework agnostic, so we will have to create and bootstrap our own AngularJS application. require.js was replaced with the JavaScript module system, and the plugin-point definitions are moved to the top level. Template and Controller are still present, but need to be adjusted to work in a standalone AngularJS app: 
 ```javascript
 // plugin.js
 // include AngularJS in your Plugin
@@ -85,7 +85,7 @@ export default {
 };
 ```
 
-Directives and services you used in 7.13 might no longer be available in your standalone AngularJS. To find out what you need to migrate, check out the [7.13 to 7.14 update guide](https://docs.camunda.org/manual/7.14/update/minor/713-to-714/).
+Directives and services you used in 7.13 might no longer be available in your standalone AngularJS. To find out what you need to migrate, check out the [7.13 to 7.15 update guide](https://docs.camunda.org/manual/7.15/update/minor/713-to-714/).
 
 
 Building the Project
