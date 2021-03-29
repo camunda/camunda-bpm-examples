@@ -8,7 +8,8 @@
 
   <properties>
     <camunda.version>7.15.0-ee</camunda.version>
-    <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
+    <spring.boot.version>2.4.4</spring.boot.version>
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -40,9 +41,8 @@
       <artifactId>h2</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>2.2.4</version>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
     </dependency>
   </dependencies>
 
@@ -65,7 +65,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.1</version>
+        <version>${maven.compiler.plugin.version}</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>

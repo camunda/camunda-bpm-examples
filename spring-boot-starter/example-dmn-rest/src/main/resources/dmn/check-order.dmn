@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd"
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
              id="definitions"
              name="definitions"
              namespace="http://camunda.org/schema/1.0/dmn">
@@ -29,13 +29,13 @@
           <text>"bronze"</text>
         </inputEntry>
         <inputEntry id="inputEntry2">
-          <text/>
+          <text></text>
         </inputEntry>
         <outputEntry id="outputEntry1">
           <text>"notok"</text>
         </outputEntry>
         <outputEntry id="outputEntry2">
-          <text><![CDATA["work on your status first, as bronze you're not going to get anything"]]></text>
+          <text>"work on your status first, as bronze you're not going to get anything"</text>
         </outputEntry>
       </rule>
       <rule id="rule2">
@@ -43,7 +43,7 @@
           <text>"silver"</text>
         </inputEntry>
         <inputEntry id="inputEntry4">
-          <text><![CDATA[< 1000]]></text>
+          <text>&lt; 1000</text>
         </inputEntry>
         <outputEntry id="outputEntry3">
           <text>"ok"</text>
@@ -57,7 +57,7 @@
           <text>"silver"</text>
         </inputEntry>
         <inputEntry id="inputEntry6">
-          <text><![CDATA[>= 1000]]></text>
+          <text>&gt;= 1000</text>
         </inputEntry>
         <outputEntry id="outputEntry5">
           <text>"notok"</text>
@@ -71,7 +71,7 @@
           <text>"gold"</text>
         </inputEntry>
         <inputEntry id="inputEntry8">
-          <text/>
+          <text></text>
         </inputEntry>
         <outputEntry id="outputEntry7">
           <text>"ok"</text>

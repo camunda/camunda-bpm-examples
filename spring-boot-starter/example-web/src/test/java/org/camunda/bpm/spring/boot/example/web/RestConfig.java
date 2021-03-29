@@ -14,17 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.spring.boot.example.twitter;
+package org.camunda.bpm.spring.boot.example.web;
 
-import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication
-@EnableProcessApplication
-public class TwitterServletProcessApplication {
+@TestConfiguration
+public class RestConfig {
 
-  public static void main(String... args) {
-    SpringApplication.run(TwitterServletProcessApplication.class, args);
+  @Value("${spring.security.user.name}")
+  private String name;
+
+  @Value("${spring.security.user.password}")
+  private String password;
+
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplateBuilder().basicAuthentication(name, password).build();
   }
+
 }

@@ -6,8 +6,11 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
+    <spring.boot.version>2.4.4</spring.boot.version>
     <camunda.spring.boot.starter.version>7.15.0</camunda.spring.boot.starter.version>
+    <camunda.mockito>4.13.0</camunda.mockito>
+    <camunda.assert>10.0.0</camunda.assert>
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -20,6 +23,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
+      <dependency>
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-bom</artifactId>
+        <version>${camunda.spring.boot.starter.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -27,7 +38,6 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter</artifactId>
-      <version>${camunda.spring.boot.starter.version}</version>
     </dependency>
 
     <dependency>
@@ -37,8 +47,8 @@
     </dependency>
 
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-jdbc</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
 
     <dependency>
@@ -50,21 +60,20 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
-      <version>${camunda.spring.boot.starter.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.camunda.bpm.extension.mockito</groupId>
       <artifactId>camunda-bpm-mockito</artifactId>
-      <version>4.13.0</version>
+      <version>${camunda.mockito}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.camunda.bpm.assert</groupId>
       <artifactId>camunda-bpm-assert</artifactId>
-      <version>8.0.0</version>
+      <version>${camunda.assert}</version>
     </dependency>
 
     <dependency>
@@ -93,7 +102,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.1</version>
+        <version>${maven.compiler.plugin.version}</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
