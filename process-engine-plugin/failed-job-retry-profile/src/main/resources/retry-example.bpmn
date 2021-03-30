@@ -4,15 +4,15 @@
     <bpmn:startEvent id="StartEvent_1" name="Start">
       <bpmn:outgoing>SequenceFlow_0pewutp</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0pewutp" sourceRef="StartEvent_1" targetRef="Task_1mtbyg2" />
-    <bpmn:sequenceFlow id="SequenceFlow_1nm31xl" sourceRef="Task_1mtbyg2" targetRef="Task_0mlo9sf" />
-    <bpmn:sequenceFlow id="SequenceFlow_1cq4b7w" sourceRef="Task_0mlo9sf" targetRef="Task_0y89gle" />
-    <bpmn:sequenceFlow id="SequenceFlow_0a0gkxc" sourceRef="Task_0y89gle" targetRef="Task_0ucnd3u" />
+    <bpmn:sequenceFlow id="SequenceFlow_0pewutp" sourceRef="StartEvent_1" targetRef="service-fetch-data" />
+    <bpmn:sequenceFlow id="SequenceFlow_1nm31xl" sourceRef="service-fetch-data" targetRef="service-fetch-address" />
+    <bpmn:sequenceFlow id="SequenceFlow_1cq4b7w" sourceRef="service-fetch-address" targetRef="service-send-data" />
+    <bpmn:sequenceFlow id="SequenceFlow_0a0gkxc" sourceRef="service-send-data" targetRef="service-add-address" />
     <bpmn:endEvent id="EndEvent_1wq706h" name="End">
       <bpmn:incoming>SequenceFlow_1chlaz1</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1chlaz1" sourceRef="Task_0ucnd3u" targetRef="EndEvent_1wq706h" />
-    <bpmn:serviceTask id="Task_1mtbyg2" name="Fetch data from the CRM system " camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
+    <bpmn:sequenceFlow id="SequenceFlow_1chlaz1" sourceRef="service-add-address" targetRef="EndEvent_1wq706h" />
+    <bpmn:serviceTask id="service-fetch-data" name="Fetch data from the CRM system " camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property name="retryProfile" value="CRM" />
@@ -21,7 +21,7 @@
       <bpmn:incoming>SequenceFlow_0pewutp</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1nm31xl</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_0mlo9sf" name="Fetch address data from CRM system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
+    <bpmn:serviceTask id="service-fetch-address" name="Fetch address data from CRM system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskOneDelegate">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property name="retryProfile" value="CRM" />
@@ -30,7 +30,7 @@
       <bpmn:incoming>SequenceFlow_1nm31xl</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1cq4b7w</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_0y89gle" name="Send customer data to the ERP system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskTwoDelegate">
+    <bpmn:serviceTask id="service-send-data" name="Send customer data to the ERP system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskTwoDelegate">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property name="retryProfile" value="ERP" />
@@ -39,7 +39,7 @@
       <bpmn:incoming>SequenceFlow_1cq4b7w</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0a0gkxc</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_0ucnd3u" name="Add address data in the ERP system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskTwoDelegate">
+    <bpmn:serviceTask id="service-add-address" name="Add address data in the ERP system" camunda:class="org.camunda.bpm.example.delegate.ServiceTaskTwoDelegate">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property name="retryProfile" value="ERP" />
@@ -51,63 +51,63 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process">
+      <bpmndi:BPMNEdge id="SequenceFlow_1chlaz1_di" bpmnElement="SequenceFlow_1chlaz1">
+        <di:waypoint x="870" y="120" />
+        <di:waypoint x="940" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="905" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0a0gkxc_di" bpmnElement="SequenceFlow_0a0gkxc">
+        <di:waypoint x="706" y="120" />
+        <di:waypoint x="770" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="738" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1cq4b7w_di" bpmnElement="SequenceFlow_1cq4b7w">
+        <di:waypoint x="545" y="120" />
+        <di:waypoint x="606" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="575.5" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1nm31xl_di" bpmnElement="SequenceFlow_1nm31xl">
+        <di:waypoint x="375" y="120" />
+        <di:waypoint x="445" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="410" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0pewutp_di" bpmnElement="SequenceFlow_0pewutp">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="275" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="242" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="173" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="180" y="138" width="23" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_0pewutp_di" bpmnElement="SequenceFlow_0pewutp">
-        <di:waypoint xsi:type="dc:Point" x="209" y="120" />
-        <di:waypoint xsi:type="dc:Point" x="275" y="120" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="242" y="99" width="0" height="12" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1nm31xl_di" bpmnElement="SequenceFlow_1nm31xl">
-        <di:waypoint xsi:type="dc:Point" x="375" y="120" />
-        <di:waypoint xsi:type="dc:Point" x="445" y="120" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="410" y="99" width="0" height="12" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1cq4b7w_di" bpmnElement="SequenceFlow_1cq4b7w">
-        <di:waypoint xsi:type="dc:Point" x="545" y="120" />
-        <di:waypoint xsi:type="dc:Point" x="606" y="120" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="575.5" y="99" width="0" height="12" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_0a0gkxc_di" bpmnElement="SequenceFlow_0a0gkxc">
-        <di:waypoint xsi:type="dc:Point" x="706" y="120" />
-        <di:waypoint xsi:type="dc:Point" x="770" y="120" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="738" y="99" width="0" height="12" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_1wq706h_di" bpmnElement="EndEvent_1wq706h">
         <dc:Bounds x="940" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="949" y="142" width="19" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1chlaz1_di" bpmnElement="SequenceFlow_1chlaz1">
-        <di:waypoint xsi:type="dc:Point" x="870" y="120" />
-        <di:waypoint xsi:type="dc:Point" x="940" y="120" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="905" y="99" width="0" height="12" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ServiceTask_1h4ao7z_di" bpmnElement="Task_1mtbyg2">
+      <bpmndi:BPMNShape id="ServiceTask_1h4ao7z_di" bpmnElement="service-fetch-data">
         <dc:Bounds x="275" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_157v7se_di" bpmnElement="Task_0mlo9sf">
+      <bpmndi:BPMNShape id="ServiceTask_157v7se_di" bpmnElement="service-fetch-address">
         <dc:Bounds x="445" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_1en8abd_di" bpmnElement="Task_0y89gle">
+      <bpmndi:BPMNShape id="ServiceTask_1en8abd_di" bpmnElement="service-send-data">
         <dc:Bounds x="606" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_1l3oscb_di" bpmnElement="Task_0ucnd3u">
+      <bpmndi:BPMNShape id="ServiceTask_1l3oscb_di" bpmnElement="service-add-address">
         <dc:Bounds x="770" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
