@@ -35,9 +35,9 @@ import org.springframework.web.client.RestTemplate;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { RestApplication.class, CamundaBpmRestIT.RestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = { RestApplication.class, RestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class CamundaBpmRestIT {
+public class CamundaBpmRestTest {
 
   @Autowired
   private RestTemplate restTemplate;
@@ -54,18 +54,5 @@ public class CamundaBpmRestIT {
       camundaBpmProperties.getProcessEngineName());
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals("Sample", entity.getBody()[0].getKey());
-  }
-
-  @TestConfiguration
-  protected static class RestConfig {
-
-    @Value("${spring.security.user.password}")
-    private String password;
-
-    @Bean
-    public RestTemplate restTemplate() {
-      return new RestTemplateBuilder().basicAuthentication("user", password).build();
-    }
-
   }
 }

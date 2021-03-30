@@ -31,12 +31,17 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { RestApplication.class }, webEnvironment = WebEnvironment.RANDOM_PORT,
-properties = {"management.endpoint.health.show-details=always", "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration"})
+@SpringBootTest(
+    classes = { RestApplication.class, RestConfig.class},
+    webEnvironment = WebEnvironment.RANDOM_PORT,
+    properties = {
+        "management.endpoint.health.show-details=always"
+    }
+)
 @DirtiesContext
-public class CamundaBpmActuatorIT {
+public class CamundaBpmActuatorTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CamundaBpmActuatorIT.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(CamundaBpmActuatorTest.class);
 
   @Autowired
   private TestRestTemplate testRestTemplate;

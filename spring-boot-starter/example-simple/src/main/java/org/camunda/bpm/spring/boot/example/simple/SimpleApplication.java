@@ -118,7 +118,7 @@ public class SimpleApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... strings) throws Exception {
+  public void run(String... strings) {
     logger.info("CommandLineRunner#run() - {}", ToStringBuilder.reflectionToString(application, ToStringStyle.SHORT_PREFIX_STYLE));
   }
 }
