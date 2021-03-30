@@ -166,7 +166,7 @@ the failed job retry configuration.
 1. Checkout the project with Git
 2. Import the project into your IDE
 3. Inspect the sources and run the unit test in your IDE or with Maven: `mvn clean verify`
-4. You should expect that all test cases pass.
+4. You should expect that all test cases pass and observe `Execution with id 'service-send-data' throws an error event with errorCode 'It is supposed to fail.'` in the output.
 
 [1]: docs/retry-example.JPG
 [2]: docs/extension-property.JPG
