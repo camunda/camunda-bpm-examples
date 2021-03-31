@@ -3,7 +3,7 @@
 This example describes how to configure a data format provided by Camunda Spin *on process application level*.
 It showcases the configuration of the Jackson-based JSON data format that Spin provides out-of-the-box. JSON serialization is customized by registering a Jackson module with a custom serializer and deserializer.
 
-Process-application-specific configuration means that configuration code is part of he process application and therefore isolated from other applications. Note that this approach is currently limited to Object variable (de-)serialization. See the example on [global data format configuration](../dataformat-configuration-global) for how to configure a data format such that it applies to all applications using Spin.
+Process-application-specific configuration means that configuration code is part of the process application and therefore isolated from other applications. Note that this approach is currently limited to Object variable (de-)serialization. See the example on [global data format configuration](../dataformat-configuration-global) for how to configure a data format such that it applies to all applications using Spin.
 
 In particular, we examine how to customize the serialization of the class [Car](src/main/java/org/camunda/bpm/example/spin/dataformat/configuration/Car.java):
 
