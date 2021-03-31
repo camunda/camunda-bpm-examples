@@ -15,5 +15,13 @@
  * limitations under the License.
  */
 
-window.React = import('./react.development.js');
-window.ReactDOM = import('./react-dom.development.js');
+const react = document.createElement('script');
+react.crossOrigin = true;
+react.src = 'https://unpkg.com/react@16.8.6/umd/react.development.js'
+
+const reactDom = document.createElement('script');
+reactDom.crossOrigin = true;
+reactDom.src = 'https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js'
+
+document.body.append(react);
+document.body.append(reactDom);
