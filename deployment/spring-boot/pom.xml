@@ -19,7 +19,7 @@
   </parent>
 
   <properties>
-    <version.camunda>7.15.0-alpha5</version.camunda>
+    <version.camunda>7.15.0</version.camunda>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
   </properties>
