@@ -5,9 +5,8 @@ React is a popular library to build user interfaces. If you want to use react to
 
 ## Overview
 ### How can I add React to my Tasklist?
-  1. Download [React](https://unpkg.com/react@16.8.6/umd/react.development.js) and [reactDOM](https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js) into the `app/tasklist/scripts/react` of your webapp.
-  2. Add [loadReact.js](config/react/loadReact.js) to the same folder. This will add React and ReactDOM to the global scope. If you use the production build of react, adjust the imports accordingly. 
-  3. Add the loader as a custom script in `app/tasklist/scripts/config.js`. 
+  1. Add [loadReact.js](config/react/loadReact.js) to `app/tasklist/scripts/react` of your webapp. This will load React and ReactDOM from a CDN and add it to the global scope. If you want to use other versions of React, adjust the import paths accordingly.
+  2. Add the loader as a custom script in `app/tasklist/scripts/config.js`. 
   ```javascript
     customScripts: [
       'scripts/react/loadReact.js'
