@@ -13,7 +13,7 @@ The base URL of the REST API and the client's Worker ID is configured via a `cli
 which is in turn configured via a `PropertySourcesPlaceholderConfigurer` bean.
 
 > This example is based on the [Loan Granting Example](../../../clients/java/loan-granting). Check it out as well as it contains
-> a detailed step-by-step guide on how to start a Camunda Runtime Platform, deploy the [workflow.bpmn](./workflow.bpmn) 
+> a detailed step-by-step guide on how to start a Camunda Runtime Platform, deploy the [loan-granting.bpmn](./loan-granting.bpmn) 
 > model using Camunda Modeler, and monitor the process in Cockpit. This example only focuses on Spring integration.
 
 ## Please show me the important parts!
@@ -88,7 +88,7 @@ public class HandlerConfiguration {
   public ExternalTaskHandler creditScoreChecker() {
     return (externalTask, externalTaskService) -> {
 
-      // retrieve a variable from the Workflow Engine
+      // retrieve a variable from the Process Engine
       int defaultScore = externalTask.getVariable("defaultScore");
 
       List<Integer> creditScores = new ArrayList<>(Arrays.asList(defaultScore, 9, 1, 4, 10));
@@ -109,7 +109,7 @@ public class HandlerConfiguration {
 ## How to use it?
 
 1. Make sure to have an up and running Camunda Platform Runtime REST API
-2. Deploy the process [workflow.bpmn](./workflow.bpmn) to the Camunda Platform Runtime (e.g., via Camunda Modeler)
+2. Deploy the process [loan-granting.bpmn](./loan-granting.bpmn) to the Camunda Platform Runtime (e.g., via Camunda Modeler)
 3. Check out the project with Git
 4. Import the project into your IDE
 5. Start the main class in your IDE

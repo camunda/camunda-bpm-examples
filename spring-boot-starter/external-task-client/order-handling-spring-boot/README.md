@@ -171,7 +171,7 @@ public class Subscriptions implements ApplicationListener<SubscriptionInitialize
 ## How to use it?
 
 1. Make sure to have an up and running Camunda Platform Runtime REST API
-2. Deploy the process [workflow.bpmn](./workflow.bpmn) to the Camunda Platform Runtime (e.g., via Camunda Modeler)
+2. Deploy the process [order-handling.bpmn](./order-handling.bpmn) to the Camunda Platform Runtime (e.g., via Camunda Modeler)
 3. Check out the project with Git
 4. Import the project into your IDE
 5. Start the main class in your IDE
