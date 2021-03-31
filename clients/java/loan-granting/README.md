@@ -3,51 +3,52 @@
 In this tutorial you will learn how to use the External Task client for Java.
 
 In a nutshell you will be guided through the following steps:
-* Starting the Camunda BPM Platform
-* Modeling and Deploying a workflow with the Camunda Modeler
+* Starting the Camunda Platform Runtime
+* Modeling and Deploying a process with the Camunda Modeler
 * Bootstrapping the External Task client
-* Monitor the workflow in Camunda Cockpit
+* Monitor the process in Camunda Cockpit
 
 ## Prerequisites
 * [Java JDK 8+](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Apache Maven](https://maven.apache.org/download.cgi)
-* [Camunda Modeler >= 1.12.0](https://downloads.camunda.cloud/release/camunda-modeler/4.0.0/)
-* [Camunda BPM Platform](https://downloads.camunda.cloud/release/camunda-bpm/tomcat/7.15/)
+* [Camunda Modeler](https://camunda.com/download/modeler/)
+* [Camunda Platform Runtime](https://camunda.com/download/)
 * Camunda External Task Client
 
-First, make sure that you have downloaded and installed all the necessary prerequisites. Please check the [compatibility matrix](https://docs.camunda.org/manual/user-guide/ext-client/compatibility-matrix/) if you use older client version.
+First, make sure you have downloaded and installed all the necessary prerequisites, 
+and the running platform is [compatible](https://docs.camunda.org/manual/user-guide/ext-client/compatibility-matrix/) with the client version.
 
-## Start the Camunda BPM Platform
+## Start the Camunda Platform Runtime
 * Microsoft Windows users need to run the `start-camunda.bat` file
 * Users of Unix based operating systems need to run the `start-camunda.sh` file
 
-## Model a Workflow
+## Model a Process
 
-Open the Camunda Modeler, create a new BPMN diagram and model the following simple workflow:
+Open the Camunda Modeler, create a new BPMN diagram and model the following simple process:
 
-![Camunda Modeler – Workflow](./img/image1.png)
+![Camunda Modeler – Process](./img/image1.png)
 
 1. Once a process instance is started, an External Task instance with the name "creditScoreChecker" is created
 2. The External Task client will start to fetch and lock the External Task instances
 3. Once the External Task client has performed some work based on the fetched task, 
-these task is completed and the result is sent to the Workflow Engine in the form of a list containing all credit scores
+these task is completed and the result is sent to the Process Engine in the form of a list containing all credit scores
 4. For each list entry a new instance of the subprocess is created
 5. According to the respective credit score, a path of the exclusive gateway is selected
 6. Based on the selection, further External Task topics are created
 
 > **Note:** make sure to set the properties for the respective notation elements in the properties panel correctly
 
-You can download the BPMN 2.0 XML of the workflow [here](https://raw.githubusercontent.com/camunda/camunda-bpm-examples/master/clients/java/loan-granting/workflow.bpmn).
+You can download the BPMN 2.0 XML of the process [here](https://raw.githubusercontent.com/camunda/camunda-bpm-examples/master/clients/java/loan-granting/loan-granting.bpmn).
 
-## Deploy a Workflow
+## Deploy a Process
 
-Next, we want to deploy the model to the Camunda BPM Platform. To do so, simply click on the "Deploy" icon 
+Next, we want to deploy the model to the Camunda Platform Runtime. To do so, simply click on the "Deploy" icon 
 ![Camunda Modeler – Deploy Button](./img/image3.png) in the Camunda Modeler and select "Deploy Current Diagram". 
 A dialog appears where a deployment name can be selected. Feel free to select a name of your choice!
 
 ![Camunda Modeler – Deploy Dialog](./img/image2.png)
 
-To complete the deployment click on the "Deploy" button. Your model is now ready to be executed by the **Camunda BPMN Workflow Engine**.
+To complete the deployment click on the "Deploy" button. Your model is now ready to be executed by the **Camunda BPMN Process Engine**.
 
 ## Set Up a Project
 In this step we will set up the External Task client.
@@ -83,7 +84,7 @@ client.subscribe("creditScoreChecker")
   .lockDuration(1000)
   .handler((externalTask, externalTaskService) -> {
 
-    // retrieve a variable from the Workflow Engine
+    // retrieve a variable from the Process Engine
     int defaultScore = externalTask.getVariable("defaultScore");
 
     List<Integer> creditScores = new ArrayList<>(Arrays.asList(defaultScore, 9, 1, 4, 10));
@@ -112,9 +113,9 @@ The External Task f3779b51-2cfd-11e8-96c2-769e8e30ca9b has been completed!
 ...
 ```
 
-## Monitor the Workflow in Camunda Cockpit
+## Monitor the Process in Camunda Cockpit
 Open [Camunda Cockpit](http://localhost:8080/camunda/app/cockpit) click in the top navigation on "Processes" and then
-on the process "Granting Loans". You should see the workflow with the activity instances:
+on the process "Granting Loans". You should see the process with the activity instances:
 ![Camunda Cockpit – Process Definition View](./img/image4.png)
 
 Now it is your turn: try to subscribe with the **Camunda External Task Client (Java)** either to the topic "loanGranter" 

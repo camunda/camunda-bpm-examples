@@ -38,7 +38,7 @@ public class App {
       .lockDuration(1000)
       .handler((externalTask, externalTaskService) -> {
 
-        // retrieve a variable from the Workflow Engine
+        // retrieve a variable from the Process Engine
         int defaultScore = externalTask.getVariable("defaultScore");
 
         List<Integer> creditScores = new ArrayList<>(Arrays.asList(defaultScore, 9, 1, 4, 10));
