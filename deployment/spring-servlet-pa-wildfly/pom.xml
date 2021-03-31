@@ -10,7 +10,7 @@
   <properties>
     <version.camunda>7.15.0</version.camunda>
     <version.spring>4.3.24.RELEASE</version.spring>
-    <version.wildfly>20.0.1.Final</version.wildfly>
+    <version.wildfly>22.0.1.Final</version.wildfly>
     <version.servlet-api.javax>3.0.1</version.servlet-api.javax>
 
     <version.wildfly.container.adapter>2.2.0.Final</version.wildfly.container.adapter>
