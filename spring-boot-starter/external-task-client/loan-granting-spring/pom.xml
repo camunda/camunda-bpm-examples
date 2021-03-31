@@ -8,11 +8,12 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.15.0</version.camunda>
-    <version.spring.framework>5.2.8.RELEASE</version.spring.framework>
-    <version.slf4j>1.7.12</version.slf4j>
-    <version.glassfish.jaxb>2.3.3</version.glassfish.jaxb>
+    <camunda.platform.version>7.15.0</camunda.platform.version>
+    <spring.framework.version>5.2.8.RELEASE</spring.framework.version>
+    <slf4j.version>1.7.26</slf4j.version>
+    <glassfish.jaxb.version>2.3.3</glassfish.jaxb.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <java.version>8</java.version>
   </properties>
 
   <dependencyManagement>
@@ -20,7 +21,7 @@
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
-        <version>${version.camunda}</version>
+        <version>${camunda.platform.version}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -36,19 +37,19 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>${version.spring.framework}</version>
+      <version>${spring.framework.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>${version.slf4j}</version>
+      <version>${slf4j.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
-      <version>${version.glassfish.jaxb}</version>
+      <version>${glassfish.jaxb.version}</version>
     </dependency>
   </dependencies>
 
@@ -59,8 +60,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.plugin.version}</version>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
     </plugins>
