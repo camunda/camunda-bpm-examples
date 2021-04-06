@@ -17,7 +17,7 @@
 
 export default {
   // // custom libraries and scripts loading and initialization,
-  // // see: http://docs.camunda.org/guides/user-guide/#tasklist-customizing-custom-scripts
+  // // see: https://docs.camunda.org/manual/latest/webapps/cockpit/extend/configuration/#custom-scripts
   customScripts: [
     'scripts/react/loadReact',
   ]
