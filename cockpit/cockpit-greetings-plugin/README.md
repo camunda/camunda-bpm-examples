@@ -2,7 +2,7 @@ Cockpit Greetings Plugin
 ========================
 
 This example shows you how to build and bundle a plugin using react.
-We will show you how this Plugin was created in a step-by-step guide in an upcoming Blogpost. <!-- TODO: Update when post is published -->
+In [this Blog Post](https://camunda.com/blog/2020/08/all-new-frontend-plugin-system-for-cockpit-starting-with-camunda-bpm-7-14/), we guide you through the creation of this Plugin step by step.
 
 ![Screenshot](screenshot.png)
 
