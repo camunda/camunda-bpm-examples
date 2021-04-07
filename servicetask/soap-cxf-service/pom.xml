@@ -15,14 +15,14 @@
 		<camunda.version>7.15.0</camunda.version>
 		<cxf.version>3.3.6</cxf.version>
 		<cglib.version>2.2.2</cglib.version>
-		<spring.version>4.3.24.RELEASE</spring.version>
+		<spring.version>5.2.8.RELEASE</spring.version>
 		<groovy.version>2.4.13</groovy.version>
 
 		<logback.version>1.1.3</logback.version>
 		<slf4j.version>1.7.26</slf4j.version>
 
 		<!-- test -->
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<tempus-fugit.version>1.1</tempus-fugit.version>
 		<mockito.version>1.10.19</mockito.version>
 		<hamcrest.version>1.3</hamcrest.version>

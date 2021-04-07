@@ -16,7 +16,7 @@
  */
 package com.camunda.bpm.example.spring.soap.start;
 
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -67,7 +67,7 @@ public class BankAccountProcessTest {
 
     SetAccountNameResponse response = client.setAccountName(request, header);
 
-    Assert.assertThat(response.getStatus(), is(StatusType.SUCCESS));
+    assertThat(response.getStatus()).isEqualTo(StatusType.SUCCESS);
   }
 
   @Test
@@ -86,7 +86,7 @@ public class BankAccountProcessTest {
     } catch(InvalidValueException_Exception e) {
       InvalidValueException faultInfo = e.getFaultInfo();
 
-      Assert.assertThat(faultInfo.getName(), is("accountNumber"));
+      assertThat(faultInfo.getName()).isEqualTo("accountNumber");
     }
   }
   
