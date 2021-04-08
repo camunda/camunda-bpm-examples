@@ -14,11 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.camunda.bpm.spring.boot.example.web;
 
-export default {
-  // // custom libraries and scripts loading and initialization,
-  // // see: https://docs.camunda.org/manual/latest/webapps/cockpit/extend/configuration/#custom-scripts
-  customScripts: [
-    'scripts/react/loadReact',
-  ]
-};
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+@TestConfiguration
+public class RestConfig {
+
+  @Value("${spring.security.user.name}")
+  private String name;
+
+  @Value("${spring.security.user.password}")
+  private String password;
+
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplateBuilder().basicAuthentication(name, password).build();
+  }
+
+}

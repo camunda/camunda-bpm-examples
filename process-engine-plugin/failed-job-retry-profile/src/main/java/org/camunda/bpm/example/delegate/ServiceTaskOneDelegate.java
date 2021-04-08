@@ -26,7 +26,7 @@ public class ServiceTaskOneDelegate implements JavaDelegate {
 
   public void execute(DelegateExecution execution) {
     if (firstAttempt) {
-      throw new BpmnError("It is supposed to fail.");
+      throw new BpmnError("Error-001", "It is supposed to fail.");
     }
   }
 

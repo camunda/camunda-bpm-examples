@@ -19,7 +19,7 @@ It also demonstrates the usage of the `application.yaml` configuration file.
 <dependency>
  <groupId>org.camunda.bpm.springboot</groupId>
  <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
- <version>7.14.0</version>
+ <version>7.15.0</version>
 </dependency>
 ...
 ```
@@ -32,7 +32,7 @@ registered, you can simply add the annotation `@EnableProcessApplication` to the
 @EnableProcessApplication
 public class TwitterServletProcessApplication {
 
-  public static void main(String[] args) {
+  public static void main(String... args) {
     SpringApplication.run(TwitterServletProcessApplication.class, args);
   }
 }
@@ -40,11 +40,11 @@ public class TwitterServletProcessApplication {
 
 3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within the process application.
 
-4. You can configure your Spring Boot application using `application.yaml` file. All possible Camunda-specific configuration parameters are listed [here](https://docs.camunda.org/manual/7.14/user-guide/spring-boot-integration/configuration/)
+4. You can configure your Spring Boot application using `application.yaml` file. All possible Camunda-specific configuration parameters are listed [here](https://docs.camunda.org/manual/7.15/user-guide/spring-boot-integration/configuration/)
 
 5. This example provides two implementations for posting a Tweet:
 * `TweetContentOfflineDelegate` (default) - will just print the tweet content on console
-* `TweetContentDelegate` - will really post a tweet on http://twitter.com/#!/camunda_demo
+* `TweetContentDelegate` - can post a tweet when providing credentials for your twitter account
 
 You can switch between two implementations by changing the name of a Spring bean to `tweetAdapter`. This `tweetAdapter` bean is further referenced in 
 the BPMN diagram via "Delegate expression" in a service task:

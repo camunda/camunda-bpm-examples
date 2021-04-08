@@ -145,7 +145,6 @@ If you clone this repository, use the checkout commands to access the sources fo
 |-----------------------------------------------------------|-------------|-----------------------------|
 | [SDK JS forms](/sdk-js/browser-forms) *                   | Browser     | HTML, task, form, SDK       |
 | [SDK JS forms AngularJS](/sdk-js/browser-forms-angular) * | Browser     | HTML, task, form, AngularJS |
-| [SDK JS node.js](/sdk-js/nodejs) *                        | node.js     | CLI, deployment             |
 
 ### Camunda Modeler Eclipse Plugin Examples
 

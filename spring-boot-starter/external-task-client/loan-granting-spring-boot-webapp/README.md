@@ -98,7 +98,7 @@ public class HandlerConfiguration {
   public ExternalTaskHandler creditScoreChecker() {
     return (externalTask, externalTaskService) -> {
 
-      // retrieve a variable from the Workflow Engine
+      // retrieve a variable from the Process Engine
       int defaultScore = externalTask.getVariable("defaultScore");
 
       List<Integer> creditScores = new ArrayList<>(Arrays.asList(defaultScore, 9, 1, 4, 10));
@@ -132,8 +132,8 @@ public class HandlerConfiguration {
 }
 ```
 
-The BPMN model [workflow.bpmn](./src/main/resources/bpmn/workflow.bpmn) is automatically deployed
-to the Workflow Engine since it is located under `/src/main/resources/`.
+The BPMN model [loan-granting.bpmn](./src/main/resources/bpmn/loan-granting.bpmn) is automatically deployed
+to the Process Engine since it is located under `/src/main/resources/`.
 
 ## How to use it?
 

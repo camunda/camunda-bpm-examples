@@ -3,7 +3,7 @@
 This example describes how to configure a data format provided by Camunda Spin *on process application level*.
 It showcases the configuration of the Jackson-based JSON data format that Spin provides out-of-the-box. JSON serialization is customized by registering a Jackson module with a custom serializer and deserializer.
 
-Process-application-specific configuration means that configuration code is part of he process application and therefore isolated from other applications. Note that this approach is currently limited to Object variable (de-)serialization. See the example on [global data format configuration](../dataformat-configuration-global) for how to configure a data format such that it applies to all applications using Spin.
+Process-application-specific configuration means that configuration code is part of the process application and therefore isolated from other applications. Note that this approach is currently limited to Object variable (de-)serialization. See the example on [global data format configuration](../dataformat-configuration-global) for how to configure a data format such that it applies to all applications using Spin.
 
 In particular, we examine how to customize the serialization of the class [Car](src/main/java/org/camunda/bpm/example/spin/dataformat/configuration/Car.java):
 
@@ -153,7 +153,7 @@ public class ProcessApplicationContextInterceptor {
 
 For this to work on Tomcat (a non-Java-EE server), we have include Weld in the process application. However, note that using CDI is not required for this feature to work. The lowest common denominator is the utility class `ProcessApplicationContext`. It can be used in any context to declare process application context before invoking engine API.
 
-Read the documentation on [Process Application Resource Access](https://docs.camunda.org/manual/7.14/user-guide/process-applications/process-application-resources/) for why it is required to declare process application context.
+Read the documentation on [Process Application Resource Access](https://docs.camunda.org/manual/7.15/user-guide/process-applications/process-application-resources/) for why it is required to declare process application context.
 
 ### Delegation Code
 

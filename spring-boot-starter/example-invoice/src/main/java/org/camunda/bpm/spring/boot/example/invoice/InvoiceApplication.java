@@ -33,8 +33,6 @@ import org.springframework.context.event.EventListener;
 public class InvoiceApplication {
 
   public static void main(String... args) {
-    // Avoid resetting URL stream handler factory
-    TomcatURLStreamHandlerFactory.disable();
     SpringApplication.run(InvoiceApplication.class, args);
   }
 

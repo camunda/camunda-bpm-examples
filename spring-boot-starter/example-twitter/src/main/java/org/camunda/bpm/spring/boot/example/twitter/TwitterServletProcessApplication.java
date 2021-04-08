@@ -24,7 +24,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableProcessApplication
 public class TwitterServletProcessApplication {
 
-  public static void main(String[] args) {
+  public static void main(String... args) {
     SpringApplication.run(TwitterServletProcessApplication.class, args);
   }
 }
