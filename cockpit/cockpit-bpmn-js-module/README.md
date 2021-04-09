@@ -3,7 +3,7 @@ bpmn.js Cockpit module
 
 This example shows how to develop a Cockpit bpmn.js module.
 
-For additional information, please also see the [documentation](https://docs.camunda.org/manual/7.13/webapps/cockpit/extend/configuration/#bpmn-diagram-viewer-bpmn-js).
+For additional information, please also see the [documentation](https://docs.camunda.org/manual/latest/webapps/cockpit/extend/configuration/#bpmn-diagram-viewer-bpmn-js).
 
 Built and tested against Camunda Platform version `7.15.0`.
 
@@ -28,6 +28,12 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
 // …
 ```
 After that start the server, login to Cockpit and navigate to the Process instance view to check the result.
+
+Additional resources
+---------------------
+
+If you require to bundle your custom module, you can follow along the [bundled bpmn-js module example](../cockpit-bpmn-js-module-bundled).
+
 
 License
 -------
