@@ -1,0 +1,31 @@
+{
+  "name": "cockpit-bpmn-js-module-bundled",
+  "version": "0.0.1",
+  "description": "bundle a custom bpmn-js module to be used in cockpit",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "rollup --config",
+    "start": "npm run bundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camunda/camunda-bpm-examples.git"
+  },
+  "keywords": [
+    "bpmn-js"
+  ],
+  "author": "MaxTru",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/camunda/camunda-bpm-examples/issues"
+  },
+  "homepage": "https://github.com/camunda/camunda-bpm-examples/tree/master/cockpit/cockpit-bpmn-js-module-bundled",
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "bpmn-js": "^8.3.0",
+    "diagram-js": "^7.2.3",
+    "rollup": "^2.45.0",
+    "tiny-svg": "^2.2.2"
+  }
+}
