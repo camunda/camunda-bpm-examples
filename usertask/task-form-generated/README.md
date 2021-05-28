@@ -1,6 +1,6 @@
 # Generated Task Forms
 
-This Quickstart demonstrates how to use the [Generated Forms](https://docs.camunda.org/manual/7.15/user-guide/task-forms/#generated-task-forms) Feature. Generated Forms are HTML5 forms which are generated from Xml Metadata provided in BPMN 2.0 Xml. The metadata can be specified using camunda modeler:
+This Quickstart demonstrates how to use the [Generated Forms](https://docs.camunda.org/manual/7.16/user-guide/task-forms/#generated-task-forms) Feature. Generated Forms are HTML5 forms which are generated from Xml Metadata provided in BPMN 2.0 Xml. The metadata can be specified using camunda modeler:
 
 ![Generated Forms Modeler Screenshot][2]
 

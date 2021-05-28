@@ -9,17 +9,17 @@
 
   <name>Camunda Cockpit Plugin: Sample</name>
   <description>This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of Camunda Platform.</description>
-  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.15/cockpit/cockpit-sample-plugin</url>
+  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.16/cockpit/cockpit-sample-plugin</url>
 
   <properties>
-    <camunda.version>7.15.0</camunda.version>
+    <camunda.version>7.16.0</camunda.version>
 
     <!-- This property must be present for the pom.xml to be recognized as a plugin -->
     <camunda.plugin.category>Sample</camunda.plugin.category>
 
     <camunda.plugin.screenshot>screenshot.png</camunda.plugin.screenshot>
     <!-- <camunda.plugin.screenshot.1>screenshot2.png</camunda.plugin.screenshot.1> -->
-    <camunda.plugin.testedOnVersion>7.15.0</camunda.plugin.testedOnVersion>
+    <camunda.plugin.testedOnVersion>7.16.0</camunda.plugin.testedOnVersion>
     <!-- <camunda.plugin.exampleProcessApplicationUrl></camunda.plugin.exampleProcessApplicationUrl> -->
     <camunda.plugin.language>EN</camunda.plugin.language>
 

@@ -115,9 +115,9 @@ Beverages:
 ```
 
 
-[Camunda DMN engine]: https://docs.camunda.org/manual/7.15/user-guide/dmn-engine/
-[Reference Guide]: https://docs.camunda.org/manual/7.15/reference/dmn/drg/
-[User Guide]: https://docs.camunda.org/manual/7.15/user-guide/dmn-engine/testing/
+[Camunda DMN engine]: https://docs.camunda.org/manual/7.16/user-guide/dmn-engine/
+[Reference Guide]: https://docs.camunda.org/manual/7.16/reference/dmn/drg/
+[User Guide]: https://docs.camunda.org/manual/7.16/user-guide/dmn-engine/testing/
 [Dinner Decisions]: src/main/resources/org/camunda/bpm/example/drg/dinnerDecisions.png
 [Beverages Decision]: src/main/resources/org/camunda/bpm/example/drg/beverages.png
 [Dish Decision]: src/main/resources/org/camunda/bpm/example/drg/dish.png
