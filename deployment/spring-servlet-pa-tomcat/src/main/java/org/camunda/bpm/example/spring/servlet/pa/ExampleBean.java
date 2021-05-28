@@ -16,24 +16,28 @@
  */
 package org.camunda.bpm.example.spring.servlet.pa;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExampleBean {
-  
+
+  public static final Logger LOG = Logger.getLogger(ExampleBean.class.getName());
+
   protected boolean invoked;
-  
+
   public void invoke() {
     this.invoked = true;
-    System.out.println(getClass().getName() + " is currently invoked.");
+    LOG.log(Level.INFO, "{0} is currently invoked.", getClass().getName());
   }
-  
+
   public boolean isInvoked() {
-    System.out.println(getClass().getName() + " is invoked.");
+    LOG.log(Level.INFO, "{0} is invoked.", getClass().getName());
     return invoked;
-  }  
-    
+  }
+
   public void setInvoked(boolean invoked) {
     this.invoked = invoked;
-    System.out.println(getClass().getName() + " set invoked=" + invoked);
+    LOG.log(Level.INFO, "{0} set invoked={1}", new Object[] { getClass().getName(), invoked });
   }
-  
+
 }

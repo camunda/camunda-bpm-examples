@@ -16,14 +16,18 @@
  */
 package org.camunda.bpm.example.spring.servlet.pa;
 
-
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ExampleDelegateBean implements JavaDelegate {
 
-  public void execute(DelegateExecution delegateExecution) throws Exception {
-    System.out.println(getClass().getName() + " is currently invoked.");
+  public static final Logger LOG = Logger.getLogger(ExampleDelegateBean.class.getName());
+
+  public void execute(DelegateExecution delegateExecution) {
+    LOG.log(Level.INFO, "{0} is currently invoked.", getClass().getName());
   }
 
 }

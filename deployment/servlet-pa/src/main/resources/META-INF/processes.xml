@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
- 
+
 <process-application
-    xmlns="http://www.camunda.org/schema/1.0/ProcessApplication"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  xmlns="http://www.camunda.org/schema/1.0/ProcessApplication"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <process-archive>
     <process-engine>default</process-engine>

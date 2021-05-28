@@ -11,8 +11,8 @@
   <packaging>jar</packaging>
 
   <properties>
-    <camunda.platform.version>7.15.0</camunda.platform.version>
-    <spring.boot.version>2.4.2</spring.boot.version>
+    <camunda.platform.version>7.16.0</camunda.platform.version>
+    <spring.boot.version>2.5.4</spring.boot.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
     <java.version>8</java.version>
   </properties>

@@ -3,11 +3,11 @@
   <person>
     <id>2</id>
     <skill>Talk</skill>
-   	<skill>Smile</skill>
+    <skill>Smile</skill>
   </person>
   <person>
     <id>1</id>
-    <skill>Program</skill>
+    <skill>Stand-up Comedy</skill>
     <skill>Cook</skill>
   </person>
 </skills>

@@ -64,10 +64,12 @@ We also add an entry to the manifest, so that the Process Engine classes are add
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-war-plugin</artifactId>
-      <version>2.3</version>
+      <version>${maven-war-plugin.version}</version>
       <configuration>
         <archive>
           <manifestEntries>
+            <!-- write classpath module dependency to MANIFEST: this makes sure we 
+            can access the process engine classes -->
             <Dependencies>org.camunda.bpm.camunda-engine</Dependencies>
           </manifestEntries>
         </archive>
@@ -90,4 +92,4 @@ The engine is named default.
 There are currently 0 processes deployed on this engine.
 ```
 
-[1]: https://camunda.org/release/camunda-bpm/wildfly/
+[1]: https://downloads.camunda.cloud/release/camunda-bpm/wildfly/

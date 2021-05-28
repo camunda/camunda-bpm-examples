@@ -42,81 +42,80 @@ import com.camunda.bpm.example.spring.soap.start.v1.StatusType;
 import org.springframework.stereotype.Service;
 
 /**
- * 
  * Webservice for starting a process via a start node form. <br/><br/>
- * 
+ * <p>
  * The service has a single method <b>setAccountName</b> for setting an account name.
- * 
- * @author Thomas Skjolberg 
+ *
+ * @author Thomas Skjolberg
  */
 
 @Service
 @WebService(endpointInterface = "com.camunda.bpm.example.spring.soap.start.v1.BankAccountServicePortType")
 public class BankAccountService implements BankAccountServicePortType {
 
-  protected Logger logger = LoggerFactory.getLogger(BankAccountService.class.getName());
+  protected Logger LOG = LoggerFactory.getLogger(BankAccountService.class.getName());
 
   @Autowired
   protected ProcessEngine processEngine;
 
   protected FormService formService;
-  
+
   @PostConstruct
   protected void init() {
     formService = processEngine.getFormService();
   }
-  
+
   @Override
-  public SetAccountNameResponse setAccountName(SetAccountNameRequest request, BankRequestHeader header) throws InvalidValueException_Exception {
-    logger.info("Set account " + request.getAccountNumber() + " name " + request.getAccountName());
-    
+  public SetAccountNameResponse setAccountName(SetAccountNameRequest request, BankRequestHeader header)
+      throws InvalidValueException_Exception {
+    LOG.info("Set account " + request.getAccountNumber() + " name " + request.getAccountName());
+
     Map<String, Object> properties = new HashMap<>();
     properties.put("accountNumber", request.getAccountNumber());
     properties.put("accountName", request.getAccountName());
-    
+
     ProcessDefinition lastestProcessDefinition = getLastestProcessDefinition("setAccountNameProcess");
     SetAccountNameResponse response = new SetAccountNameResponse();
 
-    if(lastestProcessDefinition != null) {
+    if (lastestProcessDefinition != null) {
       try {
         formService.submitStartForm(lastestProcessDefinition.getId(), properties);
-        
+
         response.setStatus(StatusType.SUCCESS);
-        
-        logger.info("Successfully set account name");
-      } catch(FormFieldValidatorException e) {
-        logger.warn("Invalid value for field " + e.getId(), e);
-        
+
+        LOG.info("Successfully set account name");
+      } catch (FormFieldValidatorException e) {
+        LOG.warn("Invalid value for field " + e.getId(), e);
+
         InvalidValueException exception = new InvalidValueException();
         exception.setName(e.getId());
-        
+
         throw new InvalidValueException_Exception("Invalid value for field " + e.getId(), exception);
-      } catch(Exception e) {
-        logger.warn("Unable to start process", e);
-        
+      } catch (Exception e) {
+        LOG.warn("Unable to start process", e);
+
         response.setStatus(StatusType.FAILURE);
       }
     } else {
       response.setStatus(StatusType.FAILURE);
     }
-    
+
     return response;
   }
 
-  
   protected ProcessDefinition getLastestProcessDefinition(String processDefinitionKey) {
     Set<String> registeredDeployments = processEngine.getManagementService().getRegisteredDeployments();
-    
+
     ProcessDefinition latestProcessDefintion = null;
-    for(String deploymentId : registeredDeployments) {
+    for (String deploymentId : registeredDeployments) {
       List<ProcessDefinition> list = processEngine.getRepositoryService()
           .createProcessDefinitionQuery()
           .deploymentId(deploymentId)
           .processDefinitionKey(processDefinitionKey)
           .list();
 
-      for(ProcessDefinition processDefinition : list) {
-        if(latestProcessDefintion == null || latestProcessDefintion.getVersion() < processDefinition.getVersion()) {
+      for (ProcessDefinition processDefinition : list) {
+        if (latestProcessDefintion == null || latestProcessDefintion.getVersion() < processDefinition.getVersion()) {
           latestProcessDefintion = processDefinition;
         }
       }
@@ -124,6 +123,5 @@ public class BankAccountService implements BankAccountServicePortType {
     return latestProcessDefintion;
   }
 
-  
 }
 

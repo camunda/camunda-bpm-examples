@@ -10,7 +10,11 @@
   <name>Service Invocation - REST</name>
 
   <properties>
-    <version.camunda>7.15.0</version.camunda>
+    <version.camunda>7.16.0</version.camunda>
+    <version.graal.js>21.1.0</version.graal.js>
+    <version.junit>4.13.1</version.junit>
+    <version.h2>1.4.190</version.h2>
+    <version.slf4j>1.7.26</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,14 +67,28 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.190</version>
+      <version>${version.h2}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js</artifactId>
+      <version>${version.graal.js}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js-scriptengine</artifactId>
+      <version>${version.graal.js}</version>
       <scope>test</scope>
     </dependency>
 
@@ -78,7 +96,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
+      <version>${version.slf4j}</version>
     </dependency>
 
   </dependencies>

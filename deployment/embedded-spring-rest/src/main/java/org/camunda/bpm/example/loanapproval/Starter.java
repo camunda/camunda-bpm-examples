@@ -25,11 +25,8 @@ public class Starter implements InitializingBean {
 	@Autowired
 	private RuntimeService runtimeService;
 
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		runtimeService.startProcessInstanceByKey("loanApproval");
 	}
 
-	public void setRuntimeService(RuntimeService runtimeService) {
-		this.runtimeService = runtimeService;
-	}
 }

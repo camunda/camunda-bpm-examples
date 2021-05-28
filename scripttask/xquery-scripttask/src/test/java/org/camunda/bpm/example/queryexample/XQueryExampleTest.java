@@ -40,18 +40,18 @@ public class XQueryExampleTest {
   @Rule
   public ProcessEngineRule processEngineRule = new ProcessEngineRule();
 
-  private static String transform = "/org/camunda/bpm/example/xqueryexample/example.xquery";
-  private static String input1 = "org/camunda/bpm/example/xqueryexample/example_skills.xml";
-  private static String input2 = "org/camunda/bpm/example/xqueryexample/example_names.xml";
+  protected static final String TRANSFORM = "/org/camunda/bpm/example/xqueryexample/example.xquery";
+  protected static final String INPUT_1 = "org/camunda/bpm/example/xqueryexample/example_skills.xml";
+  protected static final String INPUT_2 = "org/camunda/bpm/example/xqueryexample/example_names.xml";
 
-  private XQueryOperator variableXQueryOperator;
+  protected XQueryOperator variableXQueryOperator;
 
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
   @Before
   public void load() throws Exception {
-    variableXQueryOperator = XQueryOperator.builder().withStylesheetResource(transform).build();
+    variableXQueryOperator = XQueryOperator.builder().withStylesheetResource(TRANSFORM).build();
   }
 
   @Test
@@ -61,10 +61,10 @@ public class XQueryExampleTest {
     HistoryService historyService = processEngineRule.getHistoryService();
 
     // add variables
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
 
-    variables.put("skills", IoUtil.fileAsString(input1));
-    variables.put("names", IoUtil.fileAsString(input2));
+    variables.put("skills", IoUtil.fileAsString(INPUT_1));
+    variables.put("names", IoUtil.fileAsString(INPUT_2));
 
     // start process instance
     runtimeService.startProcessInstanceByKey("xquery-example", variables);
@@ -85,10 +85,9 @@ public class XQueryExampleTest {
 
   @Test
   public void shouldTransform() throws Exception {
-    String skillsAsString = IoUtil.fileAsString(input1);
-    String namesAsString = IoUtil.fileAsString(input2);
-    String output =
-        variableXQueryOperator.evaluateToString("skills", skillsAsString, "names", namesAsString);
+    String skillsAsString = IoUtil.fileAsString(INPUT_1);
+    String namesAsString = IoUtil.fileAsString(INPUT_2);
+    String output = variableXQueryOperator.evaluateToString("skills", skillsAsString, "names", namesAsString);
 
     System.out.println("Transform result:");
     System.out.println(output);

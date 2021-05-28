@@ -83,14 +83,20 @@ This will start the embedded tomcat server.
 2. Watch out for this console log:
 
 ```bash
-[INFO] ENGINE-08046 Found Camunda Platform configuration in
+[INFO] [talledLocalContainer] INFO: ENGINE-08046 Found Camunda Platform configuration in CATALINA_BASE/CATALINA_HOME conf directory [./target/cargo/configurations/tomcat9x/conf/bpm-platform.xml] at './target/cargo/configurations/tomcat9x/conf/bpm-platform.xml'
 ...
-[INFO] ENGINE-07015 Detected @ProcessApplication class 'org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication'
-May 18, 2020 4:46:36 PM org.apache.catalina.core.ApplicationContext log
-INFO: Initializing Spring root WebApplicationContext
+[INFO] [talledLocalContainer] INFO: ENGINE-07015 Detected @ProcessApplication class 'org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication'
+[INFO] [talledLocalContainer] Sep 23, 2021 9:35:01 AM org.apache.catalina.core.ApplicationContext log
+[INFO] [talledLocalContainer] INFO: Initializing Spring root WebApplicationContext
 ...
-Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
-Starting testResolveBean processdefinition
-org.camunda.bpm.example.spring.servlet.pa.ExampleBean is currently invoked.
-Starting testResolveBeanFromJobExecutor processdefinition
+[INFO] [talledLocalContainer] INFO: Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
+[INFO] [talledLocalContainer] Starting testResolveBean processdefinition
+[INFO] [talledLocalContainer] Sep 23, 2021 9:35:01 AM org.camunda.bpm.example.spring.servlet.pa.ExampleBean invoke
+[INFO] [talledLocalContainer] INFO: org.camunda.bpm.example.spring.servlet.pa.ExampleBean is currently invoked.
+[INFO] [talledLocalContainer] Sep 23, 2021 9:35:01 AM org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication startProcess
+[INFO] [talledLocalContainer] INFO: Starting testResolveBeanFromJobExecutor processdefinition
+[INFO] [talledLocalContainer] Sep 23, 2021 9:35:01 AM org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean execute
+[INFO] [talledLocalContainer] INFO: org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean is currently invoked.
+[INFO] [talledLocalContainer] Sep 23, 2021 9:35:01 AM org.camunda.commons.logging.BaseLogger logInfo
+[INFO] [talledLocalContainer] INFO: ENGINE-08050 Process application camunda-quickstart-spring-servlet-pa-tomcat successfully deployed
 ```

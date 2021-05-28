@@ -40,7 +40,6 @@ import org.junit.Test;
 
 /**
  * Test case for demonstrating the asynchronous service invocation.
- * 
  */
 public class TestAsynchronousServiceTask {
 
@@ -56,16 +55,17 @@ public class TestAsynchronousServiceTask {
     final TaskService taskService = processEngineRule.getTaskService();
 
     // this invocation should NOT fail
-    Map<String, Object> variables = Collections.<String, Object> singletonMap(BusinessLogic.SHOULD_FAIL_VAR_NAME, false);
+    Map<String, Object> variables = Collections.singletonMap(BusinessLogic.SHOULD_FAIL_VAR_NAME, false);
 
     // start the process instance
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("asynchronousServiceInvocation", variables);
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("asynchronousServiceInvocation",
+        variables);
 
     // the process instance is now waiting in the first wait state (user task):
     Task waitStateBefore = taskService.createTaskQuery()
-      .taskDefinitionKey("waitStateBefore")
-      .processInstanceId(processInstance.getId())
-      .singleResult();
+        .taskDefinitionKey("waitStateBefore")
+        .processInstanceId(processInstance.getId())
+        .singleResult();
     assertNotNull(waitStateBefore);
 
     // Complete the first task. This triggers causes the Service task to be executed. 
@@ -74,8 +74,9 @@ public class TestAsynchronousServiceTask {
     taskService.complete(waitStateBefore.getId());
 
     // the process instance is now waiting in the service task activity:
-    assertEquals(Collections.singletonList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
-    
+    assertEquals(Collections.singletonList("serviceTaskActivity"),
+        runtimeService.getActiveActivityIds(processInstance.getId()));
+
     // the message is present in the Queue:
     Message message = MockMessageQueue.INSTANCE.getNextMessage();
     assertNotNull(message);
@@ -84,14 +85,14 @@ public class TestAsynchronousServiceTask {
     // Next, trigger the business logic. This will send the callback to the process engine.
     // When this method call returns, the process instance will be waiting in the next waitstate.
     BusinessLogic.INSTANCE.invoke(message, processEngine);
-    
+
     // the process instance is now waiting in the second wait state (user task):
     Task waitStateAfter = taskService.createTaskQuery()
-      .taskDefinitionKey("waitStateAfter")
-      .processInstanceId(processInstance.getId())
-      .singleResult();
+        .taskDefinitionKey("waitStateAfter")
+        .processInstanceId(processInstance.getId())
+        .singleResult();
     assertNotNull(waitStateAfter);
-        
+
     // check for variable set by the service task:
     variables = runtimeService.getVariables(processInstance.getId());
     assertEquals(BusinessLogic.PRICE, variables.get(BusinessLogic.PRICE_VAR_NAME));
@@ -107,16 +108,17 @@ public class TestAsynchronousServiceTask {
     final TaskService taskService = processEngine.getTaskService();
 
     // this invocation should fail
-    Map<String, Object> variables = Collections.<String, Object> singletonMap(BusinessLogic.SHOULD_FAIL_VAR_NAME, true);
+    Map<String, Object> variables = Collections.singletonMap(BusinessLogic.SHOULD_FAIL_VAR_NAME, true);
 
     // start the process instance
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("asynchronousServiceInvocation", variables);
+    ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("asynchronousServiceInvocation", variables);
 
     // the process instance is now waiting in the first wait state (user task):
     Task waitStateBefore = taskService.createTaskQuery()
-      .taskDefinitionKey("waitStateBefore")
-      .processInstanceId(processInstance.getId())
-      .singleResult();
+        .taskDefinitionKey("waitStateBefore")
+        .processInstanceId(processInstance.getId())
+        .singleResult();
     assertNotNull(waitStateBefore);
 
     // Complete the first task. This triggers causes the Service task to be executed. 
@@ -125,8 +127,9 @@ public class TestAsynchronousServiceTask {
     taskService.complete(waitStateBefore.getId());
 
     // the process instance is now waiting in the service task activity:
-    assertEquals(Collections.singletonList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
-    
+    assertEquals(Collections.singletonList("serviceTaskActivity"),
+        runtimeService.getActiveActivityIds(processInstance.getId()));
+
     // the message is present in the Queue:
     Message message = MockMessageQueue.INSTANCE.getNextMessage();
     assertNotNull(message);
@@ -141,7 +144,8 @@ public class TestAsynchronousServiceTask {
     }
 
     // the process instance is still waiting in the service task activity:
-    assertEquals(Collections.singletonList("serviceTaskActivity"), runtimeService.getActiveActivityIds(processInstance.getId()));
+    assertEquals(Collections.singletonList("serviceTaskActivity"),
+        runtimeService.getActiveActivityIds(processInstance.getId()));
 
   }
 

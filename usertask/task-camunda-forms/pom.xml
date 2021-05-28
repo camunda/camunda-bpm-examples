@@ -8,7 +8,9 @@
   <name>Camunda Forms Quickstart</name>
 
   <properties>
-    <version.camunda>7.15.0</version.camunda>
+    <version.camunda>7.16.0</version.camunda>
+    <version.javax-servlet-api>4.0.1</version.javax-servlet-api>
+
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,7 +29,7 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
+      <version>${version.javax-servlet-api}</version>
       <scope>provided</scope>
     </dependency>
 

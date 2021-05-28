@@ -153,7 +153,7 @@ public class ProcessApplicationContextInterceptor {
 
 For this to work on Tomcat (a non-Java-EE server), we have include Weld in the process application. However, note that using CDI is not required for this feature to work. The lowest common denominator is the utility class `ProcessApplicationContext`. It can be used in any context to declare process application context before invoking engine API.
 
-Read the documentation on [Process Application Resource Access](https://docs.camunda.org/manual/7.15/user-guide/process-applications/process-application-resources/) for why it is required to declare process application context.
+Read the documentation on [Process Application Resource Access](https://docs.camunda.org/manual/7.16/user-guide/process-applications/process-application-resources/) for why it is required to declare process application context.
 
 ### Delegation Code
 

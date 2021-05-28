@@ -28,7 +28,7 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class ProcessEngineClient implements InitializingBean {
 
-  private final static Logger LOG = Logger.getLogger(ProcessEngineClient.class.getName());
+  protected final static Logger LOG = Logger.getLogger(ProcessEngineClient.class.getName());
   
   protected ProcessEngine processEngine;
   

@@ -11,7 +11,14 @@
   <packaging>jar</packaging>
 
   <properties>
-    <camunda.version>7.15.0</camunda.version>
+    <camunda.version>7.16.0</camunda.version>
+    <camunda-xquery-saxon.version>2.1.0</camunda-xquery-saxon.version>
+
+    <slf4j.version>1.7.32</slf4j.version>
+    <junit.version>4.13.2</junit.version>
+    <assertj.version>3.21.0</assertj.version>
+    <h2.version>1.4.200</h2.version>
+
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,35 +52,35 @@
     <dependency>
       <groupId>org.camunda.template-engines</groupId>
       <artifactId>camunda-template-engines-xquery-saxon</artifactId>
-      <version>1.1.0</version>
+      <version>${camunda-xquery-saxon.version}</version>
     </dependency>
 
     <!-- redirect slf4j logging to jdk logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
+      <version>${slf4j.version}</version>
     </dependency>
 
     <!-- TEST DEPENDENCIES -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.18.1</version>
+      <version>${assertj.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.190</version>
+      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

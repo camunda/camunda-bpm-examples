@@ -23,19 +23,19 @@ Let's first add the dependencies to the project's `pom.xml` file:
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-external-task-client</artifactId>
-  <version>7.15.0</version>
+  <version>7.16.0</version>
 </dependency>
 
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-  <version>7.15.0</version>
+  <version>7.16.0</version>
 </dependency>
 
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-  <version>7.15.0</version>
+  <version>7.16.0</version>
 </dependency>
 <!--...-->
 ```
@@ -156,7 +156,7 @@ to the Process Engine since it is located under `/src/main/resources/`.
  |_____| /_/\_\  \__|  \___| |_|    |_| |_|  \__,_| |_|     |_|    \__,_| |___/ |_|\_\    \____| |_| |_|  \___| |_| |_|  \__|
 
   Spring-Boot:  (v2.4.3)
-  Camunda Platform: (v7.15.0)
+  Camunda Platform: (v7.16.0)
 2021-03-19 10:57:54.493  INFO 23614 --- [           main] o.c.bpm.spring.boot.example.Application  : Starting Application using Java 1.8.0_131 on localhost with PID 23614 (~//camunda-bpm-examples/spring-boot-starter/external-task-client/loan-granting-spring-boot-webapp/target/classes started by user in ~//camunda-bpm-examples/spring-boot-starter/external-task-client)
 2021-03-19 10:57:54.495  INFO 23614 --- [           main] o.c.bpm.spring.boot.example.Application  : No active profile set, falling back to default profiles: default
 2021-03-19 10:57:55.766  INFO 23614 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)

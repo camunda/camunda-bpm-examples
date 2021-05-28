@@ -40,6 +40,7 @@
       });
     });
 
+
   </script>
 
   <h3>Customer Data</h3>
@@ -50,7 +51,7 @@
       <input id="firstname"
              class="form-control"
              type="text"
-             required 
+             required
              ng-model="customerData.firstname">
     </div>
   </div>
@@ -77,10 +78,10 @@
   </div>
 
   <div>
-      <h3>Addresses</h3>
-      <a href
-         ng-click="addAddress()"
-         class="btn btn-default">Add</a>
+    <h3>Addresses</h3>
+    <a href
+       ng-click="addAddress()"
+       class="btn btn-default">Add</a>
 
     <div ng-repeat="addr in customerData.addresses">
       <hr>
@@ -118,9 +119,9 @@
         <label class="control-label" for="country">Country</label>
         <div class="controls">
           <select id="country"
-                 class="form-control"
-                 required
-                 ng-model="addr.country">
+                  class="form-control"
+                  required
+                  ng-model="addr.country">
             <option>Germany</option>
             <option>France</option>
             <option>Italy</option>

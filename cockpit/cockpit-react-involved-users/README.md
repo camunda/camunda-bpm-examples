@@ -1,4 +1,4 @@
-ReactJS 16.x "Involved Users" Cockpit Plugin
+ReactJS "Involved Users" Cockpit Plugin
 =======================================
 
 This example shows you how to build and bundle a plugin using react. When building your plugin using libraries, you have to make sure all your components are bundled into a single bundle. In this example, we use rollup to create the bundle.

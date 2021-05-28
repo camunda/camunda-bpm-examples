@@ -1,10 +1,10 @@
 # Job Retry Profile Parse Listener
 
-This example demonstrates how to configure a "job retry profile" for each external system as a Process Engine Plugin.
+This example demonstrates how to configure a "job retry profile" for each external system as a Process Engine plugin.
 
-Usually there are specific patterns during communication between the process engine and external systems. Let's imagine 
-that you want to configure that every time a job fails to connect to a specific external system (for example a
-CRM system) to retry at least 10 times within a 5 minutes duration. This is your right example to do so.
+Usually there are specific patterns during communication between the process engine and external systems. This example
+shows how to configure a Process Engine plugin to retry every job that fails to connect to a specific external system (for example a
+CRM system) at least 10 times within a period of 5 minutes.
 
 ## Show me the important parts!
 
@@ -12,12 +12,12 @@ The process model is composed of four service tasks communicating with two diffe
 
 ![Process Model][1]
 
-* Every ServiceTask contains custom extension property `retryProfile` which defines the profile name of the external 
+Every ServiceTask contains a custom extension property called `retryProfile` which defines the profile name of the external 
 system in this case - CRM and ERP.
 
 ### Create a Process Engine Plugin Implementation
 
-In order to extend the `org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin` class:
+Extend the `org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin` class:
 
 ``` java
 public class FailedJobRetryProfilePlugin extends AbstractProcessEnginePlugin {
@@ -105,8 +105,8 @@ public class FailedJobRetryProfileParseListener extends DefaultFailedJobParseLis
 }
 ```
 
-This listener helps us during the parsing of the bpmn to set the retry value if we have specified attribute for 
-the current task. 
+This listener helps us during the parsing of the BPMN file by setting the retry value if we have specified the `retryProfile` property for 
+the current task.
 
 ### Activate the Plugin
 
@@ -155,7 +155,7 @@ If you are impatient, just have a look at the [unit test][3].
 
 In this example, the unit test triggers the process engine to deploy and parse the BPMN Process Model.
 The Process Engine BPMN Parser parses the process definition. The Failed Job Retry Profile Parse Listener additionally 
-parses the service task to the BPMN Parser and adds a failed job retry configuration according to the defined profile.
+parses the service task and adds a failed job retry configuration according to the defined profile.
 
 After that, the process engine starts the process instance and invokes the `execute()` method provided by 
 the `Java Delegate` implementation. When the service task fails, the process engine retries the job according to

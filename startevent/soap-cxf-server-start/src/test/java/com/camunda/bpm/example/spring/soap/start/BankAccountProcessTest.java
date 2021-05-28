@@ -36,12 +36,12 @@ import com.camunda.bpm.example.spring.soap.start.v1.InvalidValueException_Except
 import com.camunda.bpm.example.spring.soap.start.v1.SetAccountNameRequest;
 import com.camunda.bpm.example.spring.soap.start.v1.SetAccountNameResponse;
 import com.camunda.bpm.example.spring.soap.start.v1.StatusType;
+
 /**
  * 
  * Test various SOAP calls
  * 
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={ "classpath:/spring/engine-test.xml", "classpath:/spring/beans.xml", "classpath:/spring/beans-test.xml"})
 public class BankAccountProcessTest {
@@ -50,7 +50,7 @@ public class BankAccountProcessTest {
   public ExpectedException exception = ExpectedException.none();
 
   @Value("${secret}")
-  private String secret;
+  protected String secret;
 
   @Autowired
   @Qualifier("bankAccountServiceClient")

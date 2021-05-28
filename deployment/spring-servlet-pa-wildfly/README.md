@@ -67,12 +67,12 @@ dependency like:
   4. Watch out for this console log:
 
 ```bash
-Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
+10:08:29,411 INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-5) Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
 Starting testResolveBean processdefinition
-org.camunda.bpm.example.spring.servlet.pa.ExampleBean is currently invoked.
-Starting testResolveBeanFromJobExecutor processdefinition
-org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean is currently invoked.
+10:08:29,437 INFO  [org.camunda.bpm.example.spring.servlet.pa.ExampleBean] (MSC service thread 1-5) org.camunda.bpm.example.spring.servlet.pa.ExampleBean is currently invoked.
+10:08:29,447 INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-5) Starting testResolveBeanFromJobExecutor processdefinition
+10:08:29,465 INFO  [org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean] (pool-10-thread-7) org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean is currently invoked.
 ...
-Invoking @PreUndeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
+10:59:54,041 INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-1) Invoking @PreUndeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
 Undeploying SpringServletProcessApplication-Example
 ```
