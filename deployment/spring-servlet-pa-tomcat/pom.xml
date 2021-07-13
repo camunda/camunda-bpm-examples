@@ -10,6 +10,7 @@
   <properties>
     <camunda.version>7.15.0</camunda.version>
     <spring.version>4.3.24.RELEASE</spring.version>
+    <tomcat.version>9.0.43</tomcat.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,7 +21,28 @@
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-spring</artifactId>
       <version>${camunda.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <version>${camunda.version}</version>
+      <!-- must be in scope provided, because it is on the shared classpath
+        of the Camunda Tomcat distribution -->
       <scope>provided</scope>
+      <exclusions>
+        <!-- Excluded to avoid a version conflict with the Spring version we are 
+          including in our application -->
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
     </dependency>
 
     <dependency>
@@ -36,6 +58,14 @@
       <version>1.3.168</version>
       <scope>provided</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.camunda.bpm.tomcat</groupId>
+      <artifactId>camunda-bpm-tomcat</artifactId>
+      <version>${camunda.version}</version>
+      <type>zip</type>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -47,38 +77,12 @@
   </repositories>
 
   <build>
-
     <plugins>
-
-      <!-- prepare final versions of tomcat configuration file with paths filtering -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <!-- here the phase you need -->
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/tomcatconf</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/main/tomcatconf</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-
       <!-- prepare deployment folder that will be used by web container. (see server.xml:150)  -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <goals>
@@ -92,62 +96,64 @@
         </executions>
       </plugin>
 
-
-      <!-- run embedded tomcat using pre-configured server.xml -->
+      <!-- Unpack Camunda Tomcat distribution so that it is ready -->
       <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.2</version>
         <executions>
           <execution>
-            <id>tomcat-run</id>
-            <goals>
-              <goal>run-war</goal>
-            </goals>
+            <id>unpack-tomcat-distro</id>
             <phase>pre-integration-test</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
             <configuration>
-              <serverXml>${project.build.directory}/tomcatconf/server.xml</serverXml>
-              <fork>true</fork>
+              <includeGroupIds>org.camunda.bpm.tomcat</includeGroupIds>
+              <includeArtifactIds>camunda-bpm-tomcat</includeArtifactIds>
+              <outputDirectory>
+                 ${project.build.directory}/tomcat
+              </outputDirectory>
             </configuration>
           </execution>
-
+        </executions>
+      </plugin>
+        
+      <!-- Start Tomcat distribution and deploy WAR application -->
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven3-plugin</artifactId>
+        <version>1.9.5</version>
+        <configuration>
+          <container>
+            <containerId>tomcat9x</containerId>
+            <home>${project.build.directory}/tomcat/server/apache-tomcat-${tomcat.version}</home>
+          </container>
+          <deployables>
+            <deployable>
+              <groupId>org.camunda.bpm.quickstart</groupId>
+              <artifactId>camunda-quickstart-spring-servlet-pa-tomcat</artifactId>
+              <type>war</type>
+            </deployable>
+          </deployables>
+        </configuration>
+        <executions>
           <execution>
-            <id>tomcat-shutdown</id>
+            <id>start-tomcat</id>
+            <phase>pre-integration-test</phase>
             <goals>
-              <goal>shutdown</goal>
+              <goal>start</goal>
             </goals>
+          </execution>
+          <execution>
+            <id>stop-tomcat</id>
             <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
           </execution>
         </executions>
-
-        <!-- declare root dependencies of tomcat web container, required by engine (NOTE: those are not webapp libs) -->
-        <dependencies>
-          <dependency>
-            <groupId>org.camunda.bpm</groupId>
-            <artifactId>camunda-engine-spring</artifactId>
-            <version>${camunda.version}</version>
-          </dependency>
-
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-          </dependency>
-
-          <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.3.168</version>
-          </dependency>
-
-          <dependency>
-            <groupId>com.fasterxml.uuid</groupId>
-            <artifactId>java-uuid-generator</artifactId>
-            <version>3.1.2</version>
-          </dependency>
-
-        </dependencies>
       </plugin>
-
     </plugins>
 
   </build>
