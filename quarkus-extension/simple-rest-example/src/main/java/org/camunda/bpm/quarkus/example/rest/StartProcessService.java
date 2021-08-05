@@ -14,31 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.acme.rest;
+package org.camunda.bpm.quarkus.example.rest;
 
-import org.camunda.bpm.engine.RepositoryService;
+import org.camunda.bpm.engine.cdi.annotation.StartProcess;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/deploy-process")
-public class DeployProcessService {
-
-  @Inject
-  public RepositoryService repositoryService;
+@Path("/start-process")
+public class StartProcessService {
 
   @GET
   @Produces(MediaType.TEXT_PLAIN)
-  public String deployProcess() {
-    String deploymentId = repositoryService.createDeployment()
-        .addClasspathResource("process.bpmn")
-        .deploy()
-        .getId();
-
-    return "Deployment with id " + deploymentId + " created";
+  @StartProcess("quarkus-process")
+  public String startProcess() {
+    return "Process instance started";
   }
 
 }

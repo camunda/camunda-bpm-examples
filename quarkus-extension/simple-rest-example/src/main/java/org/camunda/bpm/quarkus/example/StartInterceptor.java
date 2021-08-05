@@ -14,23 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.acme.rest;
+package org.camunda.bpm.quarkus.example;
 
 import org.camunda.bpm.engine.cdi.annotation.StartProcess;
+import org.camunda.bpm.engine.cdi.impl.annotation.StartProcessInterceptor;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.annotation.Priority;
+import javax.enterprise.context.Dependent;
+import javax.interceptor.Interceptor;
 
-@Path("/start-process")
-public class StartProcessService {
-
-  @GET
-  @Produces(MediaType.TEXT_PLAIN)
-  @StartProcess("quarkus-process")
-  public String startProcess() {
-    return "Process instance started";
-  }
-
+@Priority(1)
+@Dependent
+@Interceptor
+@StartProcess
+public class StartInterceptor extends StartProcessInterceptor {
 }

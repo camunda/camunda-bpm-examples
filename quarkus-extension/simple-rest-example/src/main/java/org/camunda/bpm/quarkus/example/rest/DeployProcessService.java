@@ -14,14 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.acme;
+package org.camunda.bpm.quarkus.example.rest;
 
-import org.camunda.bpm.engine.cdi.impl.annotation.StartProcessInterceptor;
+import org.camunda.bpm.engine.RepositoryService;
 
-import javax.annotation.Priority;
-import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-@Priority(1)
-@Dependent
-public class StartInterceptor extends StartProcessInterceptor {
+@Path("/deploy-process")
+public class DeployProcessService {
+
+  @Inject
+  public RepositoryService repositoryService;
+
+  @GET
+  @Produces(MediaType.TEXT_PLAIN)
+  public String deployProcess() {
+    String deploymentId = repositoryService.createDeployment()
+        .addClasspathResource("process.bpmn")
+        .deploy()
+        .getId();
+
+    return "Deployment with id " + deploymentId + " created";
+  }
+
 }

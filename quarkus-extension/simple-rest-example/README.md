@@ -9,14 +9,14 @@ It demonstrates how you can use the Camunda Platform Runtime Engine in combinati
 * Configures and bootstraps a process engine.
 * Exposes two REST endpoints which:
   * Deploy the [process.bpmn](src/main/resources/process.bpmn).
-  * Start a process instance that calls the [MyServiceDelegate](src/main/java/org/acme/MyServiceDelegate.java) bean.
+  * Start a process instance that calls the [MyServiceDelegate](src/main/java/org/camunda/bpm/quarkus/example/MyServiceDelegate.java) bean.
 
 You can:
-1. Go to [http://localhost:8080/deploy-process]() to deploy the provided [BPMN process](src/main/resources/process.bpmn).
-2. Go to [http://localhost:8080/start-process]() to start a process instance of the deployed BPMN process.
+1. Go to http://localhost:8080/deploy-process to deploy the provided [BPMN process](src/main/resources/process.bpmn).
+2. Go to http://localhost:8080/start-process to start a process instance of the deployed BPMN process.
 3. Observe the console and watch out for the following log output:
    ```
-   2021-08-05 15:41:52,004 INFO  [org.acm.MyServiceDelegate] (executor-thread-0) Hurray! MyService has been called!
+   2021-08-05 16:58:39,286 INFO  [org.cam.bpm.qua.exa.MyServiceDelegate] (executor-thread-0) Hurray! MyService has been called!
    ```
 
 If you want to learn more about Quarkus, please visit: https://quarkus.io/.
@@ -49,4 +49,4 @@ If you want to build an _über-jar_, execute the following command:
 mvn clean package -Dquarkus.package.type=uber-jar
 ```
 
-The application is now runnable using `java -jar target/code-with-quarkus-1.0.0-SNAPSHOT-runner.jar`.
+The application is now runnable using `java -jar target/camunda-bpm-quarkus-example-simple-rest-1.0.0-SNAPSHOT-runner.jar`.

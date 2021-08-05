@@ -4,8 +4,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.acme</groupId>
-  <artifactId>code-with-quarkus</artifactId>
+  <groupId>org.camunda.bpm.quarkus.example</groupId>
+  <artifactId>camunda-bpm-quarkus-example-simple-rest</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
