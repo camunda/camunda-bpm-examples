@@ -44,6 +44,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [SDK-JS Examples](#sdk-js-examples)
 * [Authentication](#authentication)
 * [Spring Boot Starter examples](#spring-boot-starter-examples)
+* [Quarkus Extension Examples](#quarkus-extension-examples)
 * [External Task Client](#external-task-client)
 * [External Task Client Spring](#external-task-client-spring)
 * [External Task Client Spring Boot](#external-task-client-spring-boot)
@@ -208,6 +209,12 @@ If you clone this repository, use the checkout commands to access the sources fo
  | [Twitter](spring-boot-starter/example-twitter)             | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, Webapps, Twitter  |
  | [REST API DMN](spring-boot-starter/example-dmn-rest)       | Spring boot with embedded engine and Webapps                               |  Spring Boot Starter, REST API |
  | [Camunda Invoice Example](spring-boot-starter/example-invoice) | Spring boot with embedded engine, Webapps and Rest API                 |  Spring Boot Starter, REST API |
+
+### Quarkus Extension Examples
+
+| Name                                                         | Container                                                                  | Keywords                |
+| -------------------------------------------------------------|----------------------------------------------------------------------------|-------------------------|
+| [Simple REST Example](quarkus-extension/simple-rest-example) | Uber-Jar                                                                   |  Quarkus Extension      |
 
 ### External Task Client
 
