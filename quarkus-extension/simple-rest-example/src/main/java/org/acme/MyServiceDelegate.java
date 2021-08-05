@@ -25,9 +25,9 @@ import javax.inject.Named;
 
 @Dependent
 @Named
-public class MyService implements JavaDelegate {
+public class MyServiceDelegate implements JavaDelegate {
 
-  protected static final Logger LOG = Logger.getLogger(MyService.class);
+  protected static final Logger LOG = Logger.getLogger(MyServiceDelegate.class);
 
   @Override
   public void execute(DelegateExecution execution) {
