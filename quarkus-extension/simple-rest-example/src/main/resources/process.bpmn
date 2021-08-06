@@ -10,7 +10,8 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1a4ohec" sourceRef="Activity_1eiwqxl" targetRef="Event_155wmgi" />
     <bpmn:serviceTask id="Activity_1eiwqxl" name="Call &#34;myServiceDelegate&#34;"
-                      camunda:delegateExpression="${myServiceDelegate}">
+                      camunda:delegateExpression="${myServiceDelegate}"
+                      camunda:asyncBefore="true">
       <bpmn:incoming>Flow_0kby13t</bpmn:incoming>
       <bpmn:outgoing>Flow_1a4ohec</bpmn:outgoing>
     </bpmn:serviceTask>
