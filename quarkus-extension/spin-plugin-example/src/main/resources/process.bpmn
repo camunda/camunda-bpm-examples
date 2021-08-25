@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_136l9dc" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.7.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.14.0">
+  <bpmn:process id="order-item-process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0sv4uvj</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0sv4uvj" sourceRef="StartEvent_1" targetRef="Activity_0mppyxt" />
+    <bpmn:subProcess id="Activity_0mppyxt">
+      <bpmn:incoming>Flow_0sv4uvj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bp8hrx</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="orderItems" camunda:elementVariable="orderItem" />
+      <bpmn:serviceTask id="Activity_0x1k9u4" name="Store order item" camunda:delegateExpression="${storeOrderItemService}">
+        <bpmn:incoming>Flow_16odgu4</bpmn:incoming>
+        <bpmn:outgoing>Flow_1vrlv2t</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:endEvent id="Event_0uy0ait">
+        <bpmn:incoming>Flow_1vrlv2t</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_1vrlv2t" sourceRef="Activity_0x1k9u4" targetRef="Event_0uy0ait" />
+      <bpmn:startEvent id="Event_0i5s7tx">
+        <bpmn:outgoing>Flow_16odgu4</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_16odgu4" sourceRef="Event_0i5s7tx" targetRef="Activity_0x1k9u4" />
+    </bpmn:subProcess>
+    <bpmn:endEvent id="Event_0gj6vsh">
+      <bpmn:incoming>Flow_0bp8hrx</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0bp8hrx" sourceRef="Activity_0mppyxt" targetRef="Event_0gj6vsh" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="order-item-process">
+      <bpmndi:BPMNEdge id="Flow_0bp8hrx_di" bpmnElement="Flow_0bp8hrx">
+        <di:waypoint x="640" y="185" />
+        <di:waypoint x="722" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sv4uvj_di" bpmnElement="Flow_0sv4uvj">
+        <di:waypoint x="215" y="187" />
+        <di:waypoint x="290" y="187" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="169" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_127omrs_di" bpmnElement="Activity_0mppyxt" isExpanded="true">
+        <dc:Bounds x="290" y="80" width="350" height="210" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_16odgu4_di" bpmnElement="Flow_16odgu4">
+        <di:waypoint x="368" y="180" />
+        <di:waypoint x="410" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vrlv2t_di" bpmnElement="Flow_1vrlv2t">
+        <di:waypoint x="510" y="180" />
+        <di:waypoint x="562" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1h4z1k2_di" bpmnElement="Activity_0x1k9u4">
+        <dc:Bounds x="410" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0uy0ait_di" bpmnElement="Event_0uy0ait">
+        <dc:Bounds x="562" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0i5s7tx_di" bpmnElement="Event_0i5s7tx">
+        <dc:Bounds x="332" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0gj6vsh_di" bpmnElement="Event_0gj6vsh">
+        <dc:Bounds x="722" y="167" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
