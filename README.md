@@ -215,6 +215,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | Name                                                         | Container                                                                  | Keywords                |
 | -------------------------------------------------------------|----------------------------------------------------------------------------|-------------------------|
 | [Simple REST Example](quarkus-extension/simple-rest-example) | Uber-Jar                                                                   |  Quarkus Extension      |
+| [Spin Plugin Example](quarkus-extension/spin-plugin-example) | Uber-Jar                                                                   |  Quarkus Extension      |
 
 ### External Task Client
 
