@@ -5,7 +5,7 @@ in combination with the extension  `camunda-bpm-quarkus-engine`.
 
 It demonstrates how you can use the Camunda Platform Runtime Engine in combination with Quarkus to spawn a node that:
 
-* Connects to a H2 in-memory database.
+* Connects to an H2 on-disk database.
 * Configures and bootstraps a process engine.
 * Exposes two REST endpoints which:
   * Deploy the [process.bpmn](src/main/resources/process.bpmn).
