@@ -9,7 +9,7 @@
 
   <properties>
     <camunda.version>7.15.0</camunda.version>
-    <spring.version>4.3.24.RELEASE</spring.version>
+    <spring.version>5.3.10</spring.version>
     <tomcat.version>9.0.43</tomcat.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -42,6 +42,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
       <version>${spring.version}</version>
     </dependency>
 
