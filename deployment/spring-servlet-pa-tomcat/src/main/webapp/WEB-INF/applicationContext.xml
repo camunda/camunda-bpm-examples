@@ -4,13 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                          http://www.springframework.org/schema/beans/spring-beans.xsd
                          http://www.springframework.org/schema/context
-                         http://www.springframework.org/schema/context/spring-context-2.5.xsd" >
+                         http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
   <!-- bind the process engine service as Spring Bean -->
-  <bean name="processEngineService" class="org.camunda.bpm.BpmPlatform" factory-method="getProcessEngineService" />
+  <bean name="processEngineService" class="org.camunda.bpm.BpmPlatform" factory-method="getProcessEngineService"/>
 
   <!-- bind the default process engine as Spring Bean -->
-  <bean name="processEngine" factory-bean="processEngineService" factory-method="getDefaultProcessEngine" />
+  <bean name="processEngine" factory-bean="processEngineService" factory-method="getDefaultProcessEngine"/>
 
   <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
   <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
@@ -18,12 +18,12 @@
   <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
   <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
 
-  <context:annotation-config />
+  <context:annotation-config/>
 
   <!-- Spring bean to be invoked through the ApplicationContextElResolver -->
-  <bean id="exampleBean" class="org.camunda.bpm.example.spring.servlet.pa.ExampleBean" />
+  <bean id="exampleBean" class="org.camunda.bpm.example.spring.servlet.pa.ExampleBean"/>
 
   <!-- Spring bean to be invoked through the ApplicationContextElResolver -->
-  <bean id="exampleDelegateBean" class="org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean" />
+  <bean id="exampleDelegateBean" class="org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean"/>
 
 </beans>

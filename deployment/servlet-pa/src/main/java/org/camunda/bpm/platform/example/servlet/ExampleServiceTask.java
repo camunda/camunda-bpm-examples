@@ -16,6 +16,7 @@
  */
 package org.camunda.bpm.platform.example.servlet;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -27,22 +28,21 @@ import org.camunda.bpm.model.bpmn.instance.FlowElement;
  * be directly invoked by the process engine while executing a BPMN process.
  *
  * @author Daniel Meyer
- *
  */
 public class ExampleServiceTask implements JavaDelegate {
 
-  public final static Logger LOGGER = Logger.getLogger(ExampleServiceTask.class.getName());
+  public static final Logger LOGGER = Logger.getLogger(ExampleServiceTask.class.getName());
 
   /**
    * this method will be invoked by the process engine when the service task is executed.
    */
-  public void execute(DelegateExecution execution) throws Exception {
+  public void execute(DelegateExecution execution) {
 
     // use camunda model API to get current BPMN element
     FlowElement serviceTask = execution.getBpmnModelElementInstance();
 
     // log status
-    LOGGER.info("\n\n\nService Task '"+serviceTask.getName() +"' is invoked!\n\n\n");
+    LOGGER.log(Level.INFO, "\n\n\nService Task {0} is invoked!\n\n\n", serviceTask.getName());
 
   }
 
