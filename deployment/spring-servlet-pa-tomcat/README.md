@@ -1,4 +1,4 @@
-# Spring Servlet Process Application (using embedded Tomcat 7)
+# Spring Servlet Process Application (using Tomcat 9)
 
 This example demonstrates how to deploy a spring powered web application which
 
@@ -47,40 +47,28 @@ when deploying the process application:
 
 ### Maven dependencies
 
-The scope attributes of the dependency nodes are set to *provided* since the dependencies have to be loaded into the 
-root classloader of the web container:
+The scope attributes of the `camunda-engine` dependency is set to *provided* since it is included in the shared classpath of the Camunda Tomcat distribution:
 
 ```xml
 <dependency>
   <groupId>org.camunda.bpm</groupId>
-  <artifactId>camunda-engine-spring</artifactId>
+  <artifactId>camunda-engine</artifactId>
   <version>${camunda.version}</version>
   <scope>provided</scope>
 </dependency>
 ```
 
-The embedded tomcat server will be run with our pre-configured `server.xml`. This configuration file will be 
-preprocessed so that variables with the name `${project.build.directory}` are being replaced with the proper path:
+The scope of `camunda-engine-spring`, the module that integrates Camunda with Spring, must be set to `compile` so that it is included in the application.
 
 ```xml
-<Resource 
-  name="jdbc/ProcessEngine"
-  auth="Container"
-  type="javax.sql.DataSource"
-  factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-  uniqueResourceName="process-engine"
-  driverClassName="org.h2.Driver"
-  url="jdbc:h2:${project.build.directory}/camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"
-  username="sa"
-  password="sa"
-  maxPoolSize="20"
-  minPoolSize="5" />
-...
-<Host name="localhost"  appBase="${project.build.directory}/to_deploy"
-  unpackWARs="true" autoDeploy="true">
+<dependency>
+  <groupId>org.camunda.bpm</groupId>
+  <artifactId>camunda-engine</artifactId>
+  <version>${camunda.version}</version>
+</dependency>
 ```
 
-The configuration files `server.xml` and `bpm-platform.xml` are being copied to the respective tomcat configuration path.
+For testing, the Maven Cargo plugin unpacks the Camunda Tomcat distribution to the `target/tomcat` directory of the application and runs it.
 
 ## How to use it?
 

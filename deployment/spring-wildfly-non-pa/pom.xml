@@ -10,7 +10,7 @@
 
   <properties>
     <camunda.version>7.16.0</camunda.version>
-    <spring.version>4.3.24.RELEASE</spring.version>
+    <spring.version>5.3.10</spring.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,6 +33,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
       <version>${spring.version}</version>
     </dependency>
 
