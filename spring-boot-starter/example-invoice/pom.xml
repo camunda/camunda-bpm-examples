@@ -8,7 +8,8 @@
 
   <properties>
     <camunda.version>7.16.0-ee</camunda.version>
-    <spring.boot.version>2.4.4</spring.boot.version>
+    <spring.boot.version>2.5.4</spring.boot.version>
+    <graaljs.version>21.1.0</graaljs.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
   </properties>
 
@@ -41,6 +42,17 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js</artifactId>
+      <version>${graaljs.version}</version>
+    </dependency>  
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js-scriptengine</artifactId>
+      <version>${graaljs.version}</version>
     </dependency>
 
     <dependency>
