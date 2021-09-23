@@ -350,7 +350,7 @@ http://localhost:8080/multi-tenancy-tutorial/process-definition?user=gonzo
 Only the process for tenant 2 is returned.
 
 Go to Camunda Cockpit and switch the engine to `tenant1` on the following URL (you will be asked to create an admin user first):
-http://localhost:8080/camunda/app/cockpit/tenant1
+http://localhost:8080/camunda/app/cockpit/tenant1/
 
 Only the process for tenant 1 shows up. You can check the same for tenant 2 by switching to engine `tenant2`.
 
