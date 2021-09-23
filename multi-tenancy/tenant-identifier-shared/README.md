@@ -98,19 +98,19 @@ public class TenantAwareServiceTask implements JavaDelegate {
 1. Checkout the project with Git
 2. Import the project into your IDE
 3. Build it with Maven
-4. Deploy it to a camunda-bpm-platform distro at your own choice
+4. Deploy it to a shared process engine distribution of your own choice (Tomcat, Wildfly, Weblogic, Websphere - this example does not work with Camunda Platform Run)
 5. Check the console or the log file if you can find: 
 `TenantAwareServiceTask.execute invoked for tenant with id: tenant1` and
 `TenantAwareServiceTask.execute invoked for tenant with id: tenant2`
 
 ### Check the Result in Camunda Web Applications
 
-1. Open your browser and go to `http://localhost:8080/camunda/app/cockpit`
+1. Open your browser and go to http://localhost:8080/camunda/app/cockpit
 2. Log in with `demo` / `demo` as member of group `camunda-admin`
 3. Check that you see two deployed process definitions with key `example-process` - one for each tenant
 4. Switch to Admin and create a new user
 5. Go to tenant section and create a new tenant with id `tenant1`
-6. Select the user and add him to the tenant `tenant1`
+6. Select the user and assign the tenant `tenant1` to it
 7. Make sure that the user has the permissions to read process definitions and access Cockpit Web Application
 8. Switch to Cockpit and log in with the new user
 9. Check that the user see only one deployed process definition with key `example-process`
