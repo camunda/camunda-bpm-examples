@@ -28,7 +28,7 @@ information can be used in the process forms.
 ### Start event form
 
 The start event in both processes has a name which describes the task of the start event. So, 
-it could be displayed as a request to the user. The name of following user task clarifies
+it could be displayed as a request to the user. The name of the following user task clarifies
 what the next step is after the start event, which could be used as a button label to submit the
 start form.
 
@@ -59,9 +59,9 @@ the name of the following user task. How these methods gather the required infor
 
 ### User task form
 
-The user task in both processes is followed by an exclusive gateway. The exclusive gateway name is the question which the user
-has to answer, while the outgoing sequence flows are labeled with the possible actions to take. So, a generic approach would
-be to prompt the user the gateway question and to display the sequence flow labels as buttons. By a click on a button the user decides
+The user task in both processes is followed by an exclusive gateway. The exclusive gateway name represents the question how to handle the request,
+while the outgoing sequence flows are labeled with the possible actions to take. So, a generic approach would
+be to prompt the user to answer the gateway question and to display the sequence flow labels as buttons. By a click on a button the user decides
 which sequence flow to choose.
 
 So, a generic user task form for booth processes could be (see [user-form.xhtml][4]):
@@ -80,8 +80,8 @@ So, a generic user task form for booth processes could be (see [user-form.xhtml]
 ```
 
 The method `userTaskController.question` returns the name of the following exclusive gateway and `userTaskController.buttons` returns a list
-of the corresponding sequence flow conditions. The task is completed by the `userTaskController.completeTask` method which handles
-the logic to choose the correct execution path. This is explained in the next section.
+of the corresponding sequence flow conditions. The `userTaskController.completeTask` method handles
+the logic to choose the correct execution path and completes the task. This is explained in the next section.
 
 ## BPMN model API
 
