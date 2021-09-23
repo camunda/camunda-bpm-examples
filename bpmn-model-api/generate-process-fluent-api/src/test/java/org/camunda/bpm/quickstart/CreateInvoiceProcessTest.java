@@ -89,7 +89,7 @@ public class CreateInvoiceProcessTest {
       processEngine.getTaskService().complete(taskQuery.singleResult().getId());
 
       // check and complete task "Approve Invoice"
-      Map<String, Object> variables = new HashMap<String, Object>();
+      Map<String, Object> variables = new HashMap<>();
       variables.put("approved", true);
 
       org.junit.Assert.assertEquals(1, taskQuery.count());
@@ -105,11 +105,7 @@ public class CreateInvoiceProcessTest {
       // check if process instance is ended
       org.junit.Assert.assertEquals(0, processEngine.getRuntimeService().createProcessInstanceQuery().count());
 
-      /**
-       * to see the BPMN 2.0 process model XML on the console log
-       * copy the following code line at the end of the test case
-       *
-       * Bpmn.writeModelToStream(System.out, modelInstance);
-       */
+       // show the BPMN 2.0 process model XML on the console log
+//      Bpmn.writeModelToStream(System.out, modelInstance);
   }
 }
