@@ -11,7 +11,7 @@
 
   <properties>
     <camunda.platform.version>7.16.0</camunda.platform.version>
-    <slf4j.version>1.7.26</slf4j.version>
+    <slf4j.version>1.7.32</slf4j.version>
     <jaxb.version>2.2.3</jaxb.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
     <java.version>8</java.version>
