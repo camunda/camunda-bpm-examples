@@ -28,7 +28,7 @@ import java.util.Map;
 @ProcessApplication("Jackson Annotation App")
 public class JacksonAnnotationApplication extends ServletProcessApplication {
   /*
-  **
+   **
    * The {@literal @}PostDeploy method is invoked when the deployment of all BPMN 2.0 processes is complete.
    * The process engine can be injected.
    */

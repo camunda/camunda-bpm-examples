@@ -31,7 +31,8 @@ This quickstart demonstrates the use of most of the supported form controls. See
 ### Input Text
 
 ```html
-<input required
+<input id="inputFirstname"
+       required
        type="text"
        cam-variable-name="firstname"
        cam-variable-type="String"
@@ -43,7 +44,8 @@ This quickstart demonstrates the use of most of the supported form controls. See
 ### Input Number
 
 ```html
-<input required
+<input id="inputLoanAmount"
+       required
        type="number"
        cam-variable-name="loanAmount"
        cam-variable-type="Double"
@@ -53,7 +55,7 @@ This quickstart demonstrates the use of most of the supported form controls. See
 ### Select Box
 
 ```html
-<select required cam-variable-name="loanType" cam-variable-type="String">
+<select id="selectLoanType" required cam-variable-name="loanType" cam-variable-type="String">
   <option value="mortage" checked>Mortage Loan (5%)</option>
   <option value="cashAdvance">Cash Advance (10%)</option>
 </select>
@@ -63,7 +65,8 @@ This quickstart demonstrates the use of most of the supported form controls. See
 ### Textarea
 
 ```html
-<textarea cam-variable-name="address"
+<textarea id="inputAddress"
+          cam-variable-name="address"
           cam-variable-type="String"
           rows="4"></textarea>
 ```
@@ -81,7 +84,7 @@ This quickstart demonstrates the use of most of the supported form controls. See
 1. Checkout the project with Git
 2. Build the project with maven
 3. Deploy the war file to a Camunda Platform distribution
-4. Go the the Tasklist and start a process instance for the process named "Embedded Forms Quickstart"
+4. Go the Tasklist and start a process instance for the process named "Embedded Forms Quickstart"
 
 [1]: docs/screenshot.png
 [2]: docs/screenshot-modeler.png

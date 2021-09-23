@@ -34,7 +34,7 @@ public class SynchronousServiceTask implements JavaDelegate {
   public static final String PRICE_VAR_NAME = "price";
   public static final float PRICE = 199.00f;
 
-  public void execute(DelegateExecution execution) throws Exception {
+  public void execute(DelegateExecution execution) {
 
     // Here you could either add the business logic of the service task
     // or delegate to the actual business logic implementation provided
@@ -43,21 +43,21 @@ public class SynchronousServiceTask implements JavaDelegate {
     // You could also invoke a Remote Service using REST, SOAP or EJB-Remote
     // in a synchronous fashion.
 
-    // You can interact with the active execution (process instance) through
-    // the DelegateExecution object. Most prominently, you can read and modify variables.
-
     // In this example, we
     //  - either throw an exception
     //  - or add a variable to the execution so that we can check for it in the unit test:
 
-    if(((Boolean)execution.getVariable(SHOULD_FAIL_VAR_NAME)) == true) {
+    boolean shouldFailVarName = ((Boolean) execution.getVariable(SHOULD_FAIL_VAR_NAME));
+    if (shouldFailVarName) {
       throw new RuntimeException("Service invocation failure!");
 
     } else {
       execution.setVariable(PRICE_VAR_NAME, PRICE);
 
     }
+
   }
+
 }
 ```
 

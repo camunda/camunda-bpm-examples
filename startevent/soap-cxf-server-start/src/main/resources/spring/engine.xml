@@ -4,21 +4,21 @@
 
   <!-- bind the process engine service as Spring Bean -->
   <bean name="processEngineService" class="org.camunda.bpm.BpmPlatform"
-    factory-method="getProcessEngineService" />
+        factory-method="getProcessEngineService"/>
 
   <!-- bind the default process engine as Spring Bean -->
   <bean name="defaultProcessEngine" factory-bean="processEngineService"
-    factory-method="getDefaultProcessEngine" />
+        factory-method="getDefaultProcessEngine"/>
 
   <bean id="repositoryService" factory-bean="defaultProcessEngine"
-    factory-method="getRepositoryService" />
+        factory-method="getRepositoryService"/>
   <bean id="runtimeService" factory-bean="defaultProcessEngine"
-    factory-method="getRuntimeService" />
+        factory-method="getRuntimeService"/>
   <bean id="taskService" factory-bean="defaultProcessEngine"
-    factory-method="getTaskService" />
+        factory-method="getTaskService"/>
   <bean id="historyService" factory-bean="defaultProcessEngine"
-    factory-method="getHistoryService" />
+        factory-method="getHistoryService"/>
   <bean id="managementService" factory-bean="defaultProcessEngine"
-    factory-method="getManagementService" />
+        factory-method="getManagementService"/>
 
 </beans>

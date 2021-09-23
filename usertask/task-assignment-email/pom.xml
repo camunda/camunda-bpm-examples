@@ -9,6 +9,12 @@
 
   <properties>
     <camunda.version>7.16.0</camunda.version>
+    <javax-servlet-api.version>4.0.1</javax-servlet-api.version>
+    <commons-email.version>1.5</commons-email.version>
+    <junit.version>4.13.2</junit.version>
+    <h2.version>1.4.200</h2.version>
+    <slf4j.version>1.7.32</slf4j.version>
+
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,27 +31,27 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
+      <version>${javax-servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-email</artifactId>
-      <version>1.2</version>
+      <version>${commons-email.version}</version>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.190</version>
+      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -53,7 +59,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
+      <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
 

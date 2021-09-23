@@ -4,7 +4,7 @@
   <!-- *** FILE *** -->
   <!-- *************************************************************************************************** -->
   <appender name="fileAppender"
-    class="ch.qos.logback.core.rolling.RollingFileAppender">
+            class="ch.qos.logback.core.rolling.RollingFileAppender">
     <File>soap-cxf-server-start.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- daily rollover -->

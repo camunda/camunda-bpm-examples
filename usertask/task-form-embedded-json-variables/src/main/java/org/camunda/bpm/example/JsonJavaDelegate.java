@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JsonJavaDelegate implements JavaDelegate {
-  
+
   private static final Logger LOG = LoggerFactory.getLogger(JsonJavaDelegate.class);
 
   @Override
@@ -33,9 +33,9 @@ public class JsonJavaDelegate implements JavaDelegate {
     LOG.info("JSON customer: {}", jsonCustomer);
     execution.setVariable("customer", jsonCustomer);
   }
-  
+
   protected boolean randomValid() {
-    return Math.random() > 0.5 ? true : false;
+    return Math.random() > 0.5;
   }
 
 }

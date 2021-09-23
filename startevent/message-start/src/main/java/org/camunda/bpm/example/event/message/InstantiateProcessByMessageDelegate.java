@@ -22,7 +22,6 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 /**
  * @author Thorben Lindhauer
- *
  */
 public class InstantiateProcessByMessageDelegate implements JavaDelegate {
 

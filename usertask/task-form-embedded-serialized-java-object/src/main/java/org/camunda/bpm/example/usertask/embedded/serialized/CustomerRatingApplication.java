@@ -21,7 +21,6 @@ import org.camunda.bpm.application.impl.ServletProcessApplication;
 
 /**
  * @author Daniel Meyer
- *
  */
 @ProcessApplication
 public class CustomerRatingApplication extends ServletProcessApplication {

@@ -57,7 +57,7 @@ public class ServiceTaskSoapTest {
   }
 
   @Test
-  @Deployment(resources={"invokeSoapService.bpmn"})
+  @Deployment(resources = { "invokeSoapService.bpmn" })
   public void shouldCallMockedServiceWithTemperature17() {
     // given
     String city = "Berlin-Tempelhof";
@@ -85,7 +85,7 @@ public class ServiceTaskSoapTest {
   }
 
   @Test
-  @Deployment(resources={"invokeSoapService.bpmn"})
+  @Deployment(resources = { "invokeSoapService.bpmn" })
   public void shouldCallMockedServiceWithTemperature20() {
     // given
     String city = "Munich";
