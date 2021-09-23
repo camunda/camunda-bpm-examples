@@ -1,7 +1,7 @@
 # Blocking Command Interceptor Plugin
 
 Sometimes you want the process engine to reject all (or some) API calls. The reason for this could be that
-you want to process engine to go into a "maintenance" mode so that you can do housekeeping or things like that.
+you want the process engine to go into a "maintenance" mode so that you can do housekeeping or things like that.
 
 Each API call to the process engine is a `Command`. Commands are executed inside the so called `CommandContex`.
 In order to create the `CommandContext`, a chain of `CommandInterceptor`s is used.

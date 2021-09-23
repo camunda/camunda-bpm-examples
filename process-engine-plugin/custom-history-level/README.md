@@ -15,7 +15,7 @@ This examples adds two history levels:
 
 **Note**: This is example code and not intended to be used as is in a production setting (especially the `per-process` history level).
 It rather highlights the mechanics on how a custom history level can be implemented.
-If you are interested in these feature, make sure you understand the code and its limitations or ask for help in the [Camunda forum](https://forum.camunda.org/).
+If you are interested in this feature, make sure you understand the code and its limitations or ask for help in the [Camunda forum](https://forum.camunda.org/).
 
 ## Show me the important parts!
 
@@ -163,10 +163,9 @@ or
 If you are impatient, just have a look at the unit tests [CustomVariableHistoryLevelTest][4] and
 [PerProcessVariableHistoryLevelTest][5].
 
-In [CustomVariableHistoryLevelTest][4], it is demonstrated that only the
-correct variables are saved to history. In
-[PerProcessVariableHistoryLevelTest][5], several processes are deployed with
-different camunda properties set to configure the history level for this
+[CustomVariableHistoryLevelTest][4] demonstrates that only the correct variables are saved to history.
+In [PerProcessVariableHistoryLevelTest][5], several processes are deployed with
+different camunda properties to configure the history level for this
 process definition. There is also a test where a modified process definition is
 redeployed to change the history level of new process instances.
 
