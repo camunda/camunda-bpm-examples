@@ -35,7 +35,7 @@ import com.camunda.bpm.example.spring.soap.v1.GetAccountsResponse;
 @Service
 public class BankCustomerClientService implements BankCustomerServicePortType {
 
-	private BankCustomerServicePortType port;
+	protected BankCustomerServicePortType port;
 	
 	@Autowired
 	public BankCustomerClientService(BankCustomerServicePortType port) {

@@ -5,12 +5,12 @@
   <!-- standalone process engine configuration for testing -->
 
   <bean id="dataSource"
-    class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+        class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
     <property name="targetDataSource">
       <bean class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="org.h2.Driver" />
         <property name="url"
-          value="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" />
+                  value="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" />
         <property name="username" value="sa" />
         <property name="password" value="" />
       </bean>
@@ -18,12 +18,12 @@
   </bean>
 
   <bean id="transactionManager"
-    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
     <property name="dataSource" ref="dataSource" />
   </bean>
 
   <bean id="processEngineConfiguration"
-    class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
+        class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
     <property name="dataSource" ref="dataSource" />
     <property name="transactionManager" ref="transactionManager" />
     <property name="databaseSchemaUpdate" value="true" />
@@ -35,12 +35,12 @@
   <!-- using ManagedProcessEngineFactoryBean allows registering the ProcessEngine 
     with the BpmPlatform -->
   <bean id="processEngine" depends-on="processEngineConfiguration"
-    class="org.camunda.bpm.engine.spring.container.ManagedProcessEngineFactoryBean">
+        class="org.camunda.bpm.engine.spring.container.ManagedProcessEngineFactoryBean">
     <property name="processEngineConfiguration" ref="processEngineConfiguration" />
   </bean>
 
   <bean id="bankAccountServiceApplication" depends-on="processEngine"
-    class="org.camunda.bpm.engine.spring.application.SpringProcessApplication" />
+        class="org.camunda.bpm.engine.spring.application.SpringProcessApplication" />
 
   <import resource="classpath:spring/engine.xml" />
 

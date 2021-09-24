@@ -34,13 +34,14 @@ import org.junit.Test;
  * @author Stefan Hentschel.
  */
 public class ServiceTaskRestTest {
+
   @Rule
   public ProcessEngineRule processEngineRule = new ProcessEngineRule();
 
   @Test
-  @Deployment(resources={"invokeRestService.bpmn"})
+  @Deployment(resources = { "invokeRestService.bpmn" })
   public void shouldPackForHoliday() {
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("date", "2014-04-21");
 
     RuntimeService runtimeService = processEngineRule.getRuntimeService();
@@ -57,9 +58,9 @@ public class ServiceTaskRestTest {
   }
 
   @Test
-  @Deployment(resources={"invokeRestService.bpmn"})
+  @Deployment(resources = { "invokeRestService.bpmn" })
   public void shouldPackForWork() {
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("date", "2014-01-02");
 
     RuntimeService runtimeService = processEngineRule.getRuntimeService();

@@ -75,35 +75,33 @@ import com.camunda.bpm.example.spring.soap.v1.GetAccountsRequest;
 import com.camunda.bpm.example.spring.soap.v1.GetAccountsResponse;
 
 /**
- * 
- * This class tests three async processes. 
- * 
+ * This class tests three async processes.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={ "classpath:/spring/engine.xml", "classpath:/spring/beans.xml"})
+@ContextConfiguration(locations = { "classpath:/spring/engine.xml", "classpath:/spring/beans.xml" })
 @ActiveProfiles("webservice")
 public class BankCustomerProcessTest {
-  
-  @Autowired
-  private RuntimeService runtimeService;
 
   @Autowired
-  private TaskService taskService;
+  protected RuntimeService runtimeService;
 
   @Autowired
-  private HistoryService historyService;
+  protected TaskService taskService;
 
   @Autowired
-  private ProcessEngine processEngine;
-  
+  protected HistoryService historyService;
+
+  @Autowired
+  protected ProcessEngine processEngine;
+
   @Mock
-  private BankCustomerServicePortType serviceMock;
-  
+  protected BankCustomerServicePortType serviceMock;
+
   @Value("${bankcustomer.service}")
-  private String bankCustomerServiceAddress;
-  
-  private EndpointImpl endpoint;
+  protected String bankCustomerServiceAddress;
+
+  protected EndpointImpl endpoint;
 
   @Before
   public void initMocks() throws Exception {
@@ -119,149 +117,160 @@ public class BankCustomerProcessTest {
     QName serviceName = new QName("http://soap.spring.example.bpm.camunda.com/v1", "BankCustomerServicePortType");
     endpoint.setServiceName(serviceName);
     endpoint.publish(bankCustomerServiceAddress);
-    
+
   }
-  
+
   @After
   public void closeMocks() {
     reset(serviceMock);
 
-    if(endpoint != null) {
+    if (endpoint != null) {
       endpoint.stop();
     }
   }
-  
+
   @Test
   public void process_inputJaxbObjectInProcess_javaObjectPassedToService() throws Exception {
-    
+
     // add mock response
     GetAccountsResponse mockResponse = new GetAccountsResponse();
     List<String> accountList = mockResponse.getAccount();
     accountList.add("1234");
     accountList.add("5678");
-    
+
     when(serviceMock.getAccounts(any(GetAccountsRequest.class), any(BankRequestHeader.class))).thenReturn(mockResponse);
 
     String customerNumber = "123456789";
     String secret = "abc";
-    
+
     // invoke process (async behaviour)
     Map<String, Object> variables = new HashMap<>();
-    variables.put("customerNumber",  customerNumber);
-    variables.put("secret", secret);    
-        
+    variables.put("customerNumber", customerNumber);
+    variables.put("secret", secret);
+
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("process", variables);
 
     // wait until all jobs complete
     assertTrue(waitUntilNoActiveJobs(processEngine, 1000));
 
-      // validate that mock called
+    // validate that mock called
     verifyRequest(customerNumber, secret);
-    
+
     // verify that all serialization types are application/xml (kind of important)
     verifySerializationFormat(processInstance, "application/xml");
-    
+
     // verify that we got our response
-    GetAccountsResponse response = (GetAccountsResponse)historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).variableName("accounts").singleResult().getValue();
+    GetAccountsResponse response = (GetAccountsResponse) historyService.createHistoricVariableInstanceQuery()
+        .processInstanceId(processInstance.getProcessInstanceId())
+        .variableName("accounts")
+        .singleResult()
+        .getValue();
     assertThat(response.getAccount().size(), is(2));
 
-    }
-  
-   @Test
-    public void call_serviceWithSoapFault_soapFaultException() throws Exception {
-      
-      // add mock response
-      GetAccountsResponse mockResponse = new GetAccountsResponse();
-      List<String> accountList = mockResponse.getAccount();
-      accountList.add("1234");
-      accountList.add("5678");
-      
-      String errorCode = "myErrorCode";
-      String errorMessage = "myErrorMessage";
-      
-      SoapFault fault = createFault(errorCode, errorMessage);
-      
-      when(serviceMock.getAccounts(any(GetAccountsRequest.class), any(BankRequestHeader.class))).thenThrow(fault);
+  }
 
-      String customerNumber = "123456789";
-      String secret = "abc";
-      
-      // invoke process (async behaviour)
-      Map<String, Object> variables = new HashMap<>();
-      variables.put("customerNumber",  customerNumber);
-      variables.put("secret", secret);    
-          
-      ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("process", variables);
+  @Test
+  public void call_serviceWithSoapFault_soapFaultException() throws Exception {
 
-      // wait until all jobs complete
-      assertTrue(waitUntilNoActiveJobs(processEngine, 1000));
+    // add mock response
+    GetAccountsResponse mockResponse = new GetAccountsResponse();
+    List<String> accountList = mockResponse.getAccount();
+    accountList.add("1234");
+    accountList.add("5678");
 
-        // validate that mock called
-      verifyRequest(customerNumber, secret);
-      
-      Assert.assertNull(historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).variableName("accounts").singleResult());
-    }
-   
-   /** construct soap fault */
-  private SoapFault createFault(String errorCode, String errorMessage) throws JAXBException, PropertyException {
+    String errorCode = "myErrorCode";
+    String errorMessage = "myErrorMessage";
+
+    SoapFault fault = createFault(errorCode, errorMessage);
+
+    when(serviceMock.getAccounts(any(GetAccountsRequest.class), any(BankRequestHeader.class))).thenThrow(fault);
+
+    String customerNumber = "123456789";
+    String secret = "abc";
+
+    // invoke process (async behaviour)
+    Map<String, Object> variables = new HashMap<>();
+    variables.put("customerNumber", customerNumber);
+    variables.put("secret", secret);
+
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("process", variables);
+
+    // wait until all jobs complete
+    assertTrue(waitUntilNoActiveJobs(processEngine, 1000));
+
+    // validate that mock called
+    verifyRequest(customerNumber, secret);
+
+    Assert.assertNull(historyService.createHistoricVariableInstanceQuery()
+        .processInstanceId(processInstance.getProcessInstanceId())
+        .variableName("accounts")
+        .singleResult());
+  }
+
+  /**
+   * construct soap fault
+   */
+  protected SoapFault createFault(String errorCode, String errorMessage) throws JAXBException, PropertyException {
     BankException exception = new BankException();
     exception.setCode(errorCode);
     exception.setMessage(errorMessage);
-    
+
     QName qName = SoapFault.FAULT_CODE_SERVER;
     SoapFault fault = new SoapFault("message", qName);
-   
+
     Element detail = fault.getOrCreateDetail();
-   
+
     JAXBContext context = JAXBContext.newInstance(BankException.class);
-    
+
     DOMResult result = new DOMResult();
-    
+
     Marshaller marshaller = context.createMarshaller();
     marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-    
-    marshaller.marshal(new JAXBElement<BankException>(new QName("http://soap.spring.example.bpm.camunda.com/v1","bankException"), BankException.class, exception), result);
-    
+
+    marshaller.marshal(
+        new JAXBElement<BankException>(new QName("http://soap.spring.example.bpm.camunda.com/v1", "bankException"),
+            BankException.class, exception), result);
+
     detail.appendChild(detail.getOwnerDocument().importNode(result.getNode().getFirstChild(), true));
     return fault;
   }
 
+  protected void verifySerializationFormat(ProcessInstance processInstance, String format) {
+    List<HistoricVariableInstance> list = historyService.createHistoricVariableInstanceQuery()
+        .processInstanceId(processInstance.getProcessInstanceId())
+        .list();
 
-  private void verifySerializationFormat(ProcessInstance processInstance, String format) {
-    List<HistoricVariableInstance> list = historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).list();
-    
-    for(HistoricVariableInstance item : list) {
-      if(item.getName().equals("request") || item.getName().equals("accounts")) {
+    for (HistoricVariableInstance item : list) {
+      if (item.getName().equals("request") || item.getName().equals("accounts")) {
         TypedValue typedValue = item.getTypedValue();
-        if(typedValue instanceof ObjectValue) {
-          ObjectValue objectValue = (ObjectValue)typedValue;
-          
+        if (typedValue instanceof ObjectValue) {
+          ObjectValue objectValue = (ObjectValue) typedValue;
+
           assertThat(item.getName(), objectValue.getSerializationDataFormat(), is(format));
-        } else if(!(typedValue instanceof StringValue)) {
+        } else if (!(typedValue instanceof StringValue)) {
           Assert.fail();
         }
       }
     }
   }
 
-  private void verifyRequest(String customerNumber, String secret) throws Exception {
+  protected void verifyRequest(String customerNumber, String secret) throws Exception {
     ArgumentCaptor<GetAccountsRequest> argument1 = ArgumentCaptor.forClass(GetAccountsRequest.class);
     ArgumentCaptor<BankRequestHeader> argument2 = ArgumentCaptor.forClass(BankRequestHeader.class);
     verify(serviceMock, times(1)).getAccounts(argument1.capture(), argument2.capture());
 
     GetAccountsRequest request = argument1.getValue();
     assertThat(request.getCustomerNumber(), is(customerNumber));
-    
+
     BankRequestHeader header = argument2.getValue();
     assertThat(header.getSecret(), is(secret));
-  } 
-  
-  
+  }
+
   public boolean waitUntilNoActiveJobs(ProcessEngine processEngine, long wait) throws InterruptedException {
     long timeout = System.currentTimeMillis() + wait;
-    while(System.currentTimeMillis() < timeout) {
+    while (System.currentTimeMillis() < timeout) {
       long jobs = processEngine.getManagementService().createJobQuery().active().count();
-      if(jobs == 0) {
+      if (jobs == 0) {
         return true;
       }
       System.out.println("Waiting for " + jobs + " jobs");
@@ -269,12 +278,13 @@ public class BankCustomerProcessTest {
     }
     return false;
   }
-  
+
   /**
    * Utility class to wrap the webservice implementation in a mock.
    */
   public static class ServiceProxy implements InvocationHandler {
-    private Object obj;
+
+    protected Object obj;
 
     public static <T> T newInstance(T obj) {
       ServiceProxy proxy = new ServiceProxy(obj);
@@ -292,8 +302,8 @@ public class BankCustomerProcessTest {
       try {
         return m.invoke(obj, args);
       } catch (Exception e) {
-        if(e.getCause() instanceof org.apache.cxf.binding.soap.SoapFault) {
-          throw (Exception)e.getCause();
+        if (e.getCause() instanceof org.apache.cxf.binding.soap.SoapFault) {
+          throw (Exception) e.getCause();
         }
         throw new RuntimeException(e.getMessage(), e);
       }

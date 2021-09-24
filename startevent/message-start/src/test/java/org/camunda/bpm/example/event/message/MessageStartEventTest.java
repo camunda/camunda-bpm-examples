@@ -36,7 +36,7 @@ public class MessageStartEventTest {
   public ProcessEngineRule processEngineRule = new ProcessEngineRule();
 
   @Test
-  @Deployment(resources={"instantiating_process.bpmn", "message_start_process.bpmn"})
+  @Deployment(resources = { "instantiating_process.bpmn", "message_start_process.bpmn" })
   public void shouldStartProcessByMessage() {
     RuntimeService runtimeService = processEngineRule.getRuntimeService();
     TaskService taskService = processEngineRule.getTaskService();

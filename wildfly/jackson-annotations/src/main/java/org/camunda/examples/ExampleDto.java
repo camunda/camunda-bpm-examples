@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * @author Christopher Zell <christopher.zell@camunda.com>
  */
-
 public class ExampleDto {
 
   public String property1;

@@ -32,10 +32,10 @@ public class AsynchronousServiceTask extends AbstractBpmnActivityBehavior {
 
   public static final String EXECUTION_ID = "executionId";
 
-  public void execute(final ActivityExecution execution) throws Exception {
+  public void execute(final ActivityExecution execution) {
 
     // Build the payload for the message:
-    Map<String, Object> payload = new HashMap<String, Object>(execution.getVariables());
+    Map<String, Object> payload = new HashMap<>(execution.getVariables());
     // Add the execution id to the payload:
     payload.put(EXECUTION_ID, execution.getId());
 
@@ -46,7 +46,7 @@ public class AsynchronousServiceTask extends AbstractBpmnActivityBehavior {
 
   }
 
-  public void signal(ActivityExecution execution, String signalName, Object signalData) throws Exception {
+  public void signal(ActivityExecution execution, String signalName, Object signalData) {
 
     // leave the service task activity:
     leave(execution);
@@ -60,25 +60,35 @@ The actual business logic is placed inside a different class and invoked by the 
 ``` java
 public class BusinessLogic {
 
+  public static final String SHOULD_FAIL_VAR_NAME = "shouldFail";
   public static final String PRICE_VAR_NAME = "price";
   public static final float PRICE = 199.00f;
+
+  public static BusinessLogic INSTANCE = new BusinessLogic();
 
   public void invoke(Message message, ProcessEngine processEngine) {
 
     // Process the message and send a callback.
 
-    // Extract values from payload:
+    // Extract values from payload:     
     Map<String, Object> requestPayload = message.getPayload();
-    // the execution id is used as correlation identifier
+    // the execution id is used as correlation identifier 
     String executionId = (String) requestPayload.get(AsynchronousServiceTask.EXECUTION_ID);
+    Boolean shouldFail = (Boolean) requestPayload.get(SHOULD_FAIL_VAR_NAME);
 
-    // Send the callback to the process engine. In this example we send
-    // a synchronous callback. We could also send an asynchronous callback
-    // using a message queue.
-    Map<String, Object> callbackPayload = Collections.<String,Object>singletonMap(PRICE_VAR_NAME, PRICE);
-    processEngine.getRuntimeService().signal(executionId, callbackPayload);
+    if (shouldFail) {
+      throw new RuntimeException("Service invocation failure!");
 
+    } else {
+      // Send the callback to the process engine. In this example we send 
+      // a synchronous callback. We could also send an asynchronous callback 
+      // using a message queue.
+      Map<String, Object> callbackPayload = Collections.singletonMap(PRICE_VAR_NAME, PRICE);
+      processEngine.getRuntimeService().signal(executionId, callbackPayload);
+
+    }
   }
+
 }
 ```
 

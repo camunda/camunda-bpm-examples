@@ -22,7 +22,6 @@ import org.camunda.bpm.example.usertask.embedded.serialized.model.CustomerData;
 
 /**
  * @author Daniel Meyer
- *
  */
 public class CalculateRating implements JavaDelegate {
 
@@ -31,15 +30,14 @@ public class CalculateRating implements JavaDelegate {
     CustomerData customerData = (CustomerData) execution.getVariable("customerData");
 
     // if the customer is not a VIP customer, the rating can be calculated automatically
-    if(!customerData.isVip()) {
+    if (!customerData.isVip()) {
 
       // here we would execute some complex rating logic
       customerData.setRating(0.5f);
 
       execution.setVariable("ratingCreated", true);
 
-    }
-    else {
+    } else {
       execution.setVariable("ratingCreated", false);
     }
 

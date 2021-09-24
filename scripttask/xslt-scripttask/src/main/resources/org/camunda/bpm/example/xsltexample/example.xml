@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <customers>
   <customer>
-    <firstName>Stefan</firstName>
-    <lastName>Hentschel</lastName>
-    <dateOfBirth>18.11.1988</dateOfBirth>
+    <firstName>Fozzie</firstName>
+    <lastName>Bear</lastName>
+    <dateOfBirth>05.09.1976</dateOfBirth>
   </customer>
   <customer>
     <firstName>Kermit</firstName>

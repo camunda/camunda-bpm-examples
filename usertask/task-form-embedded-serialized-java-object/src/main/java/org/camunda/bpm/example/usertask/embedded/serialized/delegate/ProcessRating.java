@@ -24,7 +24,6 @@ import org.camunda.bpm.example.usertask.embedded.serialized.model.CustomerData;
 
 /**
  * @author Daniel Meyer
- *
  */
 public class ProcessRating implements JavaDelegate {
 
@@ -34,7 +33,7 @@ public class ProcessRating implements JavaDelegate {
 
     CustomerData customerData = (CustomerData) execution.getVariable("customerData");
 
-    LOG.info("\n\n\n    processing rating for customer "+customerData+"\n\n\n");
+    LOG.info("\n\n\n    processing rating for customer " + customerData + "\n\n\n");
 
   }
 
