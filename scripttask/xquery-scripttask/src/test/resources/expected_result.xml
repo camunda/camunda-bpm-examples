@@ -1,9 +1,9 @@
 <persons xmlns="http://my.namespace/v1">
   <person>
     <id>1</id>
-    <firstName>Thomas</firstName>
-    <lastName>Skjolberg</lastName>
-    <skill>Program</skill>
+    <firstName>Fozzie</firstName>
+    <lastName>Bear</lastName>
+    <skill>Stand-up Comedy</skill>
     <skill>Cook</skill>
   </person>
   <person>

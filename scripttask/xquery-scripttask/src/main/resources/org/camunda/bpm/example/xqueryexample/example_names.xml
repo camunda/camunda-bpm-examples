@@ -2,8 +2,8 @@
 <names xmlns="http://my.namespace/v1">
   <person>
     <id>1</id>
-    <firstName>Thomas</firstName>
-    <lastName>Skjolberg</lastName>
+    <firstName>Fozzie</firstName>
+    <lastName>Bear</lastName>
   </person>
   <person>
     <id>2</id>
