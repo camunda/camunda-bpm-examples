@@ -34,7 +34,7 @@ public class EjbJavaDelegate implements JavaDelegate {
 
   private final static Logger LOGGER = Logger.getLogger(EjbJavaDelegate.class.getName());
 
-  public void execute(DelegateExecution execution) throws Exception {
+  public void execute(DelegateExecution execution) {
 
     LOGGER.info("\n\n\n This is a @Stateless Ejb component invoked from a BPMN 2.0 process \n\n\n");
 

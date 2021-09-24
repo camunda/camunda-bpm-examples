@@ -29,7 +29,7 @@ public class CamundaSpringBootExampleApplication {
   @Autowired
   private RuntimeService runtimeService;
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		SpringApplication.run(CamundaSpringBootExampleApplication.class, args);
 	}
 

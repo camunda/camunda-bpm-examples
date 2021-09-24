@@ -77,26 +77,27 @@ public class ArquillianTest {
         // add example bean to serve as JavaDelegate
         .addClass(ExampleBean.class)
         .addClass(ExampleDelegateBean.class)
-            // add process definitions
-        .addAsResource("SpringExpressionResolvingTest.testResolveBean.bpmn20.xml")
-        .addAsResource("SpringExpressionResolvingTest.testResolveBeanFromJobExecutor.bpmn20.xml")
+        // add process definitions
+        .addAsResource("SpringExpressionResolvingTest.testResolveBean.bpmn")
+        .addAsResource("SpringExpressionResolvingTest.testResolveBeanFromJobExecutor.bpmn")
 
-            // add custom servlet process application
+        // add custom servlet process application
         .addClass(SpringServletProcessApplication.class)
-            // regular deployment descriptor
+        // regular deployment descriptor
         .addAsResource("META-INF/processes.xml", "META-INF/processes.xml")
 
-            // web xml that bootstraps spring
+        // web xml that bootstraps spring
         .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
 
-
-            // spring application context & libs
+        // spring application context & libs
         .addAsWebInfResource(new File("src/main/webapp/WEB-INF/applicationContext.xml"), "applicationContext.xml")
         .addAsLibraries(Maven.configureResolver()
-                             .workOffline()
+            .workOffline()
             .loadPomFromFile("pom.xml")
             .importCompileAndRuntimeDependencies()
-            .resolve().withTransitivity().asFile());
+            .resolve()
+            .withTransitivity()
+            .asFile());
   }
 
   @Test
@@ -104,7 +105,8 @@ public class ArquillianTest {
     // process instance was started from ProcessApplication @PostDeploy method
     Assert.assertEquals(0, runtimeService.createProcessInstanceQuery().processDefinitionKey("testResolveBean").count());
     // and process is already ended
-    Assert.assertNotSame(0, historyService.createHistoricProcessInstanceQuery().processDefinitionKey("testResolveBean").count());
+    Assert.assertNotSame(0,
+        historyService.createHistoricProcessInstanceQuery().processDefinitionKey("testResolveBean").count());
   }
 
   @Test
@@ -114,10 +116,15 @@ public class ArquillianTest {
 
     waitForJobExecutorToProcessAllJobs(16000);
 
-    Assert.assertEquals(0, runtimeService.createProcessInstanceQuery().processDefinitionKey("testResolveBeanFromJobExecutor").count());
+    Assert.assertEquals(0,
+        runtimeService.createProcessInstanceQuery().processDefinitionKey("testResolveBeanFromJobExecutor").count());
 
-    ProcessDefinition testResolveBeanFromJobExecutorPD = repositoryService.createProcessDefinitionQuery().processDefinitionKey("testResolveBeanFromJobExecutor").singleResult();
-    Assert.assertNotSame(0, historyService.createHistoricProcessInstanceQuery().processDefinitionId(testResolveBeanFromJobExecutorPD.getId()).count());
+    ProcessDefinition testResolveBeanFromJobExecutorPD = repositoryService.createProcessDefinitionQuery()
+        .processDefinitionKey("testResolveBeanFromJobExecutor")
+        .singleResult();
+    Assert.assertNotSame(0, historyService.createHistoricProcessInstanceQuery()
+        .processDefinitionId(testResolveBeanFromJobExecutorPD.getId())
+        .count());
   }
 
   public void waitForJobExecutorToProcessAllJobs(long maxMillisToWait) {
@@ -172,9 +179,11 @@ public class ArquillianTest {
     public InteruptTask(Thread thread) {
       this.thread = thread;
     }
+
     public boolean isTimeLimitExceeded() {
       return timeLimitExceeded;
     }
+
     public void run() {
       timeLimitExceeded = true;
       thread.interrupt();
