@@ -1,7 +1,7 @@
 JQuery 3.4 Behavior Patch
 =================================
 
-This example enables JQuery 3.4 behavior in the Camunda Webapps 7.16+ . It makes use of the `customScript` property of the webapp configurations.
+This example enables JQuery 3.4 behavior in the Camunda Webapps 7.15+ . It makes use of the `customScript` property of the webapp configurations.
 
 You can read more about the JQuery 3.5 release in the [JQuery release blog](https://blog.jquery.com/2020/04/10/jquery-3-5-0-released/).
 
