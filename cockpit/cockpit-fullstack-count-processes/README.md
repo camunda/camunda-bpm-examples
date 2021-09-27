@@ -71,7 +71,7 @@ As a first step we create a maven jar project that represents our plug-in librar
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -122,13 +122,13 @@ Now let's go ahead and write a test case that makes sure the plug-in gets discov
   <dependency>
     <groupId>com.h2database</groupId>
     <artifactId>h2</artifactId>
-    <version>1.3.171</version>
+    <version>${h2.version}</version>
     <scope>test</scope>
   </dependency>
   <dependency>
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>
-    <version>4.11</version>
+    <version>${junit.version}</version>
     <scope>test</scope>
   </dependency>
   ...
@@ -313,7 +313,7 @@ First, we need to add the JAX-RS API to our projects `pom.xml`. That is best don
     <artifactId>jboss-javaee-6.0</artifactId>
     <type>pom</type>
     <scope>provided</scope>
-    <version>3.0.2.Final</version>
+    <version>${jboss-javaee.version}</version>
   </dependency>
   ...
 ```

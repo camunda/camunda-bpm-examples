@@ -14,26 +14,20 @@
   <properties>
     <camunda.version>7.16.0</camunda.version>
 
-    <!-- This property must be present for the pom.xml to be recognized as a plugin -->
-    <camunda.plugin.category>Sample</camunda.plugin.category>
-
-    <camunda.plugin.screenshot>screenshot.png</camunda.plugin.screenshot>
-    <!-- <camunda.plugin.screenshot.1>screenshot2.png</camunda.plugin.screenshot.1> -->
-    <camunda.plugin.testedOnVersion>7.16.0</camunda.plugin.testedOnVersion>
-    <!-- <camunda.plugin.exampleProcessApplicationUrl></camunda.plugin.exampleProcessApplicationUrl> -->
-    <camunda.plugin.language>EN</camunda.plugin.language>
-
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
     <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
     <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+    <jboss-javaee.version>3.0.3.Final</jboss-javaee.version>
+    <junit.version>4.13.2</junit.version>
+    <slf4j.version>1.7.32</slf4j.version>
     <node.version>v14.7.0</node.version>
 
     <frontend.working.directory>frontend/</frontend.working.directory>
     <frontend.build.path>${frontend.working.directory}dist/</frontend.build.path>
     <frontend.target.path>plugin-webapp/sample-plugin/app</frontend.target.path>
+
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
@@ -48,7 +42,7 @@
       <artifactId>jboss-javaee-6.0</artifactId>
       <type>pom</type>
       <scope>provided</scope>
-      <version>3.0.2.Final</version>
+      <version>${jboss-javaee.version}</version>
     </dependency>
     <!-- test dependencies -->
     <dependency>
@@ -60,20 +54,20 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.3.171</version>
+      <version>1.4.200</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <!-- redirect slf4j logging to jdk logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.12</version>
+      <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
