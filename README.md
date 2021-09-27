@@ -123,7 +123,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | Name                                                                                                            | Keywords                                  |
 | ----------------------------------------------------------------------------------------------------------------|-------------------------------------------|
 | [Fullstack (ReactJS 16.x & Java) "Count Processes" Cockpit Plugin](/cockpit/cockpit-fullstack-count-processes)  | Plugin, Custom Script, Fullstack, ReactJS |
-| [Angular 10 "Open Usertasks" Cockpit Tab](/cockpit/cockpit-angular-open-usertasks)                              | Plugin, Custom Script, Angular            |
+| [Angular 12 "Open Usertasks" Cockpit Tab](/cockpit/cockpit-angular-open-usertasks)                              | Plugin, Custom Script, Angular            |
 | [AngularJS 1.x "Search Processes" Cockpit Plugin](/cockpit/cockpit-angularjs-search-processes)                  | Plugin, Custom Script, AngularJS          |
 | [ReactJS 16.x "Involved Users" Cockpit Plugin](/cockpit/cockpit-react-involved-users)                           | Plugin, Custom Script, ReactJS            |
 | ["Cats" Cockpit Plugin](/cockpit/cockpit-cats)                                                                  | Plugin, Custom Script                     |
