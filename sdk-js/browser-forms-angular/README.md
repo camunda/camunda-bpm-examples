@@ -17,7 +17,7 @@ As you can see in the `index.html` of this folder, you will need a DOM library (
   <script src="./jquery-3.5.1.js"
           type="text/javascript"></script>
 
-  <script src="./angular-1.8.0.min.js"
+  <script src="./angular-1.8.2.min.js"
           type="text/javascript"></script>
 
   <script src="./camunda-bpm-sdk-angular.js"
