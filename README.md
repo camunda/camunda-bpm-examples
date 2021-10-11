@@ -8,6 +8,7 @@ Camunda Platform examples is a collection of focused usage examples for the [Cam
 | Camunda Version  | Link                                                                 | Checkout command      |
 | -----------------|----------------------------------------------------------------------|-----------------------|
 | Latest           | [Master branch](https://github.com/camunda/camunda-bpm-examples)     | `git checkout master` |
+| 7.16             | [7.16 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.16)| `git checkout 7.16`   |
 | 7.15             | [7.15 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.15)| `git checkout 7.15`   |
 | 7.14             | [7.14 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.14)| `git checkout 7.14`   |
 | 7.13             | [7.13 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.13)| `git checkout 7.13`   |
