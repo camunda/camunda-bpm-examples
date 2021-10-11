@@ -23,25 +23,24 @@ import org.springframework.stereotype.Service;
 
 /**
  * Dummy bank service for setting account name.<br/><br/>
- * 
- * In a real-world scenario, this service would trigger an update to a database or so. The current implementation just 
+ * <p>
+ * In a real-world scenario, this service would trigger an update to a database or so. The current implementation just
  * performs a logging statement.
- * 
- * @author Thomas Skjolberg
  *
+ * @author Thomas Skjolberg
  */
 
 @Service("bankService")
 public class BankService {
-  
-  private Logger logger = LoggerFactory.getLogger(BankService.class.getName());
+
+  protected static final Logger LOG = LoggerFactory.getLogger(BankService.class.getName());
 
   public void setAccountName(DelegateExecution execution) {
-    
+
     String accountName = (String) execution.getVariable("accountName");
-    String accountNumber  = (String) execution.getVariable("accountNumber");
-    
-    logger.info("Set account name " + accountName + " for account number " + accountNumber);
+    String accountNumber = (String) execution.getVariable("accountNumber");
+
+    LOG.info("Set account name " + accountName + " for account number " + accountNumber);
   }
-  
+
 }

@@ -23,18 +23,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 /**
- * 
  * Handles failed authentication.
- * 
  */
 
 public class AuthenticationFailedEntryPoint implements AuthenticationEntryPoint {
 
-  private String realmName;
+  protected String realmName;
 
   @Override
-  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
-    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); 
+  public void commence(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AuthenticationException authException) {
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     response.addHeader("WWW-Authenticate", "Basic realm=\"" + realmName + "\"");
   }
 
@@ -44,5 +44,5 @@ public class AuthenticationFailedEntryPoint implements AuthenticationEntryPoint 
 
   public void setRealmName(String realmName) {
     this.realmName = realmName;
-  }	
+  }
 }

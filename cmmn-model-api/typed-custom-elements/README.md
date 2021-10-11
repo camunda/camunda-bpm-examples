@@ -42,20 +42,15 @@ In particular, this example shows how to perform the following tasks:
 * How to access these types given a parsed CMMN model instance
 * How to implement and register a CMMN transform listener
 
-## How to use it?
-
-1. Checkout the project with Git
-2. Read and run the [unit test case][test-case]
-
 ## Show me the details
 
 ### Extending the CMMN model API by Custom Types
 
 Providing custom strongly-typed XML element access requires two things: First, a custom element class must be created. Second, the custom type must be registered with the CMMN parser runtime such that the parser is able to create instances of the class when parsing a model.
 
-In this example, the type [KPIElement][kpi-element] implemented by [KPIElementImpl][kpi-element-impl] represents a custom type. The static method #registerType declares how a `kpi` element is to be parsed. It provides a factory for instantiating KPI elements and declares an attribute.
+In this example, the type [KPIElement][kpi-element] implemented by [KPIElementImpl][kpi-element-impl] represents a custom type. The static method #registerType declares how a `kpi` element is parsed. It provides a factory for instantiating KPI elements and declares an attribute.
 
-The class [CustomCmmn][custom-cmmn] represents an extended CMMN model palette. In order for the model API to use this extended palette, an instance of `CustomCmmn` replaces the singleton `Cmmn` instance. The replacing logic can be found in the process engine plugin [CustomElementsProcessEnginePlugin][process-engine-plugin].
+The class [CustomCmmn][custom-cmmn] represents an extended CMMN model palette. To use it, an instance of `CustomCmmn` replaces the singleton `Cmmn` instance. The replacing logic can be found in the process engine plugin [CustomElementsProcessEnginePlugin][process-engine-plugin].
 
 ### Implementing a CMMN transform listener
 
@@ -63,7 +58,12 @@ A CMMN transform listener is the CMMN equivalent to a BPMN parse listener. That 
 
 ### Accessing Custom Typed Elements from a CMMN model instance
 
-In [KPITransformListener][kpi-transform-listener], access to the custom model elements is implemented.
+Access to the custom model elements is implemented in [KPITransformListener][kpi-transform-listener].
+
+## How to use it?
+
+1. Checkout the project with Git
+2. Read and run the [unit test case][test-case]
 
 [bpmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/bpmn-model
 [dmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/dmn-model
@@ -71,7 +71,7 @@ In [KPITransformListener][kpi-transform-listener], access to the custom model el
 [cmmn-model]: https://github.com/camunda/camunda-bpm-platform/tree/master/model-api/cmmn-model
 [test-case]: src/test/java/org/camunda/bpm/example/modelapi/TransformListenerCustomElementsTest.java
 [kpi-transform-listener]: src/main/java/org/camunda/bpm/example/modelapi/KPITransformListener.java
-[cmmn-transform-listener]: https://docs.camunda.org/javadoc/camunda-bpm-platform/7.15/org/camunda/bpm/engine/impl/cmmn/transformer/CmmnTransformListener.html
+[cmmn-transform-listener]: https://docs.camunda.org/javadoc/camunda-bpm-platform/7.16/org/camunda/bpm/engine/impl/cmmn/transformer/CmmnTransformListener.html
 [process-engine-plugin]: src/main/java/org/camunda/bpm/example/modelapi/CustomElementsProcessEnginePlugin.java
 [camunda-cfg-xml]: src/test/resources/camunda.cfg.xml
 [kpi-element]: src/main/java/org/camunda/bpm/example/modelapi/KPIElement.java

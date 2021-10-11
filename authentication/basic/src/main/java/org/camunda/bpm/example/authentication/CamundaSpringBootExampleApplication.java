@@ -16,78 +16,80 @@
  */
 package org.camunda.bpm.example.authentication;
 
-
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.rest.security.auth.ProcessEngineAuthenticationFilter;
+import org.camunda.bpm.engine.rest.security.auth.impl.HttpBasicAuthenticationProvider;
+import org.camunda.bpm.example.authentication.rest.RestProcessEngineDeployment;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
+import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
+import org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletContextListener;
 
 @SpringBootApplication
 @Configuration
 @ImportResource("classpath*:applicationContext.xml")
 public class CamundaSpringBootExampleApplication extends SpringBootServletInitializer {
-	private static final String EMAIL = "demo@camunda.org";
 
-	@Autowired
-	private IdentityService identityService;
+  protected static final String EMAIL = "demo@camunda.org";
 
-	@PostConstruct
-	public void initDemoUser() {
-		User newUser = identityService.newUser("demo");
-		newUser.setPassword("demo");
-		newUser.setEmail(EMAIL);
-		identityService.saveUser(newUser);
-	}
+  @Autowired
+  protected IdentityService identityService;
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return configureApplication(builder);
-	}
+  @PostConstruct
+  public void initDemoUser() {
+    User newUser = identityService.newUser("demo");
+    newUser.setPassword("demo");
+    newUser.setEmail(EMAIL);
+    identityService.saveUser(newUser);
+  }
 
-	public static void main(String[] args) {
-		configureApplication(new SpringApplicationBuilder()).run(args);
-	}
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+    return configureApplication(builder);
+  }
 
-	private static SpringApplicationBuilder configureApplication(SpringApplicationBuilder builder) {
-		return builder.sources(CamundaSpringBootExampleApplication.class).bannerMode(Banner.Mode.OFF);
-	}
+  public static void main(String... args) {
+    configureApplication(new SpringApplicationBuilder()).run(args);
+  }
 
-	@Bean
-	public FilterRegistrationBean<ProcessEngineAuthenticationFilter> authenticationFilter() {
-		FilterRegistrationBean<ProcessEngineAuthenticationFilter> registration =
-				new FilterRegistrationBean<>();
-		ProcessEngineAuthenticationFilter myFilter = new ProcessEngineAuthenticationFilter();
-		registration.setFilter(myFilter);
-		registration.addUrlPatterns("/*");
-		registration.addInitParameter("authentication-provider",
-				"org.camunda.bpm.engine.rest.security.auth.impl.HttpBasicAuthenticationProvider");
-		registration.setName("camunda-auth");
-		registration.setOrder(1);
-		return registration;
-	}
+  protected static SpringApplicationBuilder configureApplication(SpringApplicationBuilder builder) {
+    return builder.sources(CamundaSpringBootExampleApplication.class).bannerMode(Banner.Mode.OFF);
+  }
 
-	@Bean
-	public FilterRegistrationBean<FilterDispatcher> restEasyFilter() {
-		FilterRegistrationBean<FilterDispatcher> registration = new FilterRegistrationBean<>();
-		FilterDispatcher myFilter = new FilterDispatcher();
-		registration.setFilter(myFilter);
-		registration.addUrlPatterns("/*");
-		registration.addInitParameter("javax.ws.rs.Application",
-				"org.camunda.bpm.example.authentication.rest.RestProcessEngineDeployment");
-		registration.setName("Resteasy");
-		registration.setOrder(10);
-		return registration;
-	}
+  @Bean
+  public FilterRegistrationBean<ProcessEngineAuthenticationFilter> authenticationFilter() {
+    FilterRegistrationBean<ProcessEngineAuthenticationFilter> registration = new FilterRegistrationBean<>();
+    ProcessEngineAuthenticationFilter myFilter = new ProcessEngineAuthenticationFilter();
+    registration.setFilter(myFilter);
+    registration.addUrlPatterns("/*");
+    registration.addInitParameter("authentication-provider", HttpBasicAuthenticationProvider.class.getName());
+    registration.setName("camunda-auth");
+    registration.setOrder(1);
+    return registration;
+  }
+
+  @Bean
+  public ServletRegistrationBean<HttpServletDispatcher> restEasyServlet() {
+    ServletRegistrationBean<HttpServletDispatcher> registrationBean = new ServletRegistrationBean<>();
+    registrationBean.setServlet(new HttpServletDispatcher());
+    registrationBean.setName("restEasy-servlet");
+    registrationBean.addUrlMappings("/*");
+    registrationBean.addInitParameter("javax.ws.rs.Application", RestProcessEngineDeployment.class.getName());
+    return registrationBean;
+  }
 
 }

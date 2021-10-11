@@ -653,4 +653,4 @@ var index = {
   customRenderer: [ 'type', CustomRenderer ]
 };
 
-export default index;
+export { index as default };

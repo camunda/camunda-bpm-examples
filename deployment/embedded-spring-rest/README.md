@@ -53,7 +53,7 @@ public class RestProcessEngineDeployment extends Application {
 
   @Override
   public Set<Class<?>> getClasses() {
-    Set<Class<?>> classes = new HashSet<Class<?>>();
+    Set<Class<?>> classes = new HashSet<>();
 
     classes.addAll(CamundaRestResources.getResourceClasses());
     classes.addAll(CamundaRestResources.getConfigurationClasses());
@@ -114,7 +114,7 @@ Reference all required libraries in pom.xml:
 <dependency>
   <groupId>org.jboss.resteasy</groupId>
   <artifactId>resteasy-jaxrs</artifactId>
-  <version>3.10.0.Final</version>
+  <version>${version.resteasy-jaxrs}</version>
 </dependency>
 
 <dependency>
@@ -126,7 +126,7 @@ Reference all required libraries in pom.xml:
 <dependency>
   <groupId>com.h2database</groupId>
   <artifactId>h2</artifactId>
-  <version>1.3.171</version>
+  <version>${version.h2}</version>
 </dependency>
 ```
 

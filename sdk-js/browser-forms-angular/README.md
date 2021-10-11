@@ -1,6 +1,6 @@
 # Standalone usage of JS SDK with AngularJS
 
-This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-platform/tree/7.15/webapps/camunda-bpm-sdk-js) to work with user task forms. Please note that the example only covers the use case of user task forms that are deployed within process application. Forms which are deployed using the REST or Java API are not supported. For more information, please visit our [User guide](https://docs.camunda.org/manual/latest/user-guide/task-forms/#embedded-task-forms).
+This example attempts to illustrate the way to implement (or use) the [JS SDK](https://github.com/camunda/camunda-bpm-platform/tree/7.16/webapps/camunda-bpm-sdk-js) to work with user task forms. Please note that the example only covers the use case of user task forms that are deployed within process application. Forms which are deployed using the REST or Java API are not supported. For more information, please visit our [User guide](https://docs.camunda.org/manual/latest/user-guide/task-forms/#embedded-task-forms).
 
 ![SDK JS standalone usage with AngularJS](screenshot.png)
 
@@ -17,7 +17,7 @@ As you can see in the `index.html` of this folder, you will need a DOM library (
   <script src="./jquery-3.5.1.js"
           type="text/javascript"></script>
 
-  <script src="./angular-1.8.0.min.js"
+  <script src="./angular-1.8.2.min.js"
           type="text/javascript"></script>
 
   <script src="./camunda-bpm-sdk-angular.js"
@@ -30,7 +30,7 @@ Note: you can find the complete code of this example in the `scripts.js` file.
 
 ### Client
 
-The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](https://docs.camunda.org/manual/7.15/reference/rest/)):
+The form SDK utilizes an instance of the CamSDK.Client to communicate with the engine (over the [REST API](https://docs.camunda.org/manual/7.16/reference/rest/)):
 
 ```js
 var camClient = new CamSDK.Client({

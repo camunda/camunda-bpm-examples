@@ -19,12 +19,16 @@ package org.camunda.bpm.example.loanapproval;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
+import java.util.logging.Logger;
+
 public class CalculateInterestService implements JavaDelegate {
-	
-	public void execute(DelegateExecution delegate) throws Exception {
-		
-		System.out.println("Spring Bean invoked.");
-		
-	}
+
+  protected static final Logger LOG = Logger.getLogger(CalculateInterestService.class.getName());
+
+  public void execute(DelegateExecution delegate) {
+
+    LOG.info("Spring Bean invoked.");
+
+  }
 
 }

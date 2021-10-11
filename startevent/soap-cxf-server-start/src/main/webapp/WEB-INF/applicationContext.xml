@@ -3,7 +3,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
   <bean id="bankAccountServiceApplication"
-    class="org.camunda.bpm.engine.spring.application.SpringServletProcessApplication" />
+        class="org.camunda.bpm.engine.spring.application.SpringServletProcessApplication"/>
 
   <import resource="classpath:spring/engine.xml" />
 

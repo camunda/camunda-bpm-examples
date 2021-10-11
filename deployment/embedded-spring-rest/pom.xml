@@ -9,10 +9,11 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.15.0</version.camunda>
-    <version.spring>5.2.8.RELEASE</version.spring>
+    <version.camunda>7.16.0</version.camunda>
+    <version.spring>5.3.10</version.spring>
     <version.resteasy-jaxrs>3.14.0.Final</version.resteasy-jaxrs>
-    <version.h2>1.3.171</version.h2>
+    <version.h2>1.4.200</version.h2>
+    <version.slf4j>1.7.32</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -96,6 +97,11 @@
       <version>${version.h2}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${version.slf4j}</version>
+    </dependency>
   </dependencies>
 
   <repositories>

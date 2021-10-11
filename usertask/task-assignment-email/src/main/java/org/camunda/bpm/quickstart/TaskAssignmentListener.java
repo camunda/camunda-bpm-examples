@@ -30,11 +30,11 @@ import org.camunda.bpm.engine.impl.context.Context;
 public class TaskAssignmentListener implements TaskListener {
 
   // TODO: Set Mail Server Properties
-  private static final String HOST = "mail.example.org";
-  private static final String USER = "admin@example.org";
-  private static final String PWD = "toomanysecrets";
+  protected static final String HOST = "mail.example.org";
+  protected static final String USER = "admin@example.org";
+  protected static final String PWD = "toomanysecrets";
 
-  private final static Logger LOGGER = Logger.getLogger(TaskAssignmentListener.class.getName());
+  protected final static Logger LOGGER = Logger.getLogger(TaskAssignmentListener.class.getName());
 
   public void notify(DelegateTask delegateTask) {
 
@@ -42,16 +42,16 @@ public class TaskAssignmentListener implements TaskListener {
     String taskId = delegateTask.getId();
 
     if (assignee != null) {
-      
+
       // Get User Profile from User Management
       IdentityService identityService = Context.getProcessEngineConfiguration().getIdentityService();
       User user = identityService.createUserQuery().userId(assignee).singleResult();
 
       if (user != null) {
-        
+
         // Get Email Address from User Profile
         String recipient = user.getEmail();
-        
+
         if (recipient != null && !recipient.isEmpty()) {
 
           Email email = new SimpleEmail();
@@ -67,7 +67,8 @@ public class TaskAssignmentListener implements TaskListener {
             email.addTo(recipient);
 
             email.send();
-            LOGGER.info("Task Assignment Email successfully sent to user '" + assignee + "' with address '" + recipient + "'.");            
+            LOGGER.info(
+                "Task Assignment Email successfully sent to user '" + assignee + "' with address '" + recipient + "'.");
 
           } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Could not send email to assignee", e);

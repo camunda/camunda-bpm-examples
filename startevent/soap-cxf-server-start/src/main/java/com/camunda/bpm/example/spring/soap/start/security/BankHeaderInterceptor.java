@@ -34,66 +34,66 @@ import com.camunda.bpm.example.spring.soap.start.v1.BankRequestHeader;
 
 /**
  * Simple CXF-interceptor for validating the {@linkplain BankRequestHeader} in incoming SOAP requests. <br/><br/>
- * The header must contain a secret value, if not then an HTTP 401 status is 
+ * The header must contain a secret value, if not then an HTTP 401 status is
  * propagated back to the caller.
- * 
+ *
  * @author Thomas Skjolberg
  */
 
 public class BankHeaderInterceptor extends AbstractSoapInterceptor {
-  
-  private static final QName HEADER_TYPE = new QName("http://start.soap.spring.example.bpm.camunda.com/v1", "bankRequestHeader");
 
-  private Logger logger = LoggerFactory.getLogger(BankHeaderInterceptor.class.getName());
-  
-  private String secret;
+  protected static final QName HEADER_TYPE = new QName("http://start.soap.spring.example.bpm.camunda.com/v1", "bankRequestHeader");
 
-  private JAXBContext jaxbContext;
-  
+  protected static final Logger LOG = LoggerFactory.getLogger(BankHeaderInterceptor.class.getName());
+
+  protected String secret;
+
+  protected JAXBContext jaxbContext;
+
   public BankHeaderInterceptor() throws JAXBException {
-      super(Phase.PRE_PROTOCOL);
-      
-      jaxbContext = JAXBContext.newInstance(BankRequestHeader.class);
+    super(Phase.PRE_PROTOCOL);
+
+    jaxbContext = JAXBContext.newInstance(BankRequestHeader.class);
   }
 
   @Override
   public void handleMessage(SoapMessage soapMessage) throws Fault {
-    
+
     String headerSecret = parseSecret(soapMessage);
-    if(headerSecret == null || !headerSecret.equals(secret)) {
-      logger.info("Unable to verify header secret " + headerSecret + ", expected " + secret);
-      
+    if (headerSecret == null || !headerSecret.equals(secret)) {
+      LOG.info("Unable to verify header secret " + headerSecret + ", expected " + secret);
+
       Fault fault = new Fault(new SecurityException("Unable to verify header"));
       fault.setStatusCode(401); // access denied
       throw fault;
     }
-    
+
   }
-  
+
   public String parseSecret(SoapMessage soapMessage) {
     Header header = soapMessage.getHeader(HEADER_TYPE);
 
-    if(header != null) {
+    if (header != null) {
       // parse header. consider iterating through w3c DOM tree directly as an optimalization
       try {
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        
-        BankRequestHeader bankRequestHeader = (BankRequestHeader) unmarshaller.unmarshal((Node)header.getObject());
-        
+
+        BankRequestHeader bankRequestHeader = (BankRequestHeader) unmarshaller.unmarshal((Node) header.getObject());
+
         return bankRequestHeader.getSecret();
       } catch (JAXBException e) {
-        logger.warn("Unable to unmarshall header", e);
+        LOG.warn("Unable to unmarshall header", e);
       }
-      
+
     }
     return null;
-    
+
   }
-  
+
   public void setSecret(String secret) {
     this.secret = secret;
   }
-  
+
   public String getSecret() {
     return secret;
   }

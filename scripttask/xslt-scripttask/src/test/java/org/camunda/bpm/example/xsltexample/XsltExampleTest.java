@@ -30,15 +30,12 @@ import org.junit.Test;
  * @author Stefan Hentschel.
  */
 public class XsltExampleTest {
+
   @Rule
   public ProcessEngineRule processEngineRule = new ProcessEngineRule();
 
   @Test
-  @Deployment(
-    resources = {
-      "xslt-example.bpmn"
-    }
-  )
+  @Deployment(resources = { "xslt-example.bpmn" })
   public void shouldTransformXml() {
     RuntimeService runtimeService = processEngineRule.getRuntimeService();
     HistoryService historyService = processEngineRule.getHistoryService();
@@ -47,14 +44,14 @@ public class XsltExampleTest {
     runtimeService.startProcessInstanceByKey("xslt-example");
 
     // variable which contains our xmlOutput after transformation
-    String output = (String) historyService
-                                .createHistoricVariableInstanceQuery()
-                                .variableName("xmlOutput")
-                                .singleResult()
-                                .getValue();
+    String output = (String) historyService.createHistoricVariableInstanceQuery()
+        .variableName("xmlOutput")
+        .singleResult()
+        .getValue();
 
     String expected = IoUtil.fileAsString("expected_result.xml");
 
     assertThat(output).isXmlEqualTo(expected);
   }
+
 }

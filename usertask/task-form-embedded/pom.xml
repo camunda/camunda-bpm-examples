@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.camunda.bpm.quickstart</groupId>
   <artifactId>camunda-quickstart-task-form-embedded</artifactId>
@@ -8,7 +8,9 @@
   <name>Task Form Embedded</name>
 
   <properties>
-    <version.camunda>7.15.0</version.camunda>
+    <version.camunda>7.16.0</version.camunda>
+    <version.javax-servlet-api>4.0.1</version.javax-servlet-api>
+
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,7 +29,7 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
+      <version>${version.javax-servlet-api}</version>
       <scope>provided</scope>
     </dependency>
 

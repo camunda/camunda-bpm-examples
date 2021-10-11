@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.camunda.bpm.quickstart</groupId>
   <artifactId>camunda-quickstart-service-invocation-asynchronous</artifactId>
@@ -8,7 +8,11 @@
   <name>Service Invocation - Asynchronous</name>
 
   <properties>
-    <version.camunda>7.15.0</version.camunda>
+    <version.camunda>7.16.0</version.camunda>
+    <version.slf4j>1.7.32</version.slf4j>
+    <version.junit>4.13.2</version.junit>
+    <version.h2>1.4.200</version.h2>
+
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,14 +29,14 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.190</version>
+      <version>${version.h2}</version>
       <scope>test</scope>
     </dependency>
 
@@ -40,7 +44,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
+      <version>${version.slf4j}</version>
     </dependency>
 
   </dependencies>

@@ -36,7 +36,6 @@ import org.junit.Test;
 
 /**
  * Test case for demonstrating the synchronous service invocation.
- * 
  */
 public class TestSynchronousServiceTask {
 
@@ -51,16 +50,17 @@ public class TestSynchronousServiceTask {
     final TaskService taskService = processEngineRule.getTaskService();
 
     // this invocation should NOT fail
-    Map<String, Object> variables = Collections.<String, Object> singletonMap(SynchronousServiceTask.SHOULD_FAIL_VAR_NAME, false);
+    Map<String, Object> variables = Collections.singletonMap(SynchronousServiceTask.SHOULD_FAIL_VAR_NAME, false);
 
     // start the process instance
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("synchronousServiceInvocation", variables);
+    ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("synchronousServiceInvocation", variables);
 
     // the process instance is now waiting in the first wait state (user task):
     Task waitStateBefore = taskService.createTaskQuery()
-      .taskDefinitionKey("waitStateBefore")
-      .processInstanceId(processInstance.getId())
-      .singleResult();
+        .taskDefinitionKey("waitStateBefore")
+        .processInstanceId(processInstance.getId())
+        .singleResult();
     assertNotNull(waitStateBefore);
 
     // Complete this task. This triggers the synchronous invocation of the
@@ -70,9 +70,9 @@ public class TestSynchronousServiceTask {
 
     // the process instance is now waiting in the second wait state (user task):
     Task waitStateAfter = taskService.createTaskQuery()
-      .taskDefinitionKey("waitStateAfter")
-      .processInstanceId(processInstance.getId())
-      .singleResult();
+        .taskDefinitionKey("waitStateAfter")
+        .processInstanceId(processInstance.getId())
+        .singleResult();
     assertNotNull(waitStateAfter);
 
     // check for variable set by the service task:
@@ -89,16 +89,17 @@ public class TestSynchronousServiceTask {
     final TaskService taskService = processEngineRule.getTaskService();
 
     // this invocation should fail
-    Map<String, Object> variables = Collections.<String, Object> singletonMap(SynchronousServiceTask.SHOULD_FAIL_VAR_NAME, true);
+    Map<String, Object> variables = Collections.singletonMap(SynchronousServiceTask.SHOULD_FAIL_VAR_NAME, true);
 
     // start the process instance
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("synchronousServiceInvocation", variables);
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("synchronousServiceInvocation",
+        variables);
 
     // the process instance is now waiting in the first wait state (user task):
     Task waitStateBefore = taskService.createTaskQuery()
-      .taskDefinitionKey("waitStateBefore")
-      .processInstanceId(processInstance.getId())
-      .singleResult();
+        .taskDefinitionKey("waitStateBefore")
+        .processInstanceId(processInstance.getId())
+        .singleResult();
     assertNotNull(waitStateBefore);
 
     // Complete this task. This triggers the synchronous invocation of the service task.
@@ -114,9 +115,9 @@ public class TestSynchronousServiceTask {
     // the process instance is still waiting in the first wait state (user
     // task):
     waitStateBefore = taskService.createTaskQuery()
-      .taskDefinitionKey("waitStateBefore")
-      .processInstanceId(processInstance.getId())
-      .singleResult();
+        .taskDefinitionKey("waitStateBefore")
+        .processInstanceId(processInstance.getId())
+        .singleResult();
     assertNotNull(waitStateBefore);
 
     // the variable is not present:
