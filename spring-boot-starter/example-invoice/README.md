@@ -108,7 +108,7 @@ registered within the process application. Forms HTML needs to be added in the `
 5. If you want your Camunda license automatically used on Engine startup, just put the file with the name 
 `camunda-license.txt` on your classpath. 
 
-6. Adjust the `src/main/resorces/application.yaml` file according to your preferences. The default setup will use an
+6. Adjust the `src/main/resources/application.yaml` file according to your preferences. The default setup will use an
  embedded H2 instance.
 
 ## Run the application and use Camunda Platform
