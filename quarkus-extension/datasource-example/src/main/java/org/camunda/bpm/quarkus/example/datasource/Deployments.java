@@ -35,6 +35,7 @@ public class Deployments {
   public void performDeployment(@Observes CamundaEngineStartupEvent startupEvent) {
     Deployment deployment = repositoryService.createDeployment()
         .enableDuplicateFiltering(true)
+        .name("example-deployment")
         .addClasspathResource("bpmn/process.bpmn")
         .deploy();
 

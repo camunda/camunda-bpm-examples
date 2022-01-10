@@ -34,6 +34,7 @@ public class ResourceDeployment {
 
   public void createDeployment(@Observes CamundaEngineStartupEvent event) {
     String deploymentId = repositoryService.createDeployment()
+        .name("example-deployment")
         .addClasspathResource("process.bpmn")
         .enableDuplicateFiltering(true)
         .deploy()

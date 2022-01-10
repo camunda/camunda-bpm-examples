@@ -34,6 +34,7 @@ public class DeployProcessService {
   @Produces(MediaType.TEXT_PLAIN)
   public String deployProcess() {
     String deploymentId = repositoryService.createDeployment()
+        .name("example-deployment")
         .addClasspathResource("process.bpmn")
         .deploy()
         .getId();
