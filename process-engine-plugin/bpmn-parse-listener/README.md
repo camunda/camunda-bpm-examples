@@ -29,16 +29,14 @@ Extend the `org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin` abstrac
 public class ProgressLoggingSupportParseListenerPlugin extends AbstractProcessEnginePlugin {
 
   @Override
-  public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-  
+  public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration { 
     // get all existing preParseListeners
-    List<BpmnParseListener> preParseListeners = processEngineConfiguration.getPreParseListeners();
+    List<BpmnParseListener> preParseListeners = processEngineConfiguration.getCustomPreBPMNParseListeners();
     
     if(preParseListeners == null) {
-    
       // if no preParseListener exists, create new list
       preParseListeners = new ArrayList<BpmnParseListener>();
-      processEngineConfiguration.setPreParseListeners(preParseListeners);
+      processEngineConfiguration.setCustomPreBPMNParseListeners(preParseListeners);
     }
     
     // add new BPMN Parse Listener
