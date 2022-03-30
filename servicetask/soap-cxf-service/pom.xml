@@ -254,7 +254,7 @@
 		<repository>
 			<id>camunda-bpm-nexus</id>
 			<name>camunda-bpm-nexus</name>
-			<url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-ee</url>
+			<url>https://artifacts.camunda.com/artifactory/camunda-bpm-ee/</url>
 		</repository>
 	</repositories>
 
