@@ -12,9 +12,9 @@
 
     <!-- set the version for Camunda Platform here -->
     <version.camunda>7.17.0</version.camunda>
-    <version.h2>1.4.200</version.h2>
+    <version.h2>2.0.206</version.h2>
     <version.javax-servlet-api>4.0.1</version.javax-servlet-api>
-    <version.jackson>2.12.1</version.jackson>
+    <version.jackson>2.13.1</version.jackson>
     <version.maven-war-plugin>2.6</version.maven-war-plugin>
   </properties>
 
