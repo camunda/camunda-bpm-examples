@@ -11,7 +11,7 @@
     <version.camunda>7.17.0</version.camunda>
     <version.slf4j>1.7.32</version.slf4j>
     <version.junit>4.13.2</version.junit>
-    <version.h2>1.4.200</version.h2>
+    <version.h2>2.0.206</version.h2>
 
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
