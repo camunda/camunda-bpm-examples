@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.5.5</version>
+    <version>2.6.4</version>
   </parent>
 
   <groupId>org.camunda.bpm.example</groupId>
@@ -16,9 +16,9 @@
 
   <properties>
     <camunda.version>7.17.0</camunda.version>
-    <resteasy.version>3.0.8.Final</resteasy.version>
-    <rest-assured.version>2.9.0</rest-assured.version>
-    <jaxb.version>2.2.3</jaxb.version>
+    <resteasy.version>3.14.0.Final</resteasy.version>
+    <rest-assured.version>4.5.0</rest-assured.version>
+    <jaxb.version>2.3.6</jaxb.version>
 
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -91,7 +91,7 @@
     <!-- test -->
 
     <dependency>
-      <groupId>com.jayway.restassured</groupId>
+      <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <version>${rest-assured.version}</version>
       <scope>test</scope>
