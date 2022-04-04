@@ -9,8 +9,6 @@ This example demonstrates how you can build a Spring Boot application with the e
 * "All" filter automatically created in task-list
 * automatic use of a `camunda-license.txt`
 
-It also contains a simple integration test, showing how this can be tested.
-
 You will need:
 
 * credentials to access the enterprise repo in your `settings.xml`
