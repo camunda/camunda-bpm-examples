@@ -10,7 +10,7 @@
   <packaging>jar</packaging>
 
   <properties>
-    <version.camunda>7.16.0</version.camunda>
+    <version.camunda>7.17.0</version.camunda>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

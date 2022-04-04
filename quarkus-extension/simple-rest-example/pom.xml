@@ -9,7 +9,7 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.16.0-SNAPSHOT</camunda.version>
+    <camunda.version>7.17.0-SNAPSHOT</camunda.version>
     <quarkus.version>2.1.2.Final</quarkus.version>
 
     <compiler-plugin.version>3.8.1</compiler-plugin.version>

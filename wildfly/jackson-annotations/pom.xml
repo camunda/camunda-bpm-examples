@@ -11,7 +11,7 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <!-- set the version for Camunda Platform here -->
-    <version.camunda>7.16.0</version.camunda>
+    <version.camunda>7.17.0</version.camunda>
     <version.h2>1.4.200</version.h2>
     <version.javax-servlet-api>4.0.1</version.javax-servlet-api>
     <version.jackson>2.12.1</version.jackson>

@@ -7,7 +7,7 @@
 
   <properties>
     <spring.boot.version>2.5.4</spring.boot.version>
-    <camunda.spring.boot.starter.version>7.16.0</camunda.spring.boot.starter.version>
+    <camunda.spring.boot.starter.version>7.17.0</camunda.spring.boot.starter.version>
     <camunda.mockito>5.15.0</camunda.mockito>
     <camunda.assert>12.0.0</camunda.assert>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>

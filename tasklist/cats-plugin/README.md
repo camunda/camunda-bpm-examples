@@ -3,7 +3,7 @@ Javascript Only Plugin for Camunda Tasklist
 
 This example shows how to develop a Tasklist plugin without the need to register it with the Camunda Platform server. It makes use of the `customScript` property of the webapp configurations.
 
-Built and tested against Camunda Platform version `7.16.0`.
+Built and tested against Camunda Platform version `7.17.0`.
 
 ![Screenshot](screenshot.png)
 

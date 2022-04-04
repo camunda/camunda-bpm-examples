@@ -24,7 +24,7 @@ Let's first add the necessary dependencies to the project's `pom.xml` file:
 <dependency>
   <groupId>org.camunda.bpm</groupId>
   <artifactId>camunda-external-task-client-spring</artifactId>
-  <version>7.16.0</version>
+  <version>7.17.0</version>
 </dependency>
 
 <dependency>
