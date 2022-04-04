@@ -11,6 +11,8 @@
 
   <properties>
     <version.camunda>7.17.0</version.camunda>
+    <version.servlet-api>3.0.1</version.servlet-api>
+    <version.slf4j>1.7.26</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -34,10 +36,11 @@
       <artifactId>camunda-engine</artifactId>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
+      <version>${version.servlet-api}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -45,7 +48,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
+      <version>${version.slf4j}</version>
     </dependency>
   </dependencies>
 </project>

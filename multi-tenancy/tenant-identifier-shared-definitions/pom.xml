@@ -8,19 +8,15 @@
 
   <properties>
     <version.camunda>7.17.0</version.camunda>
+    <version.mockito>1.10.19</version.mockito>
+    <version.h2>2.0.206</version.h2>
+    <version.junit>4.13.1</version.junit>
+    <version.slf4j>1.7.26</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>camunda-bpm-nexus</id>
-      <name>camunda-bpm-nexus</name>
-      <url>https://artifacts.camunda.com/artifactory/public/</url>
-    </repository>
-  </repositories>
-  
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -43,21 +39,21 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.190</version>
+      <version>${version.h2}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>1.10.19</version>
+      <version>${version.mockito}</version>
       <scope>test</scope>
     </dependency>
 
@@ -65,10 +61,17 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
+      <version>${version.slf4j}</version>
       <scope>test</scope>
     </dependency>
-    
   </dependencies>
-  
+
+  <repositories>
+    <repository>
+      <id>camunda-bpm-nexus</id>
+      <name>camunda-bpm-nexus</name>
+      <url>https://artifacts.camunda.com/artifactory/public/</url>
+    </repository>
+  </repositories>
+
 </project>
