@@ -19,8 +19,8 @@ First, make sure you have downloaded and installed all the necessary prerequisit
 and the running platform is [compatible](https://docs.camunda.org/manual/user-guide/ext-client/compatibility-matrix/) with the client version.
 
 ## Start the Camunda Platform Runtime
-* Microsoft Windows users need to run the `start-camunda.bat` file
-* Users of Unix based operating systems need to run the `start-camunda.sh` file
+* Microsoft Windows users need to run the `start.bat` file
+* Users of Unix based operating systems need to run the `start.sh` file
 
 ## Deploy a Process
 
@@ -97,19 +97,19 @@ Create a main class and add the following lines:
     
     TopicSubscriptionBuilder jsonSubscriptionBuilder = client.subscribe("jsonCustomerCreation")
       .lockDuration(20000)
-      .handler((externalTask, externlTaskService) -> {
+      .handler((externalTask, externalTaskService) -> {
         Customer customer = createCustomerFromVariables(externalTask);
         try {
           String customerJson = objectMapper.writeValueAsString(customer);
           VariableMap variables = Variables.createVariables().putValue("customer", ClientValues.jsonValue(customerJson));
-          externlTaskService.complete(externalTask, variables);
+          externalTaskService.complete(externalTask, variables);
         } catch (JsonProcessingException e) {
           e.printStackTrace();
         }
         
       });
     
-    TopicSubscriptionBuilder readSubscrptionBuilder = client.subscribe("customerReading")
+    TopicSubscriptionBuilder readSubscriptionBuilder = client.subscribe("customerReading")
       .lockDuration(20000)
       .handler((externalTask, externalTaskService) -> {
         String dataformat = externalTask.getVariable("dataFormat");
@@ -126,7 +126,7 @@ Create a main class and add the following lines:
     client.start();
     xmlSubscriptionBuilder.open();
     jsonSubscriptionBuilder.open();
-    readSubscrptionBuilder.open();
+    readSubscriptionBuilder.open();
   }
 
   private static Customer createCustomerFromVariables(ExternalTask externalTask) {
