@@ -35,8 +35,8 @@ public class ProcessInstanceResource extends AbstractPluginResource {
 
   @GET
   public List<ProcessInstanceCountDto> getProcessInstanceCounts() {
-    QueryParameters<ProcessInstanceCountDto> parameters =
-      new QueryParameters<ProcessInstanceCountDto>();
+    QueryParameters parameters =
+      new QueryParameters();
     parameters.disableMaxResultsLimit();
     return getQueryService()
       .executeQuery("cockpit.sample.selectProcessInstanceCountsByProcessDefinition", parameters);

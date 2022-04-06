@@ -6072,6 +6072,27 @@ Telemetry.configure = function (payload, done) {
     done: done
   });
 };
+/**
+ * Fetches telemetry data for diagnostics.
+ *
+ * @param  {Object}   payload
+ * @param  {Function} done
+ */
+
+
+Telemetry.fetchData = function (payload, done) {
+  if (typeof payload === 'function') {
+    done = payload;
+    payload = {};
+  }
+
+  payload = payload || {};
+  done = done || noop;
+  return this.http.get(this.path + '/data', {
+    data: payload,
+    done: done
+  });
+};
 
 module.exports = Telemetry;
 
@@ -7275,7 +7296,7 @@ CamundaForm.prototype.renderForm = function (formHtmlSource) {
   var formElement = this.formElement = $('form', this.containerElement);
 
   if (formElement.length !== 1) {
-    throw new Error('Form must provide exaclty one element <form ..>');
+    throw new Error('Form must provide exactly one element <form ..>');
   }
 
   if (!formElement.attr('name')) {
@@ -8082,17 +8103,14 @@ var ChoicesFieldHandler = AbstractFormField.extend(
 
     this.variableManager.createVariable({
       name: variableName,
-      type: variableType,
-      value: this.element.val() || null
+      type: variableType
     }); // fetch choices variable
 
     if (choicesVariableName) {
       this.variableManager.fetchVariable(choicesVariableName);
-    } // remember the original value found in the element for later checks
+    }
 
-
-    this.originalValue = this.element.val() || null;
-    this.previousValue = this.originalValue; // remember variable name
+    this.previousValue = this.originalValue = ''; // remember variable name
 
     this.variableName = variableName;
   },
@@ -8389,7 +8407,7 @@ var InputFieldHandler = AbstractFormField.extend(
       type: variableType
     }); // remember the original value found in the element for later checks
 
-    this.originalValue = this.element.val();
+    this.originalValue = isBooleanCheckbox(this.element) ? this.element.checked : this.element.val();
     this.previousValue = this.originalValue; // remember variable name
 
     this.variableName = variableName;
@@ -11998,9 +12016,9 @@ function Parser(options) {
   this.options = buildOptions(options, defaultOptions, props);
 
   if (this.options.ignoreAttributes || this.options.attrNodeName) {
-    this.isAttribute = function ()
-    /*a*/
-    {
+    this.isAttribute = function
+      /*a*/
+    () {
       return false;
     };
   } else {
@@ -12011,9 +12029,9 @@ function Parser(options) {
   if (this.options.cdataTagName) {
     this.isCDATA = isCDATA;
   } else {
-    this.isCDATA = function ()
-    /*a*/
-    {
+    this.isCDATA = function
+      /*a*/
+    () {
       return false;
     };
   }
@@ -19956,9 +19974,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Q(object).dispatch("apply", [void 0, array_slice(arguments, 1)]);
   };
 
-  Promise.prototype.fcall = function ()
-  /*...args*/
-  {
+  Promise.prototype.fcall = function
+    /*...args*/
+  () {
     return this.dispatch("apply", [void 0, array_slice(arguments)]);
   };
   /**
@@ -19979,9 +19997,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     };
   };
 
-  Promise.prototype.fbind = function ()
-  /*...args*/
-  {
+  Promise.prototype.fbind = function
+    /*...args*/
+  () {
     var promise = this;
     var args = array_slice(arguments);
     return function fbound() {
@@ -20376,9 +20394,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Q(callback).nfapply(args);
   };
 
-  Promise.prototype.nfcall = function ()
-  /*...args*/
-  {
+  Promise.prototype.nfcall = function
+    /*...args*/
+  () {
     var nodeArgs = array_slice(arguments);
     var deferred = defer();
     nodeArgs.push(deferred.makeNodeResolver());
@@ -20412,9 +20430,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     };
   };
 
-  Promise.prototype.nfbind = Promise.prototype.denodeify = function ()
-  /*...args*/
-  {
+  Promise.prototype.nfbind = Promise.prototype.denodeify = function
+    /*...args*/
+  () {
     var args = array_slice(arguments);
     args.unshift(this);
     return Q.denodeify.apply(void 0, args);
@@ -20438,9 +20456,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     };
   };
 
-  Promise.prototype.nbind = function ()
-  /*thisp, ...args*/
-  {
+  Promise.prototype.nbind = function
+    /*thisp, ...args*/
+  () {
     var args = array_slice(arguments, 0);
     args.unshift(this);
     return Q.nbind.apply(void 0, args);

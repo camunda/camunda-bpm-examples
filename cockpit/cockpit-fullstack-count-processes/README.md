@@ -288,7 +288,7 @@ public class SamplePluginsTest extends AbstractCockpitPluginTest {
       queryService
         .executeQuery(
           "cockpit.sample.selectProcessInstanceCountsByProcessDefinition",
-          new QueryParameters<ProcessInstanceCountDto>());
+          new QueryParameters());
 
     Assert.assertEquals(0, instanceCounts.size());
   }
@@ -370,7 +370,7 @@ public class ProcessInstanceResource extends AbstractPluginResource {
     return getQueryService()
         .executeQuery(
           "cockpit.sample.selectProcessInstanceCountsByProcessDefinition",
-          new QueryParameters<ProcessInstanceCountDto>());
+          new QueryParameters());
   }
 }
 ```
@@ -425,7 +425,7 @@ public class ProcessInstanceResource extends AbstractPluginResource {
 
   @GET
   public List<ProcessInstanceCountDto> getProcessInstanceCounts() {
-    QueryParameters<ProcessInstanceCountDto> queryParameters = new QueryParameters<ProcessInstanceCountDto>();
+    QueryParameters queryParameters = new QueryParameters();
 
     configureTenantCheck(queryParameters);
 
