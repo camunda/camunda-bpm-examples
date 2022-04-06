@@ -12,6 +12,10 @@
   <properties>
     <version.camunda>7.17.0</version.camunda>
     <version.graal.js>21.1.0</version.graal.js>
+    <version.java-ee>7.0</version.java-ee>
+    <version.h2>2.0.206</version.h2>
+    <version.junit>4.13.1</version.junit>
+    <version.slf4j>1.7.26</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,21 +43,29 @@
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>7.0</version>
+      <version>${version.java-ee}</version>
       <scope>provided</scope>
     </dependency>
 
+    <!-- redirect slf4j logging to jdk logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>${version.slf4j}</version>
+    </dependency>
+
+    <!-- test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.190</version>
+      <version>${version.h2}</version>
       <scope>test</scope>
     </dependency>
 
@@ -69,13 +81,6 @@
       <artifactId>js-scriptengine</artifactId>
       <version>${version.graal.js}</version>
       <scope>test</scope>
-    </dependency>
-
-    <!-- redirect slf4j logging to jdk logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
     </dependency>
 
   </dependencies>
