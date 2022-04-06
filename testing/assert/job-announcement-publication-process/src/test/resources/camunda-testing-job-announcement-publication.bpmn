@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0qxzjew" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="camunda-testing-job-announcement-publication" name="Job Announcement Publication (Subprocess)" isExecutable="true">
+    <bpmn:startEvent id="Event_0izgki4" name="">
+      <bpmn:outgoing>Flow_1l9m60y</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="publish_announcement_website" name="Publish announcement on website" implementation="webService" camunda:expression="#{jobAnnouncementService.postToWebsite(jobAnnouncementId)}">
+      <bpmn:incoming>Flow_1l9m60y</bpmn:incoming>
+      <bpmn:outgoing>Flow_01jfu1t</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:parallelGateway id="Gateway_0z7rp9m" name="" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_01jfu1t</bpmn:incoming>
+      <bpmn:outgoing>Flow_0yh3hl2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_16s641f</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:exclusiveGateway id="Gateway_0c0k10n" name="Chose Twitter?" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_0yh3hl2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zn9zem</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0cpvktx</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="publish_announcement_twitter" name="Publish announcement on Twitter" implementation="webService" camunda:expression="#{jobAnnouncementService.postToTwitter(jobAnnouncementId)}">
+      <bpmn:incoming>Flow_0zn9zem</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j7gwrq</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_030yxlx" name="" gatewayDirection="Converging">
+      <bpmn:incoming>Flow_0cpvktx</bpmn:incoming>
+      <bpmn:incoming>Flow_1j7gwrq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ys4enm</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:parallelGateway id="Gateway_1loiva2" name="" gatewayDirection="Converging">
+      <bpmn:incoming>Flow_0ys4enm</bpmn:incoming>
+      <bpmn:incoming>Flow_1wswgjn</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nubap2</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:exclusiveGateway id="Gateway_0j1qkse" name="" gatewayDirection="Converging">
+      <bpmn:incoming>Flow_0q0pm3k</bpmn:incoming>
+      <bpmn:incoming>Flow_0jly80u</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wswgjn</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="publish_announcement_facebook" name="Publish announcement on Facebook" implementation="webService" camunda:expression="#{jobAnnouncementService.postToFacebook(jobAnnouncementId)}">
+      <bpmn:incoming>Flow_1oretgu</bpmn:incoming>
+      <bpmn:outgoing>Flow_0q0pm3k</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1bdrrsh" name="Chose Facebook?" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_16s641f</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jly80u</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1oretgu</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_087qk1c" name="">
+      <bpmn:incoming>Flow_1nubap2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1l9m60y" name="" isImmediate="true" sourceRef="Event_0izgki4" targetRef="publish_announcement_website" />
+    <bpmn:sequenceFlow id="Flow_01jfu1t" name="" isImmediate="true" sourceRef="publish_announcement_website" targetRef="Gateway_0z7rp9m" />
+    <bpmn:sequenceFlow id="Flow_0yh3hl2" name="" isImmediate="true" sourceRef="Gateway_0z7rp9m" targetRef="Gateway_0c0k10n" />
+    <bpmn:sequenceFlow id="Flow_16s641f" name="" isImmediate="true" sourceRef="Gateway_0z7rp9m" targetRef="Gateway_1bdrrsh" />
+    <bpmn:sequenceFlow id="Flow_0zn9zem" name="yes" isImmediate="true" sourceRef="Gateway_0c0k10n" targetRef="publish_announcement_twitter">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{twitter}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0cpvktx" name="no" isImmediate="true" sourceRef="Gateway_0c0k10n" targetRef="Gateway_030yxlx">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{!twitter}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1j7gwrq" name="" isImmediate="true" sourceRef="publish_announcement_twitter" targetRef="Gateway_030yxlx" />
+    <bpmn:sequenceFlow id="Flow_0ys4enm" name="" isImmediate="true" sourceRef="Gateway_030yxlx" targetRef="Gateway_1loiva2" />
+    <bpmn:sequenceFlow id="Flow_1wswgjn" name="" isImmediate="true" sourceRef="Gateway_0j1qkse" targetRef="Gateway_1loiva2" />
+    <bpmn:sequenceFlow id="Flow_1nubap2" name="" isImmediate="true" sourceRef="Gateway_1loiva2" targetRef="Event_087qk1c" />
+    <bpmn:sequenceFlow id="Flow_0q0pm3k" name="" isImmediate="true" sourceRef="publish_announcement_facebook" targetRef="Gateway_0j1qkse" />
+    <bpmn:sequenceFlow id="Flow_0jly80u" name="no" isImmediate="true" sourceRef="Gateway_1bdrrsh" targetRef="Gateway_0j1qkse">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{!facebook}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1oretgu" name="yes" isImmediate="true" sourceRef="Gateway_1bdrrsh" targetRef="publish_announcement_facebook">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{facebook}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="camunda-testing-job-announcement-publication">
+      <bpmndi:BPMNEdge id="Flow_1l9m60y_di" bpmnElement="Flow_1l9m60y">
+        <di:waypoint x="212" y="240" />
+        <di:waypoint x="256" y="239" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01jfu1t_di" bpmnElement="Flow_01jfu1t">
+        <di:waypoint x="356" y="239" />
+        <di:waypoint x="406" y="239" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yh3hl2_di" bpmnElement="Flow_0yh3hl2">
+        <di:waypoint x="426" y="219" />
+        <di:waypoint x="427" y="185" />
+        <di:waypoint x="496" y="184" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16s641f_di" bpmnElement="Flow_16s641f">
+        <di:waypoint x="426" y="259" />
+        <di:waypoint x="426" y="290" />
+        <di:waypoint x="501" y="289" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zn9zem_di" bpmnElement="Flow_0zn9zem">
+        <di:waypoint x="536" y="184" />
+        <di:waypoint x="598" y="184" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="559" y="159" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cpvktx_di" bpmnElement="Flow_0cpvktx">
+        <di:waypoint x="516" y="164" />
+        <di:waypoint x="517" y="112" />
+        <di:waypoint x="772" y="112" />
+        <di:waypoint x="771" y="164" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="638" y="87" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j7gwrq_di" bpmnElement="Flow_1j7gwrq">
+        <di:waypoint x="698" y="184" />
+        <di:waypoint x="751" y="184" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ys4enm_di" bpmnElement="Flow_0ys4enm">
+        <di:waypoint x="791" y="184" />
+        <di:waypoint x="852" y="185" />
+        <di:waypoint x="851" y="219" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wswgjn_di" bpmnElement="Flow_1wswgjn">
+        <di:waypoint x="796" y="289" />
+        <di:waypoint x="851" y="290" />
+        <di:waypoint x="851" y="259" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nubap2_di" bpmnElement="Flow_1nubap2">
+        <di:waypoint x="871" y="239" />
+        <di:waypoint x="906" y="239" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0q0pm3k_di" bpmnElement="Flow_0q0pm3k">
+        <di:waypoint x="698" y="289" />
+        <di:waypoint x="756" y="289" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jly80u_di" bpmnElement="Flow_0jly80u">
+        <di:waypoint x="521" y="309" />
+        <di:waypoint x="522" y="365" />
+        <di:waypoint x="777" y="365" />
+        <di:waypoint x="776" y="309" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="643" y="340" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1oretgu_di" bpmnElement="Flow_1oretgu">
+        <di:waypoint x="541" y="289" />
+        <di:waypoint x="598" y="289" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="562" y="264" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0izgki4_di" bpmnElement="Event_0izgki4">
+        <dc:Bounds x="182" y="225" width="30" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_11u1k8o_di" bpmnElement="publish_announcement_website">
+        <dc:Bounds x="256" y="199" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0z7rp9m_di" bpmnElement="Gateway_0z7rp9m">
+        <dc:Bounds x="406" y="219" width="40" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0c0k10n_di" bpmnElement="Gateway_0c0k10n" isMarkerVisible="true">
+        <dc:Bounds x="496" y="164" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="480" y="204" width="74" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0o3yvv8_di" bpmnElement="publish_announcement_twitter">
+        <dc:Bounds x="598" y="144" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_030yxlx_di" bpmnElement="Gateway_030yxlx" isMarkerVisible="true">
+        <dc:Bounds x="751" y="164" width="40" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1loiva2_di" bpmnElement="Gateway_1loiva2">
+        <dc:Bounds x="831" y="219" width="40" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0j1qkse_di" bpmnElement="Gateway_0j1qkse" isMarkerVisible="true">
+        <dc:Bounds x="756" y="269" width="40" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1eewpkw_di" bpmnElement="publish_announcement_facebook">
+        <dc:Bounds x="598" y="249" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1bdrrsh_di" bpmnElement="Gateway_1bdrrsh" isMarkerVisible="true">
+        <dc:Bounds x="501" y="269" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="477" y="309" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_087qk1c_di" bpmnElement="Event_087qk1c">
+        <dc:Bounds x="906" y="225" width="28" height="28" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
