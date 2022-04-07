@@ -16,7 +16,6 @@
  */
 package org.camunda.bpm.quarkus.example;
 
-import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.jboss.logging.Logger;
 
@@ -25,13 +24,12 @@ import javax.inject.Named;
 
 @Dependent
 @Named
-public class MyServiceDelegate implements JavaDelegate {
+public class MyServiceDelegate {
 
   protected static final Logger LOG = Logger.getLogger(MyServiceDelegate.class);
 
-  @Override
-  public void execute(DelegateExecution execution) {
-    LOG.info("Hurray! MyService has been called!");
+  public JavaDelegate myDelegateBean() {
+    return execution -> LOG.info("Hurray! MyService has been called!");
   }
 
 }
