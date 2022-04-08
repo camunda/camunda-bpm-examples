@@ -49,6 +49,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [External Task Client](#external-task-client)
 * [External Task Client Spring](#external-task-client-spring)
 * [External Task Client Spring Boot](#external-task-client-spring-boot)
+* [Testing](#testing)
 
 ### Getting Started with Camunda Platform
 
@@ -250,6 +251,13 @@ If you clone this repository, use the checkout commands to access the sources fo
 | ----------------------------------------------------------------------------------------------|-----------------------|---------------------------|
 | [Jackson Annotation Example for WildFly](wildfly/jackson-annotations)                         | Wildfly               | War, Servlet              |
 
+### Testing
+
+| Name                                                                                                 |  Keywords                |
+| -----------------------------------------------------------------------------------------------------|--------------------------|
+| [Assert](testing/assert/job-announcement-publication-process)                                        | Testing, Junit 4, Assert |
+| [Assert and JUnit 5](testing/junit5/camunda-bpm-junit-assert/)                                       | Testing, Junit 5, Assert |
+| [Assert and Junit 5: configure a custom process engine](testing/junit5/camunda-bpm-junit-use-engine) | Testing, Junit 5, Assert |
 
 ## Contributing
 
