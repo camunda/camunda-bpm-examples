@@ -28,16 +28,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class UseProcessEngineTest {
 
-  private ProcessEngine usedProcessEngine = ProcessEngineConfiguration
-      .createStandaloneInMemProcessEngineConfiguration()
+  ProcessEngine usedProcessEngine = ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration()
       .setJdbcUrl("jdbc:h2:mem:camunda;DB_CLOSE_DELAY=1000")
       .buildProcessEngine();
 
   @RegisterExtension
-  ProcessEngineExtension extension = ProcessEngineExtension
-    .builder()
-    .useProcessEngine(usedProcessEngine)
-    .build();
+  ProcessEngineExtension extension = ProcessEngineExtension.builder().useProcessEngine(usedProcessEngine).build();
 
   @Test
   @Deployment(resources = "testProcess.bpmn")

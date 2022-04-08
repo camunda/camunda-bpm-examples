@@ -1,4 +1,4 @@
-# Camunda BPM Assert Example for JUnit 5
+# Camunda Platform Assert Example for JUnit 5
 
 This project contains simple examples of how to write a unit test for Camunda Platform using the [JUnit 5 extension][junit5] and [Camunda Platform Assert][assert].
 
@@ -36,7 +36,7 @@ mvn clean test
 ```
 
 ## Further reading
-If you want to read more about [Camunda Platform Assert][assert] or the [Camunda JUnit 5 extension], go to the [testing user guide](https://docs.camunda.org/manual/7.16/user-guide/testing/) in the Camunda docs.
+If you want to read more about [Camunda Platform Assert][assert] or the [Camunda JUnit 5 extension], go to the [testing user guide](https://docs.camunda.org/manual/7.17/user-guide/testing/) in the Camunda docs.
 
 [junit5]: https://github.com/camunda/camunda-bpm-platform/tree/master/test-utils/junit5-extension
 [assert]: https://github.com/camunda/camunda-bpm-platform/tree/master/test-utils/assert

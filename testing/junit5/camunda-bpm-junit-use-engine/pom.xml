@@ -9,8 +9,8 @@
     <version.camunda>7.17.0</version.camunda>
     <version.junit>5.8.2</version.junit>
     <version.h2>2.0.206</version.h2>
-    <version.assertj>3.22.0</version.assertj>
-    <version.logback>1.2.3</version.logback>
+    <version.assertj>3.21.0</version.assertj>
+    <version.logback>1.2.11</version.logback>
 
     <version.java>1.8</version.java>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -79,11 +79,11 @@
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M5</version>
+        <version>3.0.0-M6</version>
       </plugin>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
+        <version>3.0.0-M2</version>
         <configuration>
           <skip>true</skip>
         </configuration>
