@@ -9,16 +9,15 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.17.0-SNAPSHOT</camunda.version>
+    <camunda.version>7.17.0</camunda.version>
     <quarkus.version>2.1.2.Final</quarkus.version>
+    <compiler-plugin.version>3.10.1</compiler-plugin.version>
 
-    <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -92,17 +91,6 @@
         <version>${compiler-plugin.version}</version>
         <configuration>
           <parameters>${maven.compiler.parameters}</parameters>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire-plugin.version}</version>
-        <configuration>
-          <systemPropertyVariables>
-            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-            <maven.home>${maven.home}</maven.home>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>
