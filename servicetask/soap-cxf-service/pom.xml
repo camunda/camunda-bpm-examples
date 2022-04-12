@@ -26,7 +26,7 @@
 		<junit.version>4.13.2</junit.version>
 		<mockito.version>3.12.4</mockito.version>
 		<hamcrest.version>2.2</hamcrest.version>
-		<h2.version>2.0.206</h2.version>
+		<h2.version>2.1.210</h2.version>
 
 		<!-- tools -->
 		<build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
