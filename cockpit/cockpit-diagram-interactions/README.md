@@ -4,7 +4,7 @@
 This example shows how you can achieve diagram interactions with custom plugins.
 Click on an activity in the BPMN diagram to apply a filter to the table.
 
-Built and tested against Camunda Platform version `7.16.0`.
+Built and tested against Camunda Platform version `7.17.0`.
 
 ![Screenshot](screenshot.png)
 

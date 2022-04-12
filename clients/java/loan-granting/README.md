@@ -19,8 +19,8 @@ First, make sure you have downloaded and installed all the necessary prerequisit
 and the running platform is [compatible](https://docs.camunda.org/manual/user-guide/ext-client/compatibility-matrix/) with the client version.
 
 ## Start the Camunda Platform Runtime
-* Microsoft Windows users need to run the `start-camunda.bat` file
-* Users of Unix based operating systems need to run the `start-camunda.sh` file
+* Microsoft Windows users need to run the `start.bat` file
+* Users of Unix based operating systems need to run the `start.sh` file
 
 ## Model a Process
 

@@ -68,19 +68,19 @@ public class App {
     
     TopicSubscriptionBuilder jsonSubscriptionBuilder = client.subscribe("jsonCustomerCreation")
       .lockDuration(20000)
-      .handler((externalTask, externlTaskService) -> {
+      .handler((externalTask, externalTaskService) -> {
         Customer customer = createCustomerFromVariables(externalTask);
         try {
           String customerJson = objectMapper.writeValueAsString(customer);
           VariableMap variables = Variables.createVariables().putValue("customer", ClientValues.jsonValue(customerJson));
-          externlTaskService.complete(externalTask, variables);
+          externalTaskService.complete(externalTask, variables);
         } catch (JsonProcessingException e) {
           e.printStackTrace();
         }
         
       });
     
-    TopicSubscriptionBuilder readSubscrptionBuilder = client.subscribe("customerReading")
+    TopicSubscriptionBuilder readSubscriptionBuilder = client.subscribe("customerReading")
       .lockDuration(20000)
       .handler((externalTask, externalTaskService) -> {
         String dataformat = externalTask.getVariable("dataFormat");
@@ -97,7 +97,7 @@ public class App {
     client.start();
     xmlSubscriptionBuilder.open();
     jsonSubscriptionBuilder.open();
-    readSubscrptionBuilder.open();
+    readSubscriptionBuilder.open();
   }
 
   private static Customer createCustomerFromVariables(ExternalTask externalTask) {

@@ -9,10 +9,10 @@
 
   <name>Camunda Cockpit Plugin: Sample</name>
   <description>This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of Camunda Platform.</description>
-  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.16/cockpit/cockpit-sample-plugin</url>
+  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.17/cockpit/cockpit-sample-plugin</url>
 
   <properties>
-    <camunda.version>7.16.0</camunda.version>
+    <camunda.version>7.17.0</camunda.version>
 
     <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
     <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.200</version>
+      <version>2.0.206</version>
       <scope>test</scope>
     </dependency>
     <dependency>

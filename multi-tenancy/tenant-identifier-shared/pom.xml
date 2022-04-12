@@ -8,22 +8,14 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.camunda>7.16.0</version.camunda>
+    <version.camunda>7.17.0</version.camunda>
+    <version.servlet>3.0.1</version.servlet>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.servlet>3.0.1</version.servlet>
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>camunda-bpm-nexus</id>
-      <name>camunda-bpm-nexus</name>
-      <url>https://artifacts.camunda.com/artifactory/public/</url>
-    </repository>
-  </repositories>
-  
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -54,7 +46,14 @@
       <version>${version.servlet}</version>
       <scope>provided</scope>
     </dependency>
-
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>camunda-bpm-nexus</id>
+      <name>camunda-bpm-nexus</name>
+      <url>https://artifacts.camunda.com/artifactory/public/</url>
+    </repository>
+  </repositories>
 
 </project>

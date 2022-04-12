@@ -8,9 +8,13 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.16.0</camunda.version>
+    <camunda.version>7.17.0</camunda.version>
     <arquillian.version>1.1.10.Final</arquillian.version>
     <wildfly.container.adapter.version>3.0.1.Final</wildfly.container.adapter.version>
+    <version.javaee-web>3.0.2.Final</version.javaee-web>
+    <version.resteasy>3.9.0.Final</version.resteasy>
+    <version.junit>4.13.1</version.junit>
+    <version.slf4j>1.7.26</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -62,16 +66,16 @@
     <dependency>
       <groupId>org.jboss.spec</groupId>
       <artifactId>jboss-javaee-web-6.0</artifactId>
-      <version>3.0.2.Final</version>
+      <version>${version.javaee-web}</version>
       <type>pom</type>
       <scope>provided</scope>
     </dependency>
     
-    <!--  Resteasy 3.9.0-Final is an implicit module dependency on WildFly 18.0.0.Final -->
+    <!--  Resteasy 3.9.0-Final is an implicit module dependency on WildFly 18.0.0.Final or higher -->
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jaxrs</artifactId>
-      <version>3.9.0.Final</version>
+      <version>${version.resteasy}</version>
       <scope>provided</scope>
     </dependency>
     
@@ -81,7 +85,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
-      <version>4.12</version>
+      <version>${version.junit}</version>
     </dependency>
     
     <!-- Required to use Connectors in unit tests -->
@@ -121,14 +125,14 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
-      <version>1.7.7</version>
+      <version>${version.slf4j}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
-      <version>1.7.7</version>
+      <version>${version.slf4j}</version>
       <scope>test</scope>
     </dependency>
     

@@ -10,7 +10,7 @@
   <name>Strongly typed custom elements in the CMMN Model API</name>
 
   <properties>
-    <version.camunda>7.16.0</version.camunda>
+    <version.camunda>7.17.0</version.camunda>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.190</version>
+      <version>2.0.206</version>
       <scope>test</scope>
     </dependency>
 

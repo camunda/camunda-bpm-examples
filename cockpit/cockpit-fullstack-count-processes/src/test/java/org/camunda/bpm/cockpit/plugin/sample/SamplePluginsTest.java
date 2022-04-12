@@ -49,7 +49,7 @@ public class SamplePluginsTest extends AbstractCockpitPluginTest {
       queryService
         .executeQuery(
           "cockpit.sample.selectProcessInstanceCountsByProcessDefinition",
-          new QueryParameters<ProcessInstanceCountDto>());
+          new QueryParameters());
 
     Assert.assertEquals(0, instanceCounts.size());
   }

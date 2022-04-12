@@ -22,7 +22,7 @@ Let's first add the dependency to the project's `pom.xml` file:
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-external-task-client</artifactId>
-  <version>7.16.0</version>
+  <version>7.17.0</version>
 </dependency>
 <!--...-->
 ```
@@ -191,7 +191,7 @@ public class Subscriptions implements ApplicationListener<SubscriptionInitialize
  |_____| /_/\_\  \__|  \___| |_|    |_| |_|  \__,_| |_|     |_|    \__,_| |___/ |_|\_\    \____| |_| |_|  \___| |_| |_|  \__|
 
   Spring-Boot:  (v2.4.3)
-  Camunda Platform: (v7.16.0)
+  Camunda Platform: (v7.17.0)
 2021-03-19 11:41:09.697  INFO 24157 --- [           main] o.c.b.s.b.e.l.client.Application         : Starting Application using Java 1.8.0_131 on localhost with PID 20376 (~/camunda-bpm-examples/spring-boot-starter/external-task-client/loan-granting-spring-boot/target/classes started by user in ~/camunda-bpm-examples/spring-boot-starter/external-task-client)
 2021-03-19 11:41:09.697  INFO 24157 --- [           main] o.c.b.s.b.e.l.client.Application         : No active profile set, falling back to default profiles: default
 ...

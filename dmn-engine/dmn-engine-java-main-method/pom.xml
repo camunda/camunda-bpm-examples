@@ -10,7 +10,9 @@
   <packaging>jar</packaging>
 
   <properties>
-    <version.camunda>7.16.0</version.camunda>
+    <version.camunda>7.17.0</version.camunda>
+    <version.slf4j>1.7.26</version.slf4j>
+    <version.junit>4.13.1</version.junit>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,14 +40,14 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
+      <version>${version.slf4j}</version>
     </dependency>
 
     <!-- unit testing -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${version.junit}</version>
     </dependency>
   </dependencies>
 
