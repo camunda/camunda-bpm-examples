@@ -12,7 +12,7 @@
     <spring.version>5.3.10</spring.version>
     <tomcat.version>9.0.58</tomcat.version>
     <servlet-api.version>3.0.1</servlet-api.version>
-    <h2.version>2.0.206</h2.version>
+    <h2.version>2.1.210</h2.version>
     <slf4j.version>1.7.32</slf4j.version>
     <maven-war-plugin.version>3.3.1</maven-war-plugin.version>
     <maven-dependency-plugin.version>2.2</maven-dependency-plugin.version>
