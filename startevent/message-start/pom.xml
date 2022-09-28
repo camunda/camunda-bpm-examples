@@ -10,7 +10,7 @@
   <name>Start Process By Message</name>
 
   <properties>
-    <version.camunda>7.17.0</version.camunda>
+    <version.camunda>7.18.0</version.camunda>
     <version.junit>4.13.2</version.junit>
     <version.h2>2.0.206</version.h2>
     <version.slf4j>1.7.32</version.slf4j>

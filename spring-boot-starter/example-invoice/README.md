@@ -20,7 +20,7 @@ to your `pom.xml`:
 ```xml
 ...
   <properties>
-    <camunda.version>7.17.0-ee</camunda.version>
+    <camunda.version>7.18.0-ee</camunda.version>
   </properties>
 
   <dependencyManagement>

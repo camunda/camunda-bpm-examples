@@ -6,7 +6,7 @@
   <packaging>jar</packaging>
 
   <properties>
-    <version.camunda>7.17.0</version.camunda>
+    <version.camunda>7.18.0</version.camunda>
     <version.junit>5.8.2</version.junit>
     <version.h2>2.0.206</version.h2>
     <version.assertj>3.21.0</version.assertj>

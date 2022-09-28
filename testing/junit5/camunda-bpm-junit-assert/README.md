@@ -36,7 +36,7 @@ mvn clean test
 ```
 
 ## Further reading
-If you want to read more about [Camunda Platform Assert][assert] or the [Camunda JUnit 5 extension], go to the [testing user guide](https://docs.camunda.org/manual/7.17/user-guide/testing/) in the Camunda docs.
+If you want to read more about [Camunda Platform Assert][assert] or the [Camunda JUnit 5 extension], go to the [testing user guide](https://docs.camunda.org/manual/7.18/user-guide/testing/) in the Camunda docs.
 
 [junit5]: https://github.com/camunda/camunda-bpm-platform/tree/master/test-utils/junit5-extension
 [assert]: https://github.com/camunda/camunda-bpm-platform/tree/master/test-utils/assert

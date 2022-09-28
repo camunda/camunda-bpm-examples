@@ -9,10 +9,10 @@
 
   <name>Camunda Cockpit Plugin: Sample</name>
   <description>This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of Camunda Platform.</description>
-  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.17/cockpit/cockpit-sample-plugin</url>
+  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.18/cockpit/cockpit-sample-plugin</url>
 
   <properties>
-    <camunda.version>7.17.0</camunda.version>
+    <camunda.version>7.18.0</camunda.version>
 
     <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
     <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
