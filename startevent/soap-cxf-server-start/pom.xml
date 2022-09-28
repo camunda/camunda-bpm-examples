@@ -13,21 +13,21 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <camunda.version>7.18.0</camunda.version>
+    <camunda.version>7.18.0-alpha6</camunda.version>
     <cxf.version>3.4.4</cxf.version>
     <cxf.xjc.version>3.3.1</cxf.xjc.version>
     <cglib.version>3.3.0</cglib.version>
-    <spring.version>5.3.10</spring.version>
+    <spring.version>5.3.22</spring.version>
     <spring.security.version>5.5.2</spring.security.version>
-    <logback.version>1.2.10</logback.version>
-    <slf4j.version>1.7.32</slf4j.version>
+    <logback.version>1.2.11</logback.version>
+    <slf4j.version>1.7.36</slf4j.version>
     <javax-activation.version>1.1.1</javax-activation.version>
 
     <!-- test -->
     <junit.version>4.13.2</junit.version>
     <mockito.version>3.12.4</mockito.version>
     <hamcrest.version>2.2</hamcrest.version>
-    <h2.version>2.0.206</h2.version>
+    <h2.version>2.1.214</h2.version>
     <assertj.version>3.21.0</assertj.version>
 
     <!-- tools -->
