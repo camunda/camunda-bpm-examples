@@ -167,7 +167,7 @@ implementation. If the service task is completed, the process engine invokes the
 1. Checkout the project with Git
 2. Import the project into your IDE
 3. Inspect the sources and run the unit test, or run it with Maven: `mvn clean verify`
-4. Check the console if you can find: `value of service task extension property 'progress': " + propertyValue`
+4. Check the console if you can find: `value of service task extension property 'progress': 100%`
 
 [1]: docs/bpmnParseListener.png
 [2]: docs/service-camunda-modeler.png
