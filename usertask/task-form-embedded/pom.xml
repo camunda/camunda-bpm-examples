@@ -8,7 +8,7 @@
   <name>Task Form Embedded</name>
 
   <properties>
-    <version.camunda>7.18.0</version.camunda>
+    <version.camunda>7.18.0-alpha6</version.camunda>
     <version.javax-servlet-api>4.0.1</version.javax-servlet-api>
 
     <maven.compiler.source>1.8</maven.compiler.source>
