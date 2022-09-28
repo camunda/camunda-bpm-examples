@@ -9,7 +9,7 @@
 
   <properties>
     <version.camunda>7.18.0</version.camunda>
-    <version.servlet-api.javax>3.0.1</version.servlet-api.javax>
+    <version.servlet-api.javax>4.0.1</version.servlet-api.javax>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
