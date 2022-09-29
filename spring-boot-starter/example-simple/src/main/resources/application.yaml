@@ -1,7 +1,7 @@
 spring.application.name: simpleApplication
 spring:
   datasource:
-    url: jdbc:h2:mem:example-simple;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:example-simple;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 camunda:
   bpm:
     application:
