@@ -38,7 +38,7 @@ public class SamplePlugin extends AbstractCockpitPlugin {
 
   @Override
   public Set<Class<?>> getResourceClasses() {
-    Set<Class<?>> classes = new HashSet<Class<?>>();
+    Set<Class<?>> classes = new HashSet<>();
 
     classes.add(SamplePluginRootResource.class);
 

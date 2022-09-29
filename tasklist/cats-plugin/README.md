@@ -23,6 +23,17 @@ Add the following content to the `customScripts` object in the `app/tasklist/scr
   // …
 ```
 
+### Content security policy
+
+By default, Camunda Platform uses a strict content security policy that doesn't allow images from external sources.
+See our documentation about [Content Security Policy](https://docs.camunda.org/manual/develop/webapps/shared-options/header-security/#content-security-policy) and [How to configure it](https://docs.camunda.org/manual/develop/webapps/shared-options/header-security/#how-to-configure).
+
+In order for this example to work, you need to either completely disable CSP via the `contentSecurityPolicyDisabled` property or update your `img-src` directive for instance to the following value:
+
+```
+img-src 'self' *.thecatapi.com thecatapi.com *.tumblr.com data:;
+```
+
 License
 -------
 

@@ -35,7 +35,7 @@ public class SamplePluginsTest extends AbstractCockpitPluginTest {
 
   @Test
   public void testPluginDiscovery() {
-    CockpitPlugin samplePlugin = Cockpit.getRuntimeDelegate().getPluginRegistry().getPlugin("sample-plugin");
+    CockpitPlugin samplePlugin = Cockpit.getRuntimeDelegate().getAppPluginRegistry().getPlugin("sample-plugin");
 
     Assert.assertNotNull(samplePlugin);
   }
