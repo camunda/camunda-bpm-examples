@@ -79,7 +79,7 @@ is added. You can use this extension point to implement a custom authentication 
 ## How to use it?
 
 1. Make sure to have an up and running Camunda Platform Runtime REST API
-2. Deploy the process [process.bpmn](./process.bpmn) to the Camunda Platform Runtime (e.g., via Camunda Modeler)
+2. Deploy the process [process.bpmn](./process.bpmn) to the Camunda Platform Runtime (e.g., via Camunda Modeler) and start a process instance
 3. Check out the project with Git
 4. Import the project into your IDE
 5. Start the main class in your IDE
