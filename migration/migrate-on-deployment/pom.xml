@@ -12,7 +12,7 @@
   <properties>
     <version.camunda>7.18.0</version.camunda>
     <version.servlet-api>3.0.1</version.servlet-api>
-    <version.slf4j>1.7.26</version.slf4j>
+    <version.slf4j>1.7.36</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -51,4 +51,13 @@
       <version>${version.slf4j}</version>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-war-plugin</artifactId>
+         <version>3.3.2</version>
+      </plugin>
+    </plugins>
+  </build>
 </project>
