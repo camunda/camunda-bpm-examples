@@ -15,7 +15,7 @@
   <version>1.0.0</version>
 
   <properties>
-    <camunda.version>7.18.0-alpha6</camunda.version>
+    <camunda.version>7.18.0</camunda.version>
     <resteasy.version>3.14.0.Final</resteasy.version>
     <rest-assured.version>4.5.0</rest-assured.version>
     <jaxb.version>2.3.6</jaxb.version>
