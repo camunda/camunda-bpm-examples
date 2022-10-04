@@ -17,11 +17,11 @@
 
 const react = document.createElement('script');
 react.crossOrigin = true;
-react.src = 'https://unpkg.com/react@17.0.2/umd/react.development.js'
+react.src = 'https://unpkg.com/react@18.2.0/umd/react.development.js'
 
 const reactDom = document.createElement('script');
 reactDom.crossOrigin = true;
-reactDom.src = 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js'
+reactDom.src = 'https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js'
 
 document.body.append(react);
 document.body.append(reactDom);
