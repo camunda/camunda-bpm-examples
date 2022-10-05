@@ -9,7 +9,7 @@
     <version.camunda>7.18.0</version.camunda>
     <version.assertj>3.21.0</version.assertj>
     <version.junit>4.13.2</version.junit>
-    <version.h2>2.0.206</version.h2>
+    <version.h2>2.1.214</version.h2>
     <version.mockito>4.4.0</version.mockito>
     <version.slf4j>1.7.36</version.slf4j>
 
