@@ -17,7 +17,7 @@ Let's first add the dependency to the project's `pom.xml` file:
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-external-task-client</artifactId>
-  <version>7.17.0</version>
+  <version>7.18.0</version>
 </dependency>
 <!--...-->
 ```
@@ -79,7 +79,7 @@ is added. You can use this extension point to implement a custom authentication 
 ## How to use it?
 
 1. Make sure to have an up and running Camunda Platform Runtime REST API
-2. Deploy the process [process.bpmn](./process.bpmn) to the Camunda Platform Runtime (e.g., via Camunda Modeler)
+2. Deploy the process [process.bpmn](./process.bpmn) to the Camunda Platform Runtime (e.g., via Camunda Modeler) and start a process instance
 3. Check out the project with Git
 4. Import the project into your IDE
 5. Start the main class in your IDE
@@ -99,7 +99,7 @@ is added. You can use this extension point to implement a custom authentication 
  |_____| /_/\_\  \__|  \___| |_|    |_| |_|  \__,_| |_|     |_|    \__,_| |___/ |_|\_\    \____| |_| |_|  \___| |_| |_|  \__|
 
   Spring-Boot:  (v2.4.3)
-  Camunda Platform: (v7.17.0)
+  Camunda Platform: (v7.18.0)
 2021-03-18 17:17:00.473  INFO 20376 --- [           main] o.c.b.s.b.e.l.client.Application         : Starting Application using Java 1.8.0_131 on localhost with PID 20376 (~/camunda-bpm-examples/spring-boot-starter/external-task-client/loan-granting-spring-boot/target/classes started by user in ~/camunda-bpm-examples/spring-boot-starter/external-task-client)
 2021-03-18 17:17:00.475  INFO 20376 --- [           main] o.c.b.s.b.e.l.client.Application         : No active profile set, falling back to default profiles: default
 ...

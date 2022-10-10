@@ -20,14 +20,14 @@ import java.util.List;
 import javax.ws.rs.GET;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginResource;
+import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 import org.camunda.bpm.cockpit.plugin.sample.db.ProcessInstanceCountDto;
 
 /**
  *
  * @author nico.rehwaldt
  */
-public class ProcessInstanceResource extends AbstractPluginResource {
+public class ProcessInstanceResource extends AbstractCockpitPluginResource {
 
   public ProcessInstanceResource(String engineName) {
     super(engineName);

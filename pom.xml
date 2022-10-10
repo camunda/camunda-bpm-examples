@@ -50,7 +50,6 @@
     <module>scripttask/xslt-scripttask</module>
     <module>scripttask/xquery-scripttask</module>
     <module>sdk-js/browser-forms</module>
-    <module>sdk-js/browser-forms-angular</module>
     <module>servicetask/service-invocation-asynchronous</module>
     <module>servicetask/service-invocation-synchronous</module>
     <module>servicetask/rest-service</module>

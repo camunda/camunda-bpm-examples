@@ -5,7 +5,7 @@ This example enables JQuery 3.4 behavior in the Camunda Webapps 7.15+ . It makes
 
 You can read more about the JQuery 3.5 release in the [JQuery release blog](https://blog.jquery.com/2020/04/10/jquery-3-5-0-released/).
 
-Built and tested against Camunda Platform version `7.17.0`.
+Built and tested against Camunda Platform version `7.18.0`.
 
 
 Integrate into Camunda Webapp

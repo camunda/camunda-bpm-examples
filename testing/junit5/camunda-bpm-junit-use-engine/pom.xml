@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.camunda.bpm</groupId>
-  <artifactId>example-camunda-bpm-junit5-assert</artifactId>
+  <artifactId>example-camunda-bpm-junit5-use-engine</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <properties>
-    <version.camunda>7.17.0</version.camunda>
+    <version.camunda>7.18.0</version.camunda>
     <version.junit>5.8.2</version.junit>
-    <version.h2>2.0.206</version.h2>
+    <version.h2>2.1.214</version.h2>
     <version.assertj>3.21.0</version.assertj>
     <version.logback>1.2.11</version.logback>
 

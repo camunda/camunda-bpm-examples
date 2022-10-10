@@ -10,8 +10,8 @@
   <packaging>jar</packaging>
 
   <properties>
-    <version.camunda>7.17.0</version.camunda>
-    <version.slf4j>1.7.26</version.slf4j>
+    <version.camunda>7.18.0</version.camunda>
+    <version.slf4j>1.7.36</version.slf4j>
     <version.junit>4.13.1</version.junit>
     <version.assertj>3.21.0</version.assertj>
     <maven.compiler.source>1.8</maven.compiler.source>

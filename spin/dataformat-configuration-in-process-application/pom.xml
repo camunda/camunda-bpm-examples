@@ -10,12 +10,12 @@
   <name>Spin - Configuring a Data Format Per Process Application</name>
 
   <properties>
-    <version.camunda>7.17.0</version.camunda>
+    <version.camunda>7.18.0</version.camunda>
     <version.graal.js>21.1.0</version.graal.js>
     <version.java-ee>7.0</version.java-ee>
-    <version.h2>2.0.206</version.h2>
+    <version.h2>2.1.214</version.h2>
     <version.junit>4.13.1</version.junit>
-    <version.slf4j>1.7.26</version.slf4j>
+    <version.slf4j>1.7.36</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -211,7 +211,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
-            <version>2.6</version>
+            <version>3.3.2</version>
             <configuration>
               <webResources>
                 <resource>

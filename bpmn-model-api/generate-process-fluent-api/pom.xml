@@ -7,7 +7,11 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.17.0</camunda.version>
+    <version.camunda>7.18.0</version.camunda>
+    <version.junit>4.13.1</version.junit>
+    <version.h2>2.1.214</version.h2>
+    <version.slf4j>1.7.26</version.slf4j>
+    <version.servlet-api>4.0.1</version.servlet-api>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,7 +24,7 @@
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
-        <version>${camunda.version}</version>
+        <version>${version.camunda}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -43,21 +47,21 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
+      <version>${version.servlet-api}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>2.0.206</version>
+      <version>${version.h2}</version>
       <scope>test</scope>
     </dependency>
 
@@ -65,7 +69,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.26</version>
+      <version>${version.slf4j}</version>
     </dependency>
 
   </dependencies>

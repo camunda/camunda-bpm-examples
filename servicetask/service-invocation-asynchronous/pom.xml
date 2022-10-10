@@ -8,10 +8,10 @@
   <name>Service Invocation - Asynchronous</name>
 
   <properties>
-    <version.camunda>7.17.0</version.camunda>
-    <version.slf4j>1.7.32</version.slf4j>
+    <version.camunda>7.18.0</version.camunda>
+    <version.slf4j>1.7.36</version.slf4j>
     <version.junit>4.13.2</version.junit>
-    <version.h2>2.0.206</version.h2>
+    <version.h2>2.1.214</version.h2>
 
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>

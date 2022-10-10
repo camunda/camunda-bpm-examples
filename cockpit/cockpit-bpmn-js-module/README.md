@@ -5,7 +5,7 @@ This example shows how to develop a Cockpit bpmn.js module.
 
 For additional information, please also see the [documentation](https://docs.camunda.org/manual/latest/webapps/cockpit/extend/configuration/#bpmn-diagram-viewer-bpmn-js).
 
-Built and tested against Camunda Platform version `7.17.0`.
+Built and tested against Camunda Platform version `7.18.0`.
 
 ![Screenshot](screenshot.png)
 

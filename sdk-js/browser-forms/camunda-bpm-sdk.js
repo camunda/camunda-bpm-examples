@@ -530,7 +530,7 @@ HttpClient.prototype.options = function (path, options) {
 module.exports = HttpClient;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./../events":35,"./../utils":49,"buffer":51,"q":117,"superagent":120}],4:[function(require,module,exports){
+},{"./../events":35,"./../utils":49,"buffer":51,"q":117,"superagent":119}],4:[function(require,module,exports){
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -8539,7 +8539,7 @@ module.exports = require('./camunda-form');
  */
 'use strict';
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 var INTEGER_PATTERN = /^-?[\d]+$/;
 var FLOAT_PATTERN = /^(0|(-?(((0|[1-9]\d*)\.\d+)|([1-9]\d*))))([eE][-+]?[0-9]+)?$/;
@@ -8838,7 +8838,9 @@ module.exports = {
  * @exports CamSDK.utils
  */
 
-require("regenerator-runtime/runtime.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -9003,9 +9005,9 @@ utils.debouncePromiseFactory = function () {
    */
 
   return /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(promise) {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(promise) {
       var result;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
@@ -9041,7 +9043,7 @@ utils.debouncePromiseFactory = function () {
   }();
 };
 
-},{"./forms/type-util":46,"regenerator-runtime/runtime.js":118}],50:[function(require,module,exports){
+},{"./forms/type-util":46}],50:[function(require,module,exports){
 'use strict';
 
 exports.byteLength = byteLength;
@@ -9174,7 +9176,7 @@ function fromByteArray(uint8) {
 /* eslint-disable no-proto */
 'use strict';
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 var base64 = require('base64-js');
 
@@ -11989,7 +11991,7 @@ $({ global: true, bind: true, enumerable: true, forced: FORCED }, {
 },{"../internals/export":66,"../internals/global":70,"../internals/task":96}],105:[function(require,module,exports){
 'use strict'; //parse Empty Node as self closing node
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 var buildOptions = require('./util').buildOptions;
 
@@ -12382,7 +12384,7 @@ exports.convert2nimn = convert2nimn;
 },{"./util":110,"./xmlstr2xmlnode":113}],107:[function(require,module,exports){
 'use strict';
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 var util = require('./util');
 
@@ -13562,9 +13564,13 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 },{}],115:[function(require,module,exports){
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 //! moment.js
+//! version : 2.29.3
+//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
+//! license : MIT
+//! momentjs.com
 ;
 
 (function (global, factory) {
@@ -13594,6 +13600,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return input != null && Object.prototype.toString.call(input) === '[object Object]';
   }
 
+  function hasOwnProp(a, b) {
+    return Object.prototype.hasOwnProperty.call(a, b);
+  }
+
   function isObjectEmpty(obj) {
     if (Object.getOwnPropertyNames) {
       return Object.getOwnPropertyNames(obj).length === 0;
@@ -13601,7 +13611,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var k;
 
       for (k in obj) {
-        if (obj.hasOwnProperty(k)) {
+        if (hasOwnProp(obj, k)) {
           return false;
         }
       }
@@ -13624,17 +13634,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
   function map(arr, fn) {
     var res = [],
-        i;
+        i,
+        arrLen = arr.length;
 
-    for (i = 0; i < arr.length; ++i) {
+    for (i = 0; i < arrLen; ++i) {
       res.push(fn(arr[i], i));
     }
 
     return res;
-  }
-
-  function hasOwnProp(a, b) {
-    return Object.prototype.hasOwnProperty.call(a, b);
   }
 
   function extend(a, b) {
@@ -13668,11 +13675,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       overflow: -2,
       charsLeftOver: 0,
       nullInput: false,
+      invalidEra: null,
       invalidMonth: null,
       invalidFormat: false,
       userInvalidated: false,
       iso: false,
       parsedDateParts: [],
+      era: null,
       meridiem: null,
       rfc2822: false,
       weekdayMismatch: false
@@ -13693,10 +13702,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     some = Array.prototype.some;
   } else {
     some = function some(fun) {
-      var t = Object(this);
-      var len = t.length >>> 0;
+      var t = Object(this),
+          len = t.length >>> 0,
+          i;
 
-      for (var i = 0; i < len; i++) {
+      for (i = 0; i < len; i++) {
         if (i in t && fun.call(this, t[i], i, t)) {
           return true;
         }
@@ -13708,11 +13718,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
   function isValid(m) {
     if (m._isValid == null) {
-      var flags = getParsingFlags(m);
-      var parsedParts = some.call(flags.parsedDateParts, function (i) {
+      var flags = getParsingFlags(m),
+          parsedParts = some.call(flags.parsedDateParts, function (i) {
         return i != null;
-      });
-      var isNowValid = !isNaN(m._d.getTime()) && flags.overflow < 0 && !flags.empty && !flags.invalidMonth && !flags.invalidWeekday && !flags.weekdayMismatch && !flags.nullInput && !flags.invalidFormat && !flags.userInvalidated && (!flags.meridiem || flags.meridiem && parsedParts);
+      }),
+          isNowValid = !isNaN(m._d.getTime()) && flags.overflow < 0 && !flags.empty && !flags.invalidEra && !flags.invalidMonth && !flags.invalidWeekday && !flags.weekdayMismatch && !flags.nullInput && !flags.invalidFormat && !flags.userInvalidated && (!flags.meridiem || flags.meridiem && parsedParts);
 
       if (m._strict) {
         isNowValid = isNowValid && flags.charsLeftOver === 0 && flags.unusedTokens.length === 0 && flags.bigHour === undefined;
@@ -13742,10 +13752,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   // so we can properly clone ourselves.
 
 
-  var momentProperties = hooks.momentProperties = [];
+  var momentProperties = hooks.momentProperties = [],
+      updateInProgress = false;
 
   function copyConfig(to, from) {
-    var i, prop, val;
+    var i,
+        prop,
+        val,
+        momentPropertiesLen = momentProperties.length;
 
     if (!isUndefined(from._isAMomentObject)) {
       to._isAMomentObject = from._isAMomentObject;
@@ -13787,8 +13801,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       to._locale = from._locale;
     }
 
-    if (momentProperties.length > 0) {
-      for (i = 0; i < momentProperties.length; i++) {
+    if (momentPropertiesLen > 0) {
+      for (i = 0; i < momentPropertiesLen; i++) {
         prop = momentProperties[i];
         val = from[prop];
 
@@ -13799,9 +13813,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
 
     return to;
-  }
+  } // Moment prototype object
 
-  var updateInProgress = false; // Moment prototype object
 
   function Moment(config) {
     copyConfig(this, config);
@@ -13824,42 +13837,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return obj instanceof Moment || obj != null && obj._isAMomentObject != null;
   }
 
-  function absFloor(number) {
-    if (number < 0) {
-      // -0 -> 0
-      return Math.ceil(number) || 0;
-    } else {
-      return Math.floor(number);
-    }
-  }
-
-  function toInt(argumentForCoercion) {
-    var coercedNumber = +argumentForCoercion,
-        value = 0;
-
-    if (coercedNumber !== 0 && isFinite(coercedNumber)) {
-      value = absFloor(coercedNumber);
-    }
-
-    return value;
-  } // compare two arrays, return the number of differences
-
-
-  function compareArrays(array1, array2, dontConvert) {
-    var len = Math.min(array1.length, array2.length),
-        lengthDiff = Math.abs(array1.length - array2.length),
-        diffs = 0,
-        i;
-
-    for (i = 0; i < len; i++) {
-      if (dontConvert && array1[i] !== array2[i] || !dontConvert && toInt(array1[i]) !== toInt(array2[i])) {
-        diffs++;
-      }
-    }
-
-    return diffs + lengthDiff;
-  }
-
   function warn(msg) {
     if (hooks.suppressDeprecationWarnings === false && typeof console !== 'undefined' && console.warn) {
       console.warn('Deprecation warning: ' + msg);
@@ -13874,17 +13851,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       if (firstTime) {
-        var args = [];
-        var arg;
+        var args = [],
+            arg,
+            i,
+            key,
+            argLen = arguments.length;
 
-        for (var i = 0; i < arguments.length; i++) {
+        for (i = 0; i < argLen; i++) {
           arg = '';
 
           if (_typeof(arguments[i]) === 'object') {
             arg += '\n[' + i + '] ';
 
-            for (var key in arguments[0]) {
-              arg += key + ': ' + arguments[0][key] + ', ';
+            for (key in arguments[0]) {
+              if (hasOwnProp(arguments[0], key)) {
+                arg += key + ': ' + arguments[0][key] + ', ';
+              }
             }
 
             arg = arg.slice(0, -2); // Remove trailing comma and space
@@ -13920,19 +13902,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   hooks.deprecationHandler = null;
 
   function isFunction(input) {
-    return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
+    return typeof Function !== 'undefined' && input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
   }
 
   function set(config) {
     var prop, i;
 
     for (i in config) {
-      prop = config[i];
+      if (hasOwnProp(config, i)) {
+        prop = config[i];
 
-      if (isFunction(prop)) {
-        this[i] = prop;
-      } else {
-        this['_' + i] = prop;
+        if (isFunction(prop)) {
+          this[i] = prop;
+        } else {
+          this['_' + i] = prop;
+        }
       }
     }
 
@@ -14010,120 +13994,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return isFunction(output) ? output.call(mom, now) : output;
   }
 
-  var defaultLongDateFormat = {
-    LTS: 'h:mm:ss A',
-    LT: 'h:mm A',
-    L: 'MM/DD/YYYY',
-    LL: 'MMMM D, YYYY',
-    LLL: 'MMMM D, YYYY h:mm A',
-    LLLL: 'dddd, MMMM D, YYYY h:mm A'
-  };
-
-  function longDateFormat(key) {
-    var format = this._longDateFormat[key],
-        formatUpper = this._longDateFormat[key.toUpperCase()];
-
-    if (format || !formatUpper) {
-      return format;
-    }
-
-    this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
-      return val.slice(1);
-    });
-    return this._longDateFormat[key];
-  }
-
-  var defaultInvalidDate = 'Invalid date';
-
-  function invalidDate() {
-    return this._invalidDate;
-  }
-
-  var defaultOrdinal = '%d';
-  var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
-
-  function ordinal(number) {
-    return this._ordinal.replace('%d', number);
-  }
-
-  var defaultRelativeTime = {
-    future: 'in %s',
-    past: '%s ago',
-    s: 'a few seconds',
-    ss: '%d seconds',
-    m: 'a minute',
-    mm: '%d minutes',
-    h: 'an hour',
-    hh: '%d hours',
-    d: 'a day',
-    dd: '%d days',
-    M: 'a month',
-    MM: '%d months',
-    y: 'a year',
-    yy: '%d years'
-  };
-
-  function relativeTime(number, withoutSuffix, string, isFuture) {
-    var output = this._relativeTime[string];
-    return isFunction(output) ? output(number, withoutSuffix, string, isFuture) : output.replace(/%d/i, number);
-  }
-
-  function pastFuture(diff, output) {
-    var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
-    return isFunction(format) ? format(output) : format.replace(/%s/i, output);
-  }
-
-  var aliases = {};
-
-  function addUnitAlias(unit, shorthand) {
-    var lowerCase = unit.toLowerCase();
-    aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
-  }
-
-  function normalizeUnits(units) {
-    return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
-  }
-
-  function normalizeObjectUnits(inputObject) {
-    var normalizedInput = {},
-        normalizedProp,
-        prop;
-
-    for (prop in inputObject) {
-      if (hasOwnProp(inputObject, prop)) {
-        normalizedProp = normalizeUnits(prop);
-
-        if (normalizedProp) {
-          normalizedInput[normalizedProp] = inputObject[prop];
-        }
-      }
-    }
-
-    return normalizedInput;
-  }
-
-  var priorities = {};
-
-  function addUnitPriority(unit, priority) {
-    priorities[unit] = priority;
-  }
-
-  function getPrioritizedUnits(unitsObj) {
-    var units = [];
-
-    for (var u in unitsObj) {
-      units.push({
-        unit: u,
-        priority: priorities[u]
-      });
-    }
-
-    units.sort(function (a, b) {
-      return a.priority - b.priority;
-    });
-    return units;
-  }
-
   function zeroFill(number, targetLength, forceSign) {
     var absNumber = '' + Math.abs(number),
         zerosToFill = targetLength - absNumber.length,
@@ -14131,10 +14001,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return (sign ? forceSign ? '+' : '' : '-') + Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
   }
 
-  var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
-  var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
-  var formatFunctions = {};
-  var formatTokenFunctions = {}; // token:    'M'
+  var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|N{1,5}|YYYYYY|YYYYY|YYYY|YY|y{2,4}|yo?|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g,
+      localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,
+      formatFunctions = {},
+      formatTokenFunctions = {}; // token:    'M'
   // padded:   ['MM', 2]
   // ordinal:  'Mo'
   // callback: function () { this.month() + 1 }
@@ -14227,42 +14097,250 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return format;
   }
 
-  var match1 = /\d/; //       0 - 9
+  var defaultLongDateFormat = {
+    LTS: 'h:mm:ss A',
+    LT: 'h:mm A',
+    L: 'MM/DD/YYYY',
+    LL: 'MMMM D, YYYY',
+    LLL: 'MMMM D, YYYY h:mm A',
+    LLLL: 'dddd, MMMM D, YYYY h:mm A'
+  };
 
-  var match2 = /\d\d/; //      00 - 99
+  function longDateFormat(key) {
+    var format = this._longDateFormat[key],
+        formatUpper = this._longDateFormat[key.toUpperCase()];
 
-  var match3 = /\d{3}/; //     000 - 999
+    if (format || !formatUpper) {
+      return format;
+    }
 
-  var match4 = /\d{4}/; //    0000 - 9999
+    this._longDateFormat[key] = formatUpper.match(formattingTokens).map(function (tok) {
+      if (tok === 'MMMM' || tok === 'MM' || tok === 'DD' || tok === 'dddd') {
+        return tok.slice(1);
+      }
 
-  var match6 = /[+-]?\d{6}/; // -999999 - 999999
+      return tok;
+    }).join('');
+    return this._longDateFormat[key];
+  }
 
-  var match1to2 = /\d\d?/; //       0 - 99
+  var defaultInvalidDate = 'Invalid date';
 
-  var match3to4 = /\d\d\d\d?/; //     999 - 9999
+  function invalidDate() {
+    return this._invalidDate;
+  }
 
-  var match5to6 = /\d\d\d\d\d\d?/; //   99999 - 999999
+  var defaultOrdinal = '%d',
+      defaultDayOfMonthOrdinalParse = /\d{1,2}/;
 
-  var match1to3 = /\d{1,3}/; //       0 - 999
+  function ordinal(number) {
+    return this._ordinal.replace('%d', number);
+  }
 
-  var match1to4 = /\d{1,4}/; //       0 - 9999
+  var defaultRelativeTime = {
+    future: 'in %s',
+    past: '%s ago',
+    s: 'a few seconds',
+    ss: '%d seconds',
+    m: 'a minute',
+    mm: '%d minutes',
+    h: 'an hour',
+    hh: '%d hours',
+    d: 'a day',
+    dd: '%d days',
+    w: 'a week',
+    ww: '%d weeks',
+    M: 'a month',
+    MM: '%d months',
+    y: 'a year',
+    yy: '%d years'
+  };
 
-  var match1to6 = /[+-]?\d{1,6}/; // -999999 - 999999
+  function relativeTime(number, withoutSuffix, string, isFuture) {
+    var output = this._relativeTime[string];
+    return isFunction(output) ? output(number, withoutSuffix, string, isFuture) : output.replace(/%d/i, number);
+  }
 
-  var matchUnsigned = /\d+/; //       0 - inf
+  function pastFuture(diff, output) {
+    var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+    return isFunction(format) ? format(output) : format.replace(/%s/i, output);
+  }
 
-  var matchSigned = /[+-]?\d+/; //    -inf - inf
+  var aliases = {};
 
-  var matchOffset = /Z|[+-]\d\d:?\d\d/gi; // +00:00 -00:00 +0000 -0000 or Z
+  function addUnitAlias(unit, shorthand) {
+    var lowerCase = unit.toLowerCase();
+    aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
+  }
 
-  var matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi; // +00 -00 +00:00 -00:00 +0000 -0000 or Z
+  function normalizeUnits(units) {
+    return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
+  }
 
-  var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
+  function normalizeObjectUnits(inputObject) {
+    var normalizedInput = {},
+        normalizedProp,
+        prop;
+
+    for (prop in inputObject) {
+      if (hasOwnProp(inputObject, prop)) {
+        normalizedProp = normalizeUnits(prop);
+
+        if (normalizedProp) {
+          normalizedInput[normalizedProp] = inputObject[prop];
+        }
+      }
+    }
+
+    return normalizedInput;
+  }
+
+  var priorities = {};
+
+  function addUnitPriority(unit, priority) {
+    priorities[unit] = priority;
+  }
+
+  function getPrioritizedUnits(unitsObj) {
+    var units = [],
+        u;
+
+    for (u in unitsObj) {
+      if (hasOwnProp(unitsObj, u)) {
+        units.push({
+          unit: u,
+          priority: priorities[u]
+        });
+      }
+    }
+
+    units.sort(function (a, b) {
+      return a.priority - b.priority;
+    });
+    return units;
+  }
+
+  function isLeapYear(year) {
+    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
+  }
+
+  function absFloor(number) {
+    if (number < 0) {
+      // -0 -> 0
+      return Math.ceil(number) || 0;
+    } else {
+      return Math.floor(number);
+    }
+  }
+
+  function toInt(argumentForCoercion) {
+    var coercedNumber = +argumentForCoercion,
+        value = 0;
+
+    if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+      value = absFloor(coercedNumber);
+    }
+
+    return value;
+  }
+
+  function makeGetSet(unit, keepTime) {
+    return function (value) {
+      if (value != null) {
+        set$1(this, unit, value);
+        hooks.updateOffset(this, keepTime);
+        return this;
+      } else {
+        return get(this, unit);
+      }
+    };
+  }
+
+  function get(mom, unit) {
+    return mom.isValid() ? mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+  }
+
+  function set$1(mom, unit, value) {
+    if (mom.isValid() && !isNaN(value)) {
+      if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
+        value = toInt(value);
+
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
+      } else {
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+      }
+    }
+  } // MOMENTS
+
+
+  function stringGet(units) {
+    units = normalizeUnits(units);
+
+    if (isFunction(this[units])) {
+      return this[units]();
+    }
+
+    return this;
+  }
+
+  function stringSet(units, value) {
+    if (_typeof(units) === 'object') {
+      units = normalizeObjectUnits(units);
+      var prioritized = getPrioritizedUnits(units),
+          i,
+          prioritizedLen = prioritized.length;
+
+      for (i = 0; i < prioritizedLen; i++) {
+        this[prioritized[i].unit](units[prioritized[i].unit]);
+      }
+    } else {
+      units = normalizeUnits(units);
+
+      if (isFunction(this[units])) {
+        return this[units](value);
+      }
+    }
+
+    return this;
+  }
+
+  var match1 = /\d/,
+      //       0 - 9
+  match2 = /\d\d/,
+      //      00 - 99
+  match3 = /\d{3}/,
+      //     000 - 999
+  match4 = /\d{4}/,
+      //    0000 - 9999
+  match6 = /[+-]?\d{6}/,
+      // -999999 - 999999
+  match1to2 = /\d\d?/,
+      //       0 - 99
+  match3to4 = /\d\d\d\d?/,
+      //     999 - 9999
+  match5to6 = /\d\d\d\d\d\d?/,
+      //   99999 - 999999
+  match1to3 = /\d{1,3}/,
+      //       0 - 999
+  match1to4 = /\d{1,4}/,
+      //       0 - 9999
+  match1to6 = /[+-]?\d{1,6}/,
+      // -999999 - 999999
+  matchUnsigned = /\d+/,
+      //       0 - inf
+  matchSigned = /[+-]?\d+/,
+      //    -inf - inf
+  matchOffset = /Z|[+-]\d\d:?\d\d/gi,
+      // +00:00 -00:00 +0000 -0000 or Z
+  matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi,
+      // +00 -00 +00:00 -00:00 +0000 -0000 or Z
+  matchTimestamp = /[+-]?\d+(\.\d{1,3})?/,
+      // 123456789 123456789.123
   // any word (or two) characters or numbers including two/three word month in arabic.
   // includes scottish gaelic two word and hyphenated months
-
-  var matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i;
-  var regexes = {};
+  matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i,
+      regexes;
+  regexes = {};
 
   function addRegexToken(token, regex, strictRegex) {
     regexes[token] = isFunction(regex) ? regex : function (isStrict, localeData) {
@@ -14293,7 +14371,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
   function addParseToken(token, callback) {
     var i,
-        func = callback;
+        func = callback,
+        tokenLen;
 
     if (typeof token === 'string') {
       token = [token];
@@ -14305,7 +14384,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       };
     }
 
-    for (i = 0; i < token.length; i++) {
+    tokenLen = token.length;
+
+    for (i = 0; i < tokenLen; i++) {
       tokens[token[i]] = func;
     }
   }
@@ -14323,122 +14404,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   }
 
-  var YEAR = 0;
-  var MONTH = 1;
-  var DATE = 2;
-  var HOUR = 3;
-  var MINUTE = 4;
-  var SECOND = 5;
-  var MILLISECOND = 6;
-  var WEEK = 7;
-  var WEEKDAY = 8; // FORMATTING
-
-  addFormatToken('Y', 0, 0, function () {
-    var y = this.year();
-    return y <= 9999 ? '' + y : '+' + y;
-  });
-  addFormatToken(0, ['YY', 2], 0, function () {
-    return this.year() % 100;
-  });
-  addFormatToken(0, ['YYYY', 4], 0, 'year');
-  addFormatToken(0, ['YYYYY', 5], 0, 'year');
-  addFormatToken(0, ['YYYYYY', 6, true], 0, 'year'); // ALIASES
-
-  addUnitAlias('year', 'y'); // PRIORITIES
-
-  addUnitPriority('year', 1); // PARSING
-
-  addRegexToken('Y', matchSigned);
-  addRegexToken('YY', match1to2, match2);
-  addRegexToken('YYYY', match1to4, match4);
-  addRegexToken('YYYYY', match1to6, match6);
-  addRegexToken('YYYYYY', match1to6, match6);
-  addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-  addParseToken('YYYY', function (input, array) {
-    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-  });
-  addParseToken('YY', function (input, array) {
-    array[YEAR] = hooks.parseTwoDigitYear(input);
-  });
-  addParseToken('Y', function (input, array) {
-    array[YEAR] = parseInt(input, 10);
-  }); // HELPERS
-
-  function daysInYear(year) {
-    return isLeapYear(year) ? 366 : 365;
-  }
-
-  function isLeapYear(year) {
-    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
-  } // HOOKS
-
-
-  hooks.parseTwoDigitYear = function (input) {
-    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-  }; // MOMENTS
-
-
-  var getSetYear = makeGetSet('FullYear', true);
-
-  function getIsLeapYear() {
-    return isLeapYear(this.year());
-  }
-
-  function makeGetSet(unit, keepTime) {
-    return function (value) {
-      if (value != null) {
-        set$1(this, unit, value);
-        hooks.updateOffset(this, keepTime);
-        return this;
-      } else {
-        return get(this, unit);
-      }
-    };
-  }
-
-  function get(mom, unit) {
-    return mom.isValid() ? mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
-  }
-
-  function set$1(mom, unit, value) {
-    if (mom.isValid() && !isNaN(value)) {
-      if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
-      } else {
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-      }
-    }
-  } // MOMENTS
-
-
-  function stringGet(units) {
-    units = normalizeUnits(units);
-
-    if (isFunction(this[units])) {
-      return this[units]();
-    }
-
-    return this;
-  }
-
-  function stringSet(units, value) {
-    if (_typeof(units) === 'object') {
-      units = normalizeObjectUnits(units);
-      var prioritized = getPrioritizedUnits(units);
-
-      for (var i = 0; i < prioritized.length; i++) {
-        this[prioritized[i].unit](units[prioritized[i].unit]);
-      }
-    } else {
-      units = normalizeUnits(units);
-
-      if (isFunction(this[units])) {
-        return this[units](value);
-      }
-    }
-
-    return this;
-  }
+  var YEAR = 0,
+      MONTH = 1,
+      DATE = 2,
+      HOUR = 3,
+      MINUTE = 4,
+      SECOND = 5,
+      MILLISECOND = 6,
+      WEEK = 7,
+      WEEKDAY = 8;
 
   function mod(n, x) {
     return (n % x + x) % x;
@@ -14510,8 +14484,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   }); // LOCALES
 
-  var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
-  var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
+  var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
+      defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
+      MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/,
+      defaultMonthsShortRegex = matchWord,
+      defaultMonthsRegex = matchWord;
 
   function localeMonths(m, format) {
     if (!m) {
@@ -14520,8 +14497,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     return isArray(this._months) ? this._months[m.month()] : this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
   }
-
-  var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
 
   function localeMonthsShort(m, format) {
     if (!m) {
@@ -14664,8 +14639,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return daysInMonth(this.year(), this.month());
   }
 
-  var defaultMonthsShortRegex = matchWord;
-
   function monthsShortRegex(isStrict) {
     if (this._monthsParseExact) {
       if (!hasOwnProp(this, '_monthsRegex')) {
@@ -14685,8 +14658,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return this._monthsShortStrictRegex && isStrict ? this._monthsShortStrictRegex : this._monthsShortRegex;
     }
   }
-
-  var defaultMonthsRegex = matchWord;
 
   function monthsRegex(isStrict) {
     if (this._monthsParseExact) {
@@ -14747,6 +14718,54 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     this._monthsShortRegex = this._monthsRegex;
     this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
     this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
+  } // FORMATTING
+
+
+  addFormatToken('Y', 0, 0, function () {
+    var y = this.year();
+    return y <= 9999 ? zeroFill(y, 4) : '+' + y;
+  });
+  addFormatToken(0, ['YY', 2], 0, function () {
+    return this.year() % 100;
+  });
+  addFormatToken(0, ['YYYY', 4], 0, 'year');
+  addFormatToken(0, ['YYYYY', 5], 0, 'year');
+  addFormatToken(0, ['YYYYYY', 6, true], 0, 'year'); // ALIASES
+
+  addUnitAlias('year', 'y'); // PRIORITIES
+
+  addUnitPriority('year', 1); // PARSING
+
+  addRegexToken('Y', matchSigned);
+  addRegexToken('YY', match1to2, match2);
+  addRegexToken('YYYY', match1to4, match4);
+  addRegexToken('YYYYY', match1to6, match6);
+  addRegexToken('YYYYYY', match1to6, match6);
+  addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+  addParseToken('YYYY', function (input, array) {
+    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+  });
+  addParseToken('YY', function (input, array) {
+    array[YEAR] = hooks.parseTwoDigitYear(input);
+  });
+  addParseToken('Y', function (input, array) {
+    array[YEAR] = parseInt(input, 10);
+  }); // HELPERS
+
+  function daysInYear(year) {
+    return isLeapYear(year) ? 366 : 365;
+  } // HOOKS
+
+
+  hooks.parseTwoDigitYear = function (input) {
+    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+  }; // MOMENTS
+
+
+  var getSetYear = makeGetSet('FullYear', true);
+
+  function getIsLeapYear() {
+    return isLeapYear(this.year());
   }
 
   function createDate(y, m, d, h, M, s, ms) {
@@ -14769,10 +14788,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function createUTCDate(y) {
-    var date; // the Date.UTC function remaps years 0-99 to 1900-1999
+    var date, args; // the Date.UTC function remaps years 0-99 to 1900-1999
 
     if (y < 100 && y >= 0) {
-      var args = Array.prototype.slice.call(arguments); // preserve leap years using a full 400 year cycle, then reset
+      args = Array.prototype.slice.call(arguments); // preserve leap years using a full 400 year cycle, then reset
 
       args[0] = y + 400;
       date = new Date(Date.UTC.apply(null, args));
@@ -14978,20 +14997,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return ws.slice(n, 7).concat(ws.slice(0, n));
   }
 
-  var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
+  var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
+      defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
+      defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
+      defaultWeekdaysRegex = matchWord,
+      defaultWeekdaysShortRegex = matchWord,
+      defaultWeekdaysMinRegex = matchWord;
 
   function localeWeekdays(m, format) {
     var weekdays = isArray(this._weekdays) ? this._weekdays : this._weekdays[m && m !== true && this._weekdays.isFormat.test(format) ? 'format' : 'standalone'];
     return m === true ? shiftWeekdays(weekdays, this._week.dow) : m ? weekdays[m.day()] : weekdays;
   }
 
-  var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
-
   function localeWeekdaysShort(m) {
     return m === true ? shiftWeekdays(this._weekdaysShort, this._week.dow) : m ? this._weekdaysShort[m.day()] : this._weekdaysShort;
   }
-
-  var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
 
   function localeWeekdaysMin(m) {
     return m === true ? shiftWeekdays(this._weekdaysMin, this._week.dow) : m ? this._weekdaysMin[m.day()] : this._weekdaysMin;
@@ -15160,8 +15180,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   }
 
-  var defaultWeekdaysRegex = matchWord;
-
   function weekdaysRegex(isStrict) {
     if (this._weekdaysParseExact) {
       if (!hasOwnProp(this, '_weekdaysRegex')) {
@@ -15182,8 +15200,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   }
 
-  var defaultWeekdaysShortRegex = matchWord;
-
   function weekdaysShortRegex(isStrict) {
     if (this._weekdaysParseExact) {
       if (!hasOwnProp(this, '_weekdaysRegex')) {
@@ -15203,8 +15219,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return this._weekdaysShortStrictRegex && isStrict ? this._weekdaysShortStrictRegex : this._weekdaysShortRegex;
     }
   }
-
-  var defaultWeekdaysMinRegex = matchWord;
 
   function weekdaysMinRegex(isStrict) {
     if (this._weekdaysParseExact) {
@@ -15244,9 +15258,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     for (i = 0; i < 7; i++) {
       // make the regex if we don't have it already
       mom = createUTC([2000, 1]).day(i);
-      minp = this.weekdaysMin(mom, '');
-      shortp = this.weekdaysShort(mom, '');
-      longp = this.weekdays(mom, '');
+      minp = regexEscape(this.weekdaysMin(mom, ''));
+      shortp = regexEscape(this.weekdaysShort(mom, ''));
+      longp = regexEscape(this.weekdays(mom, ''));
       minPieces.push(minp);
       shortPieces.push(shortp);
       longPieces.push(longp);
@@ -15261,13 +15275,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     shortPieces.sort(cmpLenRev);
     longPieces.sort(cmpLenRev);
     mixedPieces.sort(cmpLenRev);
-
-    for (i = 0; i < 7; i++) {
-      shortPieces[i] = regexEscape(shortPieces[i]);
-      longPieces[i] = regexEscape(longPieces[i]);
-      mixedPieces[i] = regexEscape(mixedPieces[i]);
-    }
-
     this._weekdaysRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
     this._weekdaysShortRegex = this._weekdaysRegex;
     this._weekdaysMinRegex = this._weekdaysRegex;
@@ -15350,8 +15357,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     getParsingFlags(config).bigHour = true;
   });
   addParseToken('hmmss', function (input, array, config) {
-    var pos1 = input.length - 4;
-    var pos2 = input.length - 2;
+    var pos1 = input.length - 4,
+        pos2 = input.length - 2;
     array[HOUR] = toInt(input.substr(0, pos1));
     array[MINUTE] = toInt(input.substr(pos1, 2));
     array[SECOND] = toInt(input.substr(pos2));
@@ -15363,8 +15370,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     array[MINUTE] = toInt(input.substr(pos));
   });
   addParseToken('Hmmss', function (input, array, config) {
-    var pos1 = input.length - 4;
-    var pos2 = input.length - 2;
+    var pos1 = input.length - 4,
+        pos2 = input.length - 2;
     array[HOUR] = toInt(input.substr(0, pos1));
     array[MINUTE] = toInt(input.substr(pos1, 2));
     array[SECOND] = toInt(input.substr(pos2));
@@ -15376,7 +15383,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return (input + '').toLowerCase().charAt(0) === 'p';
   }
 
-  var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
+  var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i,
+      // Setting the hour should keep the time, because the user explicitly
+  // specified which hour they want. So trying to maintain the same hour (in
+  // a new timezone) makes sense. Adding/subtracting hours does not follow
+  // this rule.
+  getSetHour = makeGetSet('Hours', true);
 
   function localeMeridiem(hours, minutes, isLower) {
     if (hours > 11) {
@@ -15384,14 +15396,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     } else {
       return isLower ? 'am' : 'AM';
     }
-  } // MOMENTS
-  // Setting the hour should keep the time, because the user explicitly
-  // specified which hour they want. So trying to maintain the same hour (in
-  // a new timezone) makes sense. Adding/subtracting hours does not follow
-  // this rule.
+  }
 
-
-  var getSetHour = makeGetSet('Hours', true);
   var baseConfig = {
     calendar: defaultCalendar,
     longDateFormat: defaultLongDateFormat,
@@ -15408,9 +15414,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     meridiemParse: defaultLocaleMeridiemParse
   }; // internal storage for locale config files
 
-  var locales = {};
-  var localeFamilies = {};
-  var globalLocale;
+  var locales = {},
+      localeFamilies = {},
+      globalLocale;
+
+  function commonPrefix(arr1, arr2) {
+    var i,
+        minl = Math.min(arr1.length, arr2.length);
+
+    for (i = 0; i < minl; i += 1) {
+      if (arr1[i] !== arr2[i]) {
+        return i;
+      }
+    }
+
+    return minl;
+  }
 
   function normalizeLocale(key) {
     return key ? key.toLowerCase().replace('_', '-') : key;
@@ -15439,7 +15458,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           return locale;
         }
 
-        if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
+        if (next && next.length >= j && commonPrefix(split, next) >= j - 1) {
           //the next array item is better than a shallower substring of this one
           break;
         }
@@ -15453,16 +15472,26 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return globalLocale;
   }
 
-  function loadLocale(name) {
-    var oldLocale = null; // TODO: Find a better way to register and load all the locales in Node
+  function isLocaleNameSane(name) {
+    // Prevent names that look like filesystem paths, i.e contain '/' or '\'
+    return name.match('^[^/\\\\]*$') != null;
+  }
 
-    if (!locales[name] && typeof module !== 'undefined' && module && module.exports) {
+  function loadLocale(name) {
+    var oldLocale = null,
+        aliasedRequire; // TODO: Find a better way to register and load all the locales in Node
+
+    if (locales[name] === undefined && typeof module !== 'undefined' && module && module.exports && isLocaleNameSane(name)) {
       try {
         oldLocale = globalLocale._abbr;
-        var aliasedRequire = require;
+        aliasedRequire = require;
         aliasedRequire('./locale/' + name);
         getSetGlobalLocale(oldLocale);
-      } catch (e) {}
+      } catch (e) {
+        // mark as not found to avoid repeating expensive file require call causing high CPU
+        // when trying to find en-US, en_US, en-us for every format call
+        locales[name] = null; // null means not found
+      }
     }
 
     return locales[name];
@@ -15550,18 +15579,33 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     if (config != null) {
       var locale,
           tmpLocale,
-          parentConfig = baseConfig; // MERGE
+          parentConfig = baseConfig;
 
-      tmpLocale = loadLocale(name);
+      if (locales[name] != null && locales[name].parentLocale != null) {
+        // Update existing child locale in-place to avoid memory-leaks
+        locales[name].set(mergeConfigs(locales[name]._config, config));
+      } else {
+        // MERGE
+        tmpLocale = loadLocale(name);
 
-      if (tmpLocale != null) {
-        parentConfig = tmpLocale._config;
-      }
+        if (tmpLocale != null) {
+          parentConfig = tmpLocale._config;
+        }
 
-      config = mergeConfigs(parentConfig, config);
-      locale = new Locale(config);
-      locale.parentLocale = locales[name];
-      locales[name] = locale; // backwards compat for now: also set the locale
+        config = mergeConfigs(parentConfig, config);
+
+        if (tmpLocale == null) {
+          // updateLocale is called for creating a new locale
+          // Set abbr so it will have a name (getters return
+          // undefined otherwise).
+          config.abbr = name;
+        }
+
+        locale = new Locale(config);
+        locale.parentLocale = locales[name];
+        locales[name] = locale;
+      } // backwards compat for now: also set the locale
+
 
       getSetGlobalLocale(name);
     } else {
@@ -15569,6 +15613,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       if (locales[name] != null) {
         if (locales[name].parentLocale != null) {
           locales[name] = locales[name].parentLocale;
+
+          if (name === getSetGlobalLocale()) {
+            getSetGlobalLocale(name);
+          }
         } else if (locales[name] != null) {
           delete locales[name];
         }
@@ -15609,8 +15657,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function checkOverflow(m) {
-    var overflow;
-    var a = m._a;
+    var overflow,
+        a = m._a;
 
     if (a && getParsingFlags(m).overflow === -2) {
       overflow = a[MONTH] < 0 || a[MONTH] > 11 ? MONTH : a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH]) ? DATE : a[HOUR] < 0 || a[HOUR] > 24 || a[HOUR] === 24 && (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0) ? HOUR : a[MINUTE] < 0 || a[MINUTE] > 59 ? MINUTE : a[SECOND] < 0 || a[SECOND] > 59 ? SECOND : a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND : -1;
@@ -15631,8 +15679,213 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
 
     return m;
-  } // Pick the first defined of two or three arguments.
+  } // iso 8601 regex
+  // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
 
+
+  var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([+-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+      basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d|))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([+-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+      tzRegex = /Z|[+-]\d\d(?::?\d\d)?/,
+      isoDates = [['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/], ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/], ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/], ['GGGG-[W]WW', /\d{4}-W\d\d/, false], ['YYYY-DDD', /\d{4}-\d{3}/], ['YYYY-MM', /\d{4}-\d\d/, false], ['YYYYYYMMDD', /[+-]\d{10}/], ['YYYYMMDD', /\d{8}/], ['GGGG[W]WWE', /\d{4}W\d{3}/], ['GGGG[W]WW', /\d{4}W\d{2}/, false], ['YYYYDDD', /\d{7}/], ['YYYYMM', /\d{6}/, false], ['YYYY', /\d{4}/, false]],
+      // iso time formats and regexes
+  isoTimes = [['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/], ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/], ['HH:mm:ss', /\d\d:\d\d:\d\d/], ['HH:mm', /\d\d:\d\d/], ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/], ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/], ['HHmmss', /\d\d\d\d\d\d/], ['HHmm', /\d\d\d\d/], ['HH', /\d\d/]],
+      aspNetJsonRegex = /^\/?Date\((-?\d+)/i,
+      // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
+  rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/,
+      obsOffsets = {
+    UT: 0,
+    GMT: 0,
+    EDT: -4 * 60,
+    EST: -5 * 60,
+    CDT: -5 * 60,
+    CST: -6 * 60,
+    MDT: -6 * 60,
+    MST: -7 * 60,
+    PDT: -7 * 60,
+    PST: -8 * 60
+  }; // date from iso format
+
+  function configFromISO(config) {
+    var i,
+        l,
+        string = config._i,
+        match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
+        allowTime,
+        dateFormat,
+        timeFormat,
+        tzFormat,
+        isoDatesLen = isoDates.length,
+        isoTimesLen = isoTimes.length;
+
+    if (match) {
+      getParsingFlags(config).iso = true;
+
+      for (i = 0, l = isoDatesLen; i < l; i++) {
+        if (isoDates[i][1].exec(match[1])) {
+          dateFormat = isoDates[i][0];
+          allowTime = isoDates[i][2] !== false;
+          break;
+        }
+      }
+
+      if (dateFormat == null) {
+        config._isValid = false;
+        return;
+      }
+
+      if (match[3]) {
+        for (i = 0, l = isoTimesLen; i < l; i++) {
+          if (isoTimes[i][1].exec(match[3])) {
+            // match[2] should be 'T' or space
+            timeFormat = (match[2] || ' ') + isoTimes[i][0];
+            break;
+          }
+        }
+
+        if (timeFormat == null) {
+          config._isValid = false;
+          return;
+        }
+      }
+
+      if (!allowTime && timeFormat != null) {
+        config._isValid = false;
+        return;
+      }
+
+      if (match[4]) {
+        if (tzRegex.exec(match[4])) {
+          tzFormat = 'Z';
+        } else {
+          config._isValid = false;
+          return;
+        }
+      }
+
+      config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
+      configFromStringAndFormat(config);
+    } else {
+      config._isValid = false;
+    }
+  }
+
+  function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
+    var result = [untruncateYear(yearStr), defaultLocaleMonthsShort.indexOf(monthStr), parseInt(dayStr, 10), parseInt(hourStr, 10), parseInt(minuteStr, 10)];
+
+    if (secondStr) {
+      result.push(parseInt(secondStr, 10));
+    }
+
+    return result;
+  }
+
+  function untruncateYear(yearStr) {
+    var year = parseInt(yearStr, 10);
+
+    if (year <= 49) {
+      return 2000 + year;
+    } else if (year <= 999) {
+      return 1900 + year;
+    }
+
+    return year;
+  }
+
+  function preprocessRFC2822(s) {
+    // Remove comments and folding whitespace and replace multiple-spaces with a single space
+    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+  }
+
+  function checkWeekday(weekdayStr, parsedInput, config) {
+    if (weekdayStr) {
+      // TODO: Replace the vanilla JS Date object with an independent day-of-week check.
+      var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+          weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
+
+      if (weekdayProvided !== weekdayActual) {
+        getParsingFlags(config).weekdayMismatch = true;
+        config._isValid = false;
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function calculateOffset(obsOffset, militaryOffset, numOffset) {
+    if (obsOffset) {
+      return obsOffsets[obsOffset];
+    } else if (militaryOffset) {
+      // the only allowed military tz is Z
+      return 0;
+    } else {
+      var hm = parseInt(numOffset, 10),
+          m = hm % 100,
+          h = (hm - m) / 100;
+      return h * 60 + m;
+    }
+  } // date and time from ref 2822 format
+
+
+  function configFromRFC2822(config) {
+    var match = rfc2822.exec(preprocessRFC2822(config._i)),
+        parsedArray;
+
+    if (match) {
+      parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
+
+      if (!checkWeekday(match[1], parsedArray, config)) {
+        return;
+      }
+
+      config._a = parsedArray;
+      config._tzm = calculateOffset(match[8], match[9], match[10]);
+      config._d = createUTCDate.apply(null, config._a);
+
+      config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
+      getParsingFlags(config).rfc2822 = true;
+    } else {
+      config._isValid = false;
+    }
+  } // date from 1) ASP.NET, 2) ISO, 3) RFC 2822 formats, or 4) optional fallback if parsing isn't strict
+
+
+  function configFromString(config) {
+    var matched = aspNetJsonRegex.exec(config._i);
+
+    if (matched !== null) {
+      config._d = new Date(+matched[1]);
+      return;
+    }
+
+    configFromISO(config);
+
+    if (config._isValid === false) {
+      delete config._isValid;
+    } else {
+      return;
+    }
+
+    configFromRFC2822(config);
+
+    if (config._isValid === false) {
+      delete config._isValid;
+    } else {
+      return;
+    }
+
+    if (config._strict) {
+      config._isValid = false;
+    } else {
+      // Final attempt, use Input Fallback
+      hooks.createFromInputFallback(config);
+    }
+  }
+
+  hooks.createFromInputFallback = deprecate('value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' + 'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' + 'discouraged. Please refer to http://momentjs.com/guides/#/warnings/js-date/ for more info.', function (config) {
+    config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+  }); // Pick the first defined of two or three arguments.
 
   function defaults(a, b, c) {
     if (a != null) {
@@ -15731,7 +15984,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function dayOfYearFromWeekInfo(config) {
-    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow, curWeek;
     w = config._w;
 
     if (w.GG != null || w.W != null || w.E != null) {
@@ -15751,7 +16004,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     } else {
       dow = config._locale._week.dow;
       doy = config._locale._week.doy;
-      var curWeek = weekOfYear(createLocal(), dow, doy);
+      curWeek = weekOfYear(createLocal(), dow, doy);
       weekYear = defaults(w.gg, config._a[YEAR], curWeek.year); // Default to current week.
 
       week = defaults(w.w, curWeek.week);
@@ -15785,209 +16038,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       config._a[YEAR] = temp.year;
       config._dayOfYear = temp.dayOfYear;
     }
-  } // iso 8601 regex
-  // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
+  } // constant that refers to the ISO standard
 
-
-  var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
-  var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
-  var tzRegex = /Z|[+-]\d\d(?::?\d\d)?/;
-  var isoDates = [['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/], ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/], ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/], ['GGGG-[W]WW', /\d{4}-W\d\d/, false], ['YYYY-DDD', /\d{4}-\d{3}/], ['YYYY-MM', /\d{4}-\d\d/, false], ['YYYYYYMMDD', /[+-]\d{10}/], ['YYYYMMDD', /\d{8}/], // YYYYMM is NOT allowed by the standard
-  ['GGGG[W]WWE', /\d{4}W\d{3}/], ['GGGG[W]WW', /\d{4}W\d{2}/, false], ['YYYYDDD', /\d{7}/]]; // iso time formats and regexes
-
-  var isoTimes = [['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/], ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/], ['HH:mm:ss', /\d\d:\d\d:\d\d/], ['HH:mm', /\d\d:\d\d/], ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/], ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/], ['HHmmss', /\d\d\d\d\d\d/], ['HHmm', /\d\d\d\d/], ['HH', /\d\d/]];
-  var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i; // date from iso format
-
-  function configFromISO(config) {
-    var i,
-        l,
-        string = config._i,
-        match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
-        allowTime,
-        dateFormat,
-        timeFormat,
-        tzFormat;
-
-    if (match) {
-      getParsingFlags(config).iso = true;
-
-      for (i = 0, l = isoDates.length; i < l; i++) {
-        if (isoDates[i][1].exec(match[1])) {
-          dateFormat = isoDates[i][0];
-          allowTime = isoDates[i][2] !== false;
-          break;
-        }
-      }
-
-      if (dateFormat == null) {
-        config._isValid = false;
-        return;
-      }
-
-      if (match[3]) {
-        for (i = 0, l = isoTimes.length; i < l; i++) {
-          if (isoTimes[i][1].exec(match[3])) {
-            // match[2] should be 'T' or space
-            timeFormat = (match[2] || ' ') + isoTimes[i][0];
-            break;
-          }
-        }
-
-        if (timeFormat == null) {
-          config._isValid = false;
-          return;
-        }
-      }
-
-      if (!allowTime && timeFormat != null) {
-        config._isValid = false;
-        return;
-      }
-
-      if (match[4]) {
-        if (tzRegex.exec(match[4])) {
-          tzFormat = 'Z';
-        } else {
-          config._isValid = false;
-          return;
-        }
-      }
-
-      config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
-      configFromStringAndFormat(config);
-    } else {
-      config._isValid = false;
-    }
-  } // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
-
-
-  var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
-
-  function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
-    var result = [untruncateYear(yearStr), defaultLocaleMonthsShort.indexOf(monthStr), parseInt(dayStr, 10), parseInt(hourStr, 10), parseInt(minuteStr, 10)];
-
-    if (secondStr) {
-      result.push(parseInt(secondStr, 10));
-    }
-
-    return result;
-  }
-
-  function untruncateYear(yearStr) {
-    var year = parseInt(yearStr, 10);
-
-    if (year <= 49) {
-      return 2000 + year;
-    } else if (year <= 999) {
-      return 1900 + year;
-    }
-
-    return year;
-  }
-
-  function preprocessRFC2822(s) {
-    // Remove comments and folding whitespace and replace multiple-spaces with a single space
-    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-  }
-
-  function checkWeekday(weekdayStr, parsedInput, config) {
-    if (weekdayStr) {
-      // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
-      var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
-          weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
-
-      if (weekdayProvided !== weekdayActual) {
-        getParsingFlags(config).weekdayMismatch = true;
-        config._isValid = false;
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  var obsOffsets = {
-    UT: 0,
-    GMT: 0,
-    EDT: -4 * 60,
-    EST: -5 * 60,
-    CDT: -5 * 60,
-    CST: -6 * 60,
-    MDT: -6 * 60,
-    MST: -7 * 60,
-    PDT: -7 * 60,
-    PST: -8 * 60
-  };
-
-  function calculateOffset(obsOffset, militaryOffset, numOffset) {
-    if (obsOffset) {
-      return obsOffsets[obsOffset];
-    } else if (militaryOffset) {
-      // the only allowed military tz is Z
-      return 0;
-    } else {
-      var hm = parseInt(numOffset, 10);
-      var m = hm % 100,
-          h = (hm - m) / 100;
-      return h * 60 + m;
-    }
-  } // date and time from ref 2822 format
-
-
-  function configFromRFC2822(config) {
-    var match = rfc2822.exec(preprocessRFC2822(config._i));
-
-    if (match) {
-      var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
-
-      if (!checkWeekday(match[1], parsedArray, config)) {
-        return;
-      }
-
-      config._a = parsedArray;
-      config._tzm = calculateOffset(match[8], match[9], match[10]);
-      config._d = createUTCDate.apply(null, config._a);
-
-      config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-
-      getParsingFlags(config).rfc2822 = true;
-    } else {
-      config._isValid = false;
-    }
-  } // date from iso format or fallback
-
-
-  function configFromString(config) {
-    var matched = aspNetJsonRegex.exec(config._i);
-
-    if (matched !== null) {
-      config._d = new Date(+matched[1]);
-      return;
-    }
-
-    configFromISO(config);
-
-    if (config._isValid === false) {
-      delete config._isValid;
-    } else {
-      return;
-    }
-
-    configFromRFC2822(config);
-
-    if (config._isValid === false) {
-      delete config._isValid;
-    } else {
-      return;
-    } // Final attempt, use Input Fallback
-
-
-    hooks.createFromInputFallback(config);
-  }
-
-  hooks.createFromInputFallback = deprecate('value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' + 'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' + 'discouraged and will be removed in an upcoming major release. Please refer to ' + 'http://momentjs.com/guides/#/warnings/js-date/ for more info.', function (config) {
-    config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
-  }); // constant that refers to the ISO standard
 
   hooks.ISO_8601 = function () {}; // constant that refers to the RFC 2822 form
 
@@ -16017,13 +16069,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         token,
         skipped,
         stringLength = string.length,
-        totalParsedInputLength = 0;
+        totalParsedInputLength = 0,
+        era,
+        tokenLen;
     tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
+    tokenLen = tokens.length;
 
-    for (i = 0; i < tokens.length; i++) {
+    for (i = 0; i < tokenLen; i++) {
       token = tokens[i];
-      parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0]; // console.log('token', token, 'parsedInput', parsedInput,
-      //         'regex', getParseRegexForToken(token, config));
+      parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
 
       if (parsedInput) {
         skipped = string.substr(0, string.indexOf(parsedInput));
@@ -16065,7 +16119,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     getParsingFlags(config).parsedDateParts = config._a.slice(0);
     getParsingFlags(config).meridiem = config._meridiem; // handle meridiem
 
-    config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
+    config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem); // handle era
+
+    era = getParsingFlags(config).era;
+
+    if (era !== null) {
+      config._a[YEAR] = config._locale.erasConvertYear(era, config._a[YEAR]);
+    }
+
     configFromArray(config);
     checkOverflow(config);
   }
@@ -16101,16 +16162,24 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
   function configFromStringAndArray(config) {
-    var tempConfig, bestMoment, scoreToBeat, i, currentScore;
+    var tempConfig,
+        bestMoment,
+        scoreToBeat,
+        i,
+        currentScore,
+        validFormatFound,
+        bestFormatIsValid = false,
+        configfLen = config._f.length;
 
-    if (config._f.length === 0) {
+    if (configfLen === 0) {
       getParsingFlags(config).invalidFormat = true;
       config._d = new Date(NaN);
       return;
     }
 
-    for (i = 0; i < config._f.length; i++) {
+    for (i = 0; i < configfLen; i++) {
       currentScore = 0;
+      validFormatFound = false;
       tempConfig = copyConfig({}, config);
 
       if (config._useUTC != null) {
@@ -16120,8 +16189,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       tempConfig._f = config._f[i];
       configFromStringAndFormat(tempConfig);
 
-      if (!isValid(tempConfig)) {
-        continue;
+      if (isValid(tempConfig)) {
+        validFormatFound = true;
       } // if there is any input that was not parsed add a penalty for that format
 
 
@@ -16130,9 +16199,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
       getParsingFlags(tempConfig).score = currentScore;
 
-      if (scoreToBeat == null || currentScore < scoreToBeat) {
-        scoreToBeat = currentScore;
-        bestMoment = tempConfig;
+      if (!bestFormatIsValid) {
+        if (scoreToBeat == null || currentScore < scoreToBeat || validFormatFound) {
+          scoreToBeat = currentScore;
+          bestMoment = tempConfig;
+
+          if (validFormatFound) {
+            bestFormatIsValid = true;
+          }
+        }
+      } else {
+        if (currentScore < scoreToBeat) {
+          scoreToBeat = currentScore;
+          bestMoment = tempConfig;
+        }
       }
     }
 
@@ -16144,8 +16224,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return;
     }
 
-    var i = normalizeObjectUnits(config._i);
-    config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
+    var i = normalizeObjectUnits(config._i),
+        dayOrDate = i.day === undefined ? i.date : i.day;
+    config._a = map([i.year, i.month, dayOrDate, i.hour, i.minute, i.second, i.millisecond], function (obj) {
       return obj && parseInt(obj, 10);
     });
     configFromArray(config);
@@ -16224,6 +16305,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   function createLocalOrUTC(input, format, locale, strict, isUTC) {
     var c = {};
 
+    if (format === true || format === false) {
+      strict = format;
+      format = undefined;
+    }
+
     if (locale === true || locale === false) {
       strict = locale;
       locale = undefined;
@@ -16256,8 +16342,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     } else {
       return createInvalid();
     }
-  });
-  var prototypeMax = deprecate('moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/', function () {
+  }),
+      prototypeMax = deprecate('moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/', function () {
     var other = createLocal.apply(null, arguments);
 
     if (this.isValid() && other.isValid()) {
@@ -16311,15 +16397,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', 'millisecond'];
 
   function isDurationValid(m) {
-    for (var key in m) {
-      if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+    var key,
+        unitHasDecimal = false,
+        i,
+        orderLen = ordering.length;
+
+    for (key in m) {
+      if (hasOwnProp(m, key) && !(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
         return false;
       }
     }
 
-    var unitHasDecimal = false;
-
-    for (var i = 0; i < ordering.length; ++i) {
+    for (i = 0; i < orderLen; ++i) {
       if (m[ordering[i]]) {
         if (unitHasDecimal) {
           return false; // only allow non-integers for smallest unit
@@ -16382,13 +16471,29 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     } else {
       return Math.round(number);
     }
+  } // compare two arrays, return the number of differences
+
+
+  function compareArrays(array1, array2, dontConvert) {
+    var len = Math.min(array1.length, array2.length),
+        lengthDiff = Math.abs(array1.length - array2.length),
+        diffs = 0,
+        i;
+
+    for (i = 0; i < len; i++) {
+      if (dontConvert && array1[i] !== array2[i] || !dontConvert && toInt(array1[i]) !== toInt(array2[i])) {
+        diffs++;
+      }
+    }
+
+    return diffs + lengthDiff;
   } // FORMATTING
 
 
   function offset(token, separator) {
     addFormatToken(token, 0, 0, function () {
-      var offset = this.utcOffset();
-      var sign = '+';
+      var offset = this.utcOffset(),
+          sign = '+';
 
       if (offset < 0) {
         offset = -offset;
@@ -16415,15 +16520,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   var chunkOffset = /([\+\-]|\d\d)/gi;
 
   function offsetFromString(matcher, string) {
-    var matches = (string || '').match(matcher);
+    var matches = (string || '').match(matcher),
+        chunk,
+        parts,
+        minutes;
 
     if (matches === null) {
       return null;
     }
 
-    var chunk = matches[matches.length - 1] || [];
-    var parts = (chunk + '').match(chunkOffset) || ['-', 0, 0];
-    var minutes = +(parts[1] * 60) + toInt(parts[2]);
+    chunk = matches[matches.length - 1] || [];
+    parts = (chunk + '').match(chunkOffset) || ['-', 0, 0];
+    minutes = +(parts[1] * 60) + toInt(parts[2]);
     return minutes === 0 ? 0 : parts[0] === '+' ? minutes : -minutes;
   } // Return a moment from input, that is local/utc/zone equivalent to model.
 
@@ -16447,7 +16555,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   function getDateOffset(m) {
     // On Firefox.24 Date#getTimezoneOffset returns a floating point.
     // https://github.com/moment/moment/pull/1871
-    return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
+    return -Math.round(m._d.getTimezoneOffset());
   } // HOOKS
   // This function will be called whenever a moment is mutated.
   // It is intended to keep the offset in sync with the timezone.
@@ -16576,12 +16684,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return this._isDSTShifted;
     }
 
-    var c = {};
+    var c = {},
+        other;
     copyConfig(c, this);
     c = prepareConfig(c);
 
     if (c._a) {
-      var other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
+      other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
       this._isDSTShifted = this.isValid() && compareArrays(c._a, other.toArray()) > 0;
     } else {
       this._isDSTShifted = false;
@@ -16603,11 +16712,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   } // ASP.NET json date format regex
 
 
-  var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/; // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+  var aspNetRegex = /^(-|\+)?(?:(\d*)[. ])?(\d+):(\d+)(?::(\d+)(\.\d*)?)?$/,
+      // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
   // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
   // and further modified to allow for strings containing both week and day
-
-  var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
+  isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
 
   function createDuration(input, key) {
     var duration = input,
@@ -16623,15 +16732,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         d: input._days,
         M: input._months
       };
-    } else if (isNumber(input)) {
+    } else if (isNumber(input) || !isNaN(+input)) {
       duration = {};
 
       if (key) {
-        duration[key] = input;
+        duration[key] = +input;
       } else {
-        duration.milliseconds = input;
+        duration.milliseconds = +input;
       }
-    } else if (!!(match = aspNetRegex.exec(input))) {
+    } else if (match = aspNetRegex.exec(input)) {
       sign = match[1] === '-' ? -1 : 1;
       duration = {
         y: 0,
@@ -16642,7 +16751,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         ms: toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
 
       };
-    } else if (!!(match = isoRegex.exec(input))) {
+    } else if (match = isoRegex.exec(input)) {
       sign = match[1] === '-' ? -1 : 1;
       duration = {
         y: parseIso(match[2], sign),
@@ -16667,6 +16776,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     if (isDuration(input) && hasOwnProp(input, '_locale')) {
       ret._locale = input._locale;
+    }
+
+    if (isDuration(input) && hasOwnProp(input, '_isValid')) {
+      ret._isValid = input._isValid;
     }
 
     return ret;
@@ -16731,7 +16844,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         period = tmp;
       }
 
-      val = typeof val === 'string' ? +val : val;
       dur = createDuration(val, period);
       addSubtract(this, dur, direction);
       return this;
@@ -16767,8 +16879,61 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   }
 
-  var add = createAdder(1, 'add');
-  var subtract = createAdder(-1, 'subtract');
+  var add = createAdder(1, 'add'),
+      subtract = createAdder(-1, 'subtract');
+
+  function isString(input) {
+    return typeof input === 'string' || input instanceof String;
+  } // type MomentInput = Moment | Date | string | number | (number | string)[] | MomentInputObject | void; // null | undefined
+
+
+  function isMomentInput(input) {
+    return isMoment(input) || isDate(input) || isString(input) || isNumber(input) || isNumberOrStringArray(input) || isMomentInputObject(input) || input === null || input === undefined;
+  }
+
+  function isMomentInputObject(input) {
+    var objectTest = isObject(input) && !isObjectEmpty(input),
+        propertyTest = false,
+        properties = ['years', 'year', 'y', 'months', 'month', 'M', 'days', 'day', 'd', 'dates', 'date', 'D', 'hours', 'hour', 'h', 'minutes', 'minute', 'm', 'seconds', 'second', 's', 'milliseconds', 'millisecond', 'ms'],
+        i,
+        property,
+        propertyLen = properties.length;
+
+    for (i = 0; i < propertyLen; i += 1) {
+      property = properties[i];
+      propertyTest = propertyTest || hasOwnProp(input, property);
+    }
+
+    return objectTest && propertyTest;
+  }
+
+  function isNumberOrStringArray(input) {
+    var arrayTest = isArray(input),
+        dataTypeTest = false;
+
+    if (arrayTest) {
+      dataTypeTest = input.filter(function (item) {
+        return !isNumber(item) && isString(input);
+      }).length === 0;
+    }
+
+    return arrayTest && dataTypeTest;
+  }
+
+  function isCalendarSpec(input) {
+    var objectTest = isObject(input) && !isObjectEmpty(input),
+        propertyTest = false,
+        properties = ['sameDay', 'nextDay', 'lastDay', 'nextWeek', 'lastWeek', 'sameElse'],
+        i,
+        property;
+
+    for (i = 0; i < properties.length; i += 1) {
+      property = properties[i];
+      propertyTest = propertyTest || hasOwnProp(input, property);
+    }
+
+    return objectTest && propertyTest;
+  }
 
   function getCalendarFormat(myMoment, now) {
     var diff = myMoment.diff(now, 'days', true);
@@ -16776,12 +16941,26 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function calendar$1(time, formats) {
-    // We want to compare the start of today, vs this.
+    // Support for single parameter, formats only overload to the calendar function
+    if (arguments.length === 1) {
+      if (!arguments[0]) {
+        time = undefined;
+        formats = undefined;
+      } else if (isMomentInput(arguments[0])) {
+        time = arguments[0];
+        formats = undefined;
+      } else if (isCalendarSpec(arguments[0])) {
+        formats = arguments[0];
+        time = undefined;
+      }
+    } // We want to compare the start of today, vs this.
     // Getting start-of-today depends on whether we're local/utc/offset or not.
+
+
     var now = time || createLocal(),
         sod = cloneWithOffset(now, this).startOf('day'),
-        format = hooks.calendarFormat(this, sod) || 'sameElse';
-    var output = formats && (isFunction(formats[format]) ? formats[format].call(this, now) : formats[format]);
+        format = hooks.calendarFormat(this, sod) || 'sameElse',
+        output = formats && (isFunction(formats[format]) ? formats[format].call(this, now) : formats[format]);
     return this.format(output || this.localeData().calendar(format, this, createLocal(now)));
   }
 
@@ -16921,7 +17100,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function monthDiff(a, b) {
-    // difference in months
+    if (a.date() < b.date()) {
+      // end-of-month calculations work correct when the start month has more
+      // days than the end month.
+      return -monthDiff(b, a);
+    } // difference in months
+
+
     var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month()),
         // b is in (anchor - 1 month, anchor + 1 month)
     anchor = a.clone().add(wholeMonthDiff, 'months'),
@@ -16954,8 +17139,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return null;
     }
 
-    var utc = keepOffset !== true;
-    var m = utc ? this.clone().utc() : this;
+    var utc = keepOffset !== true,
+        m = utc ? this.clone().utc() : this;
 
     if (m.year() < 0 || m.year() > 9999) {
       return formatMoment(m, utc ? 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYYYY-MM-DD[T]HH:mm:ss.SSSZ');
@@ -16985,18 +17170,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return 'moment.invalid(/* ' + this._i + ' */)';
     }
 
-    var func = 'moment';
-    var zone = '';
+    var func = 'moment',
+        zone = '',
+        prefix,
+        year,
+        datetime,
+        suffix;
 
     if (!this.isLocal()) {
       func = this.utcOffset() === 0 ? 'moment.utc' : 'moment.parseZone';
       zone = 'Z';
     }
 
-    var prefix = '[' + func + '("]';
-    var year = 0 <= this.year() && this.year() <= 9999 ? 'YYYY' : 'YYYYYY';
-    var datetime = '-MM-DD[T]HH:mm:ss.SSS';
-    var suffix = zone + '[")]';
+    prefix = '[' + func + '("]';
+    year = 0 <= this.year() && this.year() <= 9999 ? 'YYYY' : 'YYYYYY';
+    datetime = '-MM-DD[T]HH:mm:ss.SSS';
+    suffix = zone + '[")]';
     return this.format(prefix + year + datetime + suffix);
   }
 
@@ -17070,10 +17259,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return this._locale;
   }
 
-  var MS_PER_SECOND = 1000;
-  var MS_PER_MINUTE = 60 * MS_PER_SECOND;
-  var MS_PER_HOUR = 60 * MS_PER_MINUTE;
-  var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR; // actual modulo - handles negative numbers (for dates before 1970):
+  var MS_PER_SECOND = 1000,
+      MS_PER_MINUTE = 60 * MS_PER_SECOND,
+      MS_PER_HOUR = 60 * MS_PER_MINUTE,
+      MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR; // actual modulo - handles negative numbers (for dates before 1970):
 
   function mod$1(dividend, divisor) {
     return (dividend % divisor + divisor) % divisor;
@@ -17100,14 +17289,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function startOf(units) {
-    var time;
+    var time, startOfDate;
     units = normalizeUnits(units);
 
     if (units === undefined || units === 'millisecond' || !this.isValid()) {
       return this;
     }
 
-    var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+    startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
 
     switch (units) {
       case 'year':
@@ -17158,14 +17347,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function endOf(units) {
-    var time;
+    var time, startOfDate;
     units = normalizeUnits(units);
 
     if (units === undefined || units === 'millisecond' || !this.isValid()) {
       return this;
     }
 
-    var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+    startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
 
     switch (units) {
       case 'year':
@@ -17270,6 +17459,285 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       isUTC: this._isUTC,
       strict: this._strict
     };
+  }
+
+  addFormatToken('N', 0, 0, 'eraAbbr');
+  addFormatToken('NN', 0, 0, 'eraAbbr');
+  addFormatToken('NNN', 0, 0, 'eraAbbr');
+  addFormatToken('NNNN', 0, 0, 'eraName');
+  addFormatToken('NNNNN', 0, 0, 'eraNarrow');
+  addFormatToken('y', ['y', 1], 'yo', 'eraYear');
+  addFormatToken('y', ['yy', 2], 0, 'eraYear');
+  addFormatToken('y', ['yyy', 3], 0, 'eraYear');
+  addFormatToken('y', ['yyyy', 4], 0, 'eraYear');
+  addRegexToken('N', matchEraAbbr);
+  addRegexToken('NN', matchEraAbbr);
+  addRegexToken('NNN', matchEraAbbr);
+  addRegexToken('NNNN', matchEraName);
+  addRegexToken('NNNNN', matchEraNarrow);
+  addParseToken(['N', 'NN', 'NNN', 'NNNN', 'NNNNN'], function (input, array, config, token) {
+    var era = config._locale.erasParse(input, token, config._strict);
+
+    if (era) {
+      getParsingFlags(config).era = era;
+    } else {
+      getParsingFlags(config).invalidEra = input;
+    }
+  });
+  addRegexToken('y', matchUnsigned);
+  addRegexToken('yy', matchUnsigned);
+  addRegexToken('yyy', matchUnsigned);
+  addRegexToken('yyyy', matchUnsigned);
+  addRegexToken('yo', matchEraYearOrdinal);
+  addParseToken(['y', 'yy', 'yyy', 'yyyy'], YEAR);
+  addParseToken(['yo'], function (input, array, config, token) {
+    var match;
+
+    if (config._locale._eraYearOrdinalRegex) {
+      match = input.match(config._locale._eraYearOrdinalRegex);
+    }
+
+    if (config._locale.eraYearOrdinalParse) {
+      array[YEAR] = config._locale.eraYearOrdinalParse(input, match);
+    } else {
+      array[YEAR] = parseInt(input, 10);
+    }
+  });
+
+  function localeEras(m, format) {
+    var i,
+        l,
+        date,
+        eras = this._eras || getLocale('en')._eras;
+
+    for (i = 0, l = eras.length; i < l; ++i) {
+      switch (_typeof(eras[i].since)) {
+        case 'string':
+          // truncate time
+          date = hooks(eras[i].since).startOf('day');
+          eras[i].since = date.valueOf();
+          break;
+      }
+
+      switch (_typeof(eras[i].until)) {
+        case 'undefined':
+          eras[i].until = +Infinity;
+          break;
+
+        case 'string':
+          // truncate time
+          date = hooks(eras[i].until).startOf('day').valueOf();
+          eras[i].until = date.valueOf();
+          break;
+      }
+    }
+
+    return eras;
+  }
+
+  function localeErasParse(eraName, format, strict) {
+    var i,
+        l,
+        eras = this.eras(),
+        name,
+        abbr,
+        narrow;
+    eraName = eraName.toUpperCase();
+
+    for (i = 0, l = eras.length; i < l; ++i) {
+      name = eras[i].name.toUpperCase();
+      abbr = eras[i].abbr.toUpperCase();
+      narrow = eras[i].narrow.toUpperCase();
+
+      if (strict) {
+        switch (format) {
+          case 'N':
+          case 'NN':
+          case 'NNN':
+            if (abbr === eraName) {
+              return eras[i];
+            }
+
+            break;
+
+          case 'NNNN':
+            if (name === eraName) {
+              return eras[i];
+            }
+
+            break;
+
+          case 'NNNNN':
+            if (narrow === eraName) {
+              return eras[i];
+            }
+
+            break;
+        }
+      } else if ([name, abbr, narrow].indexOf(eraName) >= 0) {
+        return eras[i];
+      }
+    }
+  }
+
+  function localeErasConvertYear(era, year) {
+    var dir = era.since <= era.until ? +1 : -1;
+
+    if (year === undefined) {
+      return hooks(era.since).year();
+    } else {
+      return hooks(era.since).year() + (year - era.offset) * dir;
+    }
+  }
+
+  function getEraName() {
+    var i,
+        l,
+        val,
+        eras = this.localeData().eras();
+
+    for (i = 0, l = eras.length; i < l; ++i) {
+      // truncate time
+      val = this.clone().startOf('day').valueOf();
+
+      if (eras[i].since <= val && val <= eras[i].until) {
+        return eras[i].name;
+      }
+
+      if (eras[i].until <= val && val <= eras[i].since) {
+        return eras[i].name;
+      }
+    }
+
+    return '';
+  }
+
+  function getEraNarrow() {
+    var i,
+        l,
+        val,
+        eras = this.localeData().eras();
+
+    for (i = 0, l = eras.length; i < l; ++i) {
+      // truncate time
+      val = this.clone().startOf('day').valueOf();
+
+      if (eras[i].since <= val && val <= eras[i].until) {
+        return eras[i].narrow;
+      }
+
+      if (eras[i].until <= val && val <= eras[i].since) {
+        return eras[i].narrow;
+      }
+    }
+
+    return '';
+  }
+
+  function getEraAbbr() {
+    var i,
+        l,
+        val,
+        eras = this.localeData().eras();
+
+    for (i = 0, l = eras.length; i < l; ++i) {
+      // truncate time
+      val = this.clone().startOf('day').valueOf();
+
+      if (eras[i].since <= val && val <= eras[i].until) {
+        return eras[i].abbr;
+      }
+
+      if (eras[i].until <= val && val <= eras[i].since) {
+        return eras[i].abbr;
+      }
+    }
+
+    return '';
+  }
+
+  function getEraYear() {
+    var i,
+        l,
+        dir,
+        val,
+        eras = this.localeData().eras();
+
+    for (i = 0, l = eras.length; i < l; ++i) {
+      dir = eras[i].since <= eras[i].until ? +1 : -1; // truncate time
+
+      val = this.clone().startOf('day').valueOf();
+
+      if (eras[i].since <= val && val <= eras[i].until || eras[i].until <= val && val <= eras[i].since) {
+        return (this.year() - hooks(eras[i].since).year()) * dir + eras[i].offset;
+      }
+    }
+
+    return this.year();
+  }
+
+  function erasNameRegex(isStrict) {
+    if (!hasOwnProp(this, '_erasNameRegex')) {
+      computeErasParse.call(this);
+    }
+
+    return isStrict ? this._erasNameRegex : this._erasRegex;
+  }
+
+  function erasAbbrRegex(isStrict) {
+    if (!hasOwnProp(this, '_erasAbbrRegex')) {
+      computeErasParse.call(this);
+    }
+
+    return isStrict ? this._erasAbbrRegex : this._erasRegex;
+  }
+
+  function erasNarrowRegex(isStrict) {
+    if (!hasOwnProp(this, '_erasNarrowRegex')) {
+      computeErasParse.call(this);
+    }
+
+    return isStrict ? this._erasNarrowRegex : this._erasRegex;
+  }
+
+  function matchEraAbbr(isStrict, locale) {
+    return locale.erasAbbrRegex(isStrict);
+  }
+
+  function matchEraName(isStrict, locale) {
+    return locale.erasNameRegex(isStrict);
+  }
+
+  function matchEraNarrow(isStrict, locale) {
+    return locale.erasNarrowRegex(isStrict);
+  }
+
+  function matchEraYearOrdinal(isStrict, locale) {
+    return locale._eraYearOrdinalRegex || matchUnsigned;
+  }
+
+  function computeErasParse() {
+    var abbrPieces = [],
+        namePieces = [],
+        narrowPieces = [],
+        mixedPieces = [],
+        i,
+        l,
+        eras = this.eras();
+
+    for (i = 0, l = eras.length; i < l; ++i) {
+      namePieces.push(regexEscape(eras[i].name));
+      abbrPieces.push(regexEscape(eras[i].abbr));
+      narrowPieces.push(regexEscape(eras[i].narrow));
+      mixedPieces.push(regexEscape(eras[i].name));
+      mixedPieces.push(regexEscape(eras[i].abbr));
+      mixedPieces.push(regexEscape(eras[i].narrow));
+    }
+
+    this._erasRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+    this._erasNameRegex = new RegExp('^(' + namePieces.join('|') + ')', 'i');
+    this._erasAbbrRegex = new RegExp('^(' + abbrPieces.join('|') + ')', 'i');
+    this._erasNarrowRegex = new RegExp('^(' + narrowPieces.join('|') + ')', 'i');
   } // FORMATTING
 
 
@@ -17322,10 +17790,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return weeksInYear(this.year(), 1, 4);
   }
 
+  function getISOWeeksInISOWeekYear() {
+    return weeksInYear(this.isoWeekYear(), 1, 4);
+  }
+
   function getWeeksInYear() {
     var weekInfo = this.localeData()._week;
 
     return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+  }
+
+  function getWeeksInWeekYear() {
+    var weekInfo = this.localeData()._week;
+
+    return weeksInYear(this.weekYear(), weekInfo.dow, weekInfo.doy);
   }
 
   function getSetWeekYearHelper(input, week, weekday, dow, doy) {
@@ -17465,7 +17943,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   addRegexToken('S', match1to3, match1);
   addRegexToken('SS', match1to3, match2);
   addRegexToken('SSS', match1to3, match3);
-  var token;
+  var token, getSetMillisecond;
 
   for (token = 'SSSS'; token.length <= 9; token += 'S') {
     addRegexToken(token, matchUnsigned);
@@ -17477,10 +17955,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
   for (token = 'S'; token.length <= 9; token += 'S') {
     addParseToken(token, parseMs);
-  } // MOMENTS
+  }
 
-
-  var getSetMillisecond = makeGetSet('Milliseconds', false); // FORMATTING
+  getSetMillisecond = makeGetSet('Milliseconds', false); // FORMATTING
 
   addFormatToken('z', 0, 0, 'zoneAbbr');
   addFormatToken('zz', 0, 0, 'zoneName'); // MOMENTS
@@ -17527,11 +18004,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   proto.toDate = toDate;
   proto.toISOString = toISOString;
   proto.inspect = inspect;
+
+  if (typeof Symbol !== 'undefined' && Symbol["for"] != null) {
+    proto[Symbol["for"]('nodejs.util.inspect.custom')] = function () {
+      return 'Moment<' + this.format() + '>';
+    };
+  }
+
   proto.toJSON = toJSON;
   proto.toString = toString;
   proto.unix = unix;
   proto.valueOf = valueOf;
   proto.creationData = creationData;
+  proto.eraName = getEraName;
+  proto.eraNarrow = getEraNarrow;
+  proto.eraAbbr = getEraAbbr;
+  proto.eraYear = getEraYear;
   proto.year = getSetYear;
   proto.isLeapYear = getIsLeapYear;
   proto.weekYear = getSetWeekYear;
@@ -17542,7 +18030,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   proto.week = proto.weeks = getSetWeek;
   proto.isoWeek = proto.isoWeeks = getSetISOWeek;
   proto.weeksInYear = getWeeksInYear;
+  proto.weeksInWeekYear = getWeeksInWeekYear;
   proto.isoWeeksInYear = getISOWeeksInYear;
+  proto.isoWeeksInISOWeekYear = getISOWeeksInISOWeekYear;
   proto.date = getSetDayOfMonth;
   proto.day = proto.days = getSetDayOfWeek;
   proto.weekday = getSetLocaleDayOfWeek;
@@ -17592,6 +18082,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   proto$1.relativeTime = relativeTime;
   proto$1.pastFuture = pastFuture;
   proto$1.set = set;
+  proto$1.eras = localeEras;
+  proto$1.erasParse = localeErasParse;
+  proto$1.erasConvertYear = localeErasConvertYear;
+  proto$1.erasAbbrRegex = erasAbbrRegex;
+  proto$1.erasNameRegex = erasNameRegex;
+  proto$1.erasNarrowRegex = erasNarrowRegex;
   proto$1.months = localeMonths;
   proto$1.monthsShort = localeMonthsShort;
   proto$1.monthsParse = localeMonthsParse;
@@ -17611,8 +18107,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   proto$1.meridiem = localeMeridiem;
 
   function get$1(format, index, field, setter) {
-    var locale = getLocale();
-    var utc = createUTC().set(setter, index);
+    var locale = getLocale(),
+        utc = createUTC().set(setter, index);
     return locale[field](utc, format);
   }
 
@@ -17628,8 +18124,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return get$1(format, index, field, 'month');
     }
 
-    var i;
-    var out = [];
+    var i,
+        out = [];
 
     for (i = 0; i < 12; i++) {
       out[i] = get$1(format, i, field, 'month');
@@ -17668,14 +18164,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
 
     var locale = getLocale(),
-        shift = localeSorted ? locale._week.dow : 0;
+        shift = localeSorted ? locale._week.dow : 0,
+        i,
+        out = [];
 
     if (index != null) {
       return get$1(format, (index + shift) % 7, field, 'day');
     }
-
-    var i;
-    var out = [];
 
     for (i = 0; i < 7; i++) {
       out[i] = get$1(format, (i + shift) % 7, field, 'day');
@@ -17705,6 +18200,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   getSetGlobalLocale('en', {
+    eras: [{
+      since: '0001-01-01',
+      until: +Infinity,
+      offset: 1,
+      name: 'Anno Domini',
+      narrow: 'AD',
+      abbr: 'AD'
+    }, {
+      since: '0000-12-31',
+      until: -Infinity,
+      offset: 1,
+      name: 'Before Christ',
+      narrow: 'BC',
+      abbr: 'BC'
+    }],
     dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
     ordinal: function ordinal(number) {
       var b = number % 10,
@@ -17758,11 +18268,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function bubble() {
-    var milliseconds = this._milliseconds;
-    var days = this._days;
-    var months = this._months;
-    var data = this._data;
-    var seconds, minutes, hours, years, monthsFromDays; // if we have a mix of positive and negative values, bubble down first
+    var milliseconds = this._milliseconds,
+        days = this._days,
+        months = this._months,
+        data = this._data,
+        seconds,
+        minutes,
+        hours,
+        years,
+        monthsFromDays; // if we have a mix of positive and negative values, bubble down first
     // check: https://github.com/moment/moment/issues/2166
 
     if (!(milliseconds >= 0 && days >= 0 && months >= 0 || milliseconds <= 0 && days <= 0 && months <= 0)) {
@@ -17810,9 +18324,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return NaN;
     }
 
-    var days;
-    var months;
-    var milliseconds = this._milliseconds;
+    var days,
+        months,
+        milliseconds = this._milliseconds;
     units = normalizeUnits(units);
 
     if (units === 'month' || units === 'quarter' || units === 'year') {
@@ -17874,15 +18388,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     };
   }
 
-  var asMilliseconds = makeAs('ms');
-  var asSeconds = makeAs('s');
-  var asMinutes = makeAs('m');
-  var asHours = makeAs('h');
-  var asDays = makeAs('d');
-  var asWeeks = makeAs('w');
-  var asMonths = makeAs('M');
-  var asQuarters = makeAs('Q');
-  var asYears = makeAs('y');
+  var asMilliseconds = makeAs('ms'),
+      asSeconds = makeAs('s'),
+      asMinutes = makeAs('m'),
+      asHours = makeAs('h'),
+      asDays = makeAs('d'),
+      asWeeks = makeAs('w'),
+      asMonths = makeAs('M'),
+      asQuarters = makeAs('Q'),
+      asYears = makeAs('y');
 
   function clone$1() {
     return createDuration(this);
@@ -17899,20 +18413,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     };
   }
 
-  var milliseconds = makeGetter('milliseconds');
-  var seconds = makeGetter('seconds');
-  var minutes = makeGetter('minutes');
-  var hours = makeGetter('hours');
-  var days = makeGetter('days');
-  var months = makeGetter('months');
-  var years = makeGetter('years');
+  var milliseconds = makeGetter('milliseconds'),
+      seconds = makeGetter('seconds'),
+      minutes = makeGetter('minutes'),
+      hours = makeGetter('hours'),
+      days = makeGetter('days'),
+      months = makeGetter('months'),
+      years = makeGetter('years');
 
   function weeks() {
     return absFloor(this.days() / 7);
   }
 
-  var round = Math.round;
-  var thresholds = {
+  var round = Math.round,
+      thresholds = {
     ss: 44,
     // a few seconds to seconds
     s: 45,
@@ -17922,7 +18436,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     h: 22,
     // hours to day
     d: 26,
-    // days to month
+    // days to month/week
+    w: null,
+    // weeks to month
     M: 11 // months to year
 
   }; // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
@@ -17931,15 +18447,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
   }
 
-  function relativeTime$1(posNegDuration, withoutSuffix, locale) {
-    var duration = createDuration(posNegDuration).abs();
-    var seconds = round(duration.as('s'));
-    var minutes = round(duration.as('m'));
-    var hours = round(duration.as('h'));
-    var days = round(duration.as('d'));
-    var months = round(duration.as('M'));
-    var years = round(duration.as('y'));
-    var a = seconds <= thresholds.ss && ['s', seconds] || seconds < thresholds.s && ['ss', seconds] || minutes <= 1 && ['m'] || minutes < thresholds.m && ['mm', minutes] || hours <= 1 && ['h'] || hours < thresholds.h && ['hh', hours] || days <= 1 && ['d'] || days < thresholds.d && ['dd', days] || months <= 1 && ['M'] || months < thresholds.M && ['MM', months] || years <= 1 && ['y'] || ['yy', years];
+  function relativeTime$1(posNegDuration, withoutSuffix, thresholds, locale) {
+    var duration = createDuration(posNegDuration).abs(),
+        seconds = round(duration.as('s')),
+        minutes = round(duration.as('m')),
+        hours = round(duration.as('h')),
+        days = round(duration.as('d')),
+        months = round(duration.as('M')),
+        weeks = round(duration.as('w')),
+        years = round(duration.as('y')),
+        a = seconds <= thresholds.ss && ['s', seconds] || seconds < thresholds.s && ['ss', seconds] || minutes <= 1 && ['m'] || minutes < thresholds.m && ['mm', minutes] || hours <= 1 && ['h'] || hours < thresholds.h && ['hh', hours] || days <= 1 && ['d'] || days < thresholds.d && ['dd', days];
+
+    if (thresholds.w != null) {
+      a = a || weeks <= 1 && ['w'] || weeks < thresholds.w && ['ww', weeks];
+    }
+
+    a = a || months <= 1 && ['M'] || months < thresholds.M && ['MM', months] || years <= 1 && ['y'] || ['yy', years];
     a[2] = withoutSuffix;
     a[3] = +posNegDuration > 0;
     a[4] = locale;
@@ -17979,13 +18502,35 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return true;
   }
 
-  function humanize(withSuffix) {
+  function humanize(argWithSuffix, argThresholds) {
     if (!this.isValid()) {
       return this.localeData().invalidDate();
     }
 
-    var locale = this.localeData();
-    var output = relativeTime$1(this, !withSuffix, locale);
+    var withSuffix = false,
+        th = thresholds,
+        locale,
+        output;
+
+    if (_typeof(argWithSuffix) === 'object') {
+      argThresholds = argWithSuffix;
+      argWithSuffix = false;
+    }
+
+    if (typeof argWithSuffix === 'boolean') {
+      withSuffix = argWithSuffix;
+    }
+
+    if (_typeof(argThresholds) === 'object') {
+      th = Object.assign({}, thresholds, argThresholds);
+
+      if (argThresholds.s != null && argThresholds.ss == null) {
+        th.ss = argThresholds.s - 1;
+      }
+    }
+
+    locale = this.localeData();
+    output = relativeTime$1(this, !withSuffix, th, locale);
 
     if (withSuffix) {
       output = locale.pastFuture(+this, output);
@@ -18012,10 +18557,25 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return this.localeData().invalidDate();
     }
 
-    var seconds = abs$1(this._milliseconds) / 1000;
-    var days = abs$1(this._days);
-    var months = abs$1(this._months);
-    var minutes, hours, years; // 3600 seconds -> 60 minutes -> 1 hour
+    var seconds = abs$1(this._milliseconds) / 1000,
+        days = abs$1(this._days),
+        months = abs$1(this._months),
+        minutes,
+        hours,
+        years,
+        s,
+        total = this.asSeconds(),
+        totalSign,
+        ymSign,
+        daysSign,
+        hmsSign;
+
+    if (!total) {
+      // this is the same as C#'s (Noda) and python (isodate)...
+      // but not other JS (goog.date)
+      return 'P0D';
+    } // 3600 seconds -> 60 minutes -> 1 hour
+
 
     minutes = absFloor(seconds / 60);
     hours = absFloor(minutes / 60);
@@ -18025,25 +18585,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     years = absFloor(months / 12);
     months %= 12; // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
 
-    var Y = years;
-    var M = months;
-    var D = days;
-    var h = hours;
-    var m = minutes;
-    var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
-    var total = this.asSeconds();
-
-    if (!total) {
-      // this is the same as C#'s (Noda) and python (isodate)...
-      // but not other JS (goog.date)
-      return 'P0D';
-    }
-
-    var totalSign = total < 0 ? '-' : '';
-    var ymSign = sign(this._months) !== sign(total) ? '-' : '';
-    var daysSign = sign(this._days) !== sign(total) ? '-' : '';
-    var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
-    return totalSign + 'P' + (Y ? ymSign + Y + 'Y' : '') + (M ? ymSign + M + 'M' : '') + (D ? daysSign + D + 'D' : '') + (h || m || s ? 'T' : '') + (h ? hmsSign + h + 'H' : '') + (m ? hmsSign + m + 'M' : '') + (s ? hmsSign + s + 'S' : '');
+    s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
+    totalSign = total < 0 ? '-' : '';
+    ymSign = sign(this._months) !== sign(total) ? '-' : '';
+    daysSign = sign(this._days) !== sign(total) ? '-' : '';
+    hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+    return totalSign + 'P' + (years ? ymSign + years + 'Y' : '') + (months ? ymSign + months + 'M' : '') + (days ? daysSign + days + 'D' : '') + (hours || minutes || seconds ? 'T' : '') + (hours ? hmsSign + hours + 'H' : '') + (minutes ? hmsSign + minutes + 'M' : '') + (seconds ? hmsSign + s + 'S' : '');
   }
 
   var proto$2 = Duration.prototype;
@@ -18080,8 +18627,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   proto$2.locale = locale;
   proto$2.localeData = localeData;
   proto$2.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', toISOString$1);
-  proto$2.lang = lang; // Side effect imports
-  // FORMATTING
+  proto$2.lang = lang; // FORMATTING
 
   addFormatToken('X', 0, 0, 'unix');
   addFormatToken('x', 0, 0, 'valueOf'); // PARSING
@@ -18089,13 +18635,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   addRegexToken('x', matchSigned);
   addRegexToken('X', matchTimestamp);
   addParseToken('X', function (input, array, config) {
-    config._d = new Date(parseFloat(input, 10) * 1000);
+    config._d = new Date(parseFloat(input) * 1000);
   });
   addParseToken('x', function (input, array, config) {
     config._d = new Date(toInt(input));
-  }); // Side effect imports
+  }); //! moment.js
 
-  hooks.version = '2.24.0';
+  hooks.version = '2.29.3';
   setHookCallback(createLocal);
   hooks.fn = proto;
   hooks.min = min;
@@ -18366,7 +18912,7 @@ process.umask = function () {
 
 require("core-js/modules/web.immediate.js");
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 // vim:ts=4:sts=4:sw=4:
 
@@ -20566,731 +21112,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 });
 
 }).call(this)}).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":116,"core-js/modules/web.immediate.js":104,"timers":125}],118:[function(require,module,exports){
-(function (global){(function (){
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-/**
- * Copyright (c) 2014, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * https://raw.github.com/facebook/regenerator/master/LICENSE file. An
- * additional grant of patent rights can be found in the PATENTS file in
- * the same directory.
- */
-!function (global) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-  var inModule = (typeof module === "undefined" ? "undefined" : _typeof(module)) === "object";
-  var runtime = global.regeneratorRuntime;
-
-  if (runtime) {
-    if (inModule) {
-      // If regeneratorRuntime is defined globally and we're in a module,
-      // make the exports object identical to regeneratorRuntime.
-      module.exports = runtime;
-    } // Don't bother evaluating the rest of this file if the runtime was
-    // already defined globally.
-
-
-    return;
-  } // Define the runtime globally (as expected by generated code) as either
-  // module.exports (if we're in a module) or a new, empty object.
-
-
-  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []); // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-    return generator;
-  }
-
-  runtime.wrap = wrap; // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-
-  function tryCatch(fn, obj, arg) {
-    try {
-      return {
-        type: "normal",
-        arg: fn.call(obj, arg)
-      };
-    } catch (err) {
-      return {
-        type: "throw",
-        arg: err
-      };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed"; // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-
-  var ContinueSentinel = {}; // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-
-  function Generator() {}
-
-  function GeneratorFunction() {}
-
-  function GeneratorFunctionPrototype() {} // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-
-
-  var IteratorPrototype = {};
-
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-
-  if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction"; // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function (method) {
-      prototype[method] = function (arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  runtime.isGeneratorFunction = function (genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor ? ctor === GeneratorFunction || // For the native GeneratorFunction constructor, the best we can
-    // do is to check its .name property.
-    (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
-  };
-
-  runtime.mark = function (genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  }; // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-
-
-  runtime.awrap = function (arg) {
-    return {
-      __await: arg
-    };
-  };
-
-  function AsyncIterator(generator) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-
-        if (value && _typeof(value) === "object" && hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function (value) {
-            invoke("next", value, resolve, reject);
-          }, function (err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return Promise.resolve(value).then(function (unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration. If the Promise is rejected, however, the
-          // result for this iteration will be rejected with the same
-          // reason. Note that rejections of yielded Promises are not
-          // thrown back into the generator function, as is the case
-          // when an awaited Promise is rejected. This difference in
-          // behavior between yield and await is important, because it
-          // allows the consumer to decide what to do with the yielded
-          // rejection (swallow it and continue, manually .throw it back
-          // into the generator, abandon iteration, whatever). With
-          // await, by contrast, there is no opportunity to examine the
-          // rejection reason outside the generator function, so the
-          // only option is to throw it from the await expression, and
-          // let the generator function handle the exception.
-          result.value = unwrapped;
-          resolve(result);
-        }, reject);
-      }
-    }
-
-    if (_typeof(global.process) === "object" && global.process.domain) {
-      invoke = global.process.domain.bind(invoke);
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new Promise(function (resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise = // If enqueue has been called before, then we want to wait until
-      // all previous Promises have been resolved before calling invoke,
-      // so that results are always delivered in the correct order. If
-      // enqueue has not been called before, then it is important to
-      // call invoke immediately, without waiting on a callback to fire,
-      // so that the async generator function has the opportunity to do
-      // any necessary setup in a predictable way. This predictability
-      // is why the Promise constructor synchronously invokes its
-      // executor callback, and why async functions synchronously
-      // execute code before the first await. Since we implement simple
-      // async functions in terms of async generators, it is especially
-      // important to get this right, even though it requires care.
-      previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, // Avoid propagating failures to Promises returned by later
-      // invocations of the iterator.
-      callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-    } // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-
-
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-
-  runtime.AsyncIterator = AsyncIterator; // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-
-  runtime.async = function (innerFn, outerFn, self, tryLocsList) {
-    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList));
-    return runtime.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
-    : iter.next().then(function (result) {
-      return result.done ? result.value : iter.next();
-    });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        } // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-
-
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-        var record = tryCatch(innerFn, self, context);
-
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done ? GenStateCompleted : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-        } else if (record.type === "throw") {
-          state = GenStateCompleted; // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  } // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-
-
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError("The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (!info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value; // Resume execution at the desired location (see delegateYield).
-
-      context.next = delegate.nextLoc; // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    } // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-
-
-    context.delegate = null;
-    return ContinueSentinel;
-  } // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-
-
-  defineIteratorMethods(Gp);
-  Gp[toStringTagSymbol] = "Generator"; // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-
-  Gp[iteratorSymbol] = function () {
-    return this;
-  };
-
-  Gp.toString = function () {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = {
-      tryLoc: locs[0]
-    };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{
-      tryLoc: "root"
-    }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  runtime.keys = function (object) {
-    var keys = [];
-
-    for (var key in object) {
-      keys.push(key);
-    }
-
-    keys.reverse(); // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      } // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-
-
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1,
-            next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-          return next;
-        };
-
-        return next.next = next;
-      }
-    } // Return an iterator with no values.
-
-
-    return {
-      next: doneResult
-    };
-  }
-
-  runtime.values = values;
-
-  function doneResult() {
-    return {
-      value: undefined,
-      done: true
-    };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-    reset: function reset(skipTempReset) {
-      this.prev = 0;
-      this.next = 0; // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-      this.method = "next";
-      this.arg = undefined;
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" && hasOwn.call(this, name) && !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-    stop: function stop() {
-      this.done = true;
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-    dispatchException: function dispatchException(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !!caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-    abrupt: function abrupt(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-    complete: function complete(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" || record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-    finish: function finish(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-    "catch": function _catch(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-
-          return thrown;
-        }
-      } // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-
-
-      throw new Error("illegal catch attempt");
-    },
-    delegateYield: function delegateYield(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-}( // Among the various tricks for obtaining a reference to the global
-// object, this seems to be the most reliable technique that does not
-// use indirect eval (which violates Content Security Policy).
-(typeof global === "undefined" ? "undefined" : _typeof(global)) === "object" ? global : (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object" ? window : (typeof self === "undefined" ? "undefined" : _typeof(self)) === "object" ? self : void 0);
-
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],119:[function(require,module,exports){
+},{"_process":116,"core-js/modules/web.immediate.js":104,"timers":124}],118:[function(require,module,exports){
 "use strict";
 
 function Agent() {
@@ -21321,10 +21143,10 @@ Agent.prototype._setDefaults = function (req) {
 
 module.exports = Agent;
 
-},{}],120:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 /**
  * Root reference for iframes.
@@ -22274,7 +22096,7 @@ request.put = function (url, data, fn) {
   return req;
 };
 
-},{"./agent-base":119,"./is-object":121,"./request-base":122,"./response-base":123,"component-emitter":52}],121:[function(require,module,exports){
+},{"./agent-base":118,"./is-object":120,"./request-base":121,"./response-base":122,"component-emitter":52}],120:[function(require,module,exports){
 'use strict';
 /**
  * Check if `obj` is an object.
@@ -22284,7 +22106,7 @@ request.put = function (url, data, fn) {
  * @api private
  */
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function isObject(obj) {
   return null !== obj && 'object' === _typeof(obj);
@@ -22292,13 +22114,13 @@ function isObject(obj) {
 
 module.exports = isObject;
 
-},{}],122:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict';
 /**
  * Module of mixed-in functions shared between node and client code
  */
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 var isObject = require('./is-object');
 /**
@@ -23026,7 +22848,7 @@ RequestBase.prototype._setTimeouts = function () {
   }
 };
 
-},{"./is-object":121}],123:[function(require,module,exports){
+},{"./is-object":120}],122:[function(require,module,exports){
 'use strict';
 /**
  * Module dependencies.
@@ -23157,7 +22979,7 @@ ResponseBase.prototype._setStatusProperties = function (status) {
   this.unprocessableEntity = 422 == status;
 };
 
-},{"./utils":124}],124:[function(require,module,exports){
+},{"./utils":123}],123:[function(require,module,exports){
 'use strict';
 /**
  * Return the mime type for the given `str`.
@@ -23229,7 +23051,7 @@ exports.cleanHeader = function (header, changesOrigin) {
   return header;
 };
 
-},{}],125:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 (function (setImmediate,clearImmediate){(function (){
 "use strict";
 
@@ -23313,5 +23135,5 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
 };
 
 }).call(this)}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"core-js/modules/web.immediate.js":104,"process/browser.js":116,"timers":125}]},{},[48])(48)
+},{"core-js/modules/web.immediate.js":104,"process/browser.js":116,"timers":124}]},{},[48])(48)
 });
