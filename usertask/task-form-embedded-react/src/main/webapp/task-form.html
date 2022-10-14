@@ -36,7 +36,7 @@
             e('div', {className: 'col-md-6', key:'container'},
               e('input', {
                 className: 'form-control',
-                value: this.props.value,
+                value: this.props.value || '',
                 readOnly: true
               }))
             ]);
@@ -111,9 +111,8 @@
         }
       }
 
-      ReactDOM.render(e(Approval,
-          camForm.variableManager.variables ),
-        container);
+      const root = ReactDOM.createRoot(container);
+      root.render(e(Approval, camForm.variableManager.variables));
     }
   </script>
 </form>
