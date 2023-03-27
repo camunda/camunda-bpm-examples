@@ -13,6 +13,9 @@ It demonstrates how Camunda can be used in combination with Spring Boot to spawn
 
 It also demonstrates the usage of `application.yaml` configuration file and contains a couple of integration tests, showing how this can be tested.
 
+## Prerequisites
+* Java 11+
+
 ## How is it done
 
 1. To embed Camunda Engine you must add the following dependency to your `pom.xml`:
@@ -43,6 +46,22 @@ public class SimpleApplication {
 ```
 
 3. You can simply inject the engine services in your Spring beans using the `@Autowired` annotation.
+
+4. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within the process application.
+
+5. When implementing the process application in [standard manner](https://docs.camunda.org/manual/7.18/user-guide/process-applications/the-process-application-class/),
+ you can use method-level annotations `@PostDeploy` and `@PreUndeploy` to process corresponding events. In case of a Spring Boot 
+ process application you can handle this events by using Spring @EventListener annotation with following event classes: 
+`PostDeployEvent` and `PreUndeployEvent`.
+
+```java
+...
+@EventListener
+public void notify(PostDeployEvent event) {
+...
+}
+...
+```
 
 ## Run the application and check the result
 

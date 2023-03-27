@@ -10,6 +10,7 @@
    <property name="processEnginePlugins">
      <list>
        <bean class="org.camunda.bpm.example.parselistener.ProgressLoggingSupportParseListenerPlugin" />
+       <bean class="org.camunda.bpm.example.parselistener.InformAssigneeParseListenerPlugin" />
      </list>
    </property>
 
