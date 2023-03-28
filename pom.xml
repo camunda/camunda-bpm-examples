@@ -7,24 +7,12 @@
   <version>1.0.0</version>
 
   <modules>
-    <module>authentication/basic</module>
     <module>bpmn-model-api/generate-process-fluent-api</module>
-    <module>bpmn-model-api/generate-jsf-form</module>
     <module>bpmn-model-api/parse-bpmn</module>
-    <module>clients/java/dataformat</module>
-    <module>clients/java/loan-granting</module>
     <module>clients/java/order-handling</module>
-    <module>cmmn-model-api/typed-custom-elements</module>
-    <module>cockpit/cockpit-angular-open-usertasks</module>
-    <module>cockpit/cockpit-angularjs-search-processes</module>
-    <module>cockpit/cockpit-bpmn-js-module</module>
-    <module>cockpit/cockpit-cats</module>
     <module>cockpit/cockpit-diagram-interactions</module>
     <module>cockpit/cockpit-fullstack-count-processes</module>
-    <module>cockpit/cockpit-greetings-plugin</module>
-    <module>cockpit/cockpit-open-incidents</module>
     <module>cockpit/cockpit-react-involved-users</module>
-    <module>cockpit/cockpit-request-interceptor</module>
     <module>cycle/camunda-cycle-connector-example</module>
     <module>deployment/spring-servlet-pa-jboss</module>
     <module>deployment/spring-servlet-pa-tomcat</module>
@@ -32,33 +20,25 @@
     <module>deployment/spring-jboss-non-pa</module>
     <module>deployment/embedded-spring-rest</module>
     <module>deployment/ejb-pa</module>
-    <module>deployment/spring-boot</module>
     <module>dmn-engine/dmn-engine-drg</module>
     <module>dmn-engine/dmn-engine-java-main-method</module>
-<!--     <module>modeler/custom-task-simple</module> -->
-<!--     <module>modeler/custom-task-advanced</module> -->
     <module>multi-tenancy/schema-isolation</module>
     <module>multi-tenancy/tenant-identifier-embedded</module>
     <module>multi-tenancy/tenant-identifier-shared</module>
     <module>multi-tenancy/tenant-identifier-shared-definitions</module>
     <module>process-engine-plugin/custom-history-level</module>
     <module>process-engine-plugin/bpmn-parse-listener</module>
-    <module>process-engine-plugin/bpmn-parse-listener-on-user-task</module>
     <module>process-engine-plugin/command-interceptor-blocking</module>
     <module>process-engine-plugin/custom-history-level</module>
     <module>process-engine-plugin/failed-job-retry-profile</module>
+    <module>quarkus-extension/datasource-example</module>
+    <module>quarkus-extension/spin-plugin-example</module>
     <module>scripttask/xslt-scripttask</module>
-    <module>scripttask/xquery-scripttask</module>
-    <module>sdk-js/browser-forms</module>
     <module>servicetask/service-invocation-asynchronous</module>
     <module>servicetask/service-invocation-synchronous</module>
     <module>servicetask/rest-service</module>
-    <module>servicetask/soap-service</module>
-    <module>servicetask/soap-cxf-service</module>
     <module>spin/dataformat-configuration-global</module>
     <module>spin/dataformat-configuration-in-process-application</module>
-    <module>spring-boot-starter/example-autodeployment</module>
-    <module>spring-boot-starter/example-dmn-rest</module>
     <module>spring-boot-starter/example-invoice</module>
     <module>spring-boot-starter/example-simple</module>
     <module>spring-boot-starter/example-twitter</module>
@@ -70,18 +50,14 @@
     <module>spring-boot-starter/external-task-client/order-handling-spring-boot</module>
     <module>spring-boot-starter/external-task-client/request-interceptor-spring-boot</module>
     <module>startevent/message-start</module>
-    <module>startevent/soap-cxf-server-start</module>
     <module>tasklist/cats-plugin</module>
-    <module>tasklist/jquery-34-behavior</module>
+    <module>testing/assert</module>
+    <module>testing/junit5</module>
     <module>usertask/task-camunda-forms</module>
     <module>usertask/task-form-embedded</module>
     <module>usertask/task-form-embedded-bpmn-events</module>
     <module>usertask/task-form-embedded-json-variables</module>
     <module>usertask/task-form-embedded-react</module>
-    <module>usertask/task-form-embedded-serialized-java-object</module>
-    <module>usertask/task-form-generated</module>
-    <module>usertask/task-assignment-email</module>
-    <module>usertask/task-form-external-jsf</module>
     <module>wildfly/jackson-annotations</module>
   </modules>
 

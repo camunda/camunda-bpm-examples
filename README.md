@@ -152,19 +152,6 @@ If you clone this repository, use the checkout commands to access the sources fo
 |-----------------------------------------------------------|-------------|-----------------------------|
 | [SDK JS forms](/sdk-js/browser-forms) *                   | Browser     | HTML, task, form, SDK       |
 
-### Camunda Modeler Eclipse Plugin Examples
-
-| Name                                                                       | Keywords                  | Version |
-| ---------------------------------------------------------------------------|---------------------------|---------|
-| [Custom Task Simple](/modeler/custom-task-simple)                          | Plugin, Eclipse           | 2.3+    |
-| [Custom Task Advanced](/modeler/custom-task-advanced)                      | Plugin, Eclipse           | 2.3+    |
-
-### Cycle Examples
-
-| Name                                                                       | Version |
-| ---------------------------------------------------------------------------|---------|
-| [Connector Example](cycle/camunda-cycle-connector-example)                 | 3.1+    |
-
 ### Multi-Tenancy Examples
 
 | Name                                                                             | Container | Keywords      |
