@@ -25,7 +25,7 @@ It also demonstrates the usage of `application.yaml` configuration file and cont
 <dependency>
  <groupId>org.camunda.bpm.springboot</groupId>
  <artifactId>camunda-bpm-spring-boot-starter</artifactId>
- <version>7.18.0</version>
+ <version>7.19.0</version>
 </dependency>
 ...
 ```
@@ -49,7 +49,7 @@ public class SimpleApplication {
 
 4. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within the process application.
 
-5. When implementing the process application in [standard manner](https://docs.camunda.org/manual/7.18/user-guide/process-applications/the-process-application-class/),
+5. When implementing the process application in [standard manner](https://docs.camunda.org/manual/7.19/user-guide/process-applications/the-process-application-class/),
  you can use method-level annotations `@PostDeploy` and `@PreUndeploy` to process corresponding events. In case of a Spring Boot 
  process application you can handle this events by using Spring @EventListener annotation with following event classes: 
 `PostDeployEvent` and `PreUndeployEvent`.

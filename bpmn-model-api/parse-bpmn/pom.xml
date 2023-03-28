@@ -10,7 +10,7 @@
   <name>Parse BPMN by model API</name>
 
   <properties>
-    <version.camunda>7.18.0</version.camunda>
+    <version.camunda>7.19.0</version.camunda>
     <version.junit>4.13.1</version.junit>
     <version.assertj>2.9.1</version.assertj>
     <maven.compiler.source>1.8</maven.compiler.source>

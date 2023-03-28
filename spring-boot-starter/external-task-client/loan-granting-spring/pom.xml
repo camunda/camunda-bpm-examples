@@ -8,7 +8,7 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.platform.version>7.18.0</camunda.platform.version>
+    <camunda.platform.version>7.19.0</camunda.platform.version>
     <spring.framework.version>5.3.22</spring.framework.version>
     <slf4j.version>1.7.36</slf4j.version>
     <glassfish.jaxb.version>2.3.3</glassfish.jaxb.version>
