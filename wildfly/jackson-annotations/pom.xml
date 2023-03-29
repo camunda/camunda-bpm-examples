@@ -12,10 +12,9 @@
 
     <!-- set the version for Camunda Platform here -->
     <version.camunda>7.19.0</version.camunda>
-    <version.h2>2.1.214</version.h2>
-    <version.javax-servlet-api>4.0.1</version.javax-servlet-api>
-    <version.jackson>2.13.2</version.jackson>
-    <version.maven-war-plugin>2.6</version.maven-war-plugin>
+    <version.jakartaee>10.0.0</version.jakartaee>
+    <version.jackson>2.14.1</version.jackson>
+    <version.maven-war-plugin>3.3.2</version.maven-war-plugin>
   </properties>
 
   <dependencyManagement>
@@ -24,6 +23,13 @@
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
         <version>${version.camunda}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.platform</groupId>
+        <artifactId>jakarta.jakartaee-bom</artifactId>
+        <version>${version.jakartaee}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -38,9 +44,8 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${version.javax-servlet-api}</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
 
