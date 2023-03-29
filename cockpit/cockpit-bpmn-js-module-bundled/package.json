@@ -7,6 +7,7 @@
     "bundle": "rollup --config",
     "start": "npm run bundle"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/camunda/camunda-bpm-examples.git"
@@ -21,11 +22,11 @@
   },
   "homepage": "https://github.com/camunda/camunda-bpm-examples/tree/master/cockpit/cockpit-bpmn-js-module-bundled",
   "dependencies": {
-    "@rollup/plugin-commonjs": "^22.0.2",
-    "@rollup/plugin-node-resolve": "^14.1.0",
-    "bpmn-js": "^10.0.0",
-    "diagram-js": "^9.0.0",
-    "rollup": "^2.79.1",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "bpmn-js": "^11.5.0",
+    "diagram-js": "^11.12.0",
+    "rollup": "^3.20.2",
     "tiny-svg": "^3.0.0"
   }
 }

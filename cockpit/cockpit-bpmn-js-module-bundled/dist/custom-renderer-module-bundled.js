@@ -1,6 +1,14 @@
 var DEFAULT_RENDER_PRIORITY = 1000;
 
 /**
+ * @typedef {import('../model').Base} Base
+ * @typedef {import('../model').Connection} Connection
+ * @typedef {import('../model').Shape} Shape
+ *
+ * @typedef {import('../core/EventBus').default} EventBus
+ */
+
+/**
  * The base implementation of shape and connection renderers.
  *
  * @param {EventBus} eventBus
@@ -14,18 +22,19 @@ function BaseRenderer(eventBus, renderPriority) {
   eventBus.on([ 'render.shape', 'render.connection' ], renderPriority, function(evt, context) {
     var type = evt.type,
         element = context.element,
-        visuals = context.gfx;
+        visuals = context.gfx,
+        attrs = context.attrs;
 
     if (self.canRender(element)) {
       if (type === 'render.shape') {
-        return self.drawShape(visuals, element);
+        return self.drawShape(visuals, element, attrs);
       } else {
-        return self.drawConnection(visuals, element);
+        return self.drawConnection(visuals, element, attrs);
       }
     }
   });
 
-  eventBus.on([ 'render.getShapePath', 'render.getConnectionPath'], renderPriority, function(evt, element) {
+  eventBus.on([ 'render.getShapePath', 'render.getConnectionPath' ], renderPriority, function(evt, element) {
     if (self.canRender(element)) {
       if (evt.type === 'render.getShapePath') {
         return self.getShapePath(element);
@@ -37,60 +46,61 @@ function BaseRenderer(eventBus, renderPriority) {
 }
 
 /**
- * Should check whether *this* renderer can render
- * the element/connection.
+ * Checks whether an element can be rendered.
  *
- * @param {element} element
+ * @param {Base} element The element to be rendered.
  *
- * @returns {boolean}
+ * @returns {boolean} Whether the element can be rendered.
  */
-BaseRenderer.prototype.canRender = function() {};
+BaseRenderer.prototype.canRender = function(element) {};
 
 /**
- * Provides the shape's snap svg element to be drawn on the `canvas`.
+ * Draws a shape.
  *
- * @param {djs.Graphics} visuals
- * @param {Shape} shape
+ * @param {SVGElement} visuals The SVG element to draw the shape into.
+ * @param {Shape} shape The shape to be drawn.
  *
- * @returns {Snap.svg} [returns a Snap.svg paper element ]
+ * @returns {SVGElement} The SVG element of the shape drawn.
  */
-BaseRenderer.prototype.drawShape = function() {};
+BaseRenderer.prototype.drawShape = function(visuals, shape) {};
 
 /**
- * Provides the shape's snap svg element to be drawn on the `canvas`.
+ * Draws a connection.
  *
- * @param {djs.Graphics} visuals
- * @param {Connection} connection
+ * @param {SVGElement} visuals The SVG element to draw the connection into.
+ * @param {Connection} connection The connection to be drawn.
  *
- * @returns {Snap.svg} [returns a Snap.svg paper element ]
+ * @returns {SVGElement} The SVG element of the connection drawn.
  */
-BaseRenderer.prototype.drawConnection = function() {};
+BaseRenderer.prototype.drawConnection = function(visuals, connection) {};
 
 /**
- * Gets the SVG path of a shape that represents it's visual bounds.
+ * Gets the SVG path of the graphical representation of a shape.
  *
- * @param {Shape} shape
+ * @param {Shape} shape The shape.
  *
- * @return {string} svg path
+ * @return {string} The SVG path of the shape.
  */
-BaseRenderer.prototype.getShapePath = function() {};
+BaseRenderer.prototype.getShapePath = function(shape) {};
 
 /**
- * Gets the SVG path of a connection that represents it's visual bounds.
+ * Gets the SVG path of the graphical representation of a connection.
  *
- * @param {Connection} connection
+ * @param {Connection} connection The connection.
  *
- * @return {string} svg path
+ * @return {string} The SVG path of the connection.
  */
-BaseRenderer.prototype.getConnectionPath = function() {};
+BaseRenderer.prototype.getConnectionPath = function(connection) {};
 
 function ensureImported(element, target) {
 
   if (element.ownerDocument !== target.ownerDocument) {
     try {
+
       // may fail on webkit
       return target.ownerDocument.importNode(element, true);
     } catch (e) {
+
       // ignore
     }
   }
@@ -216,6 +226,7 @@ function setAttribute(node, name, value) {
   var type = CSS_PROPERTIES[hyphenated];
 
   if (type) {
+
     // append pixel unit, unless present
     if (type === LENGTH_ATTR && typeof value === 'number') {
       value = String(value) + 'px';
@@ -290,6 +301,7 @@ function parse(svg) {
       svg = SVG_START + svg.substring(4);
     }
   } else {
+
     // namespace svg
     svg = SVG_START + '>' + svg + '</svg>';
     unwrap = true;
@@ -354,13 +366,6 @@ function create(name, attrs) {
 }
 
 /**
- * Geometry helpers
- */
-
-// fake node used to instantiate svg geometry elements
-create('svg');
-
-/**
  * Flatten array, one level deep.
  *
  * @param {Array<?>} arr
@@ -368,18 +373,29 @@ create('svg');
  * @return {Array<?>}
  */
 
-var nativeToString = Object.prototype.toString;
-var nativeHasOwnProperty = Object.prototype.hasOwnProperty;
+const nativeToString = Object.prototype.toString;
+const nativeHasOwnProperty = Object.prototype.hasOwnProperty;
+
 function isUndefined(obj) {
   return obj === undefined;
 }
+
 function isArray(obj) {
   return nativeToString.call(obj) === '[object Array]';
 }
+
 function isFunction(obj) {
-  var tag = nativeToString.call(obj);
-  return tag === '[object Function]' || tag === '[object AsyncFunction]' || tag === '[object GeneratorFunction]' || tag === '[object AsyncGeneratorFunction]' || tag === '[object Proxy]';
+  const tag = nativeToString.call(obj);
+
+  return (
+    tag === '[object Function]' ||
+    tag === '[object AsyncFunction]' ||
+    tag === '[object GeneratorFunction]' ||
+    tag === '[object AsyncGeneratorFunction]' ||
+    tag === '[object Proxy]'
+  );
 }
+
 /**
  * Return true, if target owns a property with the given key.
  *
@@ -388,7 +404,6 @@ function isFunction(obj) {
  *
  * @return {Boolean}
  */
-
 function has(target, key) {
   return nativeHasOwnProperty.call(target, key);
 }
@@ -401,18 +416,25 @@ function has(target, key) {
  *
  * @return {Object}
  */
-
 function find(collection, matcher) {
+
   matcher = toMatcher(matcher);
-  var match;
-  forEach(collection, function (val, key) {
+
+  let match;
+
+  forEach(collection, function(val, key) {
     if (matcher(val, key)) {
       match = val;
+
       return false;
     }
   });
+
   return match;
+
 }
+
+
 /**
  * Iterate over collection; returning something
  * (non-undefined) will stop iteration.
@@ -422,19 +444,22 @@ function find(collection, matcher) {
  *
  * @return {Object} return result that stopped the iteration
  */
-
 function forEach(collection, iterator) {
-  var val, result;
+
+  let val,
+      result;
 
   if (isUndefined(collection)) {
     return;
   }
 
-  var convertKey = isArray(collection) ? toNum : identity;
+  const convertKey = isArray(collection) ? toNum : identity;
 
-  for (var key in collection) {
+  for (let key in collection) {
+
     if (has(collection, key)) {
       val = collection[key];
+
       result = iterator(val, convertKey(key));
 
       if (result === false) {
@@ -443,6 +468,8 @@ function forEach(collection, iterator) {
     }
   }
 }
+
+
 /**
  * Return true if some elements in the collection
  * match the criteria.
@@ -452,16 +479,18 @@ function forEach(collection, iterator) {
  *
  * @return {Boolean}
  */
-
 function some(collection, matcher) {
+
   return !!find(collection, matcher);
 }
 
+
 function toMatcher(matcher) {
-  return isFunction(matcher) ? matcher : function (e) {
+  return isFunction(matcher) ? matcher : (e) => {
     return e === matcher;
   };
 }
+
 
 function identity(arg) {
   return arg;
@@ -469,33 +498,6 @@ function identity(arg) {
 
 function toNum(arg) {
   return Number(arg);
-}
-
-function componentsToPath(elements) {
-  return elements.join(',').replace(/,?([A-z]),?/g, '$1');
-}
-
-function getRoundRectPath(shape, borderRadius) {
-
-  var x = shape.x,
-      y = shape.y,
-      width = shape.width,
-      height = shape.height;
-
-  var roundRectPath = [
-    ['M', x + borderRadius, y],
-    ['l', width - borderRadius * 2, 0],
-    ['a', borderRadius, borderRadius, 0, 0, 1, borderRadius, borderRadius],
-    ['l', 0, height - borderRadius * 2],
-    ['a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, borderRadius],
-    ['l', borderRadius * 2 - width, 0],
-    ['a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, -borderRadius],
-    ['l', 0, borderRadius * 2 - height],
-    ['a', borderRadius, borderRadius, 0, 0, 1, borderRadius, -borderRadius],
-    ['z']
-  ];
-
-  return componentsToPath(roundRectPath);
 }
 
 /**
@@ -514,17 +516,6 @@ function is(element, type) {
 
 
 /**
- * Return the business object for a given element.
- *
- * @param  {djs.model.Base|ModdleElement} element
- *
- * @return {ModdleElement}
- */
-function getBusinessObject(element) {
-  return (element && element.businessObject) || element;
-}
-
-/**
  * Return true if element has any of the given types.
  *
  * @param {djs.model.Base} element
@@ -536,6 +527,55 @@ function isAny(element, types) {
   return some(types, function(t) {
     return is(element, t);
   });
+}
+
+/**
+ * Return the business object for a given element.
+ *
+ * @param  {djs.model.Base|ModdleElement} element
+ *
+ * @return {ModdleElement}
+ */
+function getBusinessObject(element) {
+  return (element && element.businessObject) || element;
+}
+
+/**
+ * @typedef {(string|number)[]} Component
+ *
+ * @typedef {import('../util/Types').Point} Point
+ */
+
+/**
+ * @param {Component[]} elements
+ *
+ * @return {string}
+ */
+function componentsToPath(elements) {
+  return elements.flat().join(',').replace(/,?([A-z]),?/g, '$1');
+}
+
+function getRoundRectPath(shape, borderRadius) {
+
+  var x = shape.x,
+      y = shape.y,
+      width = shape.width,
+      height = shape.height;
+
+  var roundRectPath = [
+    [ 'M', x + borderRadius, y ],
+    [ 'l', width - borderRadius * 2, 0 ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, borderRadius, borderRadius ],
+    [ 'l', 0, height - borderRadius * 2 ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, borderRadius ],
+    [ 'l', borderRadius * 2 - width, 0 ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, -borderRadius ],
+    [ 'l', 0, borderRadius * 2 - height ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, borderRadius, -borderRadius ],
+    [ 'z' ]
+  ];
+
+  return componentsToPath(roundRectPath);
 }
 
 /*
