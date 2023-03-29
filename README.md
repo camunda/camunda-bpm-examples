@@ -92,6 +92,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | ----------------------------------------------------------------------------------------------|-----------------------|---------------------------|
 | [Process Application - Servlet](deployment/servlet-pa)                                        | All                   | War, Servlet              |
 | [Process Application - EJB](deployment/ejb-pa)                                                | JavaEE Containers     | Ejb, War                  |
+| [Process Application - Jakarta EJB](deployment/ejb-pa-jakarta)                                | Jakarta EE Containers | Ejb, War                  |
 | [Process Application - Spring Servlet - WildFly](deployment/spring-servlet-pa-wildfly)        | WildFly               | Spring, Servlet, War      |
 | [Process Application - Spring Servlet - Embedded Tomcat](deployment/spring-servlet-pa-tomcat) | Tomcat                | Spring, Servlet, War      |
 | [Embedded Spring with embedded REST](deployment/embedded-spring-rest)                         | vanilla Apache Tomcat | Spring, Rest, Embedded    |

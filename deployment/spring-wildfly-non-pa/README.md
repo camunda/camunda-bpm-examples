@@ -81,9 +81,9 @@ We also add an entry to the manifest, so that the Process Engine classes are add
 
 ## How to use it?
 
-  1. Build it with Maven
-  2. Deploy it to WildFly (download it from [here][1])
-  3. Watch out for this console log:
+1. Build it with Maven.
+2. Deploy it to WildFly 26 and below (install as described [here][1]).
+3. Watch out for this console log:
 
 ```bash
 Hi there!
@@ -92,4 +92,14 @@ The engine is named default.
 There are currently 0 processes deployed on this engine.
 ```
 
-[1]: https://downloads.camunda.cloud/release/camunda-bpm/wildfly/
+## Moving to Jakarta API
+
+If you would like to deploy this on a Jakarta EE 9+ server like WildFly 27 and beyond, perform the following steps:
+
+1. Bump the `spring.version` in the `pom.xml` to `6.x.y` (find the latest version [here][2]).
+2. Build it with Maven (needs JDK 17+).
+3. Deploy it to WildFly (download from [here][3]).
+
+[1]: https://docs.camunda.org/manual/latest/installation/full/jboss/manual/
+[2]: https://central.sonatype.com/search?q=g%253Aorg.springframework%2520a%253Aspring-framework-bom
+[3]: https://downloads.camunda.cloud/release/camunda-bpm/wildfly/

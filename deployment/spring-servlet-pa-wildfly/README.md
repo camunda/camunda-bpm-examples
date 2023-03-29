@@ -7,6 +7,9 @@ This example demonstrates how to deploy a Spring-powered Web application which
   * Uses a shared container managed Process Engine and Spring Beans as expression and delegate
     expression in the processes
 
+> **Note:** This project must be deployed on a WildFly server of version 26 or below, 
+> NOT the latest pre-packaged distribution which can be downloaded from https://camunda.com.
+
 ## Why is this example interesting?
 
 This example shows how to combine a `@ProcessApplication` class, a `processes.xml` and a Spring
@@ -60,19 +63,23 @@ dependency like:
 
 ## How to use it?
 
-  1. Checkout the project with Git;
-  2. Import the project into your IDE;
-  3. Build it with Maven, it will download the Camunda Platform WildFly distribution and execute
-     the included Arquillian test.
-  4. Watch out for this console log:
+1. Build it with Maven.
 
 ```bash
-10:08:29,411 INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-5) Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
+mvn clean verify
+```
+
+This will create a Camunda Platform WildFly distribution and execute the included Arquillian test.
+
+3. Watch out for this console log:
+
+```bash
+INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-5) Invoking @PostDeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
 Starting testResolveBean processdefinition
-10:08:29,437 INFO  [org.camunda.bpm.example.spring.servlet.pa.ExampleBean] (MSC service thread 1-5) org.camunda.bpm.example.spring.servlet.pa.ExampleBean is currently invoked.
-10:08:29,447 INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-5) Starting testResolveBeanFromJobExecutor processdefinition
-10:08:29,465 INFO  [org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean] (pool-10-thread-7) org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean is currently invoked.
+INFO  [org.camunda.bpm.example.spring.servlet.pa.ExampleBean] (MSC service thread 1-5) org.camunda.bpm.example.spring.servlet.pa.ExampleBean is currently invoked.
+INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-5) Starting testResolveBeanFromJobExecutor processdefinition
+INFO  [org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean] (pool-10-thread-7) org.camunda.bpm.example.spring.servlet.pa.ExampleDelegateBean is currently invoked.
 ...
-10:59:54,041 INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-1) Invoking @PreUndeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
+INFO  [org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication] (MSC service thread 1-1) Invoking @PreUndeploy annotation in org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication
 Undeploying SpringServletProcessApplication-Example
 ```
