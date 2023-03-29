@@ -40,6 +40,6 @@ export default {
       "process.env.NODE_ENV": JSON.stringify("production"),
       preventAssignment: true
     }),
-    scss()
+    scss({fileName: 'plugin.css'})
   ]
 };
