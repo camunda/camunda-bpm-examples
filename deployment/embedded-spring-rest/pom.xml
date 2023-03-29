@@ -10,7 +10,7 @@
 
   <properties>
     <version.camunda>7.19.0</version.camunda>
-    <version.spring>5.3.22</version.spring>
+    <version.spring>5.3.26</version.spring>
     <version.resteasy-jaxrs>3.15.3.Final</version.resteasy-jaxrs>
     <version.h2>2.1.214</version.h2>
     <version.slf4j>1.7.32</version.slf4j>
