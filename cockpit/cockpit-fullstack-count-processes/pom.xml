@@ -18,8 +18,9 @@
     <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
     <jboss-javaee.version>3.0.3.Final</jboss-javaee.version>
     <junit.version>4.13.2</junit.version>
-    <slf4j.version>1.7.32</slf4j.version>
-    <node.version>v14.7.0</node.version>
+    <h2.version>2.1.214</h2.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <node.version>v18.15.0</node.version>
 
     <frontend.working.directory>frontend/</frontend.working.directory>
     <frontend.build.path>${frontend.working.directory}dist/</frontend.build.path>
@@ -54,7 +55,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>2.0.206</version>
+      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
