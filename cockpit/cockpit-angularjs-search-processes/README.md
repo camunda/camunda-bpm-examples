@@ -1,4 +1,4 @@
-Basic authentication against embedded engine example
+AngularJS 1.x "Search Processes" Cockpit Plugin
 ======================================================
 
 This example is not actively maintained anymore. You can refer to the [example with fixed version of Camunda 7.18](https://github.com/camunda/camunda-bpm-examples/blob/7.18/cockpit/cockpit-angularjs-search-processes).
