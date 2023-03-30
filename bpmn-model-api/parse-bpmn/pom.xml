@@ -11,8 +11,8 @@
 
   <properties>
     <version.camunda>7.19.0</version.camunda>
-    <version.junit>4.13.1</version.junit>
-    <version.assertj>2.9.1</version.assertj>
+    <version.junit>4.13.2</version.junit>
+    <version.assertj>3.22.0</version.assertj>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
