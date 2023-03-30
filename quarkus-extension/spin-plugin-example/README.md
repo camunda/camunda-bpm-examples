@@ -16,30 +16,30 @@ The example demonstrates how you can use the Camunda Platform Runtime Engine in 
   * stores the JSON payload as a process variable
   * calls the [StoreOderItemService](org/camunda/bpm/quarkus/example/service/StoreOrderItemService.java) bean.
 
-To store order items, perform a REST API request like this:
+To store order items, perform the following REST API request:
 
-```REST
-POST http://localhost:8080/store-order-items
-Content-Type: application/json
-
-[
-  {
-    "name": "Skin Care",
-    "price": 4.56
-  },
-  {
-    "name": "Watch",
-    "price": 60.55
-  },
-  {
-    "name": "Cookies",
-    "price": 1.99
-  },
-  {
-    "name": "Pasta",
-    "price": 0.95
-  }
-]
+```sh
+curl -X POST 'http://localhost:8080/store-order-items' \
+  -H 'Content-Type: application/json' \
+  --data-raw '
+  [
+    {
+      "name": "Skin Care",
+      "price": 4.56
+    },
+    {
+      "name": "Watch",
+      "price": 60.55
+    },
+    {
+      "name": "Cookies",
+      "price": 1.99
+    },
+    {
+      "name": "Pasta",
+      "price": 0.95
+    }
+  ]'
 ```
 
 Observe the console and watch out for the following log output:

@@ -10,8 +10,8 @@
 
   <properties>
     <version.camunda>7.19.0</version.camunda>
-    <version.quarkus>2.8.2.Final</version.quarkus>
-    <version.assertj>3.21.0</version.assertj>
+    <version.quarkus>2.16.4.Final</version.quarkus>
+    <version.assertj>3.22.0</version.assertj>
     <version.compiler-plugin>3.10.1</version.compiler-plugin>
     <version.surefire-plugin>3.0.0-M6</version.surefire-plugin>
 
