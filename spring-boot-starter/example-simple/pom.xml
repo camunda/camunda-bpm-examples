@@ -6,7 +6,7 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <spring.boot.version>2.7.3</spring.boot.version>
+    <spring.boot.version>2.7.9</spring.boot.version>
     <camunda.spring.boot.starter.version>7.19.0</camunda.spring.boot.starter.version>
     <camunda.mockito>5.15.0</camunda.mockito>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>

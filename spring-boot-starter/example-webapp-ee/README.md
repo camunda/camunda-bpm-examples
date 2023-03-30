@@ -11,7 +11,7 @@ This example demonstrates how you can build a Spring Boot application with the e
 
 You will need:
 
-* credentials to access the enterprise repo in your `settings.xml`
+* credentials to access the enterprise repo in your Maven `settings.xml`
 * a valid camunda-license key file in your classpath in the file `camunda-license.txt`
 
 ## How is it done
