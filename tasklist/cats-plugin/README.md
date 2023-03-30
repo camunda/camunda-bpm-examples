@@ -15,7 +15,7 @@ Copy the `cats.js` file into the `app/tasklist/scripts/` folder in your Camunda 
 
 Add the following content to the `customScripts` object in the `app/tasklist/scripts/config.js` file:
 
-```
+```javascript
   // …
   customScripts: [
     'scripts/cats'
