@@ -114,6 +114,8 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [Command Interceptor - Blocking](process-engine-plugin/command-interceptor-blocking)           | Unit Test            | Maintenance, Interceptor, Configuration     |
 | [Failed Job Retry Profile](process-engine-plugin/failed-job-retry-profile)                     | Unit Test            | Process Engine Plugin, Failed Job Retry     |
 
+(1) _This example is not actively maintained anymore._
+
 ### Bpmn 2.0 Model API Examples
 
 | Name                                                                       | Container            | Keywords                  |
