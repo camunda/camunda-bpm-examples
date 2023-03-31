@@ -133,7 +133,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 | ["Open Incidents" Cockpit Plugin](/cockpit/cockpit-open-incidents) [^1]                                        | Plugin, Custom Script                     |
 | ["Request Interceptor" Cockpit Script](/cockpit/cockpit-request-interceptor) [^1]                              | Plugin, Custom Script                     |
 | [bpmn-js Cockpit module](/cockpit/cockpit-bpmn-js-module) [^1]                                                 | Plugin, Custom Script, bpmn-js            |
-| [bpmn-js Cockpit module - bundled](/cockpit/cockpit-bpmn-js-module-bundled)				                          	     | Plugin, Custom Script, bpmn-js, rollup    |
+| [bpmn-js Cockpit module - bundled](/cockpit/cockpit-bpmn-js-module-bundled)                                    | Plugin, Custom Script, bpmn-js, rollup    |
 
 ### Tasklist Examples
 
