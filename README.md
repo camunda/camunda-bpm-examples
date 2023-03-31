@@ -153,8 +153,8 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 | Name                                                                       | Keywords                  |
 | ---------------------------------------------------------------------------|---------------------------|
-| [Create Standalone Task - client side](https://github.com/camunda/camunda-bpm-platform/tree/master/webapps/ui/tasklist/plugins/standaloneTask/app)            | Plugin |
-| [Create Standalone Task - server side](https://github.com/camunda/camunda-bpm-platform/blob/master/webapps/src/main/java/org/camunda/bpm/tasklist/impl/plugin)| Plugin |
+| [Create Standalone Task - client side](https://github.com/camunda/camunda-bpm-platform/tree/master/webapps/frontend/ui/tasklist/plugins/standaloneTask/app)             | Plugin                    |
+| [Create Standalone Task - server side](https://github.com/camunda/camunda-bpm-platform/blob/master/webapps/assembly/src/main/java/org/camunda/bpm/tasklist/impl/plugin) | Plugin                    |
 | [Javascript Only Plugin](/tasklist/cats-plugin)                             | Plugin, Custom Script     |
 | [JQuery 3.4 Behavior Patch](/tasklist/jquery-34-behavior) (1)               | Plugin, Custom Script     |
 
