@@ -31,7 +31,7 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 ## Overview
 
-* [Getting Started with Camunda Platform](#getting-started-with-camunda-bpm)
+* [Getting Started with Camunda Platform](#getting-started-with-camunda-platform)
 * [BPMN 2.0 & Process Implementation](#bpmn-20--process-implementation-examples)
 * [Deployment & Project Setup](#deployment--project-setup-examples)
 * [Process Engine Plugin](#process-engine-plugin-examples)
@@ -39,7 +39,6 @@ If you clone this repository, use the checkout commands to access the sources fo
 * [Cmmn 1.1 Model API Examples](#cmmn-11-model-api-examples)
 * [Cockpit](#cockpit-examples)
 * [Tasklist](#tasklist-examples)
-* [camunda Modeler (Eclipse)](#camunda-modeler-eclipse-plugin-examples)
 * [Multi-Tenancy](#multi-tenancy-examples)
 * [Spin](#spin-examples)
 * [DMN](#dmn-examples)
