@@ -27,8 +27,8 @@ See the [user guide](https://docs.camunda.org/manual/7.19/user-guide/process-eng
 
 # Before Starting
 
-Before starting, make sure to install the Camunda Platform on Wildfly 26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.19/installation/full/jboss/manual/#setup). We will call the root folder $WILDFLY_HOME in the following explanations.
-Note that this example is only compatible with WildFly versions up to WildFly 27. The latest compatible pre-packaged Camunda WildFly distribution is 7.18.x.
+Before starting, make sure to install the Camunda Platform on Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.19/installation/full/jboss/manual/#setup). We will call the root folder $WILDFLY_HOME in the following explanations.
+Note that this example is only compatible with WildFly ≤26. The latest compatible pre-packaged Camunda WildFly distribution is 7.18.x.
 
 # Configuring the Database
 
@@ -351,9 +351,9 @@ The test class [ProcessIntegrationTest](src/test/java/org/camunda/bpm/tutorial/m
 
 Follow the steps to run the test:
 
-* install the Camunda Platform on Wildfly 26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.19/installation/full/jboss/manual/#setup) (note that this example is not compatible with WildFly versions after WildFly 26).
-* replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
+* Install the Camunda Platform on a Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.19/installation/full/jboss/manual/#setup) (note that this example is not compatible with WildFly versions after WildFly 26).
+* Replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
   * [standalone.xml](standalone.xml) (two schemas - requires manual schema creation) or 
   * [standalone_test.xml](standalone_test.xml) (two databases - auto schema creation)
-* start the server using the script `camunda-bpm-wildfly-{version}/start-camunda.bat`
-* go to project directory and run the test with the Maven command `mvn test`
+* Start the server.
+* Go to the project directory and run the test with the Maven command `mvn test`
