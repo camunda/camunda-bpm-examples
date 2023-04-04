@@ -12,8 +12,8 @@
     <arquillian.version>1.1.10.Final</arquillian.version>
     <wildfly.container.adapter.version>3.0.1.Final</wildfly.container.adapter.version>
     <version.javaee-web>3.0.2.Final</version.javaee-web>
-    <version.resteasy>3.9.0.Final</version.resteasy>
-    <version.junit>4.13.1</version.junit>
+    <version.resteasy>3.15.3.Final</version.resteasy>
+    <version.junit>4.13.2</version.junit>
     <version.slf4j>1.7.36</version.slf4j>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>

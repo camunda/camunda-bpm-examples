@@ -27,14 +27,14 @@ See the [user guide](https://docs.camunda.org/manual/7.19/user-guide/process-eng
 
 # Before Starting
 
-Before starting, make sure to download the [Camunda Platform WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
-
+Before starting, make sure to install the Camunda Platform on Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.19/installation/full/jboss/manual/#setup). We will call the root folder $WILDFLY_HOME in the following explanations.
+Note that this example is only compatible with WildFly ≤26. The latest compatible pre-packaged Camunda WildFly distribution is 7.18.x.
 
 # Configuring the Database
 
 Before configuring process engines, we have to set up a database schema for every tenant. In this section we will explain how to do so.
 
-Start up WildFly by running `$CAMUNDA_HOME/start-camunda.{bat/sh}`. After startup, open your browser and go to `http://localhost:8080/h2/h2`. Enter the following configuration before connecting:
+Start up WildFly by running `$CAMUNDA_HOME/start-camunda.{bat/sh}`. After the database has been created, start a DB client (e.g. [DBeaver](https://dbeaver.io/)) and connect to the database. This is the default connection information:
 
 * **Driver Class**: org.h2.Driver
 * **JDBC URL**: jdbc:h2:./camunda-h2-dbs/process-engine
@@ -51,8 +51,7 @@ create schema TENANT2;
 Next, inside each schema, create the database tables. To achieve this, get the SQL create scripts
 from the WildFly distribution from the `sql/create/` folder inside your distribution.
 
-Inside the h2 console, execute the create scripts (`h2_engine_7.19.0.sql` and
-`h2_identity_7.19.0.sql`) scripts after selecting the appropriate schema for the current connection:
+Execute the create scripts (`h2_engine_7.19.0.sql` and `h2_identity_7.19.0.sql`) after selecting the appropriate schema for the current connection:
 
 ```sql
 set schema TENANT1;
@@ -66,20 +65,9 @@ set schema TENANT2;
 <<paste sql/create/h2_identity_7.19.0.sql here>>
 ```
 
-The following screenshot illustrates how to create the tables inside the correct schema:
+Execute the SQL script.
 
-![Multi Tenancy Create Schema](img/create-schema1.png)
-
-
-Next, hit *run*.
-
-After creating the tables in the two schemas, the UI should show the following
-table structure:
-
-![Multi Tenancy Create Schema](img/create-schema2.png)
-
-
-Now, stop WildFly.
+After creating the tables in the two schemas, check that the tables have been created for both schemas.
 
 
 # Configuring Process Engines
@@ -363,10 +351,9 @@ The test class [ProcessIntegrationTest](src/test/java/org/camunda/bpm/tutorial/m
 
 Follow the steps to run the test:
 
-* download the [Camunda Platform WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/)
-* replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
+* Install the Camunda Platform on a Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.19/installation/full/jboss/manual/#setup) (note that this example is not compatible with WildFly versions after WildFly 26).
+* Replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
   * [standalone.xml](standalone.xml) (two schemas - requires manual schema creation) or 
   * [standalone_test.xml](standalone_test.xml) (two databases - auto schema creation)
-* start the server using the script `camunda-bpm-wildfly-{version}/start-camunda.bat`
-* go to project directory and run the test with the Maven command `mvn test` 
-
+* Start the server.
+* Go to the project directory and run the test with the Maven command `mvn test`
