@@ -34,7 +34,7 @@ Note that this example is only compatible with WildFly ≤26. The latest compati
 
 Before configuring process engines, we have to set up a database schema for every tenant. In this section we will explain how to do so.
 
-Start up WildFly by running `$CAMUNDA_HOME/start-camunda.{bat/sh}`. After the database has been created, start a DB client (e.g. [DBeaver](https://dbeaver.io/)) and connect to the database. This is the default connection information:
+Start up WildFly. After the database has been created, start a DB client (e.g. [DBeaver](https://dbeaver.io/)) and connect to the database. This is the default connection information:
 
 * **Driver Class**: org.h2.Driver
 * **JDBC URL**: jdbc:h2:./camunda-h2-dbs/process-engine
@@ -74,7 +74,7 @@ After creating the tables in the two schemas, check that the tables have been cr
 
 In this step, we configure a process engine for each tenant. We ensure that these engines access the database schemas we have previously created. This way, process data of a tenant cannot interfere with that of another.
 
-Open the file `$CAMUNDA_HOME/server/wildfly-{version}/standalone/configuration/standalone.xml`. In that file, navigate to the configuration of the Camunda jboss subsystem, declared in an XML element `<subsystem xmlns="urn:org.camunda.bpm.jboss:1.1">`. In this file, add two entries to the `<process-engines>` section (do *not* remove default engine configuration):
+Open the file `$WILDFLY_HOME/standalone/configuration/standalone.xml`. In that file, navigate to the configuration of the Camunda jboss subsystem, declared in an XML element `<subsystem xmlns="urn:org.camunda.bpm.jboss:1.1">`. In this file, add two entries to the `<process-engines>` section (do *not* remove default engine configuration):
 
 The configuration of the process engine for tenant 1:
 
