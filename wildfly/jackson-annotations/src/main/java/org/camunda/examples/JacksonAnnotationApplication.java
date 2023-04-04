@@ -18,7 +18,7 @@ package org.camunda.examples;
 
 import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.application.impl.JakartaServletProcessApplication;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.value.ObjectValue;
@@ -26,7 +26,7 @@ import org.camunda.bpm.engine.variable.value.ObjectValue;
 import java.util.Map;
 
 @ProcessApplication("Jackson Annotation App")
-public class JacksonAnnotationApplication extends ServletProcessApplication {
+public class JacksonAnnotationApplication extends JakartaServletProcessApplication {
   /*
    **
    * The {@literal @}PostDeploy method is invoked when the deployment of all BPMN 2.0 processes is complete.

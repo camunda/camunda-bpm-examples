@@ -7,11 +7,10 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.18.0</version.camunda>
-    <version.junit>4.13.1</version.junit>
+    <version.camunda>7.19.0</version.camunda>
+    <version.junit>4.13.2</version.junit>
     <version.h2>2.1.214</version.h2>
     <version.slf4j>1.7.26</version.slf4j>
-    <version.servlet-api>4.0.1</version.servlet-api>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,13 +41,6 @@
     <dependency>
       <groupId>org.camunda.bpm.model</groupId>
       <artifactId>camunda-bpmn-model</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${version.servlet-api}</version>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>

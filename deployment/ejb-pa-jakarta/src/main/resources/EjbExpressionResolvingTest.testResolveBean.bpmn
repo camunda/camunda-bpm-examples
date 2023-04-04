@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="Examples" exporter="Camunda Modeler" exporterVersion="4.7.0">
+  <process id="testResolveBean" isExecutable="true">
+    <startEvent id="theStart" name="Start" />
+    <endEvent id="endevent1" name="End" />
+    <serviceTask id="servicetask1" name="Service Task" camunda:delegateExpression="${exampleBean}" />
+    <sequenceFlow id="flow11" name="" sourceRef="servicetask1" targetRef="endevent1" />
+    <sequenceFlow id="flow12" name="" sourceRef="theStart" targetRef="servicetask1" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_testDeployProcessArchive">
+    <bpmndi:BPMNPlane id="BPMNPlane_testDeployProcessArchive" bpmnElement="testResolveBean">
+      <bpmndi:BPMNEdge id="BPMNEdge_flow12" bpmnElement="flow12">
+        <omgdi:waypoint x="195" y="107" />
+        <omgdi:waypoint x="240" y="107" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow11" bpmnElement="flow11">
+        <omgdi:waypoint x="345" y="107" />
+        <omgdi:waypoint x="382" y="107" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_theStart" bpmnElement="theStart">
+        <omgdc:Bounds x="160" y="90" width="35" height="35" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="166" y="125" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_servicetask1" bpmnElement="servicetask1">
+        <omgdc:Bounds x="240" y="80" width="105" height="55" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_endevent1" bpmnElement="endevent1">
+        <omgdc:Bounds x="382" y="90" width="35" height="35" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="390" y="125" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

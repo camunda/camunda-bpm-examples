@@ -7,7 +7,7 @@
   <packaging>war</packaging>
 
   <properties>
-    <camunda.version>7.18.0</camunda.version>
+    <camunda.version>7.19.0</camunda.version>
     <javax-servlet-api.version>4.0.1</javax-servlet-api.version>
 
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -56,6 +56,18 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>3.3.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
   <repositories>
     <repository>

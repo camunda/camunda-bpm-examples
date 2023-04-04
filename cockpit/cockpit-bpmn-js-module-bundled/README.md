@@ -1,11 +1,10 @@
 # bpmn.js Cockpit module - bundled
 
-
 This example shows how to develop, bundle and include a bpmn-js custom module into Cockpit.
 
 For additional information, please also see the [documentation](https://docs.camunda.org/manual/latest/webapps/cockpit/extend/configuration/#bpmn-diagram-viewer-bpmn-js).
 
-Built and tested against Camunda Platform version `7.18.0`.
+Built and tested against Camunda Platform version `7.19.0`.
 
 ![Screenshot](screenshot.png)
 
@@ -23,7 +22,7 @@ Implementing a custom renderer is just one of many examples how you can customiz
 ## Bundle the custom renderer
 
 
-The Cockpit WebApplication will import the additional modules during runtime in the browser. Hence the [sources](./custom-renderer) need to be bundled so that they can be interpreted by the browser. In order to do that, we will use [rollup](https://rollupjs.org/). We will also use the [rollup-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs) plugin to convert the sources to ES6 and the [rollup-node-resolve](https://github.com/rollup/plugins/tree/master/packages/node-resolve) plugin to include third party modules required by our custom renderer.
+The Cockpit WebApplication will import the additional modules during runtime in the browser. Hence, the [sources](./custom-renderer) need to be bundled so that they can be interpreted by the browser. In order to do that, we will use [rollup](https://rollupjs.org/). We will also use the [rollup-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs) plugin to convert the sources to ES6 and the [rollup-node-resolve](https://github.com/rollup/plugins/tree/master/packages/node-resolve) plugin to include third party modules required by our custom renderer.
 
 Our `rollup.config.js` file looks like this:
 ```js
@@ -54,7 +53,7 @@ For the Tomcat distribution, this would be `server/apache-tomcat-X.X.XX/webapps/
 
 Then, add the following content to the `app/cockpit/scripts/config.js` file:
 
-```json
+```javascript
 // …
   bpmnJs: {
     additionalModules: [

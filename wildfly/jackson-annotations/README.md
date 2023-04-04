@@ -1,7 +1,7 @@
 Jackson Annotation Example for WildFly
 ==========================================
 
-WildFly adds implicitly to each new deployment, which uses JAX-RS annotations, the JAX-RS subsystem that includes Jackson dependencies (see [here][WFLY-23]).
+WildFly adds implicitly to each new deployment, which uses JAX-RS annotations, the JAX-RS subsystem that includes Jackson dependencies (see [here][WFLY-27]).
 The version of the implicitly added Jackson dependencies do not match with the version of the Jackson dependency,
 which is used by Camunda Spin. This leads to problems with the usage of variable serialization and the usage of Jackson annotations (like `@JsonIgnore` for example).
 
@@ -14,7 +14,7 @@ and json serialization.
 
 1. Checkout the git repository
 2. Build the project with maven
-3. Deploy the created war on WildFly
+3. Deploy the created war on WildFly 27
 4. Open Cockpit and take a look into the process 'waitingProcess'
 5. Look at the variable called `variable`, only the properties `property1` and `property3` are shown.
 
@@ -45,6 +45,6 @@ It excludes the JAX-RS subsystem and adds the Jackson dependencies with the corr
 These version corresponds to the version which is used by Camunda Spin for de-/serialization.
 
 See the [Camunda forum post](https://forum.camunda.org/t/camunda-json-marshalling-and-jsonignore/271/19)
-and the [documentation](https://docs.camunda.org/manual/7.18/installation/full/jboss/manual/#problems-with-jackson-annotations) for more information.
+and the [documentation](https://docs.camunda.org/manual/7.19/installation/full/jboss/manual/#problems-with-jackson-annotations) for more information.
 
-[WFLY-23]: https://docs.wildfly.org/23/Developer_Guide.html#Implicit_module_dependencies_for_deployments
+[WFLY-27]: https://docs.wildfly.org/27/Developer_Guide.html#Implicit_module_dependencies_for_deployments
