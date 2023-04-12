@@ -36,6 +36,11 @@
 
   <dependencies>
 
+
+    <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+    </dependency>
     <!-- CAMUNDA -->
 
     <dependency>
@@ -141,4 +146,14 @@
       </plugin>
     </plugins>
   </build>
+  
+  <profiles>
+    <profile>
+        <id>native</id>
+        <properties>
+            <quarkus.package.type>native</quarkus.package.type>
+            <quarkus.native.additional-build-args></quarkus.native.additional-build-args>
+        </properties>
+    </profile>
+  </profiles>
 </project>
