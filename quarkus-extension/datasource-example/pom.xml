@@ -66,6 +66,27 @@
       <artifactId>juel-impl</artifactId>
       <version>2.2.7</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-email</artifactId>
+      <version>1.5</version>
+    </dependency>
+    <!-- mybatis optional logging dependencies -->
+    <!-- <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.13.3</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
+    </dependency>-->
     
     <!-- CAMUNDA -->
 
@@ -176,9 +197,16 @@
   <profiles>
     <profile>
         <id>native</id>
+        
+        <!-- Consider using "initialize-at-run-time" to avoid that certain classes
+          are scanned (?) during native image creation, e.g. MailActivityBehavior -->
         <properties>
             <quarkus.package.type>native</quarkus.package.type>
-            <quarkus.native.additional-build-args>--report-unsupported-elements-at-runtime,-H:ReflectionConfigurationFiles=reflection-config.json</quarkus.native.additional-build-args>
+            <quarkus.native.additional-build-args>
+              --initialize-at-run-time=org.apache.ibatis.logging.log4j.Log4jImpl\,org.apache.ibatis.logging.log4j2.Log4j2Impl\,org.apache.ibatis.logging.jdk14.Jdk14LoggingImpl\,org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl,
+              --report-unsupported-elements-at-runtime,
+              -H:ReflectionConfigurationFiles=reflection-config.json
+            </quarkus.native.additional-build-args>
         </properties>
     </profile>
   </profiles>

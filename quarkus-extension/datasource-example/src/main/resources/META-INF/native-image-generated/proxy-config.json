@@ -1,0 +1,17 @@
+[
+  {
+    "interfaces":["java.sql.Connection"]
+  },
+  {
+    "interfaces":["java.sql.PreparedStatement"]
+  },
+  {
+    "interfaces":["java.sql.ResultSet"]
+  },
+  {
+    "interfaces":["java.sql.Statement"]
+  },
+  {
+    "interfaces":["javax.ws.rs.ext.Providers"]
+  }
+]
