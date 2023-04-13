@@ -1,0 +1,20 @@
+package org.camunda.bpm.quarkus.example.datasource.graalvm;
+
+import org.camunda.bpm.engine.exception.NullValueException;
+import org.camunda.bpm.engine.impl.el.CommandContextFunctions;
+import org.camunda.bpm.engine.impl.el.DateTimeFunctions;
+import org.camunda.bpm.quarkus.engine.extension.QuarkusProcessEngineConfiguration;
+
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection(targets={
+    // engine configuration
+    QuarkusProcessEngineConfiguration.class,
+    CommandContextFunctions.class,
+    DateTimeFunctions.class,
+
+    // exceptions
+    NullValueException.class })
+public class CamundaReflectionConfiguration {
+
+}
