@@ -279,6 +279,21 @@
     }, 
     {
       "pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"
+    }, 
+    {
+      "pattern":"org/camunda/bpm/engine/impl/bpmn/parser/.*xsd"
+    }, 
+    {
+      "pattern":"org/camunda/bpm/model/bpmn/schema/.*xsd"
+    }, 
+    {
+      "pattern":"org/camunda/bpm/engine/impl/cmmn/parser/.*xsd"
+    }, 
+    {
+      "pattern":"org/camunda/bpm/model/cmmn/schema/.*xsd"
+    }, 
+    {
+      "pattern":"org/camunda/bpm/model/dmn/schema/.*xsd"
     }
   ]},
   "bundles":[{
