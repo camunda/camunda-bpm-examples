@@ -204,7 +204,8 @@
             <quarkus.package.type>native</quarkus.package.type>
             <quarkus.native.additional-build-args>
               --initialize-at-run-time=org.apache.ibatis.logging.log4j.Log4jImpl\,org.apache.ibatis.logging.log4j2.Log4j2Impl\,org.apache.ibatis.logging.jdk14.Jdk14LoggingImpl\,org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl,
-              --report-unsupported-elements-at-runtime
+              --report-unsupported-elements-at-runtime,
+              -H:ResourceConfigurationFiles=resources-config.json
             </quarkus.native.additional-build-args>
             <!-- -H:ReflectionConfigurationFiles=reflection-config.json -->
         </properties>
