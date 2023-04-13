@@ -16,13 +16,14 @@
  */
 package org.camunda.bpm.quarkus.example.datasource.rest;
 
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import org.camunda.bpm.quarkus.example.datasource.ApprovalServiceBean;
 
 @Path("/approval-process")
@@ -37,6 +38,23 @@ public class ApprovalProcessService {
   public String evaluateAmount(@PathParam("amount") int amount) {
     try {
       return approvalServiceBean.evaluateForApproval(amount);
+    } catch (IllegalArgumentException ex) {
+      return "Please provide a positive integer value";
+    }
+  }
+
+  @GET
+  @Produces(MediaType.TEXT_PLAIN)
+  @Path("/benchmark/{times}")
+  public String performNTimesEvaluateAmount(@PathParam("times") int times) {
+    try {
+      var start = Instant.now();
+      for (int i = 0; i < times; i++) {
+        approvalServiceBean.evaluateForApproval(1);
+      }
+      var finish = Instant.now();
+      var timeElapsed = Duration.between(start, finish).toMillis();
+      return "Average time for performing evaluateAmount:" + ((double) timeElapsed / times) + " μs";
     } catch (IllegalArgumentException ex) {
       return "Please provide a positive integer value";
     }
