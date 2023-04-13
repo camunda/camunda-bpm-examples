@@ -4,6 +4,8 @@ import org.camunda.bpm.engine.exception.NullValueException;
 import org.camunda.bpm.engine.impl.el.CommandContextFunctions;
 import org.camunda.bpm.engine.impl.el.DateTimeFunctions;
 import org.camunda.bpm.quarkus.engine.extension.QuarkusProcessEngineConfiguration;
+import org.camunda.connect.httpclient.impl.HttpConnectorProviderImpl;
+import org.camunda.connect.httpclient.soap.impl.SoapHttpConnectorProviderImpl;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
@@ -14,7 +16,12 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
     DateTimeFunctions.class,
 
     // exceptions
-    NullValueException.class })
+    NullValueException.class,
+
+    // Connect (SPI lookup)
+    HttpConnectorProviderImpl.class,
+    SoapHttpConnectorProviderImpl.class
+    })
 public class CamundaReflectionConfiguration {
 
 }

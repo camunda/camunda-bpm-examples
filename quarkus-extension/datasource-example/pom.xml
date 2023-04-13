@@ -87,6 +87,11 @@
       <artifactId>commons-logging</artifactId>
       <version>1.2</version>
     </dependency>-->
+    <dependency>
+      <groupId>org.camunda.connect</groupId>
+      <artifactId>camunda-connect-connectors-all</artifactId>
+      <version>1.5.6</version>
+    </dependency>
     
     <!-- CAMUNDA -->
 
@@ -203,11 +208,11 @@
         <properties>
             <quarkus.package.type>native</quarkus.package.type>
             <quarkus.native.additional-build-args>
-              --initialize-at-run-time=org.apache.ibatis.logging.log4j.Log4jImpl\,org.apache.ibatis.logging.log4j2.Log4j2Impl\,org.apache.ibatis.logging.jdk14.Jdk14LoggingImpl\,org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl,
+              --initialize-at-run-time=org.apache.ibatis.logging.log4j.Log4jImpl\,org.apache.ibatis.logging.log4j2.Log4j2Impl\,org.apache.ibatis.logging.jdk14.Jdk14LoggingImpl\,org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl\,connectjar.org.apache.commons.logging.impl.Log4JLogger\,connectjar.org.apache.http.impl.auth.NTLMEngineImpl,
               --report-unsupported-elements-at-runtime,
-              -H:ResourceConfigurationFiles=resources-config.json
+              -H:ResourceConfigurationFiles=resources-config.json,
+              -H:ReflectionConfigurationFiles=reflection-config.json
             </quarkus.native.additional-build-args>
-            <!-- -H:ReflectionConfigurationFiles=reflection-config.json -->
         </properties>
     </profile>
   </profiles>

@@ -1,11 +1,3427 @@
 [
-  {
-    "name" : "org.camunda.bpm.quarkus.engine.extension.QuarkusProcessEngineConfiguration",
-    "allDeclaredConstructors" : true,
-    "allPublicConstructors" : true,
-    "allDeclaredMethods" : true,
-    "allPublicMethods" : true,
-    "allDeclaredFields" : true,
-    "allPublicFields" : true
-  }
+{
+  "name":"[B"
+},
+{
+  "name":"[C"
+},
+{
+  "name":"[D"
+},
+{
+  "name":"[F"
+},
+{
+  "name":"[I"
+},
+{
+  "name":"[J"
+},
+{
+  "name":"[Lio.agroal.pool.ConnectionHandler;"
+},
+{
+  "name":"[Ljava.lang.Class;"
+},
+{
+  "name":"[Ljava.lang.Object;"
+},
+{
+  "name":"[Ljava.lang.String;"
+},
+{
+  "name":"[Ljava.lang.reflect.Constructor;"
+},
+{
+  "name":"[Ljava.lang.reflect.TypeVariable;"
+},
+{
+  "name":"[Ljava.util.Map$Entry;"
+},
+{
+  "name":"[Ljavax.management.openmbean.CompositeData;"
+},
+{
+  "name":"[Ljavax.ws.rs.container.ContainerRequestFilter;"
+},
+{
+  "name":"[Ljavax.ws.rs.container.ContainerResponseFilter;"
+},
+{
+  "name":"[Ljavax.ws.rs.ext.WriterInterceptor;"
+},
+{
+  "name":"[S"
+},
+{
+  "name":"[Z"
+},
+{
+  "name":"com.arjuna.ats.arjuna.common.CoordinatorEnvironmentBean",
+  "allDeclaredFields":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getCheckedActionFactory","parameterTypes":[] }, 
+    {"name":"getCheckedActionFactoryClassName","parameterTypes":[] }, 
+    {"name":"getCommunicationStore","parameterTypes":[] }, 
+    {"name":"getDefaultTimeout","parameterTypes":[] }, 
+    {"name":"getDynamic1PC","parameterTypes":[] }, 
+    {"name":"getMaxTwoPhaseCommitThreads","parameterTypes":[] }, 
+    {"name":"getTxReaperCancelFailWaitPeriod","parameterTypes":[] }, 
+    {"name":"getTxReaperCancelWaitPeriod","parameterTypes":[] }, 
+    {"name":"getTxReaperMode","parameterTypes":[] }, 
+    {"name":"getTxReaperTimeout","parameterTypes":[] }, 
+    {"name":"getTxReaperTraceGracePeriod","parameterTypes":[] }, 
+    {"name":"getTxReaperTraceInterval","parameterTypes":[] }, 
+    {"name":"getTxReaperZombieMax","parameterTypes":[] }, 
+    {"name":"isAllowCheckedActionFactoryOverride","parameterTypes":[] }, 
+    {"name":"isAlternativeRecordOrdering","parameterTypes":[] }, 
+    {"name":"isAsyncAfterSynchronization","parameterTypes":[] }, 
+    {"name":"isAsyncBeforeSynchronization","parameterTypes":[] }, 
+    {"name":"isAsyncCommit","parameterTypes":[] }, 
+    {"name":"isAsyncPrepare","parameterTypes":[] }, 
+    {"name":"isAsyncRollback","parameterTypes":[] }, 
+    {"name":"isBeforeCompletionWhenRollbackOnly","parameterTypes":[] }, 
+    {"name":"isClassicPrepare","parameterTypes":[] }, 
+    {"name":"isCommitOnePhase","parameterTypes":[] }, 
+    {"name":"isEnableStatistics","parameterTypes":[] }, 
+    {"name":"isFinalizeBasicActions","parameterTypes":[] }, 
+    {"name":"isMaintainHeuristics","parameterTypes":[] }, 
+    {"name":"isReadonlyOptimisation","parameterTypes":[] }, 
+    {"name":"isSharedTransactionLog","parameterTypes":[] }, 
+    {"name":"isStartDisabled","parameterTypes":[] }, 
+    {"name":"isTransactionStatusManagerEnable","parameterTypes":[] }, 
+    {"name":"isWriteOptimisation","parameterTypes":[] }, 
+    {"name":"setAllowCheckedActionFactoryOverride","parameterTypes":["boolean"] }, 
+    {"name":"setAlternativeRecordOrdering","parameterTypes":["boolean"] }, 
+    {"name":"setAsyncAfterSynchronization","parameterTypes":["boolean"] }, 
+    {"name":"setAsyncBeforeSynchronization","parameterTypes":["boolean"] }, 
+    {"name":"setAsyncCommit","parameterTypes":["boolean"] }, 
+    {"name":"setAsyncPrepare","parameterTypes":["boolean"] }, 
+    {"name":"setAsyncRollback","parameterTypes":["boolean"] }, 
+    {"name":"setBeforeCompletionWhenRollbackOnly","parameterTypes":["boolean"] }, 
+    {"name":"setCheckedActionFactory","parameterTypes":["com.arjuna.ats.arjuna.coordinator.CheckedActionFactory"] }, 
+    {"name":"setCheckedActionFactoryClassName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setClassicPrepare","parameterTypes":["boolean"] }, 
+    {"name":"setCommitOnePhase","parameterTypes":["boolean"] }, 
+    {"name":"setCommunicationStore","parameterTypes":["java.lang.String"] }, 
+    {"name":"setDefaultTimeout","parameterTypes":["int"] }, 
+    {"name":"setDynamic1PC","parameterTypes":["boolean"] }, 
+    {"name":"setEnableStatistics","parameterTypes":["boolean"] }, 
+    {"name":"setFinalizeBasicActions","parameterTypes":["boolean"] }, 
+    {"name":"setMaintainHeuristics","parameterTypes":["boolean"] }, 
+    {"name":"setMaxTwoPhaseCommitThreads","parameterTypes":["int"] }, 
+    {"name":"setReadonlyOptimisation","parameterTypes":["boolean"] }, 
+    {"name":"setSharedTransactionLog","parameterTypes":["boolean"] }, 
+    {"name":"setStartDisabled","parameterTypes":["boolean"] }, 
+    {"name":"setTransactionStatusManagerEnable","parameterTypes":["boolean"] }, 
+    {"name":"setTxReaperCancelFailWaitPeriod","parameterTypes":["long"] }, 
+    {"name":"setTxReaperCancelWaitPeriod","parameterTypes":["long"] }, 
+    {"name":"setTxReaperMode","parameterTypes":["java.lang.String"] }, 
+    {"name":"setTxReaperTimeout","parameterTypes":["long"] }, 
+    {"name":"setTxReaperTraceGracePeriod","parameterTypes":["long"] }, 
+    {"name":"setTxReaperTraceInterval","parameterTypes":["long"] }, 
+    {"name":"setTxReaperZombieMax","parameterTypes":["int"] }, 
+    {"name":"setWriteOptimisation","parameterTypes":["boolean"] }
+  ]
+},
+{
+  "name":"com.arjuna.ats.arjuna.common.CoreEnvironmentBean",
+  "allDeclaredFields":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getNodeIdentifier","parameterTypes":[] }, 
+    {"name":"getPid","parameterTypes":[] }, 
+    {"name":"getProcessImplementation","parameterTypes":[] }, 
+    {"name":"getProcessImplementationClassName","parameterTypes":[] }, 
+    {"name":"getSocketProcessIdMaxPorts","parameterTypes":[] }, 
+    {"name":"getSocketProcessIdPort","parameterTypes":[] }, 
+    {"name":"getTimeoutFactor","parameterTypes":[] }, 
+    {"name":"getVarDir","parameterTypes":[] }, 
+    {"name":"isAllowMultipleLastResources","parameterTypes":[] }, 
+    {"name":"isDisableMultipleLastResourcesWarning","parameterTypes":[] }, 
+    {"name":"setAllowMultipleLastResources","parameterTypes":["boolean"] }, 
+    {"name":"setDisableMultipleLastResourcesWarning","parameterTypes":["boolean"] }, 
+    {"name":"setNodeIdentifier","parameterTypes":["java.lang.String"] }, 
+    {"name":"setPid","parameterTypes":["int"] }, 
+    {"name":"setProcessImplementation","parameterTypes":["com.arjuna.ats.arjuna.utils.Process"] }, 
+    {"name":"setProcessImplementationClassName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setSocketProcessIdMaxPorts","parameterTypes":["int"] }, 
+    {"name":"setSocketProcessIdPort","parameterTypes":["int"] }, 
+    {"name":"setTimeoutFactor","parameterTypes":["int"] }, 
+    {"name":"setVarDir","parameterTypes":["java.lang.String"] }
+  ]
+},
+{
+  "name":"com.arjuna.ats.arjuna.common.ObjectStoreEnvironmentBean",
+  "allDeclaredFields":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getCacheStoreHash","parameterTypes":[] }, 
+    {"name":"getCacheStoreRemovedItems","parameterTypes":[] }, 
+    {"name":"getCacheStoreScanPeriod","parameterTypes":[] }, 
+    {"name":"getCacheStoreSize","parameterTypes":[] }, 
+    {"name":"getCacheStoreWorkItems","parameterTypes":[] }, 
+    {"name":"getCreateTable","parameterTypes":[] }, 
+    {"name":"getDropTable","parameterTypes":[] }, 
+    {"name":"getExposeAllLogRecordsAsMBeans","parameterTypes":[] }, 
+    {"name":"getHashedDirectories","parameterTypes":[] }, 
+    {"name":"getHierarchyRetry","parameterTypes":[] }, 
+    {"name":"getHierarchyTimeout","parameterTypes":[] }, 
+    {"name":"getJdbcAccess","parameterTypes":[] }, 
+    {"name":"getJmxToolingMBeanName","parameterTypes":[] }, 
+    {"name":"getLocalOSRoot","parameterTypes":[] }, 
+    {"name":"getObjectStoreDir","parameterTypes":[] }, 
+    {"name":"getObjectStoreType","parameterTypes":[] }, 
+    {"name":"getPurgeTime","parameterTypes":[] }, 
+    {"name":"getShare","parameterTypes":[] }, 
+    {"name":"getTablePrefix","parameterTypes":[] }, 
+    {"name":"getTxLogSize","parameterTypes":[] }, 
+    {"name":"isCacheStoreSync","parameterTypes":[] }, 
+    {"name":"isIgnoreMBeanHeuristics","parameterTypes":[] }, 
+    {"name":"isObjectStoreSync","parameterTypes":[] }, 
+    {"name":"isScanZeroLengthFiles","parameterTypes":[] }, 
+    {"name":"isSynchronousRemoval","parameterTypes":[] }, 
+    {"name":"isTransactionSync","parameterTypes":[] }, 
+    {"name":"isVolatileStoreSupportAllObjUids","parameterTypes":[] }, 
+    {"name":"setCacheStoreHash","parameterTypes":["int"] }, 
+    {"name":"setCacheStoreRemovedItems","parameterTypes":["int"] }, 
+    {"name":"setCacheStoreScanPeriod","parameterTypes":["int"] }, 
+    {"name":"setCacheStoreSize","parameterTypes":["int"] }, 
+    {"name":"setCacheStoreSync","parameterTypes":["boolean"] }, 
+    {"name":"setCacheStoreWorkItems","parameterTypes":["int"] }, 
+    {"name":"setCreateTable","parameterTypes":["boolean"] }, 
+    {"name":"setDropTable","parameterTypes":["boolean"] }, 
+    {"name":"setExposeAllLogRecordsAsMBeans","parameterTypes":["boolean"] }, 
+    {"name":"setHashedDirectories","parameterTypes":["int"] }, 
+    {"name":"setHierarchyRetry","parameterTypes":["int"] }, 
+    {"name":"setHierarchyTimeout","parameterTypes":["int"] }, 
+    {"name":"setIgnoreMBeanHeuristics","parameterTypes":["boolean"] }, 
+    {"name":"setJdbcAccess","parameterTypes":["java.lang.String"] }, 
+    {"name":"setJmxToolingMBeanName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setLocalOSRoot","parameterTypes":["java.lang.String"] }, 
+    {"name":"setObjectStoreDir","parameterTypes":["java.lang.String"] }, 
+    {"name":"setObjectStoreSync","parameterTypes":["boolean"] }, 
+    {"name":"setObjectStoreType","parameterTypes":["java.lang.String"] }, 
+    {"name":"setPurgeTime","parameterTypes":["long"] }, 
+    {"name":"setScanZeroLengthFiles","parameterTypes":["boolean"] }, 
+    {"name":"setShare","parameterTypes":["int"] }, 
+    {"name":"setSynchronousRemoval","parameterTypes":["boolean"] }, 
+    {"name":"setTablePrefix","parameterTypes":["java.lang.String"] }, 
+    {"name":"setTransactionSync","parameterTypes":["boolean"] }, 
+    {"name":"setTxLogSize","parameterTypes":["long"] }, 
+    {"name":"setVolatileStoreSupportAllObjUids","parameterTypes":["boolean"] }
+  ]
+},
+{
+  "name":"com.arjuna.ats.arjuna.common.RecoveryEnvironmentBean",
+  "allDeclaredFields":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getExpiryScanInterval","parameterTypes":[] }, 
+    {"name":"getExpiryScannerClassNames","parameterTypes":[] }, 
+    {"name":"getExpiryScanners","parameterTypes":[] }, 
+    {"name":"getPeriodicRecoveryInitilizationOffset","parameterTypes":[] }, 
+    {"name":"getPeriodicRecoveryPeriod","parameterTypes":[] }, 
+    {"name":"getRecoveryActivatorClassNames","parameterTypes":[] }, 
+    {"name":"getRecoveryActivators","parameterTypes":[] }, 
+    {"name":"getRecoveryAddress","parameterTypes":[] }, 
+    {"name":"getRecoveryBackoffPeriod","parameterTypes":[] }, 
+    {"name":"getRecoveryModuleClassNames","parameterTypes":[] }, 
+    {"name":"getRecoveryModules","parameterTypes":[] }, 
+    {"name":"getRecoveryPort","parameterTypes":[] }, 
+    {"name":"getTransactionStatusManagerAddress","parameterTypes":[] }, 
+    {"name":"getTransactionStatusManagerExpiryTime","parameterTypes":[] }, 
+    {"name":"getTransactionStatusManagerPort","parameterTypes":[] }, 
+    {"name":"isRecoveryListener","parameterTypes":[] }, 
+    {"name":"isTimeoutSocket","parameterTypes":[] }, 
+    {"name":"setExpiryScanInterval","parameterTypes":["int"] }, 
+    {"name":"setExpiryScannerClassNames","parameterTypes":["java.util.List"] }, 
+    {"name":"setExpiryScanners","parameterTypes":["java.util.List"] }, 
+    {"name":"setPeriodicRecoveryInitilizationOffset","parameterTypes":["int"] }, 
+    {"name":"setPeriodicRecoveryPeriod","parameterTypes":["int"] }, 
+    {"name":"setRecoveryActivatorClassNames","parameterTypes":["java.util.List"] }, 
+    {"name":"setRecoveryActivators","parameterTypes":["java.util.List"] }, 
+    {"name":"setRecoveryAddress","parameterTypes":["java.lang.String"] }, 
+    {"name":"setRecoveryBackoffPeriod","parameterTypes":["int"] }, 
+    {"name":"setRecoveryListener","parameterTypes":["boolean"] }, 
+    {"name":"setRecoveryModuleClassNames","parameterTypes":["java.util.List"] }, 
+    {"name":"setRecoveryModules","parameterTypes":["java.util.List"] }, 
+    {"name":"setRecoveryPort","parameterTypes":["int"] }, 
+    {"name":"setTimeoutSocket","parameterTypes":["boolean"] }, 
+    {"name":"setTransactionStatusManagerAddress","parameterTypes":["java.lang.String"] }, 
+    {"name":"setTransactionStatusManagerExpiryTime","parameterTypes":["int"] }, 
+    {"name":"setTransactionStatusManagerPort","parameterTypes":["int"] }
+  ]
+},
+{
+  "name":"com.arjuna.ats.arjuna.logging.arjunaI18NLogger_$logger",
+  "methods":[{"name":"<init>","parameterTypes":["org.jboss.logging.Logger"] }]
+},
+{
+  "name":"com.arjuna.ats.internal.arjuna.coordinator.CheckedActionFactoryImple",
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.arjuna.ats.internal.arjuna.utils.SocketProcessId",
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionManagerImple",
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.arjuna.ats.jta.common.JTAEnvironmentBean",
+  "allDeclaredFields":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getAsyncCommitPoolSize","parameterTypes":[] }, 
+    {"name":"getCommitMarkableResourceJNDINames","parameterTypes":[] }, 
+    {"name":"getCommitMarkableResourceRecordDeleteBatchSize","parameterTypes":[] }, 
+    {"name":"getCommitMarkableResourceRecordDeleteBatchSizeMap","parameterTypes":[] }, 
+    {"name":"getCommitMarkableResourceTableNameMap","parameterTypes":[] }, 
+    {"name":"getLastResourceOptimisationInterface","parameterTypes":[] }, 
+    {"name":"getLastResourceOptimisationInterfaceClassName","parameterTypes":[] }, 
+    {"name":"getOrphanSafetyInterval","parameterTypes":[] }, 
+    {"name":"getPerformImmediateCleanupOfCommitMarkableResourceBranchesMap","parameterTypes":[] }, 
+    {"name":"getTransactionManager","parameterTypes":[] }, 
+    {"name":"getTransactionManagerClassName","parameterTypes":[] }, 
+    {"name":"getTransactionManagerJNDIContext","parameterTypes":[] }, 
+    {"name":"getTransactionSynchronizationRegistry","parameterTypes":[] }, 
+    {"name":"getTransactionSynchronizationRegistryClassName","parameterTypes":[] }, 
+    {"name":"getTransactionSynchronizationRegistryJNDIContext","parameterTypes":[] }, 
+    {"name":"getUserTransaction","parameterTypes":[] }, 
+    {"name":"getUserTransactionClassName","parameterTypes":[] }, 
+    {"name":"getUserTransactionJNDIContext","parameterTypes":[] }, 
+    {"name":"getUserTransactionOperationsProviderClassName","parameterTypes":[] }, 
+    {"name":"getXaRecoveryNodes","parameterTypes":[] }, 
+    {"name":"getXaResourceIsSameRMClassNames","parameterTypes":[] }, 
+    {"name":"getXaResourceMapClassNames","parameterTypes":[] }, 
+    {"name":"getXaResourceMaps","parameterTypes":[] }, 
+    {"name":"getXaResourceOrphanFilterClassNames","parameterTypes":[] }, 
+    {"name":"getXaResourceOrphanFilters","parameterTypes":[] }, 
+    {"name":"getXaResourceRecordWrappingPluginClassName","parameterTypes":[] }, 
+    {"name":"getXaResourceRecoveries","parameterTypes":[] }, 
+    {"name":"getXaResourceRecoveryClassNames","parameterTypes":[] }, 
+    {"name":"isNotifyCommitMarkableResourceRecoveryModuleOfCompleteBranches","parameterTypes":[] }, 
+    {"name":"isPerformImmediateCleanupOfCommitMarkableResourceBranches","parameterTypes":[] }, 
+    {"name":"isStrictJTA12DuplicateXAENDPROTOErr","parameterTypes":[] }, 
+    {"name":"isSupportSubtransactions","parameterTypes":[] }, 
+    {"name":"isTransactionToThreadListenersEnabled","parameterTypes":[] }, 
+    {"name":"isXaAssumeRecoveryComplete","parameterTypes":[] }, 
+    {"name":"isXaRollbackOptimization","parameterTypes":[] }, 
+    {"name":"isXaTransactionTimeoutEnabled","parameterTypes":[] }, 
+    {"name":"setAsyncCommitPoolSize","parameterTypes":["int"] }, 
+    {"name":"setCommitMarkableResourceJNDINames","parameterTypes":["java.util.List"] }, 
+    {"name":"setCommitMarkableResourceRecordDeleteBatchSize","parameterTypes":["int"] }, 
+    {"name":"setCommitMarkableResourceRecordDeleteBatchSizeMap","parameterTypes":["java.util.Map"] }, 
+    {"name":"setCommitMarkableResourceTableNameMap","parameterTypes":["java.util.Map"] }, 
+    {"name":"setLastResourceOptimisationInterface","parameterTypes":["java.lang.Class"] }, 
+    {"name":"setLastResourceOptimisationInterfaceClassName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setNotifyCommitMarkableResourceRecoveryModuleOfCompleteBranches","parameterTypes":["boolean"] }, 
+    {"name":"setOrphanSafetyInterval","parameterTypes":["int"] }, 
+    {"name":"setPerformImmediateCleanupOfCommitMarkableResourceBranches","parameterTypes":["boolean"] }, 
+    {"name":"setPerformImmediateCleanupOfCommitMarkableResourceBranchesMap","parameterTypes":["java.util.Map"] }, 
+    {"name":"setStrictJTA12DuplicateXAENDPROTOErr","parameterTypes":["boolean"] }, 
+    {"name":"setSupportSubtransactions","parameterTypes":["boolean"] }, 
+    {"name":"setTransactionManager","parameterTypes":["javax.transaction.TransactionManager"] }, 
+    {"name":"setTransactionManagerClassName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setTransactionManagerJNDIContext","parameterTypes":["java.lang.String"] }, 
+    {"name":"setTransactionSynchronizationRegistry","parameterTypes":["javax.transaction.TransactionSynchronizationRegistry"] }, 
+    {"name":"setTransactionSynchronizationRegistryClassName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setTransactionSynchronizationRegistryJNDIContext","parameterTypes":["java.lang.String"] }, 
+    {"name":"setTransactionToThreadListenersEnabled","parameterTypes":["boolean"] }, 
+    {"name":"setUserTransaction","parameterTypes":["javax.transaction.UserTransaction"] }, 
+    {"name":"setUserTransactionClassName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setUserTransactionJNDIContext","parameterTypes":["java.lang.String"] }, 
+    {"name":"setUserTransactionOperationsProviderClassName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setXaAssumeRecoveryComplete","parameterTypes":["boolean"] }, 
+    {"name":"setXaRecoveryNodes","parameterTypes":["java.util.List"] }, 
+    {"name":"setXaResourceIsSameRMClassNames","parameterTypes":["java.util.List"] }, 
+    {"name":"setXaResourceMapClassNames","parameterTypes":["java.util.List"] }, 
+    {"name":"setXaResourceMaps","parameterTypes":["java.util.List"] }, 
+    {"name":"setXaResourceOrphanFilterClassNames","parameterTypes":["java.util.List"] }, 
+    {"name":"setXaResourceOrphanFilters","parameterTypes":["java.util.List"] }, 
+    {"name":"setXaResourceRecordWrappingPluginClassName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setXaResourceRecoveries","parameterTypes":["java.util.List"] }, 
+    {"name":"setXaResourceRecoveryClassNames","parameterTypes":["java.util.List"] }, 
+    {"name":"setXaRollbackOptimization","parameterTypes":["boolean"] }, 
+    {"name":"setXaTransactionTimeoutEnabled","parameterTypes":["boolean"] }
+  ]
+},
+{
+  "name":"com.arjuna.ats.jta.logging.jtaI18NLogger_$logger",
+  "methods":[{"name":"<init>","parameterTypes":["org.jboss.logging.Logger"] }]
+},
+{
+  "name":"com.arjuna.ats.jta.resources.LastResourceCommitOptimisation"
+},
+{
+  "name":"com.arjuna.common.logging.commonI18NLogger_$logger",
+  "methods":[{"name":"<init>","parameterTypes":["org.jboss.logging.Logger"] }]
+},
+{
+  "name":"com.arjuna.common.util.propertyservice.PropertiesFactory",
+  "fields":[{"name":"delegatePropertiesFactory"}]
+},
+{
+  "name":"com.sun.crypto.provider.AESCipher$General",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.ARCFOURCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.ChaCha20Cipher$ChaCha20Poly1305",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.DESCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.DESedeCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.GaloisCounterMode$AESGCM",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.management.GarbageCollectorMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.GcInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.HotSpotDiagnosticMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.OperatingSystemMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.ThreadMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.VMOption",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.management.internal.GarbageCollectorExtImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"com.sun.management.internal.HotSpotDiagnostic",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"com.sun.management.internal.HotSpotThreadImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"com.sun.management.internal.OperatingSystemImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.impl.dv.xs.ExtendedSchemaDVFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.impl.dv.xs.SchemaDVFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"connectjar.org.apache.commons.logging.LogFactory"
+},
+{
+  "name":"connectjar.org.apache.commons.logging.impl.Jdk14Logger",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"connectjar.org.apache.commons.logging.impl.Log4JLogger"
+},
+{
+  "name":"connectjar.org.apache.commons.logging.impl.LogFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"connectjar.org.apache.commons.logging.impl.WeakHashtable",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.agroal.api.AgroalDataSource"
+},
+{
+  "name":"io.agroal.api.AgroalPoolInterceptor"
+},
+{
+  "name":"io.agroal.api.configuration.AgroalConnectionFactoryConfiguration$TransactionIsolation"
+},
+{
+  "name":"io.agroal.api.configuration.AgroalConnectionPoolConfiguration$TransactionRequirement"
+},
+{
+  "name":"io.netty.bootstrap.ServerBootstrap$1"
+},
+{
+  "name":"io.netty.bootstrap.ServerBootstrap$ServerBootstrapAcceptor",
+  "methods":[
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }
+  ]
+},
+{
+  "name":"io.netty.buffer.AbstractByteBufAllocator",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.netty.buffer.AbstractReferenceCountedByteBuf",
+  "fields":[{"name":"refCnt"}]
+},
+{
+  "name":"io.netty.channel.ChannelDuplexHandler",
+  "methods":[
+    {"name":"bind","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.net.SocketAddress","io.netty.channel.ChannelPromise"] }, 
+    {"name":"close","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"connect","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.net.SocketAddress","java.net.SocketAddress","io.netty.channel.ChannelPromise"] }, 
+    {"name":"deregister","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"disconnect","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"flush","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"read","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"write","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object","io.netty.channel.ChannelPromise"] }
+  ]
+},
+{
+  "name":"io.netty.channel.ChannelHandlerAdapter",
+  "methods":[{"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }]
+},
+{
+  "name":"io.netty.channel.ChannelInboundHandlerAdapter",
+  "methods":[
+    {"name":"channelActive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelUnregistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelWritabilityChanged","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }, 
+    {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }
+  ]
+},
+{
+  "name":"io.netty.channel.ChannelInitializer",
+  "methods":[
+    {"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }
+  ]
+},
+{
+  "name":"io.netty.channel.ChannelOutboundHandlerAdapter",
+  "methods":[
+    {"name":"bind","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.net.SocketAddress","io.netty.channel.ChannelPromise"] }, 
+    {"name":"close","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"connect","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.net.SocketAddress","java.net.SocketAddress","io.netty.channel.ChannelPromise"] }, 
+    {"name":"deregister","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"disconnect","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"flush","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"read","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }
+  ]
+},
+{
+  "name":"io.netty.channel.DefaultChannelPipeline$HeadContext",
+  "methods":[
+    {"name":"bind","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.net.SocketAddress","io.netty.channel.ChannelPromise"] }, 
+    {"name":"channelActive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelUnregistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelWritabilityChanged","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"close","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"connect","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.net.SocketAddress","java.net.SocketAddress","io.netty.channel.ChannelPromise"] }, 
+    {"name":"deregister","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"disconnect","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }, 
+    {"name":"flush","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"read","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"write","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object","io.netty.channel.ChannelPromise"] }
+  ]
+},
+{
+  "name":"io.netty.channel.DefaultChannelPipeline$TailContext",
+  "methods":[
+    {"name":"channelActive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelUnregistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelWritabilityChanged","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }, 
+    {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }
+  ]
+},
+{
+  "name":"io.netty.channel.EventLoopGroup"
+},
+{
+  "name":"io.netty.handler.codec.ByteToMessageDecoder",
+  "methods":[
+    {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }
+  ]
+},
+{
+  "name":"io.netty.handler.codec.haproxy.HAProxyMessageDecoder"
+},
+{
+  "name":"io.netty.handler.codec.http.HttpObjectDecoder",
+  "methods":[{"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }]
+},
+{
+  "name":"io.netty.handler.codec.http.HttpObjectEncoder",
+  "methods":[{"name":"write","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object","io.netty.channel.ChannelPromise"] }]
+},
+{
+  "name":"io.netty.handler.codec.http.websocketx.extensions.WebSocketServerExtensionHandler",
+  "methods":[
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"write","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object","io.netty.channel.ChannelPromise"] }
+  ]
+},
+{
+  "name":"io.netty.handler.timeout.IdleStateHandler",
+  "methods":[
+    {"name":"channelActive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRegistered","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"write","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object","io.netty.channel.ChannelPromise"] }
+  ]
+},
+{
+  "name":"io.netty.util.ReferenceCountUtil",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.netty.util.concurrent.FastThreadLocal"
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueColdProducerFields",
+  "fields":[{"name":"producerLimit"}]
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueConsumerFields",
+  "fields":[{"name":"consumerIndex"}]
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueProducerFields",
+  "fields":[{"name":"producerIndex"}]
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueConsumerIndexField",
+  "fields":[{"name":"consumerIndex"}]
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueProducerIndexField",
+  "fields":[{"name":"producerIndex"}]
+},
+{
+  "name":"io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueProducerLimitField",
+  "fields":[{"name":"producerLimit"}]
+},
+{
+  "name":"io.quarkus.agroal.DataSource",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.agroal.runtime.AgroalConnectionConfigurer"
+},
+{
+  "name":"io.quarkus.agroal.runtime.DataSourceSupport"
+},
+{
+  "name":"io.quarkus.agroal.runtime.DataSources",
+  "methods":[{"name":"<init>","parameterTypes":["io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig","io.quarkus.datasource.runtime.DataSourcesRuntimeConfig","io.quarkus.agroal.runtime.DataSourcesJdbcBuildTimeConfig","io.quarkus.agroal.runtime.DataSourcesJdbcRuntimeConfig","io.quarkus.narayana.jta.runtime.TransactionManagerConfiguration","javax.transaction.TransactionManager","org.jboss.tm.XAResourceRecoveryRegistry","javax.transaction.TransactionSynchronizationRegistry","io.quarkus.agroal.runtime.DataSourceSupport","javax.enterprise.inject.Instance"] }]
+},
+{
+  "name":"io.quarkus.agroal.runtime.DataSourcesJdbcBuildTimeConfig"
+},
+{
+  "name":"io.quarkus.agroal.runtime.DataSourcesJdbcRuntimeConfig"
+},
+{
+  "name":"io.quarkus.agroal.runtime.JdbcDriver",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.agroal.runtime.TransactionIntegration"
+},
+{
+  "name":"io.quarkus.arc.AsyncObserverExceptionHandler"
+},
+{
+  "name":"io.quarkus.arc.impl.DefaultAsyncObserverExceptionHandler"
+},
+{
+  "name":"io.quarkus.arc.impl.RequestContext$RequestContextState",
+  "fields":[{"name":"isValid"}]
+},
+{
+  "name":"io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig"
+},
+{
+  "name":"io.quarkus.datasource.runtime.DataSourcesRuntimeConfig"
+},
+{
+  "name":"io.quarkus.jdbc.h2.runtime.H2AgroalConnectionConfigurer"
+},
+{
+  "name":"io.quarkus.narayana.jta.RequestScopedTransaction",
+  "methods":[{"name":"<init>","parameterTypes":["javax.transaction.UserTransaction","javax.transaction.TransactionManager","io.quarkus.narayana.jta.runtime.TransactionManagerConfiguration"] }]
+},
+{
+  "name":"io.quarkus.narayana.jta.runtime.NarayanaJtaProducers",
+  "methods":[{"name":"xaResourceRecoveryRegistry","parameterTypes":["io.quarkus.narayana.jta.runtime.TransactionManagerConfiguration"] }]
+},
+{
+  "name":"io.quarkus.narayana.jta.runtime.TransactionManagerConfiguration"
+},
+{
+  "name":"io.quarkus.narayana.jta.runtime.interceptor.TransactionalInterceptorRequired"
+},
+{
+  "name":"io.quarkus.resteasy.common.runtime.QuarkusInjectorFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.AuthenticationCompletionExceptionMapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.AuthenticationFailedExceptionMapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.AuthenticationRedirectExceptionMapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.CompositeExceptionMapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.ForbiddenExceptionMapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.UnauthorizedExceptionMapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.vertx.JsonArrayReader",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.vertx.JsonArrayWriter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.vertx.JsonObjectReader",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.resteasy.runtime.vertx.JsonObjectWriter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.runner.ApplicationImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.runtime.configuration.ConfigurationRuntimeConfig$BuildTimeMismatchAtRuntime"
+},
+{
+  "name":"io.quarkus.runtime.configuration.MemorySize"
+},
+{
+  "name":"io.quarkus.runtime.generated.BuildTimeRunTimeFixedConfigSourceBuilder",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.runtime.generated.RunTimeDefaultsConfigSourceBuilder",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.runtime.generated.RunTimeMappingsConfigBuilder",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.runtime.generated.StaticInitMappingsConfigBuilder",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.quarkus.runtime.logging.InheritableLevel",
+  "methods":[{"name":"of","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.quarkus.smallrye.context.runtime.SmallRyeContextPropagationProvider"
+},
+{
+  "name":"io.quarkus.vertx.http.runtime.CurrentRequestProducer"
+},
+{
+  "name":"io.quarkus.vertx.http.runtime.CurrentVertxRequest"
+},
+{
+  "name":"io.quarkus.vertx.http.runtime.FormAuthConfig$CookieSameSite"
+},
+{
+  "name":"io.quarkus.vertx.http.runtime.HttpConfiguration$InsecureRequests"
+},
+{
+  "name":"io.quarkus.vertx.http.runtime.HttpConfiguration$PayloadHint"
+},
+{
+  "name":"io.quarkus.vertx.runtime.VertxProducer"
+},
+{
+  "name":"io.smallrye.config.ConfigMessages_$bundle",
+  "fields":[{"name":"INSTANCE"}]
+},
+{
+  "name":"io.smallrye.config.PropertiesLocationConfigSourceFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.smallrye.context.SmallRyeManagedExecutor"
+},
+{
+  "name":"io.smallrye.context.SmallRyeThreadContext"
+},
+{
+  "name":"io.smallrye.context.api.ManagedExecutorConfig",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.smallrye.context.jta.context.propagation.JtaContextProvider$LifecycleManager"
+},
+{
+  "name":"io.vertx.core.Vertx"
+},
+{
+  "name":"io.vertx.core.buffer.Buffer"
+},
+{
+  "name":"io.vertx.core.eventbus.EventBus"
+},
+{
+  "name":"io.vertx.core.http.ClientAuth"
+},
+{
+  "name":"io.vertx.core.http.CookieSameSite"
+},
+{
+  "name":"io.vertx.core.http.HttpServerRequest"
+},
+{
+  "name":"io.vertx.core.http.impl.Http1xOrH2CHandler",
+  "methods":[{"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }]
+},
+{
+  "name":"io.vertx.core.http.impl.Http1xUpgradeToH2CHandler",
+  "methods":[
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }
+  ]
+},
+{
+  "name":"io.vertx.core.http.impl.HttpServerWorker$1",
+  "methods":[
+    {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }, 
+    {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }
+  ]
+},
+{
+  "name":"io.vertx.core.http.impl.VertxHttpRequestDecoder"
+},
+{
+  "name":"io.vertx.core.http.impl.VertxHttpResponseEncoder"
+},
+{
+  "name":"io.vertx.core.logging.SLF4JLogDelegateFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.vertx.core.metrics.Measured"
+},
+{
+  "name":"io.vertx.core.net.impl.ServerChannelLoadBalancer"
+},
+{
+  "name":"io.vertx.core.net.impl.VertxHandler",
+  "methods":[
+    {"name":"channelInactive","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelRead","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }, 
+    {"name":"channelReadComplete","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"channelWritabilityChanged","parameterTypes":["io.netty.channel.ChannelHandlerContext"] }, 
+    {"name":"close","parameterTypes":["io.netty.channel.ChannelHandlerContext","io.netty.channel.ChannelPromise"] }, 
+    {"name":"exceptionCaught","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Throwable"] }, 
+    {"name":"userEventTriggered","parameterTypes":["io.netty.channel.ChannelHandlerContext","java.lang.Object"] }
+  ]
+},
+{
+  "name":"io.vertx.core.streams.ReadStream"
+},
+{
+  "name":"io.vertx.core.streams.StreamBase"
+},
+{
+  "name":"io.vertx.ext.web.RoutingContext"
+},
+{
+  "name":"io.vertx.mutiny.core.Vertx"
+},
+{
+  "name":"io.vertx.mutiny.core.eventbus.EventBus"
+},
+{
+  "name":"io.vertx.mutiny.core.metrics.Measured"
+},
+{
+  "name":"java.beans.PropertyVetoException"
+},
+{
+  "name":"java.io.File",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.io.Serializable",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.Boolean",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Byte",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.CharSequence",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.Character",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Class",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.lang.Comparable",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.Deprecated",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.Double",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Float",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Integer",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Long",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.Object",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"java.lang.ProcessHandle",
+  "methods":[
+    {"name":"current","parameterTypes":[] }, 
+    {"name":"pid","parameterTypes":[] }
+  ]
+},
+{
+  "name":"java.lang.Short",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.StackTraceElement",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.String",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"java.lang.System",
+  "methods":[
+    {"name":"console","parameterTypes":[] }, 
+    {"name":"exit","parameterTypes":["int"] }
+  ]
+},
+{
+  "name":"java.lang.Thread",
+  "fields":[
+    {"name":"contextClassLoader"}, 
+    {"name":"inheritableThreadLocals"}, 
+    {"name":"threadLocals"}
+  ]
+},
+{
+  "name":"java.lang.Void",
+  "fields":[{"name":"TYPE"}]
+},
+{
+  "name":"java.lang.annotation.Annotation"
+},
+{
+  "name":"java.lang.constant.Constable",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.constant.ConstantDesc",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.invoke.TypeDescriptor$OfField",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.invoke.VarHandle",
+  "methods":[{"name":"releaseFence","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.BufferPoolMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.ClassLoadingMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.CompilationMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.LockInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.ManagementFactory",
+  "methods":[{"name":"getRuntimeMXBean","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.ManagementPermission",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.management.MemoryMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.MemoryManagerMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.MemoryPoolMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.MemoryUsage",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.MonitorInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.management.PlatformLoggingMXBean",
+  "queryAllPublicMethods":true,
+  "methods":[
+    {"name":"getLoggerLevel","parameterTypes":["java.lang.String"] }, 
+    {"name":"getLoggerNames","parameterTypes":[] }, 
+    {"name":"getParentLoggerName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setLoggerLevel","parameterTypes":["java.lang.String","java.lang.String"] }
+  ]
+},
+{
+  "name":"java.lang.management.RuntimeMXBean",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"getInputArguments","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.ThreadInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.reflect.AccessibleObject",
+  "methods":[
+    {"name":"setAccessible","parameterTypes":["boolean"] }, 
+    {"name":"setAccessible","parameterTypes":["java.lang.reflect.AccessibleObject[]","boolean"] }
+  ]
+},
+{
+  "name":"java.lang.reflect.AnnotatedElement",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.reflect.GenericDeclaration",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.reflect.Type",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.math.BigDecimal"
+},
+{
+  "name":"java.math.BigInteger"
+},
+{
+  "name":"java.net.InetSocketAddress"
+},
+{
+  "name":"java.net.URI",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.nio.Bits",
+  "fields":[{"name":"UNALIGNED"}]
+},
+{
+  "name":"java.nio.Buffer",
+  "fields":[{"name":"address"}]
+},
+{
+  "name":"java.nio.ByteBuffer",
+  "methods":[{"name":"alignedSlice","parameterTypes":["int"] }]
+},
+{
+  "name":"java.nio.DirectByteBuffer",
+  "methods":[{"name":"<init>","parameterTypes":["long","int"] }]
+},
+{
+  "name":"java.nio.channels.spi.SelectorProvider",
+  "methods":[
+    {"name":"openServerSocketChannel","parameterTypes":["java.net.ProtocolFamily"] }, 
+    {"name":"openSocketChannel","parameterTypes":["java.net.ProtocolFamily"] }
+  ]
+},
+{
+  "name":"java.nio.charset.Charset"
+},
+{
+  "name":"java.nio.file.Path"
+},
+{
+  "name":"java.security.AlgorithmParametersSpi"
+},
+{
+  "name":"java.security.KeyStoreSpi"
+},
+{
+  "name":"java.security.SecureRandomParameters"
+},
+{
+  "name":"java.time.Duration"
+},
+{
+  "name":"java.util.ArrayList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"java.util.Date"
+},
+{
+  "name":"java.util.Locale"
+},
+{
+  "name":"java.util.Map",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.util.Map$Entry",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.util.OptionalInt"
+},
+{
+  "name":"java.util.PropertyPermission",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }]
+},
+{
+  "name":"java.util.logging.Level"
+},
+{
+  "name":"java.util.logging.LogManager",
+  "methods":[{"name":"getLoggingMXBean","parameterTypes":[] }]
+},
+{
+  "name":"java.util.logging.LoggingMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"javax.enterprise.context.BeforeDestroyed",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"javax.enterprise.context.Conversation"
+},
+{
+  "name":"javax.enterprise.context.Destroyed",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"javax.enterprise.context.Initialized",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"javax.enterprise.inject.Any",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"javax.enterprise.inject.Default",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"javax.enterprise.inject.Instance"
+},
+{
+  "name":"javax.inject.Inject",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"javax.management.MBeanOperationInfo",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"getSignature","parameterTypes":[] }]
+},
+{
+  "name":"javax.management.MBeanServerBuilder",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"javax.management.ObjectName"
+},
+{
+  "name":"javax.management.openmbean.CompositeData"
+},
+{
+  "name":"javax.management.openmbean.OpenMBeanOperationInfoSupport"
+},
+{
+  "name":"javax.management.openmbean.TabularData"
+},
+{
+  "name":"javax.net.ssl.SSLEngine",
+  "methods":[{"name":"getApplicationProtocol","parameterTypes":[] }]
+},
+{
+  "name":"javax.security.auth.x500.X500Principal",
+  "fields":[{"name":"thisX500Name"}],
+  "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]
+},
+{
+  "name":"javax.sql.DataSource"
+},
+{
+  "name":"javax.transaction.TransactionManager"
+},
+{
+  "name":"javax.transaction.TransactionSynchronizationRegistry"
+},
+{
+  "name":"javax.transaction.UserTransaction"
+},
+{
+  "name":"jdk.internal.misc.Unsafe",
+  "methods":[{"name":"getUnsafe","parameterTypes":[] }]
+},
+{
+  "name":"jdk.management.jfr.ConfigurationInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"jdk.management.jfr.EventTypeInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"jdk.management.jfr.FlightRecorderMXBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"jdk.management.jfr.FlightRecorderMXBeanImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"jdk.management.jfr.RecordingInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"jdk.management.jfr.SettingDescriptorInfo",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.apache.commons.logging.LogFactoryService",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.ibatis.javassist.ClassPool"
+},
+{
+  "name":"org.apache.ibatis.javassist.util.proxy.ProxyFactory"
+},
+{
+  "name":"org.apache.ibatis.logging.slf4j.Slf4jImpl",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"org.apache.ibatis.ognl.OgnlRuntime$ClassPropertyMethodCache",
+  "methods":[{"name":"get","parameterTypes":["java.lang.Class","java.lang.String"] }]
+},
+{
+  "name":"org.apache.ibatis.scripting.defaults.RawLanguageDriver",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.ibatis.scripting.xmltags.XMLLanguageDriver",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.ibatis.session.Configuration",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.application.impl.ProcessApplicationLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.container.impl.ContainerIntegrationLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.container.impl.jmx.services.JmxManagedProcessEngine",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"org.camunda.bpm.container.impl.jmx.services.JmxManagedProcessEngineMBean",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.dmn.engine.DmnDecision",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.dmn.engine.DmnDecisionRequirementsGraph",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.dmn.engine.impl.DmnDecisionImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.dmn.engine.impl.DmnDecisionRequirementsGraphImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.dmn.engine.impl.DmnEngineLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.dmn.engine.impl.hitpolicy.DmnHitPolicyLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.dmn.engine.impl.transform.DmnTransformLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.dmn.feel.impl.scala.ScalaFeelLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.AuthorizationService"
+},
+{
+  "name":"org.camunda.bpm.engine.CaseService"
+},
+{
+  "name":"org.camunda.bpm.engine.DecisionService"
+},
+{
+  "name":"org.camunda.bpm.engine.ExternalTaskService"
+},
+{
+  "name":"org.camunda.bpm.engine.FilterService"
+},
+{
+  "name":"org.camunda.bpm.engine.FormService"
+},
+{
+  "name":"org.camunda.bpm.engine.HistoryService"
+},
+{
+  "name":"org.camunda.bpm.engine.IdentityService"
+},
+{
+  "name":"org.camunda.bpm.engine.ManagementService"
+},
+{
+  "name":"org.camunda.bpm.engine.ProcessEngine"
+},
+{
+  "name":"org.camunda.bpm.engine.ProcessEngineServices"
+},
+{
+  "name":"org.camunda.bpm.engine.RepositoryService"
+},
+{
+  "name":"org.camunda.bpm.engine.RuntimeService"
+},
+{
+  "name":"org.camunda.bpm.engine.TaskService"
+},
+{
+  "name":"org.camunda.bpm.engine.authorization.Authorization",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.batch.Batch",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.batch.BatchStatistics",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.batch.history.HistoricBatch",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.BusinessProcess",
+  "fields":[{"name":"conversationInstance"}]
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.CurrentProcessInstance"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.ProcessVariables"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.annotation.event.BusinessProcessDefinition",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.annotation.event.EndActivity",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.annotation.event.StartActivity",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.annotation.event.TakeTransition",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.compat.CamundaTaskForm"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.compat.FoxTaskForm"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.AbstractVariableMap"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.ProcessEngineServicesProducer"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.ProcessVariableLocalMap"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.ProcessVariableMap"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.annotation.BusinessKeyProducer"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.context.ContextAssociationManager"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.context.DefaultContextAssociationManager"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.context.RequestScopedAssociation"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.impl.context.ScopedAssociation"
+},
+{
+  "name":"org.camunda.bpm.engine.cdi.jsf.TaskForm",
+  "fields":[{"name":"conversationInstance"}]
+},
+{
+  "name":"org.camunda.bpm.engine.delegate.BaseDelegateExecution",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.delegate.DelegateTask",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.delegate.JavaDelegate"
+},
+{
+  "name":"org.camunda.bpm.engine.delegate.VariableScope",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.externaltask.ExternalTask",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.filter.Filter",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.CleanableHistoricBatchReportResult",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.CleanableHistoricCaseInstanceReportResult",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.CleanableHistoricDecisionInstanceReportResult",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.CleanableHistoricProcessInstanceReportResult",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.DurationReportResult",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricActivityInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricActivityStatistics",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricCaseActivityInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricCaseActivityStatistics",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricCaseActivityStatisticsQuery",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricCaseInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricDecisionInputInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricDecisionInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricDecisionInstanceStatistics",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricDecisionOutputInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricExternalTaskLog",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricIdentityLinkLog",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricIncident",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricJobLog",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricProcessInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricTaskInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricTaskInstanceReportResult",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricVariableInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricVariableInstanceQuery",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.HistoricVariableUpdate",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.ReportResult",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.history.UserOperationLogEntry",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.identity.Group",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.identity.Tenant",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.identity.User",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.AbstractQuery",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.ActivityStatisticsQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.AuthorizationQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.CleanableHistoricBatchReportImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.CleanableHistoricCaseInstanceReportImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.CleanableHistoricDecisionInstanceReportImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.CleanableHistoricProcessInstanceReportImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.DeploymentQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.DeploymentStatisticsQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.EventSubscriptionQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.ExecutionQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.ExternalTaskQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.GroupQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricActivityInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricActivityStatisticsQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricCaseActivityInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricCaseActivityStatisticsQueryImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricCaseInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricDecisionInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricDecisionInstanceStatisticsQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricDetailQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricExternalTaskLogQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricIdentityLinkLogQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricIncidentQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricJobLogQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricProcessInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricProcessInstanceReportImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricTaskInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricTaskInstanceReportImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.HistoricVariableInstanceQueryImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getActivityInstanceIds","parameterTypes":[] }, 
+    {"name":"getCaseActivityIds","parameterTypes":[] }, 
+    {"name":"getCaseExecutionIds","parameterTypes":[] }, 
+    {"name":"getCaseInstanceId","parameterTypes":[] }, 
+    {"name":"getExecutionIds","parameterTypes":[] }, 
+    {"name":"getProcessDefinitionId","parameterTypes":[] }, 
+    {"name":"getProcessDefinitionKey","parameterTypes":[] }, 
+    {"name":"getProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getProcessInstanceIds","parameterTypes":[] }, 
+    {"name":"getQueryVariableValue","parameterTypes":[] }, 
+    {"name":"getTaskIds","parameterTypes":[] }, 
+    {"name":"getVariableName","parameterTypes":[] }, 
+    {"name":"getVariableNameIn","parameterTypes":[] }, 
+    {"name":"getVariableNameLike","parameterTypes":[] }, 
+    {"name":"getVariableNamesIgnoreCase","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.IncidentQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.JobDefinitionQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.JobQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.ProcessDefinitionQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.ProcessDefinitionStatisticsQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.ProcessEngineLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.ProcessInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.SchemaLogQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.TablePageQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.TaskQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.TaskReportImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.TenantQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.UserOperationLogQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.UserQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.VariableInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.batch.BatchEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.batch.BatchQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.batch.BatchStatisticsEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.batch.BatchStatisticsQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.batch.history.HistoricBatchEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.batch.history.HistoricBatchQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.bpmn.behavior.BpmnBehaviorLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.bpmn.parser.BpmnParseLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cfg.ConfigurationLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cfg.TransactionLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmd.CommandLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.behavior.CmmnBehaviorLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.entity.repository.CaseDefinitionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.entity.repository.CaseDefinitionQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.entity.runtime.CaseExecutionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.entity.runtime.CaseExecutionQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.entity.runtime.CaseInstanceQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.entity.runtime.CaseSentryPartEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.entity.runtime.CaseSentryPartQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.execution.CmmnCaseInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.execution.CmmnExecution",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.execution.CmmnSentryPart",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.model.CmmnActivity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.model.CmmnCaseDefinition",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.operation.CmmnOperationLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.cmmn.transformer.CmmnTransformerLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.core.CoreLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.core.instance.CoreExecution",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.core.model.CoreActivity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.core.model.CoreModelElement",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.core.variable.CoreVariableInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.core.variable.event.VariableEventDispatcher",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.core.variable.scope.AbstractVariableScope",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.core.variable.scope.VariableStore$VariablesProvider",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.AuthorizationCheck",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getShouldPerformAuthorizatioCheck","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.DbEntity",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.DbEntityLifecycleAware",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.EnginePersistenceLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.HasDbReferences",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.HasDbRevision",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.HistoricEntity",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.ListQueryParameterObject",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getAuthCheck","parameterTypes":[] }, 
+    {"name":"getFirstResult","parameterTypes":[] }, 
+    {"name":"getMaxResults","parameterTypes":[] }, 
+    {"name":"getOrderingProperties","parameterTypes":[] }, 
+    {"name":"getParameter","parameterTypes":[] }, 
+    {"name":"getTenantCheck","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.db.TenantCheck",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getIsTenantCheckEnabled","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.digest.SecurityLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.dmn.DecisionLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.dmn.entity.repository.DecisionDefinitionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.dmn.entity.repository.DecisionDefinitionQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.dmn.entity.repository.DecisionRequirementsDefinitionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.dmn.entity.repository.DecisionRequirementsDefinitionQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.el.CommandContextFunctions",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.el.DateTimeFunctions",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.externaltask.ExternalTaskLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.filter.FilterQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricActivityInstanceEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getActivityId","parameterTypes":[] }, 
+    {"name":"getActivityInstanceState","parameterTypes":[] }, 
+    {"name":"getActivityName","parameterTypes":[] }, 
+    {"name":"getActivityType","parameterTypes":[] }, 
+    {"name":"getCalledCaseInstanceId","parameterTypes":[] }, 
+    {"name":"getCalledProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getParentActivityInstanceId","parameterTypes":[] }, 
+    {"name":"getRootProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getTaskAssignee","parameterTypes":[] }, 
+    {"name":"getTaskId","parameterTypes":[] }, 
+    {"name":"getTenantId","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricCaseActivityInstanceEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricCaseInstanceEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricDecisionInputInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricDecisionInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricDecisionOutputInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricDetailEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getActivityInstanceId","parameterTypes":[] }, 
+    {"name":"getRootProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getTaskId","parameterTypes":[] }, 
+    {"name":"getTenantId","parameterTypes":[] }, 
+    {"name":"getTimestamp","parameterTypes":[] }, 
+    {"name":"getUserOperationId","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricExternalTaskLogEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricFormPropertyEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricIdentityLinkLogEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricIncidentEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricJobLogEvent",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricProcessInstanceEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getBusinessKey","parameterTypes":[] }, 
+    {"name":"getDeleteReason","parameterTypes":[] }, 
+    {"name":"getEndActivityId","parameterTypes":[] }, 
+    {"name":"getStartActivityId","parameterTypes":[] }, 
+    {"name":"getStartUserId","parameterTypes":[] }, 
+    {"name":"getState","parameterTypes":[] }, 
+    {"name":"getSuperCaseInstanceId","parameterTypes":[] }, 
+    {"name":"getSuperProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getTenantId","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricScopeInstanceEvent",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[
+    {"name":"getDurationInMillis","parameterTypes":[] }, 
+    {"name":"getEndTime","parameterTypes":[] }, 
+    {"name":"getStartTime","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricTaskInstanceEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoricVariableUpdateEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getByteArrayId","parameterTypes":[] }, 
+    {"name":"getDoubleValue","parameterTypes":[] }, 
+    {"name":"getLongValue","parameterTypes":[] }, 
+    {"name":"getRevision","parameterTypes":[] }, 
+    {"name":"getSerializerName","parameterTypes":[] }, 
+    {"name":"getTextValue","parameterTypes":[] }, 
+    {"name":"getTextValue2","parameterTypes":[] }, 
+    {"name":"getVariableInstanceId","parameterTypes":[] }, 
+    {"name":"getVariableName","parameterTypes":[] }, 
+    {"name":"isInitial","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.HistoryEvent",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[
+    {"name":"getCaseDefinitionId","parameterTypes":[] }, 
+    {"name":"getCaseDefinitionKey","parameterTypes":[] }, 
+    {"name":"getCaseExecutionId","parameterTypes":[] }, 
+    {"name":"getCaseInstanceId","parameterTypes":[] }, 
+    {"name":"getExecutionId","parameterTypes":[] }, 
+    {"name":"getId","parameterTypes":[] }, 
+    {"name":"getProcessDefinitionId","parameterTypes":[] }, 
+    {"name":"getProcessDefinitionKey","parameterTypes":[] }, 
+    {"name":"getProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getRemovalTime","parameterTypes":[] }, 
+    {"name":"getRootProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getSequenceCounter","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.history.event.UserOperationLogEntryEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.identity.Account",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.identity.IndentityLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.incident.IncidentLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.interceptor.Command",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.interceptor.CommandContextListener",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.interceptor.ContextLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.jobexecutor.JobExecutorLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.metrics.MetricsLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.metrics.MetricsQueryImpl"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.migration.MigrationLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.AcquirableJobEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ActivityStatisticsImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.AttachmentEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.AuthorizationEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.AuthorizationManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ByteArrayEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.CamundaFormDefinitionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.CleanableHistoricBatchesReportResultEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.CleanableHistoricCaseInstanceReportResultEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.CleanableHistoricDecisionInstanceReportResultEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.CleanableHistoricProcessInstanceReportResultEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.CommentEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.DecisionInstanceStatisticsImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getDeploymentTime","parameterTypes":[] }, 
+    {"name":"getId","parameterTypes":[] }, 
+    {"name":"getName","parameterTypes":[] }, 
+    {"name":"getSource","parameterTypes":[] }, 
+    {"name":"getTenantId","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.DeploymentManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.DeploymentStatisticsEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.DurationReportResultEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.EventSubscriptionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.EverLivingJobEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ExecutionManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ExternalTaskEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.FilterEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.GroupEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricActivityInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricActivityStatisticsImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricCaseActivityInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricCaseActivityStatisticsImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricCaseInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricDetailVariableInstanceUpdateEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricFormPropertyEntity"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricIdentityLinkLogEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricIncidentEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricJobLogEventEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricProcessInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricTaskInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricVariableInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getActivityInstanceId","parameterTypes":[] }, 
+    {"name":"getByteArrayId","parameterTypes":[] }, 
+    {"name":"getCaseDefinitionId","parameterTypes":[] }, 
+    {"name":"getCaseDefinitionKey","parameterTypes":[] }, 
+    {"name":"getCaseExecutionId","parameterTypes":[] }, 
+    {"name":"getCaseInstanceId","parameterTypes":[] }, 
+    {"name":"getCreateTime","parameterTypes":[] }, 
+    {"name":"getDoubleValue","parameterTypes":[] }, 
+    {"name":"getExecutionId","parameterTypes":[] }, 
+    {"name":"getId","parameterTypes":[] }, 
+    {"name":"getLongValue","parameterTypes":[] }, 
+    {"name":"getProcessDefinitionId","parameterTypes":[] }, 
+    {"name":"getProcessDefinitionKey","parameterTypes":[] }, 
+    {"name":"getProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getRemovalTime","parameterTypes":[] }, 
+    {"name":"getRevision","parameterTypes":[] }, 
+    {"name":"getRootProcessInstanceId","parameterTypes":[] }, 
+    {"name":"getSerializerName","parameterTypes":[] }, 
+    {"name":"getState","parameterTypes":[] }, 
+    {"name":"getTaskId","parameterTypes":[] }, 
+    {"name":"getTenantId","parameterTypes":[] }, 
+    {"name":"getTextValue","parameterTypes":[] }, 
+    {"name":"getTextValue2","parameterTypes":[] }, 
+    {"name":"getVariableName","parameterTypes":[] }, 
+    {"name":"setActivityInstanceId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setCreateTime","parameterTypes":["java.util.Date"] }, 
+    {"name":"setExecutionId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setLongValue","parameterTypes":["java.lang.Long"] }, 
+    {"name":"setName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setProcessDefinitionId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setProcessDefinitionKey","parameterTypes":["java.lang.String"] }, 
+    {"name":"setProcessInstanceId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setRevision","parameterTypes":["int"] }, 
+    {"name":"setRootProcessInstanceId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setSerializerName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setState","parameterTypes":["java.lang.String"] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.HistoricVariableInstanceManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.IdentityInfoEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.IdentityLinkEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.IncidentEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.IncidentStatisticsEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.JobDefinitionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.JobEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.JobManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.MessageEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.MeterLogEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.MetricIntervalEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.Nameable",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getCategory","parameterTypes":[] }, 
+    {"name":"getDeploymentId","parameterTypes":[] }, 
+    {"name":"getDiagramResourceName","parameterTypes":[] }, 
+    {"name":"getHasStartFormKey","parameterTypes":[] }, 
+    {"name":"getHistoryTimeToLive","parameterTypes":[] }, 
+    {"name":"getKey","parameterTypes":[] }, 
+    {"name":"getResourceName","parameterTypes":[] }, 
+    {"name":"getSuspensionState","parameterTypes":[] }, 
+    {"name":"getTenantId","parameterTypes":[] }, 
+    {"name":"getVersion","parameterTypes":[] }, 
+    {"name":"getVersionTag","parameterTypes":[] }, 
+    {"name":"setCategory","parameterTypes":["java.lang.String"] }, 
+    {"name":"setDeploymentId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setHasStartFormKey","parameterTypes":["boolean"] }, 
+    {"name":"setId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setKey","parameterTypes":["java.lang.String"] }, 
+    {"name":"setResourceName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setRevision","parameterTypes":["int"] }, 
+    {"name":"setSuspensionState","parameterTypes":["int"] }, 
+    {"name":"setVersion","parameterTypes":["int"] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionStatisticsEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.PropertyEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getName","parameterTypes":[] }, 
+    {"name":"getValue","parameterTypes":[] }, 
+    {"name":"setName","parameterTypes":["java.lang.String"] }, 
+    {"name":"setRevision","parameterTypes":["int"] }, 
+    {"name":"setValue","parameterTypes":["java.lang.String"] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.PropertyManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ReportResultEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ResourceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getBytes","parameterTypes":[] }, 
+    {"name":"getCreateTime","parameterTypes":[] }, 
+    {"name":"getDeploymentId","parameterTypes":[] }, 
+    {"name":"getId","parameterTypes":[] }, 
+    {"name":"getName","parameterTypes":[] }, 
+    {"name":"getTenantId","parameterTypes":[] }, 
+    {"name":"getType","parameterTypes":[] }, 
+    {"name":"isGenerated","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.ResourceManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.SchemaLogEntryEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TableDataManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TaskCountByCandidateGroupResultEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TaskEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TaskMeterLogEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TaskReportResultEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TenantEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TenantManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TenantMembershipEntity"
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.TimerEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.UserEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.UserOperationLogManager",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.VariableInstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.optimize.OptimizeHistoricIdentityLinkLogEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.persistence.entity.util.TypedValueUpdateListener",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.plugin.AdministratorAuthorizationPluginLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.pvm.PvmLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.pvm.PvmProcessDefinition",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.pvm.PvmProcessInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.pvm.PvmScope",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.pvm.process.ProcessDefinitionImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.pvm.process.ScopeImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.repository.ResourceDefinitionEntity",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.scripting.ScriptLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.telemetry.TelemetryLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.test.TestLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.util.EngineUtilLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.engine.impl.util.ImmutablePair",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"org.camunda.bpm.engine.impl.variable.serializer.ValueFields",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.management.ActivityStatistics",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.management.DeploymentStatistics",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.management.IncidentStatistics",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.management.JobDefinition",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.management.MetricIntervalValue",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.management.ProcessDefinitionStatistics",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.management.SchemaLogEntry",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.query.Query",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.repository.CamundaFormDefinition",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.repository.CaseDefinition",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.repository.DecisionDefinition",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.repository.DecisionRequirementsDefinition",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.repository.DeploymentWithDefinitions",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.repository.ProcessDefinition",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.repository.Resource",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.repository.ResourceDefinition",
+  "methods":[
+    {"name":"getId","parameterTypes":[] }, 
+    {"name":"getName","parameterTypes":[] }
+  ]
+},
+{
+  "name":"org.camunda.bpm.engine.runtime.CaseExecution",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.runtime.CaseInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.runtime.EventSubscription",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.runtime.Execution",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.runtime.Incident",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.runtime.Job",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.runtime.ProcessInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.runtime.VariableInstance",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.task.Attachment",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.task.Comment",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.task.Event",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.task.IdentityLink",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.task.Task",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.task.TaskCountByCandidateGroupResult",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"org.camunda.bpm.engine.variable.VariableMap"
+},
+{
+  "name":"org.camunda.bpm.quarkus.engine.extension.QuarkusProcessEngineConfiguration",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.bpm.quarkus.engine.extension.event.CamundaEngineStartupEvent"
+},
+{
+  "name":"org.camunda.bpm.quarkus.example.datasource.ApprovalServiceBean",
+  "methods":[{"name":"evaluateForApproval","parameterTypes":["int"] }]
+},
+{
+  "name":"org.camunda.bpm.quarkus.example.datasource.ApprovalServiceDelegate"
+},
+{
+  "name":"org.camunda.bpm.quarkus.example.datasource.Deployments"
+},
+{
+  "name":"org.camunda.bpm.quarkus.example.datasource.rest.ApprovalProcessService",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"evaluateAmount","parameterTypes":["int"] }]
+},
+{
+  "name":"org.camunda.connect.httpclient.impl.HttpConnectorLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.connect.httpclient.soap.impl.SoapHttpConnectorLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.camunda.connect.impl.ConnectCoreLogger",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.eclipse.microprofile.config.Config",
+  "methods":[
+    {"name":"getOptionalValue","parameterTypes":["java.lang.String","java.lang.Class"] }, 
+    {"name":"getValue","parameterTypes":["java.lang.String","java.lang.Class"] }
+  ]
+},
+{
+  "name":"org.eclipse.microprofile.config.ConfigProvider",
+  "methods":[{"name":"getConfig","parameterTypes":["java.lang.ClassLoader"] }]
+},
+{
+  "name":"org.eclipse.microprofile.context.ManagedExecutor"
+},
+{
+  "name":"org.eclipse.microprofile.context.ThreadContext"
+},
+{
+  "name":"org.graalvm.polyglot.Engine",
+  "methods":[{"name":"getImpl","parameterTypes":[] }]
+},
+{
+  "name":"org.graalvm.polyglot.management.Management"
+},
+{
+  "name":"org.h2.Driver",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.logmanager.ExtLogRecord",
+  "methods":[{"name":"setMarker","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"org.jboss.logmanager.LogManager"
+},
+{
+  "name":"org.jboss.logmanager.Logger$AttachmentKey"
+},
+{
+  "name":"org.jboss.logmanager.handlers.AsyncHandler$OverflowAction"
+},
+{
+  "name":"org.jboss.logmanager.handlers.SyslogHandler$Facility"
+},
+{
+  "name":"org.jboss.logmanager.handlers.SyslogHandler$Protocol"
+},
+{
+  "name":"org.jboss.logmanager.handlers.SyslogHandler$SyslogType"
+},
+{
+  "name":"org.jboss.resteasy.microprofile.config.FilterConfigSource",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.microprofile.config.ServletConfigSource",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.microprofile.config.ServletContextConfigSource",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.interceptors.CacheControlFeature",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.interceptors.ClientContentEncodingAnnotationFeature",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.interceptors.MessageSanitizerContainerResponseFilter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.interceptors.ServerContentEncodingAnnotationFeature",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.AbstractEntityProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.AsyncStreamingOutputProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.ByteArrayProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.CompletionStageProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.DataSourceProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.DefaultBooleanWriter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.DefaultNumberWriter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.DefaultTextPlain",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.FileProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.FileRangeWriter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.InputStreamProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.MultiValuedParamConverterProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.ReactiveStreamProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.ReaderProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.StreamingOutputProvider",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.StringTextStar",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.plugins.providers.sse.SseEventSinkInterceptor",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.jboss.resteasy.resteasy_jaxrs.i18n.LogMessages_$logger",
+  "methods":[{"name":"<init>","parameterTypes":["org.jboss.logging.Logger"] }]
+},
+{
+  "name":"org.jboss.resteasy.resteasy_jaxrs.i18n.Messages_$bundle",
+  "fields":[{"name":"INSTANCE"}]
+},
+{
+  "name":"org.jboss.threads.EnhancedQueueExecutor",
+  "fields":[
+    {"name":"activeCount"}, 
+    {"name":"peakQueueSize"}, 
+    {"name":"peakThreadCount"}, 
+    {"name":"queueSize"}, 
+    {"name":"terminationWaiters"}
+  ]
+},
+{
+  "name":"org.jboss.threads.EnhancedQueueExecutor$PoolThreadNode",
+  "fields":[
+    {"name":"parked"}, 
+    {"name":"task"}
+  ]
+},
+{
+  "name":"org.jboss.threads.EnhancedQueueExecutor$QNode",
+  "fields":[{"name":"next"}]
+},
+{
+  "name":"org.jboss.threads.EnhancedQueueExecutorBase1",
+  "fields":[{"name":"tail"}]
+},
+{
+  "name":"org.jboss.threads.EnhancedQueueExecutorBase3",
+  "fields":[{"name":"head"}]
+},
+{
+  "name":"org.jboss.threads.EnhancedQueueExecutorBase5",
+  "fields":[{"name":"threadStatus"}]
+},
+{
+  "name":"org.jboss.tm.XAResourceRecoveryRegistry"
+},
+{
+  "name":"org.locationtech.jts.geom.Geometry"
+},
+{
+  "name":"org.slf4j.impl.Slf4jLogger",
+  "methods":[{"name":"log","parameterTypes":["org.slf4j.Marker","java.lang.String","int","java.lang.String","java.lang.Object[]","java.lang.Throwable"] }]
+},
+{
+  "name":"org.wildfly.common.lock.SpinLock",
+  "fields":[{"name":"owner"}]
+},
+{
+  "name":"sun.management.ClassLoadingImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.CompilationImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.ManagementFactoryHelper$1",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.ManagementFactoryHelper$PlatformLoggingImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.MemoryImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.MemoryManagerImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.MemoryPoolImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.management.RuntimeImpl",
+  "queryAllPublicConstructors":true
+},
+{
+  "name":"sun.misc.Unsafe",
+  "fields":[{"name":"theUnsafe"}],
+  "methods":[
+    {"name":"copyMemory","parameterTypes":["java.lang.Object","long","java.lang.Object","long","long"] }, 
+    {"name":"getAndAddLong","parameterTypes":["java.lang.Object","long","long"] }, 
+    {"name":"getAndSetObject","parameterTypes":["java.lang.Object","long","java.lang.Object"] }, 
+    {"name":"invokeCleaner","parameterTypes":["java.nio.ByteBuffer"] }, 
+    {"name":"objectFieldOffset","parameterTypes":["java.lang.reflect.Field"] }, 
+    {"name":"putBoolean","parameterTypes":["java.lang.Object","long","boolean"] }, 
+    {"name":"storeFence","parameterTypes":[] }
+  ]
+},
+{
+  "name":"sun.nio.ch.SelectorImpl",
+  "fields":[
+    {"name":"publicSelectedKeys"}, 
+    {"name":"selectedKeys"}
+  ]
+},
+{
+  "name":"sun.security.pkcs12.PKCS12KeyStore",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.pkcs12.PKCS12KeyStore$DualFormatPKCS12",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.DRBG",
+  "methods":[{"name":"<init>","parameterTypes":["java.security.SecureRandomParameters"] }]
+},
+{
+  "name":"sun.security.provider.JavaKeyStore$JKS",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA2$SHA256",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.X509Factory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSAKeyFactory$Legacy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.ssl.KeyManagerFactoryImpl$SunX509",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.ssl.SSLContextImpl$DefaultSSLContext",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.ssl.TrustManagerFactoryImpl$PKIXFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.x509.AuthorityInfoAccessExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.AuthorityKeyIdentifierExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.BasicConstraintsExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.CRLDistributionPointsExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.CertificatePoliciesExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.ExtendedKeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.IssuerAlternativeNameExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.KeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.NetscapeCertTypeExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.PrivateKeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.SubjectAlternativeNameExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.SubjectKeyIdentifierExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+}
 ]
