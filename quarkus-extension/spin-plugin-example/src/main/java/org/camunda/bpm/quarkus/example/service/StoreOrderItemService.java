@@ -21,8 +21,8 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.quarkus.example.dto.OrderItem;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Named;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Named;
 
 @Named
 @Dependent

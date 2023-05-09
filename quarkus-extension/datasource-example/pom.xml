@@ -10,10 +10,10 @@
 
   <properties>
     <version.camunda>7.20.0</version.camunda>
-    <version.quarkus>2.16.4.Final</version.quarkus>
-    <version.assertj>3.22.0</version.assertj>
+    <version.quarkus>3.1.1.Final</version.quarkus>
+    <version.assertj>3.24.2</version.assertj>
     <version.compiler-plugin>3.10.1</version.compiler-plugin>
-    <version.surefire-plugin>3.0.0-M6</version.surefire-plugin>
+    <version.surefire-plugin>3.0.0</version.surefire-plugin>
 
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.source>11</maven.compiler.source>
