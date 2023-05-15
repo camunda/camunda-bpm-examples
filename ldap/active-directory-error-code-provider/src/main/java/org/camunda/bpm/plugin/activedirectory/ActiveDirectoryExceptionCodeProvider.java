@@ -24,8 +24,8 @@ public class ActiveDirectoryExceptionCodeProvider implements ExceptionCodeProvid
   public Integer provideCode(ProcessEngineException processEngineException) {
     Throwable cause = processEngineException.getCause();
     String message = cause.getMessage();
-    System.out.println("plugin got exception with cause: " + cause.getClass());
-    System.out.println("plugin got message: " + message);
+    System.out.println("ActiveDirectoryErrorCodeProviderPlugin got exception with cause: " + cause.getClass());
+    System.out.println("ActiveDirectoryErrorCodeProviderPlugin got message: " + message);
     if(cause instanceof javax.naming.AuthenticationException
         && message.contains("LDAP: error code 49")
         && message.contains("data 773")) {

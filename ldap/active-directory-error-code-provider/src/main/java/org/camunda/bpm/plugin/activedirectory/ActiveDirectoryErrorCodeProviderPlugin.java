@@ -23,7 +23,7 @@ import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 public class ActiveDirectoryErrorCodeProviderPlugin implements ProcessEnginePlugin {
 
   public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-    System.out.println("plugin registered");
+    System.out.println("ActiveDirectoryErrorCodeProviderPlugin registered");
     processEngineConfiguration.setCustomExceptionCodeProvider(new ActiveDirectoryExceptionCodeProvider());
   }
 
