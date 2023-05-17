@@ -21,17 +21,32 @@ import org.camunda.bpm.engine.impl.errorcode.ExceptionCodeProvider;
 
 public class ActiveDirectoryExceptionCodeProvider implements ExceptionCodeProvider {
 
+  protected final int ldapErrorCode;
+  protected final int activeDirectoryErrorCode;
+  protected final int camundaCustomExceptionCode;
+  protected final Class exceptionType;
+
+  public ActiveDirectoryExceptionCodeProvider(
+      int ldapErrorCode, int activeDirectoryErrorCode, int camundaCustomExceptionCode,String className) throws ClassNotFoundException {
+    this.ldapErrorCode = ldapErrorCode;
+    this.activeDirectoryErrorCode = activeDirectoryErrorCode;
+    this.camundaCustomExceptionCode = camundaCustomExceptionCode;
+    this.exceptionType = Class.forName(className);
+  }
+
   public Integer provideCode(ProcessEngineException processEngineException) {
     Throwable cause = processEngineException.getCause();
     String message = cause.getMessage();
     System.out.println("ActiveDirectoryErrorCodeProviderPlugin got exception with cause: " + cause.getClass());
     System.out.println("ActiveDirectoryErrorCodeProviderPlugin got message: " + message);
-    if(cause instanceof javax.naming.AuthenticationException
-        && message.contains("LDAP: error code 49")
-        && message.contains("data 773")) {
-      return 22_222;
+
+    if(exceptionType.isInstance(cause)
+        && message.contains("LDAP: error code " + ldapErrorCode)
+        && message.contains("data " + activeDirectoryErrorCode)) {
+      return camundaCustomExceptionCode;
     }
-    return ExceptionCodeProvider.super.provideCode(processEngineException);
+
+    return processEngineException.getCode();
   }
 
 }

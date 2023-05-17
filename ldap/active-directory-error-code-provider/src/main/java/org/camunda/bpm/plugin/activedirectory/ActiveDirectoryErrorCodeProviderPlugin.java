@@ -22,9 +22,19 @@ import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 
 public class ActiveDirectoryErrorCodeProviderPlugin implements ProcessEnginePlugin {
 
+  protected int ldapErrorCode = 49;
+  protected int activeDirectoryErrorCode = 773;
+  protected int camundaCustomExceptionCode = 22_222;
+  protected String exceptionType = "javax.naming.AuthenticationException";
+
   public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
     System.out.println("ActiveDirectoryErrorCodeProviderPlugin registered");
-    processEngineConfiguration.setCustomExceptionCodeProvider(new ActiveDirectoryExceptionCodeProvider());
+    try {
+      processEngineConfiguration.setCustomExceptionCodeProvider(
+          new ActiveDirectoryExceptionCodeProvider(ldapErrorCode, activeDirectoryErrorCode, camundaCustomExceptionCode, exceptionType));
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
   }
 
   public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
@@ -33,6 +43,38 @@ public class ActiveDirectoryErrorCodeProviderPlugin implements ProcessEnginePlug
 
   public void postProcessEngineBuild(ProcessEngine processEngine) {
     // do nothing
+  }
+
+  public int getLdapErrorCode() {
+    return ldapErrorCode;
+  }
+
+  public void setLdapErrorCode(int ldapErrorCode) {
+    this.ldapErrorCode = ldapErrorCode;
+  }
+
+  public int getActiveDirectoryErrorCode() {
+    return activeDirectoryErrorCode;
+  }
+
+  public void setActiveDirectoryErrorCode(int activeDirectoryErrorCode) {
+    this.activeDirectoryErrorCode = activeDirectoryErrorCode;
+  }
+
+  public int getCamundaCustomExceptionCode() {
+    return camundaCustomExceptionCode;
+  }
+
+  public void setCamundaCustomExceptionCode(int camundaCustomExceptionCode) {
+    this.camundaCustomExceptionCode = camundaCustomExceptionCode;
+  }
+
+  public String getExceptionType() {
+    return exceptionType;
+  }
+
+  public void setExceptionType(String exceptionType) {
+    this.exceptionType = exceptionType;
   }
 
 }
