@@ -14,16 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.plugin.activedirectory.cockpit;
 
-import jakarta.ws.rs.Path;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
+export function waitForElm(selector) {
+  return new Promise(resolve => {
+    if (document.querySelector(selector)) {
+      return resolve(angular.element(document.querySelector(selector)));
+    }
 
-@Path("plugin/" + ActiveDirectoryCockpitPlugin.ID)
-public class ActiveDirectoryCockpitRootResource extends AbstractCockpitPluginRootResource {
+    const observer = new MutationObserver(() => {
+      if (document.querySelector(selector)) {
+        resolve(angular.element(document.querySelector(selector)));
+        observer.disconnect();
+      }
+    });
 
-  public ActiveDirectoryCockpitRootResource() {
-    super(ActiveDirectoryCockpitPlugin.ID);
-  }
-
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  });
 }

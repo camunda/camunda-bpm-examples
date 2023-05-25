@@ -14,16 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.plugin.activedirectory.cockpit;
+package org.camunda.bpm.plugin.activedirectory.admin;
 
-import jakarta.ws.rs.Path;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
+import org.camunda.bpm.admin.plugin.spi.impl.AbstractAdminPlugin;
 
-@Path("plugin/" + ActiveDirectoryCockpitPlugin.ID)
-public class ActiveDirectoryCockpitRootResource extends AbstractCockpitPluginRootResource {
+import java.util.HashSet;
+import java.util.Set;
 
-  public ActiveDirectoryCockpitRootResource() {
-    super(ActiveDirectoryCockpitPlugin.ID);
+public class ActiveDirectoryAdminPlugin extends AbstractAdminPlugin {
+
+  public static final String ID = "active-directory-admin";
+
+  public String getId() {
+    return ID;
   }
 
+  @Override
+  public Set<Class<?>> getResourceClasses() {
+    Set<Class<?>> classes = new HashSet<>();
+
+    classes.add(ActiveDirectoryAdminRootResource.class);
+
+    return classes;
+  }
 }

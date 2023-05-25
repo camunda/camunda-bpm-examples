@@ -14,16 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.plugin.activedirectory.cockpit;
 
-import jakarta.ws.rs.Path;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
+import template from "./template.html";
+import {waitForElm} from "./util.js";
 
-@Path("plugin/" + ActiveDirectoryCockpitPlugin.ID)
-public class ActiveDirectoryCockpitRootResource extends AbstractCockpitPluginRootResource {
+export function render(container) {
+  // Register template on plugin bridge
+  container.innerHTML = template;
 
-  public ActiveDirectoryCockpitRootResource() {
-    super(ActiveDirectoryCockpitPlugin.ID);
+  // Hide reset password initially
+  const resetPw = angular.element(container).children();
+  resetPw.hide();
+}
+
+export async function result(response) {
+  try {
+    await response;
+  } catch ({status, data: {type, code}}) {
+    if (
+      status === 500 &&
+      type === 'LdapAuthenticationException' &&
+      code === 22223
+    ) {
+      // Hide sign in form
+      const signinForm = await waitForElm("[name='signinForm']");
+      signinForm.hide();
+
+      // show reset password alert
+      const resetPw = await waitForElm('.reset-password');
+      resetPw.show();
+    }
   }
-
 }

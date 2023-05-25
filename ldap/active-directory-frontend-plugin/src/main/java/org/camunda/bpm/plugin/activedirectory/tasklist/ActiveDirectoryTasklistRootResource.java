@@ -14,16 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.plugin.activedirectory.cockpit;
+package org.camunda.bpm.plugin.activedirectory.tasklist;
+
+import org.camunda.bpm.tasklist.resource.AbstractTasklistPluginRootResource;
 
 import jakarta.ws.rs.Path;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 
-@Path("plugin/" + ActiveDirectoryCockpitPlugin.ID)
-public class ActiveDirectoryCockpitRootResource extends AbstractCockpitPluginRootResource {
+@Path("plugin/" + ActiveDirectoryTasklistPlugin.ID)
+public class ActiveDirectoryTasklistRootResource extends AbstractTasklistPluginRootResource {
 
-  public ActiveDirectoryCockpitRootResource() {
-    super(ActiveDirectoryCockpitPlugin.ID);
+  public ActiveDirectoryTasklistRootResource() {
+    super(ActiveDirectoryTasklistPlugin.ID);
   }
 
 }

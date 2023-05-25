@@ -14,16 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.plugin.activedirectory.cockpit;
+package org.camunda.bpm.plugin.activedirectory.welcome;
+
+import org.camunda.bpm.welcome.resource.AbstractWelcomePluginRootResource;
 
 import jakarta.ws.rs.Path;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 
-@Path("plugin/" + ActiveDirectoryCockpitPlugin.ID)
-public class ActiveDirectoryCockpitRootResource extends AbstractCockpitPluginRootResource {
+@Path("plugin/" + ActiveDirectoryWelcomePlugin.ID)
+public class ActiveDirectoryWelcomeRootResource extends AbstractWelcomePluginRootResource {
 
-  public ActiveDirectoryCockpitRootResource() {
-    super(ActiveDirectoryCockpitPlugin.ID);
+  public ActiveDirectoryWelcomeRootResource() {
+    super(ActiveDirectoryWelcomePlugin.ID);
   }
 
 }

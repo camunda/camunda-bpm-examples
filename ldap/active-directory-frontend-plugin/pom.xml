@@ -14,31 +14,71 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
 
-    <camunda.version>7.20.0-alpha1</camunda.version>
-    <javaee.version>3.0.3.Final</javaee.version>
+    <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
+    <node.version>v18.16.0</node.version>
+    <npm.version>9.5.1</npm.version>
 
-    <frontend.working.directory>frontend/src/</frontend.working.directory>
-    <frontend.target.path>plugin-webapp/active-directory-cockpit/app</frontend.target.path>
+    <camunda.version>7.20.0-SNAPSHOT</camunda.version>
+    <jakartaee.version>1.0.1.Final</jakartaee.version>
+
+    <frontend.working.directory>frontend/</frontend.working.directory>
+    <frontend.target.path>plugin-webapp/</frontend.target.path>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.camunda.bpm.webapp</groupId>
-      <artifactId>camunda-webapp</artifactId>
+      <artifactId>camunda-webapp-jakarta</artifactId>
       <classifier>classes</classifier>
       <version>${camunda.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-6.0</artifactId>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-web-api</artifactId>
       <type>pom</type>
       <scope>provided</scope>
-      <version>${javaee.version}</version>
+      <version>10.0.0</version>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${frontend-maven-plugin.version}</version>
+        <configuration>
+          <nodeVersion>${node.version}</nodeVersion>
+          <npmVersion>${npm.version}</npmVersion>
+          <workingDirectory>${frontend.working.directory}</workingDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>Install node and npm locally to the project</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>npm ci</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Build frontend</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -54,13 +94,24 @@
               <outputDirectory>${basedir}/target/classes/${frontend.target.path}</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${basedir}/${frontend.working.directory}</directory>
+                  <directory>${basedir}/${frontend.working.directory}/dist</directory>
                   <filtering>true</filtering>
                 </resource>
               </resources>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.3.1</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${frontend.working.directory}/dist</directory>
+            </fileset>
+          </filesets>
+        </configuration>
       </plugin>
     </plugins>
   </build>

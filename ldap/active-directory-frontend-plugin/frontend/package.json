@@ -1,0 +1,21 @@
+{
+  "name": "camunda-active-directory-frontend-plugin",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@babel/core": "~7.21.8",
+    "@babel/plugin-transform-runtime": "~7.21.4",
+    "@babel/preset-env": "~7.21.5",
+    "@rollup/plugin-babel": "~6.0.3",
+    "@rollup/plugin-commonjs": "~25.0.0",
+    "@rollup/plugin-node-resolve": "~15.0.2",
+    "@rollup/plugin-replace": "~5.0.2",
+    "node-sass": "~9.0.0",
+    "rollup": "~3.23.0",
+    "rollup-plugin-html": "^0.2.1",
+    "rollup-plugin-scss": "~4.0.0"
+  }
+}

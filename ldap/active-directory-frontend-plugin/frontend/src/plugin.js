@@ -15,32 +15,18 @@
  * limitations under the License.
  */
 
-const template = `
-<div class="reset-password" style="display: none">
-  <div class="alert alert-info">
-    <div class="status"><strong>Password change required!</strong></div><br>
-    <div class="message">The company's password policy requires a password change. <br><br>Please reset your password here: <a href="https://example.com">Reset Password</a></div>
-  </div>
-</div>`;
+import {render, result} from './password-policy.js';
 
-export default {
-  id: 'active-directory-change-password',
-  pluginPoint: 'login',
-  priority: 0,
-  errorCallback: error => {
-    const signinForm = angular.element("[name='signinForm']");
-    const resetPw = angular.element('.reset-password');
-
-    if (
-      error.status === 500 &&
-      error.data.type === 'LdapAuthenticationException' &&
-      error.data.code === 22222
-    ) {
-      signinForm.hide();
-      resetPw.show();
-    }
+export default [
+  {
+    id: 'ad-password-policy',
+    pluginPoint: `${appName}.login`,
+    render
   },
-  render: container => {
-    container.innerHTML = template;
+  {
+    id: 'ad-password-policy-data',
+    pluginPoint: `${appName}.login.data`,
+    result
   }
-};
+];
+

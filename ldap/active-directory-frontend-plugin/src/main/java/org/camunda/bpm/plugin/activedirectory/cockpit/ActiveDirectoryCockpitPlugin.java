@@ -29,11 +29,6 @@ public class ActiveDirectoryCockpitPlugin extends AbstractCockpitPlugin {
   }
 
   @Override
-  public String getAssetDirectory() {
-    return String.format("plugin-webapp/%s", getId());
-  }
-
-  @Override
   public Set<Class<?>> getResourceClasses() {
     Set<Class<?>> classes = new HashSet<>();
 
