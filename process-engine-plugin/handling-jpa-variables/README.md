@@ -7,7 +7,7 @@ This example demonstrates how to configure a JPA serializer as a Process Engine 
 
 
 
-### Create a Process Engine Plugin Implementation
+### Create a Process Engine Plugin implementation
 
 Extend the `org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin` class:
 
@@ -31,11 +31,11 @@ public class JPAVariablesSerializerPlugin extends AbstractProcessEnginePlugin {
 }
 ```
 
-The `persistenceUnitName` passed to the `EntityManagerFactory` is defined in a [`persistance.xml`][1] file following the JPA standarts.
-Add a `sessionFactory` with key `EntityManagerSession.class` and retrieve already initilized `variableSerializers`.
-In case the `ValueType.BYTES` replace it with the custom `JPAVariableSerializer`, otherwise just add it.
+The `persistenceUnitName` passed to the `EntityManagerFactory` is defined in a [`persistance.xml`][1] file following the JPA standards.
+Add a `sessionFactory` with the key `EntityManagerSession.class` and retrieve the initialized `variableSerializers`.
+If there is a serializer for `ValueType.BYTES` values, replace it with the custom `JPAVariableSerializer`. Otherwise, add the JPA serializer to the list.
 
-### Create a Implementation
+### Create a serializer implementation
 
 Extend the `org.camunda.bpm.engine.impl.variable.serializer.AbstractTypedValueSerializer` class:
 
@@ -86,7 +86,7 @@ public class JPAVariableSerializer extends AbstractTypedValueSerializer<ObjectVa
     }
 
     Object value = objectValue.getValue();
-    if(value != null) {
+    if (value != null) {
       String className = mappings.getJPAClassString(value);
       String idString = mappings.getJPAIdString(value);
       valueFields.setTextValue(className);
@@ -98,7 +98,7 @@ public class JPAVariableSerializer extends AbstractTypedValueSerializer<ObjectVa
   }
 
   public ObjectValue readValue(ValueFields valueFields, boolean deserializeObjectValue, boolean asTransientValue) {
-    if(valueFields.getTextValue() != null && valueFields.getTextValue2() != null) {
+    if (valueFields.getTextValue() != null && valueFields.getTextValue2() != null) {
       Object jpaEntity = mappings.getJPAEntity(valueFields.getTextValue(), valueFields.getTextValue2());
       return Variables.objectValue(jpaEntity).setTransient(asTransientValue).create();
     }
@@ -107,10 +107,10 @@ public class JPAVariableSerializer extends AbstractTypedValueSerializer<ObjectVa
 }
 ```
 
-Beside the `JPAVariableSerializer`, implementation of `EntityMetaData`, `JPAEntityMappings`, `JPAEntityScanner`,
+Besides the `JPAVariableSerializer`, implementations of `EntityMetaData`, `JPAEntityMappings`, `JPAEntityScanner`,
 and `EntityManagerSession` classes can be found in the [source folder][2].
 
-### Activate the Plugin
+### Activate the plugin
 
 The process engine plugin can be activated in the `camunda.cfg.xml`:
 
@@ -124,19 +124,18 @@ The process engine plugin can be activated in the `camunda.cfg.xml`:
 
 ## How does it work?
 
-If you are impatient, just have a look at the [unit test][3].
+There is a [unit test][3] demonstrating an example usage of the JPA serializer.
 
-In this example, the process engine registers JPA serializer via the define process engine.
+In this example, the process engine registers the JPA serializer via the process engine configuration.
 The unit test triggers the process engine to deploy a BPMN Process Model.
 Two Customer JPA entities are persisted and passed as variables when starting a process instance.
-When the variables are retrieved from the process engine the JPA serializers ensures to fetch the entities from the JPA.
+When the variables are retrieved from the process engine, the JPA serializer ensures to fetch the entities from the JPA.
 
 ## How to use it?
 
 1. Checkout the project with Git
-2. Import the project into your IDE
-3. Inspect the sources and run the unit test in your IDE or with Maven: `mvn clean verify`
-4. You should expect that all test cases pass.
+2. Inspect the sources and run the unit test in your IDE or with Maven: `mvn clean verify`
+3. All test cases should pass.
 
 
 
