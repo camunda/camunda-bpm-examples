@@ -11,11 +11,11 @@
   <packaging>jar</packaging>
 
   <properties>
-    <camunda.platform.version>7.19.0</camunda.platform.version>
-    <spring.boot.version>2.7.9</spring.boot.version>
+    <camunda.platform.version>7.20.0-SNAPSHOT</camunda.platform.version>
+    <spring.boot.version>3.1.1</spring.boot.version>
     <graaljs.version>21.1.0</graaljs.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-    <java.version>8</java.version>
+    <java.version>17</java.version>
   </properties>
 
   <dependencyManagement>
@@ -85,6 +85,12 @@
       <artifactId>js-scriptengine</artifactId>
       <version>${graaljs.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -92,6 +98,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring.boot.version}</version>
       </plugin>
 
       <plugin>
