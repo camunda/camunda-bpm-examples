@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.19.0-ee</camunda.version>
-    <spring.boot.version>2.7.9</spring.boot.version>
+    <camunda.version>7.20.0-SNAPSHOT</camunda.version>
+    <spring.boot.version>3.1.1</spring.boot.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
   </properties>
 
@@ -39,10 +39,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jaxb</groupId>
-      <artifactId>jaxb-runtime</artifactId>
     </dependency>
   </dependencies>
 
@@ -75,11 +71,6 @@
   </build>
 
   <repositories>
-    <repository>
-      <id>camunda-bpm-nexus</id>
-      <name>camunda-bpm-nexus</name>
-      <url>https://artifacts.camunda.com/artifactory/public/</url>
-    </repository>
     <repository>
       <id>camunda-bpm-nexus-ee</id>
       <name>camunda-bpm-nexus-ee</name>
