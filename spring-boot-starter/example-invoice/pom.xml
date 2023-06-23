@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.19.0-ee</camunda.version>
-    <spring.boot.version>2.7.9</spring.boot.version>
+    <camunda.version>7.20.0-SNAPSHOT</camunda.version>
+    <spring.boot.version>3.1.1</spring.boot.version>
     <graaljs.version>21.1.0</graaljs.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
   </properties>
@@ -97,7 +97,7 @@
 
     <dependency>
       <groupId>org.camunda.bpm.example</groupId>
-      <artifactId>camunda-example-invoice</artifactId>
+      <artifactId>camunda-example-invoice-jakarta</artifactId>
       <version>${camunda.version}</version>
       <classifier>classes</classifier>
       <scope>compile</scope>

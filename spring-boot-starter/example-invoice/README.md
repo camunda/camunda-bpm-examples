@@ -55,7 +55,7 @@ to your `pom.xml`:
 ```xml
 <dependency>
   <groupId>org.camunda.bpm.example</groupId>
-  <artifactId>camunda-example-invoice</artifactId>
+  <artifactId>camunda-example-invoice-jakarta</artifactId>
   <version>${camunda.version}</version>
   <classifier>classes</classifier>
   <scope>compile</scope>
