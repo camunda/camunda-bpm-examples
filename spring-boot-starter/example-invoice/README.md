@@ -12,6 +12,9 @@ You will need:
 * credentials to access the enterprise repo in your `settings.xml`
 * a valid camunda-license key file in your classpath in the file `camunda-license.txt`
 
+## Prerequisites
+* Java 17
+
 ## How is it done
 
 1. To embed the Camunda Engine with the Enterprise webapps and Rest API you must add the following maven coordinates 

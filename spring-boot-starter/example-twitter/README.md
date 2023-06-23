@@ -10,6 +10,9 @@ The example contains:
 
 It also demonstrates the usage of the `application.yaml` configuration file.
 
+## Prerequisites
+* Java 17
+
 ## How is it done
 
 1. To embed the Camunda Engine you must add following dependency to your `pom.xml`:

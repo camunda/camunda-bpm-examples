@@ -8,6 +8,9 @@ This example demonstrates how you can build Spring Boot Web application having f
 
 It also contains a simple integration test, showing how this can be tested.
 
+## Prerequisites
+* Java 17
+
 ## How is it done
 
 1. To embed Camunda Engine with webapps you must add following dependency to your `pom.xml`:

@@ -7,6 +7,9 @@ Beyond that, it demonstrates how to use the Spring Boot Starter to ...
 * ... subscribe to topics so the client can fetch and lock for External Tasks
 * ... execute custom business logic defined in a handler bean for each fetched External Task
 
+## Prerequisites
+* Java 17
+
 ## Why is this example interesting?
 
 This example shows how to configure and bootstrap an External Task Client using the `application.yml` file,

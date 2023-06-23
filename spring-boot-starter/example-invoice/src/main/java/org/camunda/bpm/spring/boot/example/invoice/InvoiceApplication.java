@@ -16,9 +16,8 @@
  */
 package org.camunda.bpm.spring.boot.example.invoice;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
-import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
 import org.camunda.bpm.example.invoice.InvoiceProcessApplication;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;

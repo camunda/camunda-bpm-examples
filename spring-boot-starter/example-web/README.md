@@ -7,6 +7,9 @@ This example demonstrates how you can build a Spring Boot Web application with t
 
 It also contains a couple of integration tests, showing how this can be tested.
 
+## Prerequisites
+* Java 17
+
 ## How is it done
 
 1. To embed the Camunda Engine accessible via REST API you must add following dependency to your `pom.xml`:
