@@ -7,9 +7,10 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.19.0-ee</camunda.version>
-    <spring.boot.version>2.7.9</spring.boot.version>
+    <camunda.version>7.20.0-SNAPSHOT</camunda.version>
+    <spring.boot.version>3.1.1</spring.boot.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <java.version>17</java.version>
   </properties>
 
   <dependencyManagement>
@@ -40,10 +41,6 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.glassfish.jaxb</groupId>
-      <artifactId>jaxb-runtime</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
@@ -67,8 +64,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.plugin.version}</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
     </plugins>

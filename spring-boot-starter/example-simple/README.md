@@ -13,8 +13,9 @@ It demonstrates how Camunda can be used in combination with Spring Boot to spawn
 
 It also demonstrates the usage of `application.yaml` configuration file and contains a couple of integration tests, showing how this can be tested.
 
+
 ## Prerequisites
-* Java 11+
+* Java 17
 
 ## How is it done
 
