@@ -11,6 +11,7 @@
     <camunda.spring.boot.starter.version>7.20.0-SNAPSHOT</camunda.spring.boot.starter.version>
     <twitter4j.version>4.0.7</twitter4j.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <java.version>17</java.version>
   </properties>
 
   <dependencyManagement>
@@ -81,8 +82,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.plugin.version}</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
     </plugins>

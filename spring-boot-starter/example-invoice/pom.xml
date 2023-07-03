@@ -11,6 +11,7 @@
     <spring.boot.version>3.1.1</spring.boot.version>
     <graaljs.version>21.1.0</graaljs.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <java.version>17</java.version>
   </properties>
 
   <dependencyManagement>
@@ -125,8 +126,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.plugin.version}</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
     </plugins>

@@ -16,6 +16,7 @@
     <graaljs.version>21.1.0</graaljs.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
     <java.version>17</java.version>
+    <jaxb-api.version>2.3.1</jaxb-api.version>
   </properties>
 
   <dependencyManagement>
@@ -89,7 +90,7 @@
     <dependency>
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
-      <version>2.3.1</version>
+      <version>${jaxb-api.version}</version>
     </dependency>
   </dependencies>
 
