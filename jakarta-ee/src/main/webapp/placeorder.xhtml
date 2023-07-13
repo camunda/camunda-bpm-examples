@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+  <f:metadata>
+    <!-- Start a new process instance. Process Definition Key is read internally from
+         request parameters and cached in the CDI conversation scope.
+    -->
+    <f:event type="preRenderView" listener="#{camundaTaskForm.startProcessInstanceByKeyForm()}" />
+  </f:metadata>
+  <h:head>
+    <title>Place Order</title>
+  </h:head>
+  <h:body>
+    <h1>Select your pizza</h1>
+    <h:form id="submitForm">
+      <h:panelGrid columns="2">
+        <p>
+          <label for="pizza">Pizza</label>
+          <h:selectOneMenu id="pizza" value="#{processVariables['pizza']}">
+              <f:selectItem itemValue="Margarita" itemLabel="Margarita"/>
+              <f:selectItem itemValue="Salami" itemLabel="Salami"/>
+              <f:selectItem itemValue="Tonno" itemLabel="Tonno"/>
+              <f:selectItem itemValue="Prosciutto" itemLabel="Prosciutto"/>
+          </h:selectOneMenu>
+        </p>
+      	<p>
+     	    <label for="customer">Customer</label>
+          <!-- create process variables using the processVariables map. -->
+          <h:inputText id="customer" value="#{processVariables['customer']}" required="true" />
+      	</p>
+        <p>
+          <label for="address">Address</label>
+          <!-- create process variables using the processVariables map. -->
+          <h:inputText id="address" value="#{processVariables['address']}" required="true" />
+        </p>
+      </h:panelGrid>
+
+      <!-- The button starts a new process instance. This ends the conversation and redirects us to the tasklist.
+
+           NOTE: Syntax is different when working on user task forms, see file "approveLoanRequest.xhtml".
+      -->
+      <h:commandButton id="submit_button" value="Order Pizza" action="#{camundaTaskForm.completeProcessInstanceForm()}" />
+
+      <h:messages style="color:red;margin:8px;" />
+    </h:form>
+  </h:body>
+</f:view>
+</HTML>
