@@ -51,7 +51,7 @@
 
     <dependency>
       <groupId>org.camunda.community.template.engines</groupId>
-      <artifactId>camunda-7-template-engines-xslt</artifactId>
+      <artifactId>camunda-7-template-engine-xslt</artifactId>
       <version>2.2.0</version>
       <scope>provided</scope>
     </dependency>
