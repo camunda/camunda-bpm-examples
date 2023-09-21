@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_136l9dc" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.7.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.14.0">
-  <bpmn:process id="order-item-process" isExecutable="true">
+  <bpmn:process id="order-item-process" isExecutable="true" camunda:historyTimeToLive="P180D">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_0sv4uvj</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0sv4uvj" sourceRef="StartEvent_1" targetRef="Activity_0mppyxt" />
-    <bpmn:subProcess id="Activity_0mppyxt">
+    <bpmn:subProcess id="Activity_0mppyxt" >
       <bpmn:incoming>Flow_0sv4uvj</bpmn:incoming>
       <bpmn:outgoing>Flow_0bp8hrx</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="orderItems" camunda:elementVariable="orderItem" />
