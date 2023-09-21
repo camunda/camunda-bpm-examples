@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="dinnerDecisions" name="Dinner Decisions" namespace="http://camunda.org/schema/1.0/dmn">
-  <decision id="beverages" name="Beverages">
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0"
+xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="dinnerDecisions" name="Dinner Decisions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="beverages" name="Beverages" camunda:historyTimeToLive="P180D">
     <extensionElements>
       <biodi:bounds x="55" y="153" width="180" height="80" />
       <biodi:edge source="Decision_0v6lvdk">
@@ -86,7 +87,7 @@
       </rule>
     </decisionTable>
   </decision>
-  <decision id="dish" name="Dish">
+  <decision id="dish" name="Dish" camunda:historyTimeToLive="P180D">
     <extensionElements>
       <biodi:bounds x="-84" y="307" width="180" height="80" />
       <biodi:edge source="KnowledgeSource_0b8hnqo">
