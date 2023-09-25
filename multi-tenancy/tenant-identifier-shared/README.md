@@ -13,7 +13,7 @@ The example process for the tenants looks like:
 
 ## How it works
 
-Please refer to the [User Guide](http://docs.camunda.org/manual/7.19/user-guide/process-engine/multi-tenancy/) for details about multi-tenancy.
+Please refer to the [User Guide](http://docs.camunda.org/manual/7.20/user-guide/process-engine/multi-tenancy/) for details about multi-tenancy.
 
 ### Deploy a Process Definition with Tenant-Id
 
