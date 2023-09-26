@@ -39,6 +39,7 @@ public class CreateInvoiceProcessTest {
   @Test
   public void testCreateInvoiceProcess() throws Exception {
     BpmnModelInstance modelInstance = Bpmn.createExecutableProcess("invoice")
+        .camundaHistoryTimeToLive(180)
       .name("BPMN API Invoice Process")
       .startEvent()
         .name("Invoice received")
