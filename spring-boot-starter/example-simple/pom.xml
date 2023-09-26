@@ -10,6 +10,7 @@
     <camunda.spring.boot.starter.version>7.20.0-SNAPSHOT</camunda.spring.boot.starter.version>
     <camunda.mockito>5.15.0</camunda.mockito>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.compiler.release>11</maven.compiler.release>
     <java.version>17</java.version>
   </properties>
 

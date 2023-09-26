@@ -15,6 +15,7 @@
     <spring.boot.version>3.1.1</spring.boot.version>
     <graaljs.version>21.1.0</graaljs.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.compiler.release>11</maven.compiler.release>
     <java.version>17</java.version>
     <jaxb-api.version>2.3.1</jaxb-api.version>
   </properties>
