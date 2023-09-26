@@ -7,10 +7,10 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.20.0-SNAPSHOT</camunda.version>
+    <camunda.version>7.20.0-ee</camunda.version>
     <spring.boot.version>3.1.1</spring.boot.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <java.version>17</java.version>
   </properties>
 
