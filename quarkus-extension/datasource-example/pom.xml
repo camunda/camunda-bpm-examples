@@ -12,12 +12,11 @@
     <version.camunda>7.20.0</version.camunda>
     <version.quarkus>3.2.6.Final</version.quarkus>
     <version.assertj>3.24.2</version.assertj>
-    <version.compiler-plugin>3.10.1</version.compiler-plugin>
+    <compiler-plugin.version>3.11.0</compiler-plugin.version>
     <version.surefire-plugin>3.0.0</version.surefire-plugin>
 
     <maven.compiler.parameters>true</maven.compiler.parameters>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -122,11 +121,9 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${version.compiler-plugin}</version>
-        <configuration>
-          <parameters>${maven.compiler.parameters}</parameters>
-        </configuration>
+        <version>${compiler-plugin.version}</version>
       </plugin>
 
       <plugin>
