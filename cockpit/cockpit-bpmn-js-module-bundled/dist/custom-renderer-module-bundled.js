@@ -368,9 +368,11 @@ function create(name, attrs) {
 /**
  * Flatten array, one level deep.
  *
- * @param {Array<?>} arr
+ * @template T
  *
- * @return {Array<?>}
+ * @param {T[][]} arr
+ *
+ * @return {T[]}
  */
 
 const nativeToString = Object.prototype.toString;
@@ -384,6 +386,11 @@ function isArray(obj) {
   return nativeToString.call(obj) === '[object Array]';
 }
 
+/**
+ * @param {any} obj
+ *
+ * @return {boolean}
+ */
 function isFunction(obj) {
   const tag = nativeToString.call(obj);
 
@@ -409,21 +416,73 @@ function has(target, key) {
 }
 
 /**
+ * @template T
+ * @typedef { (
+ *   ((e: T) => boolean) |
+ *   ((e: T, idx: number) => boolean) |
+ *   ((e: T, key: string) => boolean) |
+ *   string |
+ *   number
+ * ) } Matcher
+ */
+
+/**
+ * @template T
+ * @template U
+ *
+ * @typedef { (
+ *   ((e: T) => U) | string | number
+ * ) } Extractor
+ */
+
+
+/**
+ * @template T
+ * @typedef { (val: T, key: any) => boolean } MatchFn
+ */
+
+/**
+ * @template T
+ * @typedef { T[] } ArrayCollection
+ */
+
+/**
+ * @template T
+ * @typedef { { [key: string]: T } } StringKeyValueCollection
+ */
+
+/**
+ * @template T
+ * @typedef { { [key: number]: T } } NumberKeyValueCollection
+ */
+
+/**
+ * @template T
+ * @typedef { StringKeyValueCollection<T> | NumberKeyValueCollection<T> } KeyValueCollection
+ */
+
+/**
+ * @template T
+ * @typedef { KeyValueCollection<T> | ArrayCollection<T> } Collection
+ */
+
+/**
  * Find element in collection.
  *
- * @param  {Array|Object} collection
- * @param  {Function|Object} matcher
+ * @template T
+ * @param {Collection<T>} collection
+ * @param {Matcher<T>} matcher
  *
  * @return {Object}
  */
 function find(collection, matcher) {
 
-  matcher = toMatcher(matcher);
+  const matchFn = toMatcher(matcher);
 
   let match;
 
   forEach(collection, function(val, key) {
-    if (matcher(val, key)) {
+    if (matchFn(val, key)) {
       match = val;
 
       return false;
@@ -439,10 +498,11 @@ function find(collection, matcher) {
  * Iterate over collection; returning something
  * (non-undefined) will stop iteration.
  *
- * @param  {Array|Object} collection
- * @param  {Function} iterator
+ * @template T
+ * @param {Collection<T>} collection
+ * @param { ((item: T, idx: number) => (boolean|void)) | ((item: T, key: string) => (boolean|void)) } iterator
  *
- * @return {Object} return result that stopped the iteration
+ * @return {T} return result that stopped the iteration
  */
 function forEach(collection, iterator) {
 
@@ -485,6 +545,12 @@ function some(collection, matcher) {
 }
 
 
+/**
+ * @template T
+ * @param {Matcher<T>} matcher
+ *
+ * @return {MatchFn<T>}
+ */
 function toMatcher(matcher) {
   return isFunction(matcher) ? matcher : (e) => {
     return e === matcher;
@@ -595,6 +661,7 @@ function getRoundRectPath(shape, borderRadius) {
  * limitations under the License.
  */
 
+
 const HIGH_PRIORITY = 1500,
       TASK_BORDER_RADIUS = 2;
 
@@ -687,6 +754,7 @@ function prependTo(newNode, parentNode, siblingNode) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 
 var index = {
   __init__: [ 'customRenderer' ],
