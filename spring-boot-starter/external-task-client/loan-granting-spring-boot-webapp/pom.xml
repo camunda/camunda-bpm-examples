@@ -13,10 +13,12 @@
   <properties>
     <camunda.platform.version>7.20.0</camunda.platform.version>
     <spring.boot.version>3.1.1</spring.boot.version>
-    <graaljs.version>21.1.0</graaljs.version>
-    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-    <maven.compiler.release>17</maven.compiler.release>
     <java.version>17</java.version>
+    <!-- maven -->
+    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+    <maven.compiler.release>17</maven.compiler.release>
+
+    <graaljs.version>21.1.0</graaljs.version>
     <jaxb-api.version>2.3.1</jaxb-api.version>
   </properties>
 
@@ -101,16 +103,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring.boot.version}</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.plugin.version}</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-        </configuration>
       </plugin>
     </plugins>
   </build>

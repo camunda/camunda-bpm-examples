@@ -8,10 +8,12 @@
 
   <properties>
     <camunda.version>7.20.0-ee</camunda.version>
+    <!-- spring -->
     <spring.boot.version>3.1.1</spring.boot.version>
-    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-    <maven.compiler.release>17</maven.compiler.release>
     <java.version>17</java.version>
+    <!-- maven -->
+    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+    <maven.compiler.release>17</maven.compiler.release>
   </properties>
 
   <dependencyManagement>
@@ -60,14 +62,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.plugin.version}</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-        </configuration>
       </plugin>
     </plugins>
   </build>
