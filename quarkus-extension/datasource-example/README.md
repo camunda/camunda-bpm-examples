@@ -33,7 +33,7 @@ If you want to learn more about Quarkus, please visit: https://quarkus.io/.
 
 ## Requirements
 
-* Java 11+
+* Java 17+
 * Maven 3.8.1+
 
 ## Running the application in dev mode

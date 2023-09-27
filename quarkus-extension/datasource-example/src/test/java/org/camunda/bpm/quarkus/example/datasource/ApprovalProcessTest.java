@@ -18,7 +18,7 @@ package org.camunda.bpm.quarkus.example.datasource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.List;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -74,7 +74,7 @@ public class ApprovalProcessTest {
       approvalBean.evaluateForApproval(negativeAmount);
     } catch (IllegalArgumentException ex) {
       // noop
-    };
+    }
 
     // then
     // the whole transaction failed, was rolled back

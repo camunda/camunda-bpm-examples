@@ -16,8 +16,8 @@
  */
 package org.camunda.bpm.quarkus.example.datasource;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Named;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Named;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -30,11 +30,11 @@ public class ApprovalServiceDelegate implements JavaDelegate {
   protected static final Logger LOG = Logger.getLogger(ApprovalServiceDelegate.class);
 
   @Override
-  public void execute(DelegateExecution delegateExecution) throws Exception {
+  public void execute(DelegateExecution delegateExecution) {
     int amount = (int) delegateExecution.getVariable("amount");
 
     // some complex non-DMN evaluation logic goes here
-    boolean approved = amount > 0? true : false;
+    boolean approved = amount > 0;
 
     delegateExecution.setVariable("approved", approved);
 

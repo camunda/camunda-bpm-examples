@@ -53,7 +53,7 @@ Observe the console and watch out for the following log output:
 
 ## Requirements
 
-* Java 11+
+* Java 17+
 * Maven 3.8.1+
 
 ## Running the application in dev mode
