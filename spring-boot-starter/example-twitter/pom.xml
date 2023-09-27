@@ -14,6 +14,7 @@
     <twitter4j.version>4.0.7</twitter4j.version>
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -79,6 +80,10 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
       </plugin>
     </plugins>
   </build>

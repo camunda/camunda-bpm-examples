@@ -11,6 +11,7 @@
     <camunda.spring.boot.starter.version>7.20.0</camunda.spring.boot.starter.version>
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -73,6 +74,10 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
       </plugin>
     </plugins>
   </build>

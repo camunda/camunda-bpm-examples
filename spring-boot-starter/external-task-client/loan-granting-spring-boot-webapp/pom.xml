@@ -15,6 +15,7 @@
     <spring.boot.version>3.1.1</spring.boot.version>
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
 
     <graaljs.version>21.1.0</graaljs.version>
     <jaxb-api.version>2.3.1</jaxb-api.version>
@@ -101,6 +102,10 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring.boot.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
       </plugin>
     </plugins>
   </build>
