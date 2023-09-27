@@ -10,7 +10,6 @@
     <!-- spring -->
     <camunda.version>7.20.0-ee</camunda.version>
     <spring.boot.version>3.1.1</spring.boot.version>
-    <java.version>17</java.version>
     <!-- maven -->
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     <maven.compiler.release>17</maven.compiler.release>
