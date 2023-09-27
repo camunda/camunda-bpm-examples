@@ -14,8 +14,8 @@
     <camunda.platform.version>7.20.0</camunda.platform.version>
     <slf4j.version>1.7.36</slf4j.version>
     <jaxb.version>2.3.6</jaxb.version>
-    <maven.compiler.version>3.8.1</maven.compiler.version>
-    <java.version>8</java.version>
+    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <maven.compiler.release>11</maven.compiler.release>
   </properties>
 
   <dependencies>
@@ -30,26 +30,13 @@
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>${jaxb.version}</version>
+    </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>jdk9-plus</id>
-
-      <activation>
-        <jdk>(1.8,)</jdk>
-      </activation>
-
-      <dependencies>
-        <dependency>
-          <groupId>com.sun.xml.bind</groupId>
-          <artifactId>jaxb-impl</artifactId>
-          <version>${jaxb.version}</version>
-        </dependency>
-      </dependencies>
-
-    </profile>
-  </profiles>
 
   <build>
     <plugins>
