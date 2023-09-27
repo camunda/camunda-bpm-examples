@@ -9,13 +9,14 @@
     <version.camunda>7.20.0</version.camunda>
     <version.junit>5.8.2</version.junit>
     <version.h2>2.1.214</version.h2>
-    <version.assertj>3.21.0</version.assertj>
+    <version.assertj>3.24.2</version.assertj>
     <version.logback>1.2.11</version.logback>
 
-    <version.java>1.8</version.java>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>
+    <version.plugin.maven-surefire>3.1.2</version.plugin.maven-surefire>
   </properties>
 
   <name>Camunda Platform Assert and Junit 5</name>
@@ -84,15 +85,14 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M6</version>
+        <version>${version.plugin.maven-surefire}</version>
       </plugin>
       <plugin>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.0.0-M2</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.plugin.maven-compiler}</version>
       </plugin>
     </plugins>
   </build>
