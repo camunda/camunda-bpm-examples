@@ -1,6 +1,6 @@
-# Spring Servlet Process Application (using WildFly)
+# Spring 5 Servlet Process Application (using WildFly)
 
-This example demonstrates how to deploy a Spring-powered Web application which
+This example demonstrates how to deploy a Spring 5 powered Web application which
 
   * Includes a `@ProcessApplication` class and some BPMN 2.0 processes
   * Starts a Spring Web application context
