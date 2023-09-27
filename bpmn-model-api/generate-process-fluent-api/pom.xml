@@ -11,7 +11,11 @@
     <version.junit>4.13.2</version.junit>
     <version.h2>2.1.214</version.h2>
     <version.slf4j>1.7.26</version.slf4j>
+
+    <!-- maven -->
     <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
@@ -64,5 +68,14 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
