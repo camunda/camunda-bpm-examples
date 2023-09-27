@@ -10,8 +10,8 @@
   <properties>
     <version.camunda>7.20.0</version.camunda>
     <version.servlet-api.javax>4.0.1</version.servlet-api.javax>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
@@ -30,5 +30,15 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.maven-compiler-plugin}</version>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

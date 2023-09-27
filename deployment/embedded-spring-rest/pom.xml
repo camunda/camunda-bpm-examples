@@ -10,12 +10,12 @@
 
   <properties>
     <version.camunda>7.20.0</version.camunda>
-    <version.spring>5.3.26</version.spring>
-    <version.resteasy-jaxrs>3.15.3.Final</version.resteasy-jaxrs>
+    <version.spring>5.3.30</version.spring>
+    <version.resteasy-jaxrs>3.15.6.Final</version.resteasy-jaxrs>
     <version.h2>2.1.214</version.h2>
     <version.slf4j>1.7.32</version.slf4j>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -103,6 +103,16 @@
       <version>${version.slf4j}</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.maven-compiler-plugin}</version>
+      </plugin>
+    </plugins>
+  </build>
 
   <repositories>
     <!-- spring maven repository -->
