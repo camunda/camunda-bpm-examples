@@ -9,10 +9,11 @@
 
   <properties>
     <version.camunda>7.20.0</version.camunda>
-    <javax-servlet-api.version>4.0.1</javax-servlet-api.version>
+    <version.jakarta-servlet-api>4.0.4</version.jakarta-servlet-api>
 
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <maven.war-plugin.version>3.3.2</maven.war-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
@@ -27,9 +28,9 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${javax-servlet-api.version}</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>${version.jakarta-servlet-api}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -41,7 +42,13 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
-          <version>3.3.2</version>
+          <version>${maven.war-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
