@@ -1,4 +1,4 @@
-# Plain Spring Web application for WildFly
+# Plain Spring 5 Web application for WildFly
 
 This example demonstrates how to deploy a plain web application which
 
