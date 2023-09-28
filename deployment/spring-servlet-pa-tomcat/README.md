@@ -1,6 +1,6 @@
-# Spring Servlet Process Application (using Tomcat 9)
+# Spring 5 Servlet Process Application (using Tomcat 9)
 
-This example demonstrates how to deploy a spring powered web application which
+This example demonstrates how to deploy a Spring 5 powered web application which
 
   * Includes a `@ProcessApplication` class and some BPMN 2.0 processes
   * Starts a Spring Web application context based on a shared, container managed process engine
