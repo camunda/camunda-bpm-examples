@@ -80,9 +80,9 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [User Task Form Generated](/usertask/task-form-generated) [^1][^2]                                               | All               | Html, Form, Usertask      |
 | [User Task Form JSF](/usertask/task-form-external-jsf) [^1][^2]                                                  | JavaEE Containers | JSF, Form, Usertask       |
 | [Script Task XSLT](/scripttask/xslt-scripttask)                                                                  | Unit Test         | XSLT Scripttask           |
-| [Script Task XQuery](/scripttask/xquery-scripttask)                                                              | Unit Test         | XQuery Scripttask         |
+| [Script Task XQuery](/scripttask/xquery-scripttask) [^1]                                                         | Unit Test         | XQuery Scripttask         |
 | [Start Event - Message](/startevent/message-start)                                                               | Unit Test         | Message Start Event       |
-| [Start Process - SOAP CXF](/startevent/soap-cxf-server-start)                                                    | War               | SOAP, CXF, Spring         |
+| [Start Process - SOAP CXF](/startevent/soap-cxf-server-start) [^1]                                               | War               | SOAP, CXF, Spring         |
 
 ### Deployment & Project Setup Examples
 
