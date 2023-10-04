@@ -5,8 +5,8 @@ React is a popular library to build user interfaces. If you want to use react to
 
 ## Overview
 ### How can I add React to my Tasklist?
-  1. Add [loadReact.js](config/react/loadReact.js) to `app/tasklist/scripts/react` of your webapp. This will load React and ReactDOM from a CDN and add it to the global scope. If you want to use other versions of React, adjust the import paths accordingly.
-  2. Add the loader as a custom script in `app/tasklist/scripts/config.js`. 
+  1. Add [loadReact.js](config/react/loadReact.js) to `app/tasklist/scripts/react` of the Camunda Tasklist webapp (e.g., for Tomcat, it will be `/webapps/camunda/app/tasklist/scripts/react`). This will load React and ReactDOM from a CDN and add it to the global scope. If you want to use other versions of React, adjust the import paths accordingly.
+  2. Add the loader as a custom script in `app/tasklist/scripts/config.js` of the Camunda Tasklist webapp (e.g., for Tomcat, it will be `/webapps/camunda/app/tasklist/scripts/config.js`).
   ```javascript
     customScripts: [
       'scripts/react/loadReact.js'
@@ -15,7 +15,7 @@ React is a popular library to build user interfaces. If you want to use react to
 That's it, you can now use react in your custom forms.
 
 ### How can I get access to process variables?
-All process variables will be managed with the `camForm.variableManager`. You need to load existing and create new variables. How this is done is described in detail in the [Embedded Forms Reference](https://docs.camunda.org/manual/7.19/reference/embedded-forms/javascript/lifecycle/).
+All process variables will be managed with the `camForm.variableManager`. You need to load existing and create new variables. How this is done is described in detail in the [Embedded Forms Reference](https://docs.camunda.org/manual/7.20/reference/embedded-forms/javascript/lifecycle/).
 
 Keep in mind that you also have to update the variables this way if they change. You can do this in the `componentDidUpdate()` method of you form component. 
 

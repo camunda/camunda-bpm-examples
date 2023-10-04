@@ -8,17 +8,17 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.19.0</camunda.version>
-    <spring.version>5.3.26</spring.version>
-    <tomcat.version>9.0.72</tomcat.version>
+    <camunda.version>7.20.0</camunda.version>
+    <spring.version>5.3.30</spring.version>
+    <tomcat.version>9.0.75</tomcat.version>
     <servlet-api.version>4.0.1</servlet-api.version>
     <h2.version>2.1.214</h2.version>
     <slf4j.version>1.7.32</slf4j.version>
     <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
     <maven-dependency-plugin.version>2.8</maven-dependency-plugin.version>
-    <cargo-maven-plugin.version>1.9.9</cargo-maven-plugin.version>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <cargo-maven-plugin.version>1.10.9</cargo-maven-plugin.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -36,7 +36,7 @@
         of the Camunda Tomcat distribution -->
       <scope>provided</scope>
       <exclusions>
-        <!-- Excluded to avoid a version conflict with the Spring version we are 
+        <!-- Excluded to avoid a version conflict with the Spring version we are
           including in our application -->
         <exclusion>
           <groupId>org.springframework</groupId>
@@ -76,7 +76,7 @@
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.camunda.bpm.tomcat</groupId>
       <artifactId>camunda-bpm-tomcat</artifactId>
@@ -96,6 +96,11 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+      </plugin>
       <!-- prepare deployment folder that will be used by web container. (see server.xml:150)  -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

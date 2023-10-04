@@ -8,13 +8,12 @@
   <name>Service Invocation - Asynchronous</name>
 
   <properties>
-    <version.camunda>7.19.0</version.camunda>
+    <version.camunda>7.20.0</version.camunda>
     <version.slf4j>1.7.36</version.slf4j>
     <version.junit>4.13.2</version.junit>
     <version.h2>2.1.214</version.h2>
-
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.version>3.11.0</maven.compiler.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -48,6 +47,18 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
   <repositories>
     <repository>

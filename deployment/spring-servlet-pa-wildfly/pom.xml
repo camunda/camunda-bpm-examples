@@ -6,19 +6,19 @@
   <packaging>war</packaging>
   <name>Camunda Platform - Quickstarts - Spring Servlet Process Application For WildFly</name>
   <version>1.0-SNAPSHOT</version>
-  
+
   <properties>
-    <version.camunda>7.19.0</version.camunda>
-    <version.spring>5.3.26</version.spring>
-    <version.wildfly>26.0.1.Final</version.wildfly>
+    <version.camunda>7.20.0</version.camunda>
+    <version.spring>5.3.30</version.spring>
+    <version.wildfly>26.1.3.Final</version.wildfly>
     <version.servlet-api.javax>4.0.1</version.servlet-api.javax>
 
     <version.wildfly.container.adapter>2.2.0.Final</version.wildfly.container.adapter>
     <version.arquillian>1.1.10.Final</version.arquillian>
     <version.junit>4.13.2</version.junit>
 
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -117,6 +117,16 @@
       <url>https://artifacts.camunda.com/artifactory/public/</url>
     </repository>
   </repositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.maven-compiler-plugin}</version>
+      </plugin>
+    </plugins>
+  </build>
 
   <profiles>
     <profile>

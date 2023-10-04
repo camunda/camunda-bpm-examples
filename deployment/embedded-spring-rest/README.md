@@ -1,9 +1,9 @@
-# Spring configured embedded process engine and REST API
+# Spring 5 configured embedded process engine and REST API
 
 This example demonstrates how to set up a web application, which
 
 * Bundles the `camunda-engine` JAR library
-* Starts and configures a process engine in a Spring Application context
+* Starts and configures a process engine in a Spring 5 Application context
 * Bundles the `camunda-engine-REST` library
 * Exposes the Process Engine API via REST
 

@@ -8,6 +8,7 @@ Camunda Platform examples is a collection of focused usage examples for the [Cam
 | Camunda Version | Link                                                                  | Checkout command      |
 |-----------------|-----------------------------------------------------------------------|-----------------------|
 | Latest          | [Master branch](https://github.com/camunda/camunda-bpm-examples)      | `git checkout master` |
+| 7.20            | [7.20 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.20) | `git checkout 7.20`   |
 | 7.19            | [7.19 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.19) | `git checkout 7.19`   |
 | 7.18            | [7.18 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.18) | `git checkout 7.18`   |
 | 7.17            | [7.17 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.17) | `git checkout 7.17`   |
@@ -80,22 +81,22 @@ If you clone this repository, use the checkout commands to access the sources fo
 | [User Task Form Generated](/usertask/task-form-generated) [^1][^2]                                               | All               | Html, Form, Usertask      |
 | [User Task Form JSF](/usertask/task-form-external-jsf) [^1][^2]                                                  | JavaEE Containers | JSF, Form, Usertask       |
 | [Script Task XSLT](/scripttask/xslt-scripttask)                                                                  | Unit Test         | XSLT Scripttask           |
-| [Script Task XQuery](/scripttask/xquery-scripttask)                                                              | Unit Test         | XQuery Scripttask         |
+| [Script Task XQuery](/scripttask/xquery-scripttask) [^1]                                                         | Unit Test         | XQuery Scripttask         |
 | [Start Event - Message](/startevent/message-start)                                                               | Unit Test         | Message Start Event       |
-| [Start Process - SOAP CXF](/startevent/soap-cxf-server-start)                                                    | War               | SOAP, CXF, Spring         |
+| [Start Process - SOAP CXF](/startevent/soap-cxf-server-start) [^1]                                               | War               | SOAP, CXF, Spring         |
 
 ### Deployment & Project Setup Examples
 
-| Name                                                                                          | Container             |  Keywords                 |
-|-----------------------------------------------------------------------------------------------|-----------------------|---------------------------|
-| [Process Application - Servlet](deployment/servlet-pa)                                        | All                   | War, Servlet              |
-| [Process Application - EJB](deployment/ejb-pa)                                                | JavaEE Containers     | Ejb, War                  |
-| [Process Application - Jakarta EJB](deployment/ejb-pa-jakarta)                                | Jakarta EE Containers | Ejb, War                  |
-| [Process Application - Spring Servlet - WildFly](deployment/spring-servlet-pa-wildfly)        | WildFly               | Spring, Servlet, War      |
-| [Process Application - Spring Servlet - Embedded Tomcat](deployment/spring-servlet-pa-tomcat) | Tomcat                | Spring, Servlet, War      |
-| [Embedded Spring with embedded REST](deployment/embedded-spring-rest)                         | vanilla Apache Tomcat | Spring, Rest, Embedded    |
-| [Plain Spring Web application - WildFly](deployment/spring-wildfly-non-pa)                    | WildFly               | Spring, Jndi, War         |
-| [Process Application - Spring Boot](deployment/spring-boot) [^1]                              | Spring Boot           | Spring                    |
+| Name                                                                                            | Container             |  Keywords                 |
+|-------------------------------------------------------------------------------------------------|-----------------------|---------------------------|
+| [Process Application - Servlet](deployment/servlet-pa)                                          | All                   | War, Servlet              |
+| [Process Application - EJB](deployment/ejb-pa)                                                  | JavaEE Containers     | Ejb, War                  |
+| [Process Application - Jakarta EJB](deployment/ejb-pa-jakarta)                                  | Jakarta EE Containers | Ejb, War                  |
+| [Process Application - Spring 5 Servlet - WildFly](deployment/spring-servlet-pa-wildfly)        | WildFly               | Spring, Servlet, War      |
+| [Process Application - Spring 5 Servlet - Embedded Tomcat](deployment/spring-servlet-pa-tomcat) | Tomcat                | Spring, Servlet, War      |
+| [Embedded Spring 5 with embedded REST](deployment/embedded-spring-rest)                         | vanilla Apache Tomcat | Spring, Rest, Embedded    |
+| [Plain Spring 5 Web application - WildFly](deployment/spring-wildfly-non-pa)                    | WildFly               | Spring, Jndi, War         |
+| [Process Application - Spring Boot](deployment/spring-boot) [^1]                                | Spring Boot           | Spring                    |
 
 ### Process Engine Plugin Examples
 

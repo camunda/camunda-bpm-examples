@@ -7,14 +7,13 @@
   <packaging>war</packaging>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-
     <!-- set the version for Camunda Platform here -->
-    <version.camunda>7.19.0</version.camunda>
+    <version.camunda>7.20.0</version.camunda>
     <version.jakartaee>10.0.0</version.jakartaee>
     <version.jackson>2.14.1</version.jackson>
     <version.maven-war-plugin>3.3.2</version.maven-war-plugin>
+    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.version>3.11.0</maven.compiler.version>
   </properties>
 
   <dependencyManagement>
@@ -66,6 +65,12 @@
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.version}</version>
       </plugin>
     </plugins>
   </build>

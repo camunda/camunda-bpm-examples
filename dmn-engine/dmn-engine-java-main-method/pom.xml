@@ -10,12 +10,13 @@
   <packaging>jar</packaging>
 
   <properties>
-    <version.camunda>7.19.0</version.camunda>
+    <version.camunda>7.20.0</version.camunda>
     <version.slf4j>1.7.36</version.slf4j>
     <version.junit>4.13.2</version.junit>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>
   </properties>
 
   <dependencyManagement>
@@ -101,7 +102,11 @@
           <finalName>DishDecider</finalName>
         </configuration>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.plugin.maven-compiler}</version>
+      </plugin>
     </plugins>
   </build>
 

@@ -9,13 +9,14 @@
 
   <name>Camunda Cockpit Plugin: Sample</name>
   <description>This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of Camunda Platform.</description>
-  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.19/cockpit/cockpit-sample-plugin</url>
+  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.20/cockpit/cockpit-sample-plugin</url>
 
   <properties>
-    <camunda.version>7.19.0</camunda.version>
+    <camunda.version>7.20.0</camunda.version>
 
-    <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-    <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+    <frontend-maven-plugin.version>1.14.0</frontend-maven-plugin.version>
+    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <jboss-javaee.version>3.0.3.Final</jboss-javaee.version>
     <junit.version>4.13.2</junit.version>
     <h2.version>2.1.214</h2.version>
@@ -27,8 +28,7 @@
     <frontend.build.path>${frontend.working.directory}dist/</frontend.build.path>
     <frontend.target.path>plugin-webapp/sample-plugin/app</frontend.target.path>
 
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -76,6 +76,11 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+      </plugin>
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>

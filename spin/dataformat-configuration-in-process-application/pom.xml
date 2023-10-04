@@ -10,15 +10,16 @@
   <name>Spin - Configuring a Data Format Per Process Application</name>
 
   <properties>
-    <version.camunda>7.19.0</version.camunda>
+    <version.camunda>7.20.0</version.camunda>
     <version.graal.js>21.1.0</version.graal.js>
     <version.java-ee>7.0</version.java-ee>
     <version.h2>2.1.214</version.h2>
     <version.junit>4.13.2</version.junit>
     <version.slf4j>1.7.36</version.slf4j>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>
   </properties>
 
   <dependencyManagement>
@@ -84,7 +85,17 @@
     </dependency>
 
   </dependencies>
-  
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.plugin.maven-compiler}</version>
+      </plugin>
+  </plugins>
+  </build>
+
   <profiles>
     <profile>
       <!-- Use this for deployment to Oracle WebLogic, IBM Websphere and Glassfish -->
