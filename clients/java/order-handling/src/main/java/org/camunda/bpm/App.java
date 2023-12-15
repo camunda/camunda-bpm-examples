@@ -16,6 +16,8 @@
  */
 package org.camunda.bpm;
 
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.core5.util.Timeout;
 import org.camunda.bpm.client.ExternalTaskClient;
 import org.camunda.bpm.client.variable.ClientValues;
 import org.camunda.bpm.engine.variable.value.ObjectValue;
@@ -31,6 +33,11 @@ public class App {
     ExternalTaskClient client = ExternalTaskClient.create()
       .baseUrl("http://localhost:8080/engine-rest")
       .asyncResponseTimeout(1000)
+      .customizeHttpClient(httpClientBuilder -> {
+        httpClientBuilder.setDefaultRequestConfig(RequestConfig.custom()
+          .setResponseTimeout(Timeout.ofSeconds(3))
+          .build());
+      })
       .build();
 
     // subscribe to the topic
@@ -63,7 +70,7 @@ public class App {
           " has been completed!");
 
       }).open();
-    
+
     client.subscribe("invoiceArchiver")
       .handler((externalTask, externalTaskService) -> {
         TypedValue typedInvoice = externalTask.getVariableTyped("invoice");
