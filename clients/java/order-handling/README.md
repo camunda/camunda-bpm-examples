@@ -70,7 +70,7 @@ Create a main class and add the following lines:
       .asyncResponseTimeout(1000)
       .customizeHttpClient(httpClientBuilder -> {
         httpClientBuilder.setDefaultRequestConfig(RequestConfig.custom()
-            .setResponseTimeout(Timeout.ofSeconds(3))
+            .setResponseTimeout(Timeout.ofSeconds(15))
             .build());
       })
       .build();
