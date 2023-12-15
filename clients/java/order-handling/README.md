@@ -9,7 +9,7 @@ In a nutshell you will be guided through the following steps:
 * Monitor the process in Camunda Cockpit
 
 ## Prerequisites
-* [Java JDK 8+](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Java JDK 11+](https://www.oracle.com/java/technologies/downloads/#java11)
 * [Apache Maven](https://maven.apache.org/download.cgi)
 * [Camunda Modeler](https://camunda.com/download/modeler/)
 * [Camunda Platform Runtime](https://camunda.com/download/)
@@ -68,6 +68,11 @@ Create a main class and add the following lines:
     ExternalTaskClient client = ExternalTaskClient.create()
       .baseUrl("http://localhost:8080/engine-rest")
       .asyncResponseTimeout(1000)
+      .customizeHttpClient(httpClientBuilder -> {
+        httpClientBuilder.setDefaultRequestConfig(RequestConfig.custom()
+            .setResponseTimeout(Timeout.ofSeconds(15))
+            .build());
+      })
       .build();
 
     // subscribe to the topic
