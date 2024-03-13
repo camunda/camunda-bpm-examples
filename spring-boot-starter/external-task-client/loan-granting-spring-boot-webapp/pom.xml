@@ -18,7 +18,7 @@
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
 
     <graaljs.version>21.1.0</graaljs.version>
-    <jaxb.version>4.0.4</jaxb.version>
+    <jaxb.version>4.0.5</jaxb.version>
   </properties>
 
   <dependencyManagement>
