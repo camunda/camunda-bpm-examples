@@ -38,6 +38,9 @@
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+      <exclusions><exclusion><groupId>org.camunda.connect</groupId>
+      <artifactId>camunda-connect-connectors-all</artifactId></exclusion></exclusions>
+
     </dependency>
 
     <dependency>
