@@ -10,7 +10,7 @@
     <!-- set the version for Camunda Platform here -->
     <version.camunda>7.21.0</version.camunda>
     <version.jakartaee>10.0.0</version.jakartaee>
-    <version.jackson>2.14.1</version.jackson>
+    <version.jackson>2.15.2</version.jackson>
     <version.maven-war-plugin>3.3.2</version.maven-war-plugin>
     <maven.compiler.release>11</maven.compiler.release>
     <maven.compiler.version>3.11.0</maven.compiler.version>
