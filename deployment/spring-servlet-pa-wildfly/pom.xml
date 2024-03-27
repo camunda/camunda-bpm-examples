@@ -8,7 +8,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.20.0</version.camunda>
+    <version.camunda>7.21.0</version.camunda>
     <version.spring>5.3.30</version.spring>
     <version.wildfly>26.1.3.Final</version.wildfly>
     <version.servlet-api.javax>4.0.1</version.servlet-api.javax>
