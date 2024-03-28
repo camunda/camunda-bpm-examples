@@ -94,7 +94,7 @@ There are currently 0 processes deployed on this engine.
 
 ## Moving to Jakarta API
 
-If you would like to deploy this on a Jakarta EE 9+ server like WildFly 27 and beyond, perform the following steps:
+If you would like to deploy this on a Jakarta EE 9+ server like WildFly 31 and beyond, perform the following steps:
 
 1. Bump the `spring.version` in the `pom.xml` to `6.x.y` (find the latest version [here][2]).
 2. Build it with Maven (needs JDK 17+).

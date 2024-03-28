@@ -15,7 +15,7 @@ This is a @Stateless Ejb component invoked from a BPMN 2.0 process.
 
 ## Moving to Jakarta API
 
-If you would like to deploy this on a Jakarta EE 9+ server like WildFly 27 and beyond, have a look at the [Jakarta EJB example][2].
+If you would like to deploy this on a Jakarta EE 9+ server like WildFly 31 and beyond, have a look at the [Jakarta EJB example][2].
 
 [1]: https://docs.camunda.org/manual/latest/installation/full/jboss/manual/
 [2]: /deployment/ejb-pa-jakarta
