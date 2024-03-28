@@ -7,7 +7,7 @@
   <packaging>war</packaging>
 
   <properties>
-    <camunda.version>7.20.0</camunda.version>
+    <camunda.version>7.21.0</camunda.version>
     <version.jakarta-servlet-api>4.0.4</version.jakarta-servlet-api>
 
     <maven.compiler.release>11</maven.compiler.release>

@@ -63,7 +63,7 @@ dependency like:
 
 ## How to use it?
 
-1. Build it with Maven.
+1. Build it with Maven and Java 11.
 
 ```bash
 mvn clean verify

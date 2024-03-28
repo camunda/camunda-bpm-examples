@@ -15,7 +15,7 @@ React is a popular library to build user interfaces. If you want to use react to
 That's it, you can now use react in your custom forms.
 
 ### How can I get access to process variables?
-All process variables will be managed with the `camForm.variableManager`. You need to load existing and create new variables. How this is done is described in detail in the [Embedded Forms Reference](https://docs.camunda.org/manual/7.20/reference/embedded-forms/javascript/lifecycle/).
+All process variables will be managed with the `camForm.variableManager`. You need to load existing and create new variables. How this is done is described in detail in the [Embedded Forms Reference](https://docs.camunda.org/manual/7.21/reference/embedded-forms/javascript/lifecycle/).
 
 Keep in mind that you also have to update the variables this way if they change. You can do this in the `componentDidUpdate()` method of you form component. 
 

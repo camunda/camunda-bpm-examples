@@ -19,7 +19,7 @@ mvn clean test
 ```
 
 ## Further reading
-If you want to read more about [Camunda Platform Assert][assert], go to the [testing user guide](https://docs.camunda.org/manual/7.20/user-guide/testing/) in the Camunda docs.
+If you want to read more about [Camunda Platform Assert][assert], go to the [testing user guide](https://docs.camunda.org/manual/7.21/user-guide/testing/) in the Camunda docs.
 
 
 [assert]: https://github.com/camunda/camunda-bpm-platform/tree/master/test-utils/assert

@@ -13,7 +13,7 @@ You will need:
 * a valid camunda-license key file in your classpath in the file `camunda-license.txt`
 
 ## Prerequisites
-* Java 17
+* Java 17/21
 
 ## How is it done
 
@@ -23,7 +23,7 @@ to your `pom.xml`:
 ```xml
 ...
   <properties>
-    <camunda.version>7.20.0-ee</camunda.version>
+    <camunda.version>7.21.0-ee</camunda.version>
   </properties>
 
   <dependencyManagement>

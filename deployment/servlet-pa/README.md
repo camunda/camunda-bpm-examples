@@ -14,7 +14,7 @@ Service Task 'Example ServiceTask' is invoked!
 
 ## Moving to Jakarta API
 
-If you would like to deploy this on a Jakarta EE 9+ server like WildFly 27 and beyond, perform the following steps:
+If you would like to deploy this on a Jakarta EE 9+ server like WildFly 31 and beyond, perform the following steps:
 
 1. Replace the `javax.servlet-api` dependency with a Jakarta equivalent, i.e. `jakarta.servlet-api`.
 2. Replace all occurrences of `javax.servlet` in the code with `jakarta.servlet`, e.g. in `ExampleProcessApplication`.

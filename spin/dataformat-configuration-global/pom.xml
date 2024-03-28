@@ -10,7 +10,7 @@
   <name>Spin - Configuring a Data Format Globally</name>
 
   <properties>
-    <version.camunda>7.20.0</version.camunda>
+    <version.camunda>7.21.0</version.camunda>
     <version.graal.js>21.1.0</version.graal.js>
     <version.h2>2.1.214</version.h2>
     <version.junit>4.13.2</version.junit>
