@@ -76,10 +76,10 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.plugin.version}</version>
       </plugin>
-	  <plugin>
+	    <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <version>${maven.war.plugin.version}</version>
-		<configuration>
+		    <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
