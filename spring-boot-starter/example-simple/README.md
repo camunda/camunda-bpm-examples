@@ -15,7 +15,7 @@ It also demonstrates the usage of `application.yaml` configuration file and cont
 
 
 ## Prerequisites
-* Java 17
+* Java 17/21
 
 ## How is it done
 

@@ -9,7 +9,7 @@ This example demonstrates how you can build Spring Boot Web application having f
 It also contains a simple integration test, showing how this can be tested.
 
 ## Prerequisites
-* Java 17
+* Java 17/21
 
 ## How is it done
 

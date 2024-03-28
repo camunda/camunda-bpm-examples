@@ -8,7 +8,7 @@ This example demonstrates how you can build a Spring Boot Web application with t
 It also contains a couple of integration tests, showing how this can be tested.
 
 ## Prerequisites
-* Java 17
+* Java 17/21
 
 ## How is it done
 
