@@ -15,7 +15,7 @@ You will need:
 * a valid camunda-license key file in your classpath in the file `camunda-license.txt`
 
 ## Prerequisites
-* Java 17
+* Java 17/21
 
 ## How is it done
 
