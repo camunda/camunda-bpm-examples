@@ -3,7 +3,7 @@
 This project demonstrates how to setup a minimal project to run Camunda Platform Assert tests
 
 ## Prerequisites
-* Java 17
+* Java 17/21
 
 ## How to run it
 
