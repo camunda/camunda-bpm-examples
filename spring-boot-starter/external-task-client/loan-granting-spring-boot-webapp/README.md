@@ -8,7 +8,7 @@ Beyond that, it demonstrates how to use the Spring Boot Starter to ...
 * ... execute custom business logic defined in a handler bean for each fetched External Task
 
 ## Prerequisites
-* Java 17
+* Java 17/21
 
 ## Why is this example interesting?
 
