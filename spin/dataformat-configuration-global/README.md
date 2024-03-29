@@ -113,5 +113,5 @@ Where to place the data format configuration JAR on which application server:
 
 | Application Server           | Configuration                                                           |
 | ---------------------------- | ----------------------------------------------------------------------- |
+| WebLogic/Websphere           | Add the JAR and any dependencies that are not yet present to the Camunda EAR. Replace the deployed Camunda EAR by the updated one. |
 | JBoss/Wildfly                | Deploy the JAR as a JBoss module. Create appropriate module dependencies for the JAR's dependencies. Keep in mind that all transitive dependencies must be declared as well. For this example, the dependencies should be `org.camunda.spin.camunda-spin-dataformat-json-jackson`, `org.camunda.spin.camunda-spin-core`, `com.fasterxml.jackson.core.jackson-databind` (with same version that `camunda-spin-dataformat-json-jackson` uses). Edit `${JBOSS_HOME}/modules/org/camunda/bpm/camunda-engine-plugin-spin/main/module.xml`. Declare a dependency on the JAR module and make sure to set the attribute `services="import"`. |
-| Glassfish/WebLogic/Websphere | Add the JAR and any dependencies that are not yet present to the Camunda EAR. Replace the deployed Camunda EAR by the updated one. |
