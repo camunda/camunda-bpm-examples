@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/camunda/camunda-bpm-examples/tree/master/cockpit/cockpit-bpmn-js-module-bundled",
   "dependencies": {
-    "@rollup/plugin-commonjs": "^25.0.4",
-    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "bpmn-js": "^12.1.1",
-    "diagram-js": "^11.13.0",
-    "rollup": "^3.29.3",
+    "diagram-js": "^11.13.1",
+    "rollup": "^3.29.4",
     "tiny-svg": "^3.0.1"
   }
 }
