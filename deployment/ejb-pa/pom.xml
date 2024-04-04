@@ -8,7 +8,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.20.0</version.camunda>
+    <version.camunda>7.21.0</version.camunda>
     <version.java-ee-specs>3.0.3.Final</version.java-ee-specs>
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
     <maven.compiler.release>11</maven.compiler.release>

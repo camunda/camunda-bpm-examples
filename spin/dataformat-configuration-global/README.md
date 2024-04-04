@@ -100,7 +100,7 @@ In the [test case](src/test/java/org/camunda/bpm/example/spin/dataformat/configu
 
 For this to work, it is crucial that the Spin runtime is able to lookup the `DataFormatConfigurator` implementation. That means, the artifact containing the data format configurator and the corresponding `META-INF/services` file must be on the classpath of the Camunda Spin process engine plugin.
 
-You can find the Spin documentation on configuring data formats [here](https://docs.camunda.org/manual/7.20/reference/spin/extending-spin/#configuring-data-formats).
+You can find the Spin documentation on configuring data formats [here](https://docs.camunda.org/manual/7.21/reference/spin/extending-spin/#configuring-data-formats).
 
 ## Shared Process Engine (Application Server)
 
@@ -113,5 +113,5 @@ Where to place the data format configuration JAR on which application server:
 
 | Application Server           | Configuration                                                           |
 | ---------------------------- | ----------------------------------------------------------------------- |
+| WebLogic/Websphere           | Add the JAR and any dependencies that are not yet present to the Camunda EAR. Replace the deployed Camunda EAR by the updated one. |
 | JBoss/Wildfly                | Deploy the JAR as a JBoss module. Create appropriate module dependencies for the JAR's dependencies. Keep in mind that all transitive dependencies must be declared as well. For this example, the dependencies should be `org.camunda.spin.camunda-spin-dataformat-json-jackson`, `org.camunda.spin.camunda-spin-core`, `com.fasterxml.jackson.core.jackson-databind` (with same version that `camunda-spin-dataformat-json-jackson` uses). Edit `${JBOSS_HOME}/modules/org/camunda/bpm/camunda-engine-plugin-spin/main/module.xml`. Declare a dependency on the JAR module and make sure to set the attribute `services="import"`. |
-| Glassfish/WebLogic/Websphere | Add the JAR and any dependencies that are not yet present to the Camunda EAR. Replace the deployed Camunda EAR by the updated one. |

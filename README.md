@@ -8,6 +8,7 @@ Camunda Platform examples is a collection of focused usage examples for the [Cam
 | Camunda Version | Link                                                                  | Checkout command      |
 |-----------------|-----------------------------------------------------------------------|-----------------------|
 | Latest          | [Master branch](https://github.com/camunda/camunda-bpm-examples)      | `git checkout master` |
+| 7.21            | [7.21 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.21) | `git checkout 7.21`   |
 | 7.20            | [7.20 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.20) | `git checkout 7.20`   |
 | 7.19            | [7.19 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.19) | `git checkout 7.19`   |
 | 7.18            | [7.18 tag](https://github.com/camunda/camunda-bpm-examples/tree/7.18) | `git checkout 7.18`   |
@@ -104,16 +105,16 @@ If you clone this repository, use the checkout commands to access the sources fo
 |-------------------------------------------------------------------------------------------------|----------------------|---------------------------------------------|
 | [BPMN Parse Listener](process-engine-plugin/bpmn-parse-listener)                                | Unit Test            | Process Engine Plugin, Bpmn Parse Listener  |
 | [BPMN Parse Listener on User Task](process-engine-plugin/bpmn-parse-listener-on-user-task) [^1] | Unit Test            | Process Engine Plugin, Bpmn Parse Listener  |
-| [Custom History Level](process-engine-plugin/custom-history-level)                              | Unit Test            | Process Engine Plugin, Custom History Level |
 | [Command Interceptor - Blocking](process-engine-plugin/command-interceptor-blocking)            | Unit Test            | Maintenance, Interceptor, Configuration     |
+| [Custom History Level](process-engine-plugin/custom-history-level)                              | Unit Test            | Process Engine Plugin, Custom History Level |
 | [Failed Job Retry Profile](process-engine-plugin/failed-job-retry-profile)                      | Unit Test            | Process Engine Plugin, Failed Job Retry     |
 
 ### Bpmn 2.0 Model API Examples
 
 | Name                                                                 | Container            | Keywords                  |
 |----------------------------------------------------------------------|----------------------|---------------------------|
-| [Generate BPMN process](/bpmn-model-api/generate-process-fluent-api) | Unit Test            | Fluent API                |
 | [Generate JSF forms](/bpmn-model-api/generate-jsf-form) [^1]         | JavaEE Containers    | JSF, Usertask             |
+| [Generate BPMN process](/bpmn-model-api/generate-process-fluent-api) | Unit Test            | Fluent API                |
 | [Parse BPMN model](/bpmn-model-api/parse-bpmn)                       | Unit Test            | BPMN                      |
 
 ### Cmmn 1.1 Model API Examples

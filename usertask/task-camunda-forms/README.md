@@ -35,4 +35,4 @@ The attribute can also be set through the properties panel using the camunda Mod
 [2]: docs/screenshot-modeler.png
 [3]: src/main/webapp/start-form.html
 [4]: src/main/webapp
-[5]: https://docs.camunda.org/manual/7.20/user-guide/task-forms/#camunda-task-forms
+[5]: https://docs.camunda.org/manual/7.21/user-guide/task-forms/#camunda-task-forms

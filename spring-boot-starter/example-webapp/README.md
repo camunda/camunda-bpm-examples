@@ -9,7 +9,7 @@ This example demonstrates how you can build Spring Boot Web application having f
 It also contains a simple integration test, showing how this can be tested.
 
 ## Prerequisites
-* Java 17
+* Java 17/21
 
 ## How is it done
 
@@ -20,7 +20,7 @@ It also contains a simple integration test, showing how this can be tested.
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-  <version>7.20.0</version>
+  <version>7.21.0</version>
 </dependency>
 ...
 ```
