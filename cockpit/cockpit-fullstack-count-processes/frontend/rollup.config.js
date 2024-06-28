@@ -24,7 +24,7 @@ import scss from "rollup-plugin-scss";
 export default {
   input: "src/plugin.js",
   output: {
-    file: "dist/plugin.js"
+    file: "dist/plugin-2.js"
   },
   plugins: [
     resolve(),

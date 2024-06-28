@@ -16,6 +16,7 @@
  */
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
+import java.util.List;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
@@ -36,5 +37,16 @@ public class SamplePluginRootResource extends AbstractCockpitPluginRootResource 
   @Path("{engineName}/process-instance")
   public ProcessInstanceResource getProcessInstanceResource(@PathParam("engineName") String engineName) {
     return subResource(new ProcessInstanceResource(engineName), engineName);
+  }
+
+  @Override
+  protected List<String> getAllowedAssets() {
+    System.out.println("Classpath: " + System.getProperty("java.class.path"));
+    List<String> assets = super.getAllowedAssets();
+    if(assets == null) {
+      return null;
+    }
+    assets.add("app/controllers.js");
+    return assets;
   }
 }

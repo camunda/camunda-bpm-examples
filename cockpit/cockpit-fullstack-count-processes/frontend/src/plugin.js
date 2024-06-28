@@ -19,9 +19,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import ProcessInstanceCount from "./ProcessInstanceCount";
+import ProcessInstanceCount2 from "./controllers.js";
 
 let container = null;
-
+console.log("imported", ProcessInstanceCount2);
 export default {
   id: "process-instance-count",
   pluginPoint: "cockpit.dashboard",
