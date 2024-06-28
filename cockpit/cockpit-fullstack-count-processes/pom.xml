@@ -11,6 +11,8 @@
   <description>This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of Camunda Platform.</description>
   <url>https://github.com/camunda/camunda-bpm-examples/tree/7.21/cockpit/cockpit-sample-plugin</url>
 
+<!-- TODO this example  -->
+
   <properties>
     <camunda.version>7.21.0</camunda.version>
 
