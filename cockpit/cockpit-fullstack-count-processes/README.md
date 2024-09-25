@@ -3,11 +3,11 @@ Fullstack (ReactJS & Java) "Count Processes" Cockpit Plugin
 
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda Platform](http://docs.camunda.org).
 
-Built and tested against Camunda Platform version `7.21.0`.
+Built and tested against Camunda Platform version `7.22.0`.
 
 ![Screenshot](screenshot.png)
 
-> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.21/webapps/cockpit/extend/plugins/) for the basics first.
+> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.22/webapps/cockpit/extend/plugins/) for the basics first.
 
 # Table of contents
 
@@ -452,7 +452,7 @@ Now we are done with the server-side parts of the plug-in. Next, we will go ahea
 
 
 >This section only provides a short overview of the client-side plug-in mechanism in Cockpit.
->Consider reading about the [Structure of a Frontend Module](https://docs.camunda.org/manual/7.21/webapps/cockpit/extend/plugins/#structure-of-a-frontend-module) if you are interested in more details.
+>Consider reading about the [Structure of a Frontend Module](https://docs.camunda.org/manual/7.22/webapps/cockpit/extend/plugins/#structure-of-a-frontend-module) if you are interested in more details.
 
 
 The client-side part of a Cockpit plug-in consists of an extension to the Cockpit webapp client application. It is served through the plug-in serverside extension as a static plug-in asset.
