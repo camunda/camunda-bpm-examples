@@ -16,10 +16,12 @@
  */
 package org.camunda.bpm.example;
 
+import jakarta.servlet.ServletContextListener;
+
 import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.application.impl.JakartaServletProcessApplication;
 
 @ProcessApplication
-public class JsonProcessApplication extends ServletProcessApplication {
+public class JsonProcessApplication extends JakartaServletProcessApplication {
 
 }

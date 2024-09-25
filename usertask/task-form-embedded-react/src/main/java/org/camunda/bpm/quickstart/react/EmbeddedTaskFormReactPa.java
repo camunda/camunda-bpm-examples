@@ -16,10 +16,10 @@
  */
 package org.camunda.bpm.quickstart.react;
 
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextListener;
 
 import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.application.impl.JakartaServletProcessApplication;
 
 /**
  * <p>This class transforms your regular java web application
@@ -42,6 +42,6 @@ import org.camunda.bpm.application.impl.ServletProcessApplication;
  * deployment descriptor.</p>
  */
 @ProcessApplication
-public class EmbeddedTaskFormReactPa extends ServletProcessApplication {
+public class EmbeddedTaskFormReactPa extends JakartaServletProcessApplication {
 
 }
