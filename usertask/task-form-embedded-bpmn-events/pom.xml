@@ -9,7 +9,7 @@
 
   <properties>
     <version.camunda>7.22.0</version.camunda>
-    <version.jakarta-servlet-api>4.0.4</version.jakarta-servlet-api>
+    <version.jakarta-servlet-api>6.0.0</version.jakarta-servlet-api>
 
     <maven.compiler.release>11</maven.compiler.release>
     <maven.compiler.version>3.11.0</maven.compiler.version>

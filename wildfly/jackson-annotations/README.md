@@ -14,7 +14,7 @@ and json serialization.
 
 1. Checkout the git repository
 2. Build the project with maven
-3. Deploy the created war on Camunda WildFly 31 distribution
+3. Deploy the created war on latest Camunda WildFly distribution
 4. Open Cockpit and take a look into the process 'waitingProcess'
 5. Look at the variable called `variable`, only the properties `property1` and `property3` are shown.
 
