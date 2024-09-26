@@ -1,4 +1,4 @@
-# Spring 5 Servlet Process Application (using Tomcat 9)
+# Spring 6 Servlet Process Application (using Tomcat 10)
 
 This example demonstrates how to deploy a Spring 6 powered web application which
 
@@ -72,7 +72,7 @@ For testing, the Maven Cargo plugin unpacks the Camunda Tomcat distribution to t
 
 ## How to use it?
 
-1. Build it with Maven.
+1. Build it with Maven and Java 17.
 
 ```bash
 mvn clean verify
@@ -83,7 +83,7 @@ This will start the embedded tomcat server.
 2. Watch out for this console log:
 
 ```bash
-[INFO] [talledLocalContainer] INFO: ENGINE-08046 Found Camunda Platform configuration in CATALINA_BASE/CATALINA_HOME conf directory [./target/cargo/configurations/tomcat9x/conf/bpm-platform.xml] at './target/cargo/configurations/tomcat10x/conf/bpm-platform.xml'
+[INFO] [talledLocalContainer] INFO: ENGINE-08046 Found Camunda Platform configuration in CATALINA_BASE/CATALINA_HOME conf directory [./target/cargo/configurations/tomcat10x/conf/bpm-platform.xml] at './target/cargo/configurations/tomcat10x/conf/bpm-platform.xml'
 ...
 [INFO] [talledLocalContainer] INFO: ENGINE-07015 Detected @ProcessApplication class 'org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication'
 [INFO] [talledLocalContainer] org.apache.catalina.core.ApplicationContext log
