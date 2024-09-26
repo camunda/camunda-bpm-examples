@@ -1,6 +1,6 @@
 # Spring 5 Servlet Process Application (using Tomcat 9)
 
-This example demonstrates how to deploy a Spring 5 powered web application which
+This example demonstrates how to deploy a Spring 6 powered web application which
 
   * Includes a `@ProcessApplication` class and some BPMN 2.0 processes
   * Starts a Spring Web application context based on a shared, container managed process engine
@@ -83,7 +83,7 @@ This will start the embedded tomcat server.
 2. Watch out for this console log:
 
 ```bash
-[INFO] [talledLocalContainer] INFO: ENGINE-08046 Found Camunda Platform configuration in CATALINA_BASE/CATALINA_HOME conf directory [./target/cargo/configurations/tomcat9x/conf/bpm-platform.xml] at './target/cargo/configurations/tomcat9x/conf/bpm-platform.xml'
+[INFO] [talledLocalContainer] INFO: ENGINE-08046 Found Camunda Platform configuration in CATALINA_BASE/CATALINA_HOME conf directory [./target/cargo/configurations/tomcat9x/conf/bpm-platform.xml] at './target/cargo/configurations/tomcat10x/conf/bpm-platform.xml'
 ...
 [INFO] [talledLocalContainer] INFO: ENGINE-07015 Detected @ProcessApplication class 'org.camunda.bpm.example.spring.servlet.pa.SpringServletProcessApplication'
 [INFO] [talledLocalContainer] org.apache.catalina.core.ApplicationContext log
