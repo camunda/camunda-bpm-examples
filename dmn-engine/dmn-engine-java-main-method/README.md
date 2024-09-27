@@ -50,7 +50,7 @@ Include some slf4j backend. The simplest option is to not add a backend at all b
 <dependency>
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-jdk14</artifactId>
-  <version>1.7.36</version>
+  <version>2.0.16</version>
 </dependency>
 ```
 
