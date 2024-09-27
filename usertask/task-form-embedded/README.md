@@ -5,6 +5,7 @@ This quickstart demonstrates how to use the [Embedded Forms][5] feature. Embedde
 ![Embedded Forms Screenshot][1]
 
 # Overview
+This example uses Jakarta API. It is compatible with the latest releases of Camunda Tomcat and WildFly distributions.
 
 ## Where are embedded taskforms added?
 

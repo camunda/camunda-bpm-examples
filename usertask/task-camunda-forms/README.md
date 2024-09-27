@@ -5,6 +5,7 @@ This quickstart demonstrates how to use the [Camunda Forms][5] feature. Camunda 
 ![Camunda Forms Screenshot][1]
 
 # Overview
+This example uses Jakarta API. It is compatible with the latest releases of Camunda Tomcat and WildFly distributions.
 
 ## Where are Camunda Forms added?
 
