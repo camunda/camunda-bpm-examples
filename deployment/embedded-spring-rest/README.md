@@ -1,14 +1,18 @@
-# Spring 5 configured embedded process engine and REST API
+# Spring 6 configured embedded process engine and REST API
 
 This example demonstrates how to set up a web application, which
 
 * Bundles the `camunda-engine` JAR library
 * Starts and configures a process engine in a Spring 5 Application context
-* Bundles the `camunda-engine-REST` library
+* Bundles the `camunda-engine-rest-jakarta` library
 * Exposes the Process Engine API via REST
 
-> **Note:** This project must be deployed on a vanilla Apache Tomcat server, NOT the prepackaged distribution
+> **Note:** This project must be deployed on a vanilla Apache Tomcat 10 server, NOT the prepackaged distribution
 > which can be downloaded from https://camunda.com.
+
+## Requirements
+
+* Java 17
 
 ## Why is this example interesting?
 
@@ -106,15 +110,15 @@ Reference all required libraries in pom.xml:
 
 <dependency>
   <groupId>org.camunda.bpm</groupId>
-  <artifactId>camunda-engine-rest</artifactId>
+  <artifactId>camunda-engine-rest-jakarta</artifactId>
   <version>${camunda.version}</version>
   <classifier>classes</classifier>
 </dependency>
 
 <dependency>
   <groupId>org.jboss.resteasy</groupId>
-  <artifactId>resteasy-jaxrs</artifactId>
-  <version>${version.resteasy-jaxrs}</version>
+  <artifactId>resteasy-core</artifactId>
+  <version>${version.resteasy}</version>
 </dependency>
 
 <dependency>
@@ -133,5 +137,5 @@ Reference all required libraries in pom.xml:
 ## How to use it?
 
 1. Build it with Maven.
-2. Deploy it to a vanilla Apache Tomcat server, NOT the prepackaged distribution which can be downloaded from https://camunda.com!
+2. Deploy it to a vanilla Apache Tomcat 10 server, NOT the prepackaged distribution which can be downloaded from https://camunda.com!
 3. Access the [REST Endpoint](http://localhost:8080/camunda-quickstart-embedded-spring-rest-1.0-SNAPSHOT/engine/default/process-definition)
