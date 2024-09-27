@@ -1,9 +1,10 @@
-This example works with Chrome and Firefox.
-
 # Using React Forms with Tasklist
 React is a popular library to build user interfaces. If you want to use react to build custom Tasklist forms, you can use this example as a starting point. We adapted the [React Multiple Inputs Example](https://reactjs.org/docs/forms.html#handling-multiple-inputs) and integrated it into a process.
 
 ## Overview
+This example uses Jakarta API. It is compatible with the latest releases of Camunda Tomcat and WildFly distributions.
+This example works with Chrome and Firefox.
+
 ### How can I add React to my Tasklist?
   1. Add [loadReact.js](config/react/loadReact.js) to `app/tasklist/scripts/react` of the Camunda Tasklist webapp (e.g., for Tomcat, it will be `/webapps/camunda/app/tasklist/scripts/react`). This will load React and ReactDOM from a CDN and add it to the global scope. If you want to use other versions of React, adjust the import paths accordingly.
   2. Add the loader as a custom script in `app/tasklist/scripts/config.js` of the Camunda Tasklist webapp (e.g., for Tomcat, it will be `/webapps/camunda/app/tasklist/scripts/config.js`).

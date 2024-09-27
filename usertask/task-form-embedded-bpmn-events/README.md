@@ -3,6 +3,7 @@
 This quickstart demonstrates how to use escalation and error events in embedded forms.
 
 # Overview
+This example uses Jakarta API. It is compatible with the latest releases of Camunda Tomcat and WildFly distributions.
 
 ## Where are Error and Escalation events defined?
 

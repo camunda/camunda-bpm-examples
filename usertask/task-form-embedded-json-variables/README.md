@@ -2,6 +2,9 @@
 
 This example demonstrates how to work with json variables in embedded forms.
 
+# Overview
+This example uses Jakarta API. It is compatible with the latest releases of Camunda Tomcat and WildFly distributions.
+
 ## Creating a Json Variable in a Start Form
 
 The process instance is started using a form. The form is a plain HTML form which is displayed
