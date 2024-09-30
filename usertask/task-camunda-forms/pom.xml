@@ -8,7 +8,7 @@
   <name>Camunda Forms Quickstart</name>
 
   <properties>
-    <version.camunda>7.21.0</version.camunda>
+    <version.camunda>7.22.0</version.camunda>
     <version.jakarta-servlet-api>4.0.4</version.jakarta-servlet-api>
 
     <maven.compiler.release>11</maven.compiler.release>

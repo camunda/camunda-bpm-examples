@@ -100,7 +100,7 @@ In the [test case](src/test/java/org/camunda/bpm/example/spin/dataformat/configu
 
 For this to work, it is crucial that the Spin runtime is able to lookup the `DataFormatConfigurator` implementation. That means, the artifact containing the data format configurator and the corresponding `META-INF/services` file must be on the classpath of the Camunda Spin process engine plugin.
 
-You can find the Spin documentation on configuring data formats [here](https://docs.camunda.org/manual/7.21/reference/spin/extending-spin/#configuring-data-formats).
+You can find the Spin documentation on configuring data formats [here](https://docs.camunda.org/manual/7.22/reference/spin/extending-spin/#configuring-data-formats).
 
 ## Shared Process Engine (Application Server)
 

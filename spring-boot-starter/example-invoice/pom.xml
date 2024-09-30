@@ -8,8 +8,8 @@
 
   <properties>
     <!-- spring -->
-    <camunda.version>7.21.0-ee</camunda.version>
-    <spring.boot.version>3.2.4</spring.boot.version>
+    <camunda.version>7.22.0-ee</camunda.version>
+    <spring.boot.version>3.3.3</spring.boot.version>
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>

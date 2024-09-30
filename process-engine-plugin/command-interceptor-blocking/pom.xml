@@ -6,7 +6,7 @@
   <name>Camunda Command Interceptor Example</name>
 
   <properties>
-    <version.camunda>7.21.0</version.camunda>
+    <version.camunda>7.22.0</version.camunda>
     <version.junit>4.13.2</version.junit>
     <version.h2>2.1.214</version.h2>
     <version.slf4j>1.7.26</version.slf4j>

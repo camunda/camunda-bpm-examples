@@ -4,7 +4,7 @@ This example shows how to develop, bundle and include a bpmn-js custom module in
 
 For additional information, please also see the [documentation](https://docs.camunda.org/manual/latest/webapps/cockpit/extend/configuration/#bpmn-diagram-viewer-bpmn-js).
 
-Built and tested against Camunda Platform version `7.21.0`.
+Built and tested against Camunda Platform version `7.22.0`.
 
 ![Screenshot](screenshot.png)
 
