@@ -27,6 +27,7 @@
     <module>process-engine-plugin/command-interceptor-blocking</module>
     <module>process-engine-plugin/custom-history-level</module>
     <module>process-engine-plugin/failed-job-retry-profile</module>
+    <module>process-engine-plugin/handling-jpa-variables</module>
     <module>quarkus-extension/datasource-example</module>
     <module>quarkus-extension/spin-plugin-example</module>
     <module>scripttask/xslt-scripttask</module>
