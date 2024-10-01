@@ -1,9 +1,9 @@
 var DEFAULT_RENDER_PRIORITY = 1000;
 
 /**
- * @typedef {import('../model').Base} Base
- * @typedef {import('../model').Connection} Connection
- * @typedef {import('../model').Shape} Shape
+ * @typedef {import('../core/Types').ElementLike} Element
+ * @typedef {import('../core/Types').ConnectionLike} Connection
+ * @typedef {import('../core/Types').ShapeLike} Shape
  *
  * @typedef {import('../core/EventBus').default} EventBus
  */
@@ -48,9 +48,9 @@ function BaseRenderer(eventBus, renderPriority) {
 /**
  * Checks whether an element can be rendered.
  *
- * @param {Base} element The element to be rendered.
+ * @param {Element} element The element to be rendered.
  *
- * @returns {boolean} Whether the element can be rendered.
+ * @return {boolean} Whether the element can be rendered.
  */
 BaseRenderer.prototype.canRender = function(element) {};
 
@@ -60,7 +60,7 @@ BaseRenderer.prototype.canRender = function(element) {};
  * @param {SVGElement} visuals The SVG element to draw the shape into.
  * @param {Shape} shape The shape to be drawn.
  *
- * @returns {SVGElement} The SVG element of the shape drawn.
+ * @return {SVGElement} The SVG element of the shape drawn.
  */
 BaseRenderer.prototype.drawShape = function(visuals, shape) {};
 
@@ -70,7 +70,7 @@ BaseRenderer.prototype.drawShape = function(visuals, shape) {};
  * @param {SVGElement} visuals The SVG element to draw the connection into.
  * @param {Connection} connection The connection to be drawn.
  *
- * @returns {SVGElement} The SVG element of the connection drawn.
+ * @return {SVGElement} The SVG element of the connection drawn.
  */
 BaseRenderer.prototype.drawConnection = function(visuals, connection) {};
 
@@ -112,6 +112,7 @@ function ensureImported(element, target) {
  * appendTo utility
  */
 
+
 /**
  * Append a node to a target element and return the appended node.
  *
@@ -127,6 +128,7 @@ function appendTo(element, target) {
 /**
  * append utility
  */
+
 
 /**
  * Append a node to an element
@@ -259,9 +261,7 @@ function setAttributes(node, attrs) {
  */
 function attr(node, name, value) {
   if (typeof name === 'string') {
-    if (value !== undefined) {
-      setAttribute(node, name, value);
-    } else {
+    {
       return getAttribute(node, name);
     }
   } else {
@@ -271,16 +271,6 @@ function attr(node, name, value) {
   return node;
 }
 
-function remove(element) {
-  var parent = element.parentNode;
-
-  if (parent) {
-    parent.removeChild(element);
-  }
-
-  return element;
-}
-
 var ns = {
   svg: 'http://www.w3.org/2000/svg'
 };
@@ -288,6 +278,7 @@ var ns = {
 /**
  * DOM parsing utility
  */
+
 
 var SVG_START = '<svg xmlns="' + ns.svg + '"';
 
@@ -340,6 +331,7 @@ function parseDocument(svg) {
  */
 
 
+
 /**
  * Create a specific type from name or SVG markup.
  *
@@ -351,6 +343,8 @@ function parseDocument(svg) {
 function create(name, attrs) {
   var element;
 
+  name = name.trim();
+
   if (name.charAt(0) === '<') {
     element = parse(name).firstChild;
     element = document.importNode(element, true);
@@ -358,8 +352,14 @@ function create(name, attrs) {
     element = document.createElementNS(ns.svg, name);
   }
 
-  if (attrs) {
-    attr(element, attrs);
+  return element;
+}
+
+function remove(element) {
+  var parent = element.parentNode;
+
+  if (parent) {
+    parent.removeChild(element);
   }
 
   return element;
@@ -370,7 +370,7 @@ function create(name, attrs) {
  *
  * @template T
  *
- * @param {T[][]} arr
+ * @param {T[][] | T[] | null} [arr]
  *
  * @return {T[]}
  */
@@ -567,9 +567,14 @@ function toNum(arg) {
 }
 
 /**
+ * @typedef { import('../model/Types').Element } Element
+ * @typedef { import('../model/Types').ModdleElement } ModdleElement
+ */
+
+/**
  * Is an element of the given BPMN type?
  *
- * @param  {djs.model.Base|ModdleElement} element
+ * @param  {Element|ModdleElement} element
  * @param  {string} type
  *
  * @return {boolean}
@@ -584,8 +589,8 @@ function is(element, type) {
 /**
  * Return true if element has any of the given types.
  *
- * @param {djs.model.Base} element
- * @param {Array<string>} types
+ * @param {Element|ModdleElement} element
+ * @param {string[]} types
  *
  * @return {boolean}
  */
@@ -598,7 +603,7 @@ function isAny(element, types) {
 /**
  * Return the business object for a given element.
  *
- * @param  {djs.model.Base|ModdleElement} element
+ * @param {Element|ModdleElement} element
  *
  * @return {ModdleElement}
  */
@@ -613,7 +618,7 @@ function getBusinessObject(element) {
  */
 
 /**
- * @param {Component[]} elements
+ * @param {Component[] | Component[][]} elements
  *
  * @return {string}
  */
@@ -621,6 +626,12 @@ function componentsToPath(elements) {
   return elements.flat().join(',').replace(/,?([A-z]),?/g, '$1');
 }
 
+/**
+ * @param {ShapeLike} shape
+ * @param {number} [borderRadius]
+ *
+ * @return {string} path
+ */
 function getRoundRectPath(shape, borderRadius) {
 
   var x = shape.x,
@@ -735,7 +746,7 @@ function drawRect(parentNode, width, height, borderRadius, strokeColor) {
 
 // copied from https://github.com/bpmn-io/diagram-js/blob/master/lib/core/GraphicsFactory.js
 function prependTo(newNode, parentNode, siblingNode) {
-  parentNode.insertBefore(newNode, siblingNode || parentNode.firstChild);
+  parentNode.insertBefore(newNode, parentNode.firstChild);
 }
 
 /*
