@@ -9,8 +9,8 @@
 
   <properties>
     <camunda.version>7.22.0</camunda.version>
-    <spring.version>5.3.30</spring.version>
-    <tomcat.version>9.0.85</tomcat.version>
+    <spring.version>6.1.8</spring.version>
+    <tomcat.version>10.1.30</tomcat.version>
     <servlet-api.version>4.0.1</servlet-api.version>
     <h2.version>2.1.214</h2.version>
     <slf4j.version>1.7.32</slf4j.version>
@@ -149,7 +149,7 @@
         <version>${cargo-maven-plugin.version}</version>
         <configuration>
           <container>
-            <containerId>tomcat9x</containerId>
+            <containerId>tomcat10x</containerId>
             <home>${project.build.directory}/tomcat/server/apache-tomcat-${tomcat.version}</home>
           </container>
           <deployables>

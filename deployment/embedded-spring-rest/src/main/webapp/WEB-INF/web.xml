@@ -35,7 +35,7 @@
         org.jboss.resteasy.plugins.server.servlet.FilterDispatcher
     </filter-class>
     <init-param>
-        <param-name>javax.ws.rs.Application</param-name>
+        <param-name>jakarta.ws.rs.Application</param-name>
         <param-value>org.camunda.bpm.example.loanapproval.rest.RestProcessEngineDeployment</param-value>
     </init-param>
   </filter>

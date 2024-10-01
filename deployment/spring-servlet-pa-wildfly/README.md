@@ -1,4 +1,4 @@
-# Spring 5 Servlet Process Application (using WildFly)
+# Spring 5 Servlet Process Application (using WildFly 26)
 
 This example demonstrates how to deploy a Spring 5 powered Web application which
 
@@ -6,9 +6,6 @@ This example demonstrates how to deploy a Spring 5 powered Web application which
   * Starts a Spring Web application context
   * Uses a shared container managed Process Engine and Spring Beans as expression and delegate
     expression in the processes
-
-> **Note:** This project must be deployed on a WildFly server of version 26 or below, 
-> NOT the latest pre-packaged distribution which can be downloaded from https://camunda.com.
 
 ## Why is this example interesting?
 

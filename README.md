@@ -88,16 +88,16 @@ If you clone this repository, use the checkout commands to access the sources fo
 
 ### Deployment & Project Setup Examples
 
-| Name                                                                                            | Container             |  Keywords                 |
-|-------------------------------------------------------------------------------------------------|-----------------------|---------------------------|
-| [Process Application - Servlet](deployment/servlet-pa)                                          | All                   | War, Servlet              |
-| [Process Application - EJB](deployment/ejb-pa)                                                  | JavaEE Containers     | Ejb, War                  |
-| [Process Application - Jakarta EJB](deployment/ejb-pa-jakarta)                                  | Jakarta EE Containers | Ejb, War                  |
-| [Process Application - Spring 5 Servlet - WildFly](deployment/spring-servlet-pa-wildfly)        | WildFly               | Spring, Servlet, War      |
-| [Process Application - Spring 5 Servlet - Embedded Tomcat](deployment/spring-servlet-pa-tomcat) | Tomcat                | Spring, Servlet, War      |
-| [Embedded Spring 5 with embedded REST](deployment/embedded-spring-rest)                         | vanilla Apache Tomcat | Spring, Rest, Embedded    |
-| [Plain Spring 5 Web application - WildFly](deployment/spring-wildfly-non-pa)                    | WildFly               | Spring, Jndi, War         |
-| [Process Application - Spring Boot](deployment/spring-boot) [^1]                                | Spring Boot           | Spring                    |
+| Name                                                                                            | Container                |  Keywords                 |
+|-------------------------------------------------------------------------------------------------|--------------------------|---------------------------|
+| [Process Application - Servlet](deployment/servlet-pa)                                          | All                      | War, Servlet              |
+| [Process Application - EJB](deployment/ejb-pa)                                                  | JavaEE Containers        | Ejb, War                  |
+| [Process Application - Jakarta EJB](deployment/ejb-pa-jakarta)                                  | Jakarta EE Containers    | Ejb, War                  |
+| [Process Application - Spring 5 Servlet - WildFly](deployment/spring-servlet-pa-wildfly)        | WildFly                  | Spring, Servlet, War      |
+| [Process Application - Spring 6 Servlet - Embedded Tomcat](deployment/spring-servlet-pa-tomcat) | Tomcat 10                | Spring, Servlet, War      |
+| [Embedded Spring 6 with embedded REST](deployment/embedded-spring-rest)                         | vanilla Apache Tomcat 10 | Spring, Rest, Embedded    |
+| [Plain Spring 5 Web application - WildFly](deployment/spring-wildfly-non-pa)                    | WildFly                  | Spring, Jndi, War         |
+| [Process Application - Spring Boot](deployment/spring-boot) [^1]                                | Spring Boot              | Spring                    |
 
 ### Process Engine Plugin Examples
 
