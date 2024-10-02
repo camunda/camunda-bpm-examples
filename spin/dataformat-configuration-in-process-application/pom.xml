@@ -98,7 +98,7 @@
 
   <profiles>
     <profile>
-      <!-- Use this for deployment to Oracle WebLogic, IBM Websphere and Glassfish -->
+      <!-- Use this for deployment to Oracle WebLogic, IBM Websphere -->
       <id>weblogic</id>
       <dependencies>
         <!-- Jackson JSON data format and the Jackson dependency are included in the application -->
