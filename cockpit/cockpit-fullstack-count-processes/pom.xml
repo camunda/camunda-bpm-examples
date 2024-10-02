@@ -19,10 +19,10 @@
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <jboss-javaee.version>3.0.3.Final</jboss-javaee.version>
     <junit.version>4.13.2</junit.version>
-    <h2.version>2.1.214</h2.version>
+    <h2.version>2.3.232</h2.version>
     <slf4j.version>1.7.36</slf4j.version>
     <node.version>v18.16.0</node.version>
-    <npmVersion>9.5.1</npmVersion>
+    <npmVersion>10.7.0</npmVersion>
 
     <frontend.working.directory>frontend/</frontend.working.directory>
     <frontend.build.path>${frontend.working.directory}dist/</frontend.build.path>
