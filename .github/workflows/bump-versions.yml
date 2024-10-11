@@ -1,0 +1,20 @@
+name: Bump all versions in all examples
+on: workflow_dispatch
+
+jobs:
+  bump-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Set up Java environment
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Run Maven with bump-versions profile
+        run: mvn clean package
+      - name: Create Pull Request
+        run: gh pr create --base master --head bump-versions --title 'Bump all dependency and Camunda versions' --body 'Created by Github action' --assignee @me
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
