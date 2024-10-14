@@ -14,7 +14,15 @@ jobs:
           distribution: 'temurin'
       - name: Run Maven with bump-versions profile
         run: mvn clean package --batch-mode -Pbump-versions
-      - name: Create Pull Request
-        run: gh pr create --base master --title 'Bump all dependency and Camunda versions' --body 'Created by Github action'
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'chore(pom): Bump all versions in all examples'
+          branch: bump-versions
+          delete-branch: true
+          title: 'Bump all dependency and Camunda versions'
+          body: 'Created by Github action'
+          base: master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
