@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.camunda.bpm.quickstart</groupId>
+  <artifactId>root</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Camunda Examples Root</name>
+
+  <properties>
+    <version.camunda>7.99.0</version.camunda>
+    <version.junit>4.99.2</version.junit>
+    <version.h2>2.99.0</version.h2>
+    <version.slf4j>1.99.36</version.slf4j>
+    <maven.compiler.release>99</maven.compiler.release>
+    <maven.compiler.version>3.99.0</maven.compiler.version>
+
+    <internal.version-bump.include>**/pom.xml</internal.version-bump.include>
+    <internal.version-bump.exclude>/internal/**</internal.version-bump.exclude>
+    <internal.version-bump.dir>../..</internal.version-bump.dir>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>bump-versions</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <configuration>
+                  <target>
+                    <!-- CAMUNDA VERSION -->
+                    <replaceregexp byline="true">
+                      <regexp pattern="(&lt;version.camunda&gt;).*(&lt;/version.camunda&gt;)"/>
+                      <substitution expression="\1${version.camunda}\2"/>
+                      <fileset dir="${internal.version-bump.dir}">
+                        <include name="${internal.version-bump.include}"/>
+                        <exclude name="${internal.version-bump.exclude}"/>
+                      </fileset>
+                    </replaceregexp>
+
+                    <!-- JUNIT VERSION -->
+                    <replaceregexp byline="true">
+                      <regexp pattern="(&lt;version.junit&gt;).*(&lt;/version.junit&gt;)"/>
+                      <substitution expression="\1${version.junit}\2"/>
+                      <fileset dir="${internal.version-bump.dir}">
+                        <include name="${internal.version-bump.include}"/>
+                        <exclude name="${internal.version-bump.exclude}"/>
+                      </fileset>
+                    </replaceregexp>
+
+                    <!-- H2 VERSION -->
+                    <replaceregexp byline="true">
+                      <regexp pattern="(&lt;version.h2&gt;).*(&lt;/version.h2&gt;)"/>
+                      <substitution expression="\1${version.h2}\2"/>
+                      <fileset dir="${internal.version-bump.dir}">
+                        <include name="${internal.version-bump.include}"/>
+                        <exclude name="${internal.version-bump.exclude}"/>
+                      </fileset>
+                    </replaceregexp>
+
+                    <!-- SLF4J VERSION -->
+                    <replaceregexp byline="true">
+                      <regexp pattern="(&lt;version.slf4j&gt;).*(&lt;/version.slf4j&gt;)"/>
+                      <substitution expression="\1${version.slf4j}\2"/>
+                      <fileset dir="${internal.version-bump.dir}">
+                        <include name="${internal.version-bump.include}"/>
+                        <exclude name="${internal.version-bump.exclude}"/>
+                      </fileset>
+                    </replaceregexp>
+
+                    <!-- JAVA VERSION -->
+                    <replaceregexp byline="true">
+                      <regexp pattern="(&lt;maven.compiler.release&gt;).*(&lt;/maven.compiler.release&gt;)"/>
+                      <substitution expression="\1${maven.compiler.release}\2"/>
+                      <fileset dir="${internal.version-bump.dir}">
+                        <include name="${internal.version-bump.include}"/>
+                        <exclude name="${internal.version-bump.exclude}"/>
+                      </fileset>
+                    </replaceregexp>
+
+                    <!-- MAVEN COMPILER VERSION -->
+                    <replaceregexp byline="true">
+                      <regexp pattern="(&lt;maven.compiler.version&gt;).*(&lt;/maven.compiler.version&gt;)"/>
+                      <substitution expression="\1${maven.compiler.version}\2"/>
+                      <fileset dir="${internal.version-bump.dir}">
+                        <include name="${internal.version-bump.include}"/>
+                        <exclude name="${internal.version-bump.exclude}"/>
+                      </fileset>
+                    </replaceregexp>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+
+</project>
