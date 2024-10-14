@@ -10,13 +10,13 @@
   <name>Service Invocation - REST</name>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
+    <version.camunda>7.99.0</version.camunda>
     <version.graal.js>21.1.0</version.graal.js>
-    <version.junit>4.13.1</version.junit>
-    <version.h2>2.3.232</version.h2>
-    <version.slf4j>1.7.36</version.slf4j>
-    <maven.compiler.release>11</maven.compiler.release>
-	  <maven.compiler.version>3.11.0</maven.compiler.version>
+    <version.junit>4.99.2</version.junit>
+    <version.h2>2.99.0</version.h2>
+    <version.slf4j>1.99.36</version.slf4j>
+    <maven.compiler.release>99</maven.compiler.release>
+	  <maven.compiler.version>3.99.0</maven.compiler.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

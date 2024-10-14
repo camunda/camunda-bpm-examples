@@ -10,10 +10,10 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
+    <version.camunda>7.99.0</version.camunda>
     <version.servlet-api>3.0.1</version.servlet-api>
-    <version.slf4j>1.7.36</version.slf4j>
-    <maven.compiler.release>11</maven.compiler.release>
+    <version.slf4j>1.99.36</version.slf4j>
+    <maven.compiler.release>99</maven.compiler.release>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
     <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>

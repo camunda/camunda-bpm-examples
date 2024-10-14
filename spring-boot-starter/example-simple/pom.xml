@@ -12,7 +12,7 @@
 
     <camunda.mockito>5.15.0</camunda.mockito>
     <!-- maven -->
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.release>99</maven.compiler.release>
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
   </properties>
 

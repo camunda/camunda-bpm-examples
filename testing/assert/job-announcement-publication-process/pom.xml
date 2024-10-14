@@ -6,14 +6,14 @@
   <packaging>jar</packaging>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
+    <version.camunda>7.99.0</version.camunda>
     <version.assertj>3.24.2</version.assertj>
-    <version.junit>4.13.2</version.junit>
-    <version.h2>2.1.214</version.h2>
+    <version.junit>4.99.2</version.junit>
+    <version.h2>2.99.0</version.h2>
     <version.mockito>4.4.0</version.mockito>
-    <version.slf4j>1.7.36</version.slf4j>
+    <version.slf4j>1.99.36</version.slf4j>
 
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>99</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>

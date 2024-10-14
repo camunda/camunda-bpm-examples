@@ -8,9 +8,9 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
+    <version.camunda>7.99.0</version.camunda>
     <version.servlet>3.0.1</version.servlet>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>99</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
