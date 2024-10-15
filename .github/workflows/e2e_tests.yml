@@ -8,6 +8,25 @@ jobs:
     steps:
       - name: check out code
         uses: actions/checkout@v4
+
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.0.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            secret/data/products/zeebe/ci/zeebe-process-test REGISTRY_HUB_DOCKER_COM_USR;
+            secret/data/products/zeebe/ci/zeebe-process-test REGISTRY_HUB_DOCKER_COM_PSW;
+            secret/data/products/zeebe/ci/zeebe-process-test ARTIFACTS_USR;
+            secret/data/products/zeebe/ci/zeebe-process-test ARTIFACTS_PSW;
+            secret/data/github.com/organizations/camunda MAVEN_CENTRAL_DEPLOYMENT_USR;
+            secret/data/github.com/organizations/camunda MAVEN_CENTRAL_DEPLOYMENT_PSW;
+            secret/data/github.com/organizations/camunda MAVEN_CENTRAL_GPG_SIGNING_KEY_PASSPHRASE;
+            secret/data/github.com/organizations/camunda MAVEN_CENTRAL_GPG_SIGNING_KEY_SEC;
+            
       - name: set nodeJS version
         uses: actions/setup-node@v4
         with:
