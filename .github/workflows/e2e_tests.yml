@@ -1,0 +1,27 @@
+name: GHA to run e2e test for examples
+on: push
+
+jobs:
+  run-e2e-test:
+    name: run e2e test on examples
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out code
+        uses: actions/checkout@v4
+      - name: set nodeJS version
+        uses: actions/setup-node@v4
+        with:
+          node-version: 17
+      - name: Build spring boot start - invoice example
+        run: mvn spring-boot:run
+        working-directory: /spring-boot-starter/example-invoice
+      - name: check out ee code
+        uses: actions/checkout@v4
+        with:
+          repository: camunda/camunda-bpm-platform-ee
+      - name: Run tests
+        uses: DevExpress/testcafe-action@latest
+        with:
+            args: "chrome tests"
+      
+      
