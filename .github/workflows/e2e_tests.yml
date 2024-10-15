@@ -14,7 +14,7 @@ jobs:
           node-version: 17
       - name: Build spring boot start - invoice example
         run: mvn spring-boot:run
-        working-directory: /spring-boot-starter/example-invoice
+        working-directory: ./spring-boot-starter/example-invoice
       - name: check out ee code
         uses: actions/checkout@v4
         with:
