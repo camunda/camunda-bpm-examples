@@ -12,13 +12,13 @@
   <properties>
     <camunda.version>7.22.0</camunda.version>
     <groovy.version>4.0.22</groovy.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <junit.version>4.13.2</junit.version>
-    <assertj.version>3.21.0</assertj.version>
-    <h2.version>2.3.232</h2.version>
+    <version.slf4j>1.7.36</version.slf4j>
+    <version.junit>4.13.2</version.junit>
+    <version.assertj>3.21.0</version.assertj>
+    <version.h2>2.3.232</version.h2>
     <version.template-engine-xslt>2.2.0</version.template-engine-xslt>
     <maven.compiler.release>11</maven.compiler.release>
-    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -65,28 +65,28 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>${slf4j.version}</version>
+      <version>${version.slf4j}</version>
     </dependency>
 
     <!-- TEST DEPENDENCIES -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
+      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>${assertj.version}</version>
+      <version>${version.assertj}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
+      <version>${version.h2}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -98,7 +98,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven.compiler.version}</version>
+          <version>${version.maven-compiler-plugin}</version>
         </plugin>
       </plugins>
     </pluginManagement>

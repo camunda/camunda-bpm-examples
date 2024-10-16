@@ -14,15 +14,15 @@
   <properties>
     <camunda.version>7.22.0</camunda.version>
 
-    <frontend-maven-plugin.version>1.14.0</frontend-maven-plugin.version>
-    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
-    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-    <jboss-javaee.version>3.0.3.Final</jboss-javaee.version>
-    <junit.version>4.13.2</junit.version>
-    <h2.version>2.3.232</h2.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <node.version>v18.16.0</node.version>
-    <npmVersion>10.7.0</npmVersion>
+    <version.frontend-maven-plugin>1.14.0</version.frontend-maven-plugin>
+    <version.maven-resources-plugin>3.3.1</version.maven-resources-plugin>
+    <version.version.maven-compiler-plugin>3.11.0</version.version.maven-compiler-plugin>
+    <version.jboss-javaee>3.0.3.Final</version.jboss-javaee>
+    <version.junit>4.13.2</version.junit>
+    <version.h2>2.3.232</version.h2>
+    <version.slf4j>1.7.36</version.slf4j>
+    <version.node>v18.16.0</version.node>
+    <version.npm>10.7.0</version.npm>
 
     <frontend.working.directory>frontend/</frontend.working.directory>
     <frontend.build.path>${frontend.working.directory}dist/</frontend.build.path>
@@ -44,7 +44,7 @@
       <artifactId>jboss-javaee-6.0</artifactId>
       <type>pom</type>
       <scope>provided</scope>
-      <version>${jboss-javaee.version}</version>
+      <version>${version.jboss-javaee}</version>
     </dependency>
     <!-- test dependencies -->
     <dependency>
@@ -56,20 +56,20 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
+      <version>${version.h2}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
+      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
     <!-- redirect slf4j logging to jdk logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>${slf4j.version}</version>
+      <version>${version.slf4j}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -79,14 +79,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin.version}</version>
+        <version>${version.version.maven-compiler-plugin}</version>
       </plugin>
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>${frontend-maven-plugin.version}</version>
+        <version>${version.frontend-maven-plugin}</version>
         <configuration>
-          <nodeVersion>${node.version}</nodeVersion>
+          <nodeVersion>${version.node}</nodeVersion>
           <workingDirectory>${frontend.working.directory}</workingDirectory>
         </configuration>
         <executions>
@@ -116,7 +116,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>${maven-resources-plugin.version}</version>
+        <version>${version.maven-resources-plugin}</version>
         <executions>
           <execution>
             <id>Copy frontend build to target</id>

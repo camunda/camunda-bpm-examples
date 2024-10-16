@@ -14,7 +14,7 @@
     <version.resteasy>6.2.3.Final</version.resteasy>
     <version.h2>2.1.214</version.h2>
     <version.slf4j>1.7.32</version.slf4j>
-    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
+    <version.version.maven-compiler-plugin>3.11.0</version.version.maven-compiler-plugin>
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -109,7 +109,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${version.maven-compiler-plugin}</version>
+        <version>${version.version.maven-compiler-plugin}</version>
       </plugin>
     </plugins>
   </build>
