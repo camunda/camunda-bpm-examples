@@ -11,14 +11,14 @@
 
   <properties>
     <version.camunda>7.22.0</version.camunda>
-    <version.graal.js>21.1.0</version.graal.js>
+    <version.graaljs>21.1.0</version.graaljs>
     <version.h2>2.1.214</version.h2>
     <version.junit>4.13.2</version.junit>
     <version.slf4j>1.7.36</version.slf4j>
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>
+    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
   </properties>
 
   <dependencyManagement>
@@ -69,14 +69,14 @@
     <dependency>
       <groupId>org.graalvm.js</groupId>
       <artifactId>js</artifactId>
-      <version>${version.graal.js}</version>
+      <version>${version.graaljs}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.graalvm.js</groupId>
       <artifactId>js-scriptengine</artifactId>
-      <version>${version.graal.js}</version>
+      <version>${version.graaljs}</version>
       <scope>test</scope>
     </dependency>
 
@@ -94,7 +94,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${version.plugin.maven-compiler}</version>
+        <version>${version.maven-compiler-plugin}</version>
       </plugin>
     </plugins>
   </build>

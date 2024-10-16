@@ -8,10 +8,10 @@
 
   <properties>
     <!-- spring -->
-    <spring.boot.version>3.3.3</spring.boot.version>
-    <camunda.spring.boot.starter.version>7.22.0</camunda.spring.boot.starter.version>
+    <version.spring-boot>3.3.3</version.spring-boot>
+    <version.camunda>7.22.0</version.camunda>
 
-    <twitter4j.version>4.0.7</twitter4j.version>
+    <version.twitter4j>4.0.7</version.twitter4j>
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
@@ -22,7 +22,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>${version.spring-boot}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -30,7 +30,7 @@
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
-        <version>${camunda.spring.boot.starter.version}</version>
+        <version>${version.camunda}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>org.twitter4j</groupId>
       <artifactId>twitter4j-core</artifactId>
-      <version>${twitter4j.version}</version>
+      <version>${version.twitter4j}</version>
     </dependency>
 
     <dependency>
@@ -69,7 +69,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>${version.spring-boot}</version>
         <configuration>
           <layout>ZIP</layout>
         </configuration>

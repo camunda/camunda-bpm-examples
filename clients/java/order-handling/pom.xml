@@ -11,10 +11,10 @@
   <name>order-handling-example</name>
 
   <properties>
-    <camunda.platform.version>7.22.0</camunda.platform.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <jaxb.version>4.0.5</jaxb.version>
-    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <version.camunda>7.22.0</version.camunda>
+    <version.slf4j>1.7.36</version.slf4j>
+    <version.jaxb>4.0.5</version.jaxb>
+    <ersion.version.maven-compiler-plugin>3.11.0</ersion.version.maven-compiler-plugin>
     <maven.compiler.release>11</maven.compiler.release>
   </properties>
 
@@ -22,19 +22,19 @@
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-external-task-client</artifactId>
-      <version>${camunda.platform.version}</version>
+      <version>${version.camunda}</version>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
+      <version>${version.slf4j}</version>
     </dependency>
 
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
-      <version>${jaxb.version}</version>
+      <version>${version.jaxb}</version>
     </dependency>
   </dependencies>
 
@@ -43,7 +43,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.version}</version>
+        <version>${ersion.version.maven-compiler-plugin}</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>

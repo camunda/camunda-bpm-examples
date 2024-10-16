@@ -7,9 +7,9 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.22.0-ee</camunda.version>
+    <version.camunda.ee>7.22.0-ee</version.camunda.ee>
     <!-- spring -->
-    <spring.boot.version>3.3.3</spring.boot.version>
+    <version.spring-boot>3.3.3</version.spring-boot>
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
@@ -20,14 +20,14 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>${version.spring-boot}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
-        <version>${camunda.version}</version>
+        <version>${version.camunda.ee}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -50,7 +50,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>${version.spring-boot}</version>
         <configuration>
           <layout>ZIP</layout>
         </configuration>
