@@ -61,6 +61,7 @@
 
 
     <internal.version-bump.include>**/pom.xml</internal.version-bump.include>
+    <!--<internal.version-bump.include>**/package.json</internal.version-bump.include>-->
     <internal.version-bump.exclude>/internal/**</internal.version-bump.exclude>
     <internal.version-bump.dir>../..</internal.version-bump.dir>
   </properties>
@@ -112,26 +113,6 @@
                     <replaceregexp byline="true">
                       <regexp pattern="(&lt;version.slf4j&gt;).*(&lt;/version.slf4j&gt;)"/>
                       <substitution expression="\1${version.slf4j}\2"/>
-                      <fileset dir="${internal.version-bump.dir}">
-                        <include name="${internal.version-bump.include}"/>
-                        <exclude name="${internal.version-bump.exclude}"/>
-                      </fileset>
-                    </replaceregexp>
-
-                    <!-- JAVA VERSION -->
-                    <replaceregexp byline="true">
-                      <regexp pattern="(&lt;maven.compiler.release&gt;).*(&lt;/maven.compiler.release&gt;)"/>
-                      <substitution expression="\1${maven.compiler.release}\2"/>
-                      <fileset dir="${internal.version-bump.dir}">
-                        <include name="${internal.version-bump.include}"/>
-                        <exclude name="${internal.version-bump.exclude}"/>
-                      </fileset>
-                    </replaceregexp>
-
-                    <!-- MAVEN COMPILER VERSION -->
-                    <replaceregexp byline="true">
-                      <regexp pattern="(&lt;maven.compiler.version&gt;).*(&lt;/maven.compiler.version&gt;)"/>
-                      <substitution expression="\1${maven.compiler.version}\2"/>
                       <fileset dir="${internal.version-bump.dir}">
                         <include name="${internal.version-bump.include}"/>
                         <exclude name="${internal.version-bump.exclude}"/>
