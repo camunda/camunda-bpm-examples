@@ -2,7 +2,7 @@ name: GHA to run unit test for examples
 on:
   push:
     branches:
-      - "master"
+      - "feat(test)-sanity-test-for-examples"
 
 jobs:
   run-unit-test:
@@ -34,5 +34,5 @@ jobs:
         with:
           node-version: 17
       - name: run unit tests
-        run: mvn clean verify
+        run: mvn clean verify --batch-mode
         working-directory: ${{matrix.path-to-examples}}
