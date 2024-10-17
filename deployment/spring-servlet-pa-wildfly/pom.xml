@@ -8,17 +8,17 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
+    <version.camunda>7.99.0</version.camunda>
     <version.spring>5.3.36</version.spring>
     <version.wildfly>26.1.3.Final</version.wildfly>
     <version.servlet-api.javax>4.0.1</version.servlet-api.javax>
 
     <version.wildfly.container.adapter>2.2.0.Final</version.wildfly.container.adapter>
     <version.arquillian>1.1.10.Final</version.arquillian>
-    <version.junit>4.13.2</version.junit>
+    <version.junit>4.99.2</version.junit>
 
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>99</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

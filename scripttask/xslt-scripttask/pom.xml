@@ -17,8 +17,8 @@
     <assertj.version>3.21.0</assertj.version>
     <h2.version>2.3.232</h2.version>
     <version.template-engine-xslt>2.2.0</version.template-engine-xslt>
-    <maven.compiler.release>11</maven.compiler.release>
-    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <maven.compiler.release>99</maven.compiler.release>
+    <maven.compiler.version>3.99.0</maven.compiler.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

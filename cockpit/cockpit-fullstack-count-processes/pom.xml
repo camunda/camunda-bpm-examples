@@ -28,7 +28,7 @@
     <frontend.build.path>${frontend.working.directory}dist/</frontend.build.path>
     <frontend.target.path>plugin-webapp/sample-plugin/app</frontend.target.path>
 
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>99</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
