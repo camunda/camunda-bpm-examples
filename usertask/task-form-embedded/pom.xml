@@ -8,12 +8,12 @@
   <name>Task Form Embedded</name>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
+    <version.camunda>7.99.0</version.camunda>
     <version.jakarta-servlet-api>6.0.0</version.jakarta-servlet-api>
 
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>99</maven.compiler.release>
     <maven.war-plugin.version>3.3.2</maven.war-plugin.version>
-    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <maven.compiler.version>3.99.0</maven.compiler.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
