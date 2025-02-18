@@ -9,9 +9,9 @@
 
   <properties>
     <camunda.version>7.22.0</camunda.version>
-    <arquillian.version>1.1.10.Final</arquillian.version>
-    <wildfly.container.adapter.version>3.0.1.Final</wildfly.container.adapter.version>
-    <version.javaee-web>3.0.2.Final</version.javaee-web>
+    <version.arquillian>1.1.10.Final</version.arquillian>
+    <version.wildfly-arquillian-container-remote>3.0.1.Final</version.wildfly-arquillian-container-remote>
+    <version.jboss-javaee>3.0.2.Final</version.jboss-javaee>
     <version.resteasy>3.15.3.Final</version.resteasy>
     <version.junit>4.13.2</version.junit>
     <version.slf4j>1.7.36</version.slf4j>
@@ -19,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
-    <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>
+    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
   </properties>
   
   <dependencyManagement>
@@ -35,7 +35,7 @@
         <!-- Needed for ArquillianTest -->
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
-        <version>${arquillian.version}</version>
+        <version>${version.arquillian}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>org.jboss.spec</groupId>
       <artifactId>jboss-javaee-web-6.0</artifactId>
-      <version>${version.javaee-web}</version>
+      <version>${version.jboss-javaee}</version>
       <type>pom</type>
       <scope>provided</scope>
     </dependency>
@@ -151,7 +151,7 @@
           <!-- Requires a running WildFly with Camunda Platform -->
           <groupId>org.wildfly.arquillian</groupId>
           <artifactId>wildfly-arquillian-container-remote</artifactId>
-          <version>${wildfly.container.adapter.version}</version>
+          <version>${version.wildfly-arquillian-container-remote}</version>
           <scope>test</scope>
           <exclusions>
             <exclusion>
@@ -169,7 +169,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${version.plugin.maven-compiler}</version>
+        <version>${version.maven-compiler-plugin}</version>
       </plugin>
     </plugins>
   </build>

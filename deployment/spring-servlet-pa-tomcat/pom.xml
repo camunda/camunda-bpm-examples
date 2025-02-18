@@ -9,15 +9,15 @@
 
   <properties>
     <camunda.version>7.22.0</camunda.version>
-    <spring.version>6.1.8</spring.version>
-    <tomcat.version>10.1.30</tomcat.version>
-    <servlet-api.version>4.0.1</servlet-api.version>
-    <h2.version>2.1.214</h2.version>
-    <slf4j.version>1.7.32</slf4j.version>
-    <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
-    <maven-dependency-plugin.version>2.8</maven-dependency-plugin.version>
-    <cargo-maven-plugin.version>1.10.9</cargo-maven-plugin.version>
-    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <version.spring>6.1.8</version.spring>
+    <version.tomcat>10.1.30</version.tomcat>
+    <version.servlet-api>4.0.1</version.servlet-api>
+    <version.h2>2.1.214</version.h2>
+    <version.slf4j>1.7.32</version.slf4j>
+    <version.maven-war-plugin>3.3.2</version.maven-war-plugin>
+    <version.maven-dependency-plugin>2.8</version.maven-dependency-plugin>
+    <version.cargo-maven-plugin.version>1.10.9</version.cargo-maven-plugin.version>
+    <version.maven-compiler-plugin.version>3.11.0</version.maven-compiler-plugin.version>
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -36,7 +36,7 @@
         of the Camunda Tomcat distribution -->
       <scope>provided</scope>
       <exclusions>
-        <!-- Excluded to avoid a version conflict with the Spring version we are
+        <!-- Excluded to avoid a version conflict with the version.spring we are
           including in our application -->
         <exclusion>
           <groupId>org.springframework</groupId>
@@ -48,33 +48,33 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>${spring.version}</version>
+      <version>${version.spring}</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
+      <version>${version.spring}</version>
     </dependency>
 
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>${servlet-api.version}</version>
+      <version>${version.servlet-api}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
+      <version>${version.h2}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
+      <version>${version.slf4j}</version>
     </dependency>
 
     <dependency>
@@ -99,13 +99,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin.version}</version>
+        <version>${version.maven-compiler-plugin.version}</version>
       </plugin>
       <!-- prepare deployment folder that will be used by web container. (see server.xml:150)  -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>${maven-war-plugin.version}</version>
+        <version>${version.maven-war-plugin}</version>
         <executions>
           <execution>
             <goals>
@@ -123,7 +123,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>${maven-dependency-plugin.version}</version>
+        <version>${version.maven-dependency-plugin}</version>
         <executions>
           <execution>
             <id>unpack-tomcat-distro</id>
@@ -146,11 +146,11 @@
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven3-plugin</artifactId>
-        <version>${cargo-maven-plugin.version}</version>
+        <version>${version.cargo-maven-plugin.version}</version>
         <configuration>
           <container>
             <containerId>tomcat10x</containerId>
-            <home>${project.build.directory}/tomcat/server/apache-tomcat-${tomcat.version}</home>
+            <home>${project.build.directory}/tomcat/server/apache-tomcat-${version.tomcat}</home>
           </container>
           <deployables>
             <deployable>

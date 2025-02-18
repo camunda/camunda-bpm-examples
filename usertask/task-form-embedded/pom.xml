@@ -12,8 +12,8 @@
     <version.jakarta-servlet-api>6.0.0</version.jakarta-servlet-api>
 
     <maven.compiler.release>11</maven.compiler.release>
-    <maven.war-plugin.version>3.3.2</maven.war-plugin.version>
-    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <version.maven-war-plugin>3.3.2</version.maven-war-plugin>
+    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
@@ -43,13 +43,13 @@
        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
-          <version>${maven.war-plugin.version}</version>
+          <version>${version.maven-war-plugin}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven.compiler.version}</version>
+          <version>${version.maven-compiler-plugin}</version>
         </plugin>
 
       </plugins>

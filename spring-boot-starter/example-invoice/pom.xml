@@ -8,8 +8,8 @@
 
   <properties>
     <!-- spring -->
-    <camunda.version>7.22.0-ee</camunda.version>
-    <spring.boot.version>3.3.3</spring.boot.version>
+    <camunda.version.ee>7.22.0-ee</camunda.version.ee>
+    <version.spring-boot>3.3.3</version.spring-boot>
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
@@ -22,7 +22,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>${version.spring-boot}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -30,7 +30,7 @@
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
-        <version>${camunda.version}</version>
+        <version>${camunda.version.ee}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>org.camunda.bpm.example</groupId>
       <artifactId>camunda-example-invoice-jakarta</artifactId>
-      <version>${camunda.version}</version>
+      <version>${camunda.version.ee}</version>
       <classifier>classes</classifier>
       <scope>compile</scope>
     </dependency>
@@ -113,7 +113,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>${version.spring-boot}</version>
         <configuration>
           <layout>ZIP</layout>
         </configuration>
