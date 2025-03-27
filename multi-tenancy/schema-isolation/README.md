@@ -14,7 +14,7 @@
 <li><a href="#testing">Testing</a></li>
 
 
-Sometimes it is desired to share one Camunda installation between multiple independent parties, also referred to as *tenants*. While sharing an installation means sharing computational resources, the tenants' data should be separated from each other. This tutorial shows how to work with the [one process engine per tenant approach](https://docs.camunda.org/manual/7.22/user-guide/process-engine/multi-tenancy/#one-process-engine-per-tenant).
+Sometimes it is desired to share one Camunda installation between multiple independent parties, also referred to as *tenants*. While sharing an installation means sharing computational resources, the tenants' data should be separated from each other. This tutorial shows how to work with the [one process engine per tenant approach](https://docs.camunda.org/manual/7.23/user-guide/process-engine/multi-tenancy/#one-process-engine-per-tenant).
 
 In detail it explains how to:
 
@@ -22,12 +22,12 @@ In detail it explains how to:
 * develop a process application with tenant-specific deployments
 * access the correct process engine from a REST resource based on a tenant identifier
 
-See the [user guide](https://docs.camunda.org/manual/7.22/user-guide/process-engine/multi-tenancy/) for a general introduction on multi-tenancy and the different options Camunda offers.
+See the [user guide](https://docs.camunda.org/manual/7.23/user-guide/process-engine/multi-tenancy/) for a general introduction on multi-tenancy and the different options Camunda offers.
 
 
 # Before Starting
 
-Before starting, make sure to install the Camunda Platform on Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.22/installation/full/jboss/manual/#setup). We will call the root folder $WILDFLY_HOME in the following explanations.
+Before starting, make sure to install the Camunda Platform on Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.23/installation/full/jboss/manual/#setup). We will call the root folder $WILDFLY_HOME in the following explanations.
 Note that this example is only compatible with WildFly ≤26. The latest compatible pre-packaged Camunda WildFly distribution is 7.18.x.
 
 # Configuring the Database
@@ -51,18 +51,18 @@ create schema TENANT2;
 Next, inside each schema, create the database tables. To achieve this, get the SQL create scripts
 from the WildFly distribution from the `sql/create/` folder inside your distribution.
 
-Execute the create scripts (`h2_engine_7.22.0.sql` and `h2_identity_7.22.0.sql`) after selecting the appropriate schema for the current connection:
+Execute the create scripts (`h2_engine_7.23.0.sql` and `h2_identity_7.23.0.sql`) after selecting the appropriate schema for the current connection:
 
 ```sql
 set schema TENANT1;
 
-<<paste sql/create/h2_engine_7.22.0.sql here>>
-<<paste sql/create/h2_identity_7.22.0.sql here>>
+<<paste sql/create/h2_engine_7.23.0.sql here>>
+<<paste sql/create/h2_identity_7.23.0.sql here>>
 
 set schema TENANT2;
 
-<<paste sql/create/h2_engine_7.22.0.sql here>>
-<<paste sql/create/h2_identity_7.22.0.sql here>>
+<<paste sql/create/h2_engine_7.23.0.sql here>>
+<<paste sql/create/h2_identity_7.23.0.sql here>>
 ```
 
 Execute the SQL script.
@@ -351,7 +351,7 @@ The test class [ProcessIntegrationTest](src/test/java/org/camunda/bpm/tutorial/m
 
 Follow the steps to run the test:
 
-* Install the Camunda Platform on a Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.22/installation/full/jboss/manual/#setup) (note that this example is not compatible with WildFly versions after WildFly 26).
+* Install the Camunda Platform on a Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.23/installation/full/jboss/manual/#setup) (note that this example is not compatible with WildFly versions after WildFly 26).
 * Replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
   * [standalone.xml](standalone.xml) (two schemas - requires manual schema creation) or 
   * [standalone_test.xml](standalone_test.xml) (two databases - auto schema creation)

@@ -9,7 +9,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
+    <version.camunda>7.23.0</version.camunda>
     <version.spring>6.1.8</version.spring>
     <version.resteasy>6.2.3.Final</version.resteasy>
     <version.h2>2.1.214</version.h2>

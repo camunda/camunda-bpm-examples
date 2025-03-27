@@ -7,7 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
+    <version.camunda>7.23.0</version.camunda>
     <version.mockito>4.3.1</version.mockito>
     <version.h2>2.1.214</version.h2>
     <version.junit>4.13.2</version.junit>

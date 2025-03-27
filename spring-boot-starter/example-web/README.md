@@ -19,7 +19,7 @@ It also contains a couple of integration tests, showing how this can be tested.
 <dependency>
   <groupId>org.camunda.bpm.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-  <version>7.22.0</version>
+  <version>7.23.0</version>
 </dependency>
 ...
 ```
@@ -41,7 +41,7 @@ public class RestApplication {
 
 3. You can also put BPMN, CMMN and DMN files in your classpath, they will be automatically deployed and registered within a process application.
 
->Note: Basic authentication is configured on Spring Boot level, this is NOT a Camunda Engine authentication. Check [this docs](https://docs.camunda.org/manual/7.22/reference/rest/overview/authentication/) 
+>Note: Basic authentication is configured on Spring Boot level, this is NOT a Camunda Engine authentication. Check [this docs](https://docs.camunda.org/manual/7.23/reference/rest/overview/authentication/) 
 to configure Basic Authentication for Camunda Engine REST API.
  
 ## Run the application and call the REST API
