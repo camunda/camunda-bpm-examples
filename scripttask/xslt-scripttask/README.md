@@ -19,6 +19,10 @@ into an transformed XML output:
 - [result][5]
 - [unit test][6]
 
+## Requirements
+
+* Java 17+
+
 # How it works
 
 The execution listener attached to the start event references a groovy script.
