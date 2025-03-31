@@ -382,6 +382,10 @@ function isUndefined(obj) {
   return obj === undefined;
 }
 
+function isNil(obj) {
+  return obj == null;
+}
+
 function isArray(obj) {
   return nativeToString.call(obj) === '[object Array]';
 }
@@ -412,7 +416,7 @@ function isFunction(obj) {
  * @return {Boolean}
  */
 function has(target, key) {
-  return nativeHasOwnProperty.call(target, key);
+  return !isNil(target) && nativeHasOwnProperty.call(target, key);
 }
 
 /**
@@ -623,7 +627,7 @@ function getBusinessObject(element) {
  * @return {string}
  */
 function componentsToPath(elements) {
-  return elements.flat().join(',').replace(/,?([A-z]),?/g, '$1');
+  return elements.flat().join(',').replace(/,?([A-Za-z]),?/g, '$1');
 }
 
 /**
@@ -644,11 +648,11 @@ function getRoundRectPath(shape, borderRadius) {
     [ 'l', width - borderRadius * 2, 0 ],
     [ 'a', borderRadius, borderRadius, 0, 0, 1, borderRadius, borderRadius ],
     [ 'l', 0, height - borderRadius * 2 ],
-    [ 'a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, borderRadius ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, -2, borderRadius ],
     [ 'l', borderRadius * 2 - width, 0 ],
-    [ 'a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, -borderRadius ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, -2, -2 ],
     [ 'l', 0, borderRadius * 2 - height ],
-    [ 'a', borderRadius, borderRadius, 0, 0, 1, borderRadius, -borderRadius ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, borderRadius, -2 ],
     [ 'z' ]
   ];
 
