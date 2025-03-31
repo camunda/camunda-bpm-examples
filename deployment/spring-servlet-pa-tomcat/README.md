@@ -72,7 +72,7 @@ For testing, the Maven Cargo plugin unpacks the Camunda Tomcat distribution to t
 
 ## How to use it?
 
-1. Build it with Maven and Java 17.
+1. Build it with Maven and Java 21.
 
 ```bash
 mvn clean verify
