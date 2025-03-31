@@ -4,6 +4,7 @@ Fullstack (ReactJS & Java) "Count Processes" Cockpit Plugin
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda Platform](http://docs.camunda.org).
 
 Built and tested against Camunda Platform version `7.23.0`.
+This example uses Jakarta API. It is compatible with the latest releases of Camunda Tomcat and WildFly distributions.
 
 ![Screenshot](screenshot.png)
 
@@ -37,7 +38,7 @@ Built and tested against Camunda Platform version `7.23.0`.
    1. You can copy `./target/cockpit-sample-plugin-1.0-SNAPSHOT.jar` to the `WEB-INF/lib` folder of the Camunda webapp.
    2. You can set up a maven war overlay for the Camunda webapp.
    
-   The first solution is the simplest: if you dowloaded the tomcat distribution, you can copy the plugin
+   The first solution is the simplest: if you downloaded the tomcat distribution, you can copy the plugin
    jar file to the `/server/apache-tomcat-${tomcat-version}/webapps/camunda/WEB-INF/lib/` folder and
    restart the server.
 
@@ -325,9 +326,9 @@ A root resource for our plug-in may look as follows:
 ```java
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginRootResource;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.sample.SamplePlugin;
 
 @Path("plugin/" + SamplePlugin.ID)
@@ -352,7 +353,7 @@ A sub-resource may extend `org.camunda.bpm.cockpit.plugin.resource.AbstractPlugi
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
 import java.util.List;
-import javax.ws.rs.GET;
+import jakarta.ws.rs.GET;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginResource;
@@ -411,7 +412,7 @@ It is possible to use the tenant check in the sub-resource of the cockpit plugin
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
 import java.util.List;
-import javax.ws.rs.POST;
+import jakarta.ws.rs.GET;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginResource;

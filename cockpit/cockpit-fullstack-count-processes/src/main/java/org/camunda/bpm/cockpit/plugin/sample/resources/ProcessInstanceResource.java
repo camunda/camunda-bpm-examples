@@ -17,7 +17,7 @@
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
 import java.util.List;
-import javax.ws.rs.GET;
+import jakarta.ws.rs.GET;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
