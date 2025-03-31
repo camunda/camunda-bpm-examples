@@ -13,7 +13,7 @@
     <version.slf4j>1.7.26</version.slf4j>
 
     <!-- maven -->
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
     <maven.war.plugin.version>3.4.0</maven.war.plugin.version>
 

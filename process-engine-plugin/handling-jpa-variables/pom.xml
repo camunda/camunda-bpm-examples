@@ -17,7 +17,7 @@
     <version.hibernate>1.0.1.Final</version.hibernate>
 
     <!-- maven -->
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
