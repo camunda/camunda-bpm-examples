@@ -21,7 +21,6 @@
         <module>deployment/spring-servlet-pa-wildfly</module>
         <module>deployment/servlet-pa</module>
         <module>deployment/embedded-spring-rest</module>
-        <module>deployment/ejb-pa</module>
         <module>deployment/ejb-pa-jakarta</module>
         <module>dmn-engine/dmn-engine-drg</module>
         <module>dmn-engine/dmn-engine-java-main-method</module>

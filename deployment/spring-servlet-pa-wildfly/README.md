@@ -1,4 +1,4 @@
-# Spring 6 Servlet Process Application (using WildFly)
+# Spring 6 Servlet Process Application (using WildFly 35+)
 
 This example demonstrates how to deploy a Spring 6 powered Web application which
 
