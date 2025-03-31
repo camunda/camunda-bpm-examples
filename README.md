@@ -223,9 +223,9 @@ If you clone this repository, use the checkout commands to access the sources fo
  
 ### External Task Client Spring
 
-| Name                                                                                     | Keywords                          |
-|------------------------------------------------------------------------------------------|-----------------------------------|
-| [Loan Granting Example](./spring-boot-starter/external-task-client/loan-granting-spring) | External Task Client, Servicetask |
+| Name                                                                                           | Keywords                          |
+|------------------------------------------------------------------------------------------------|-----------------------------------|
+| [Loan Granting Example](./spring-boot-starter/external-task-client/loan-granting-spring) [^1]  | External Task Client, Servicetask |
 
 ### External Task Client Spring Boot
 
