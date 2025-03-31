@@ -26,6 +26,9 @@ Explanation:
     * registers the process engine for the Camunda Platform Assert library
 * (2) The process model to test
 
+## Prerequisites
+* Java 17/21
+
 ## Running the test with maven
 
 In order to run the test with maven you can use:
