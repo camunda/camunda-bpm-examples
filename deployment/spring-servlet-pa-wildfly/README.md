@@ -1,6 +1,6 @@
-# Spring 5 Servlet Process Application (using WildFly 26)
+# Spring 6 Servlet Process Application (using WildFly)
 
-This example demonstrates how to deploy a Spring 5 powered Web application which
+This example demonstrates how to deploy a Spring 6 powered Web application which
 
   * Includes a `@ProcessApplication` class and some BPMN 2.0 processes
   * Starts a Spring Web application context
@@ -15,13 +15,13 @@ managed container shared Process Engine paired with the power of Spring Beans in
 
 ## Show me the important parts!
 
-We create a Process Application class which extends the `ServletProcessApplication` and annotate
+We create a Process Application class which extends the `JakartaServletProcessApplication` and annotate
 it with `@ProcessApplication`, so the Camunda Platform can pick it up and register the Process 
 Application without any further action:
 
 ```java
 @ProcessApplication
-public class SpringServletProcessApplication extends ServletProcessApplication {
+public class SpringServletProcessApplication extends JakartaServletProcessApplication {
   ...
 }
 ```
@@ -52,7 +52,7 @@ dependency like:
 ```xml
 <dependency>
   <groupId>org.camunda.bpm</groupId>
-  <artifactId>camunda-engine-spring</artifactId>
+  <artifactId>camunda-engine-spring-6</artifactId>
   <version>${camunda.version}</version>
   <scope>compile</scope>
 </dependency>
@@ -60,10 +60,10 @@ dependency like:
 
 ## How to use it?
 
-1. Build it with Maven and Java 11.
+1. Build it with Maven and Java 17.
 
 ```bash
-mvn clean verify
+mvn clean install
 ```
 
 This will create a Camunda Platform WildFly distribution and execute the included Arquillian test.

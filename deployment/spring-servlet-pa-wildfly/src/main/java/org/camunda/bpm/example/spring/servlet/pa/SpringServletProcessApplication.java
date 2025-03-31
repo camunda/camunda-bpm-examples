@@ -19,14 +19,14 @@ package org.camunda.bpm.example.spring.servlet.pa;
 import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.PreUndeploy;
 import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.application.impl.JakartaServletProcessApplication;
 import org.camunda.bpm.engine.ProcessEngine;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ProcessApplication
-public class SpringServletProcessApplication extends ServletProcessApplication {
+public class SpringServletProcessApplication extends JakartaServletProcessApplication {
 
   public static final Logger LOG = Logger.getLogger(SpringServletProcessApplication.class.getName());
 
