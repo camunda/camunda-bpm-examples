@@ -27,6 +27,9 @@ Explanation:
 * (2) Configuration file for the process engine.
 * (3) An example BPMN process.
 
+## Prerequisites
+* Java 17/21
+
 ## Running the test with maven
 
 In order to run the testsuite with maven you can use:

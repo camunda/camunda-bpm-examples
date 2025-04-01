@@ -7,12 +7,12 @@
 
   <properties>
     <version.camunda>7.23.0</version.camunda>
-    <version.junit>5.9.3</version.junit>
-    <version.h2>2.1.214</version.h2>
-    <version.assertj>3.24.2</version.assertj>
+    <version.junit>5.11.4</version.junit>
+    <version.h2>2.3.232</version.h2>
+    <version.assertj>3.26.3</version.assertj>
     <version.logback>1.2.11</version.logback>
 
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>
