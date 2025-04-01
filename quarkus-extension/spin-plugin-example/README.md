@@ -76,7 +76,7 @@ Be aware that it’s not an _über-jar_ as the dependencies are copied into the 
 
 If you want to build an _über-jar_, execute the following command:
 ```shell script
-mvn clean package -Dquarkus.package.type=uber-jar
+mvn clean package -Dquarkus.package.jar.type=uber-jar
 ```
 
 The application is now runnable using `java -jar target/camunda-bpm-quarkus-example-spin-plugin-1.0.0-SNAPSHOT-runner.jar`.
