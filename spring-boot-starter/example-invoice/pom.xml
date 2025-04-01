@@ -80,6 +80,7 @@
 <!--    <dependency>-->
 <!--      <groupId>com.ibm.db2.jcc</groupId>-->
 <!--      <artifactId>db2-spring-boot-starter</artifactId>-->
+<!--      <version>0.0.1</version>-->
 <!--    </dependency>-->
 <!--    <dependency>-->
 <!--      <groupId>com.mysql</groupId>-->
