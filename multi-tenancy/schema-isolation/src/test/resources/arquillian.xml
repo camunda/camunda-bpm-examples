@@ -17,6 +17,8 @@
       <configuration>
          <!-- change this if you're using a port offset -->
          <!-- <property name="managementPort">9999</property> -->
+         <property name="javaVmArguments">-Xmx1024m</property>
+         <property name="startupTimeoutInSeconds">300</property>
       </configuration>
       <!-- By default, arquillian will use the JBOSS_HOME environment variable.  Alternatively, the configuration below can be uncommented. -->
 <!--       <configuration> -->

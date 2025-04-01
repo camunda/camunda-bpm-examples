@@ -8,14 +8,13 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.23.0</camunda.version>
-    <arquillian.version>1.1.10.Final</arquillian.version>
+    <camunda.version>7.23.0-alpha5</camunda.version>
+    <arquillian.version>1.7.0.Final</arquillian.version>
     <wildfly.container.adapter.version>3.0.1.Final</wildfly.container.adapter.version>
-    <version.javaee-web>3.0.2.Final</version.javaee-web>
     <version.resteasy>3.15.3.Final</version.resteasy>
     <version.junit>4.13.2</version.junit>
     <version.slf4j>1.7.36</version.slf4j>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
@@ -54,21 +53,20 @@
     <!-- client for Java EE application server integration, included in WAR as an alternative to write your own ProcessApplication class -->
     <dependency>
       <groupId>org.camunda.bpm.javaee</groupId>
-      <artifactId>camunda-ejb-client</artifactId>
+      <artifactId>camunda-ejb-client-jakarta</artifactId>
     </dependency>
     
     <!-- CDI integration, needs to be included in WAR, otherwise CDI can not work correctly -->
     <dependency>
       <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-cdi</artifactId>
+      <artifactId>camunda-engine-cdi-jakarta</artifactId>
     </dependency>    
     
     <!-- Java EE 6 Specification -->
     <dependency>
-      <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-web-6.0</artifactId>
-      <version>${version.javaee-web}</version>
-      <type>pom</type>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
+      <version>10.0.0</version>
       <scope>provided</scope>
     </dependency>
     
@@ -170,6 +168,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${version.plugin.maven-compiler}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.2</version>
       </plugin>
     </plugins>
   </build>

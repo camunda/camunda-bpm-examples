@@ -16,7 +16,7 @@
  */
 package org.camunda.bpm.tutorial.multitenancy;
 
-import javax.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.RequestScoped;
 
 /**
  * @author Thorben Lindhauer
