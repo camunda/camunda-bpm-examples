@@ -8,10 +8,10 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.version>7.23.0-alpha5</camunda.version>
+    <camunda.version>7.23.0</camunda.version>
     <arquillian.version>1.7.0.Final</arquillian.version>
     <wildfly.container.adapter.version>3.0.1.Final</wildfly.container.adapter.version>
-    <version.resteasy>3.15.3.Final</version.resteasy>
+    <version.resteasy>6.2.3.Final</version.resteasy>
     <version.junit>4.13.2</version.junit>
     <version.slf4j>1.7.36</version.slf4j>
     <maven.compiler.release>17</maven.compiler.release>
@@ -62,7 +62,6 @@
       <artifactId>camunda-engine-cdi-jakarta</artifactId>
     </dependency>    
     
-    <!-- Java EE 6 Specification -->
     <dependency>
       <groupId>jakarta.platform</groupId>
       <artifactId>jakarta.jakartaee-api</artifactId>
@@ -70,10 +69,9 @@
       <scope>provided</scope>
     </dependency>
     
-    <!--  Resteasy 3.9.0-Final is an implicit module dependency on WildFly 18.0.0.Final or higher -->
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-jaxrs</artifactId>
+      <artifactId>resteasy-core</artifactId>
       <version>${version.resteasy}</version>
       <scope>provided</scope>
     </dependency>
@@ -110,7 +108,7 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.arquillian.protocol</groupId>
-      <artifactId>arquillian-protocol-servlet</artifactId>
+      <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

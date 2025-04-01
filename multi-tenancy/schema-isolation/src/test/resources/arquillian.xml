@@ -5,7 +5,7 @@
         http://jboss.org/schema/arquillian/arquillian_1_0.xsd">        
 
    <!-- Force the use of the Servlet 3.0 protocol with all containers, as it is the most mature -->
-   <defaultProtocol type="Servlet 3.0" />
+   <defaultProtocol type="Servlet 5.0" />
    
    <!-- Uncomment to have test archives exported to the file system for inspection -->
    <engine>
