@@ -12,12 +12,12 @@
 
   <properties>
     <camunda.platform.version>7.23.0</camunda.platform.version>
-    <spring.boot.version>3.3.3</spring.boot.version>
+    <spring.boot.version>3.4.4</spring.boot.version>
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
 
-    <graaljs.version>21.1.0</graaljs.version>
+    <graaljs.version>21.3.12</graaljs.version>
     <jaxb.version>4.0.5</jaxb.version>
   </properties>
 
