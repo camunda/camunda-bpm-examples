@@ -13,6 +13,10 @@ After having looked through the code, you will understand the behavior of an asy
 * Successful invocation
 * A service failure.
 
+## Requirements
+
+* Java 17+
+
 ## Show me the important parts!
 
 The process model is composed of three tasks:
