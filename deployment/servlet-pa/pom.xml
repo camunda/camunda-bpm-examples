@@ -9,7 +9,7 @@
 
   <properties>
     <version.camunda>7.23.0</version.camunda>
-    <version.servlet-api.javax>4.0.1</version.servlet-api.javax>
+    <version.jakarta-servlet-api>6.0.0</version.jakarta-servlet-api>
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,9 +24,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${version.servlet-api.javax}</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>${version.jakarta-servlet-api}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

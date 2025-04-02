@@ -3,22 +3,21 @@
 
   <groupId>org.camunda.bpm.quickstart</groupId>
   <artifactId>camunda-quickstart-spring-servlet-pa-wildfly</artifactId>
-  <packaging>war</packaging>
   <name>Camunda Platform - Quickstarts - Spring Servlet Process Application For WildFly</name>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
     <version.camunda>7.23.0</version.camunda>
-    <version.spring>5.3.36</version.spring>
-    <version.wildfly>26.1.3.Final</version.wildfly>
-    <version.servlet-api.javax>4.0.1</version.servlet-api.javax>
+    <version.spring>6.2.5</version.spring>
+    <version.wildfly>35.0.0.Final</version.wildfly>
+    <version.jakartaee>10.0.0</version.jakartaee>
 
-    <version.wildfly.container.adapter>2.2.0.Final</version.wildfly.container.adapter>
-    <version.arquillian>1.1.10.Final</version.arquillian>
+    <version.wildfly.container.adapter>5.0.1.Final</version.wildfly.container.adapter>
+    <version.arquillian>1.7.0.Final</version.arquillian>
     <version.junit>4.13.2</version.junit>
 
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -32,6 +31,20 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+      <dependency>
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-bom</artifactId>
+        <version>${version.camunda}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.platform</groupId>
+        <artifactId>jakarta.jakartaee-bom</artifactId>
+        <version>${version.jakartaee}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -39,8 +52,7 @@
 
     <dependency>
       <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-spring</artifactId>
-      <version>${version.camunda}</version>
+      <artifactId>camunda-engine-spring-6</artifactId>
       <!-- Exclude the engine so that the shared process engine is used -->
       <exclusions>
         <exclusion>
@@ -53,14 +65,12 @@
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>
-      <version>${version.camunda}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${version.servlet-api.javax}</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
 
@@ -97,7 +107,7 @@
 
     <dependency>
       <groupId>org.jboss.arquillian.protocol</groupId>
-      <artifactId>arquillian-protocol-servlet</artifactId>
+      <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -168,14 +178,13 @@
               <failOnError>false</failOnError>
             </configuration>
           </plugin>
-          <!-- unpack WildFly server and Camunda Platform WildFly 26 modules -->
+          <!-- unpack Camunda Platform wildfly distro -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.5.0</version>
             <executions>
               <execution>
-                <id>unpack-server-modules</id>
+                <id>unpack-server</id>
                 <phase>generate-resources</phase>
                 <goals>
                   <goal>unpack</goal>
@@ -184,52 +193,14 @@
                 <configuration>
                   <artifactItems>
                     <artifactItem>
-                      <groupId>org.wildfly</groupId>
-                      <artifactId>wildfly-dist</artifactId>
-                      <version>${version.wildfly}</version>
-                      <type>tar.gz</type>
-                      <overWrite>true</overWrite>
-                      <outputDirectory>${project.build.directory}/wildfly/server</outputDirectory>
-                      <excludes>**/h2database/**</excludes>
-                    </artifactItem>
-                    <artifactItem>
                       <groupId>org.camunda.bpm.wildfly</groupId>
-                      <artifactId>camunda-wildfly26-modules</artifactId>
+                      <artifactId>camunda-bpm-wildfly</artifactId>
                       <version>${version.camunda}</version>
                       <type>tar.gz</type>
                       <overWrite>true</overWrite>
-                      <outputDirectory>${project.build.directory}/wildfly/server/wildfly-${version.wildfly}/modules</outputDirectory>
-                      <excludes>**/META-INF/**</excludes>
+                      <outputDirectory>${project.build.directory}/wildfly</outputDirectory>
                     </artifactItem>
                   </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <configuration>
-              <delimiters>
-                <delimiter>${*}</delimiter>
-              </delimiters>
-              <useDefaultDelimiters>false</useDefaultDelimiters>
-            </configuration>
-            <executions>
-              <execution>
-                <id>copy-server-resources</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <resources>
-                    <resource>
-                      <directory>src/test/server</directory>
-                    </resource>
-                  </resources>
-                  <overwrite>true</overwrite>
-                  <outputDirectory>${project.build.directory}/wildfly/server/wildfly-${version.wildfly}/</outputDirectory>
                 </configuration>
               </execution>
             </executions>

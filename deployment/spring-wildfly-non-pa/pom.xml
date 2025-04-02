@@ -10,11 +10,11 @@
 
   <properties>
     <camunda.version>7.23.0</camunda.version>
-    <spring.version>5.3.36</spring.version>
+    <spring.version>6.2.5</spring.version>
     <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
 
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

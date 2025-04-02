@@ -3,7 +3,7 @@
 This example demonstrates how to set up a web application, which
 
 * Bundles the `camunda-engine` JAR library
-* Starts and configures a process engine in a Spring 5 Application context
+* Starts and configures a process engine in a Spring 6 Application context
 * Bundles the `camunda-engine-rest-jakarta` library
 * Exposes the Process Engine API via REST
 

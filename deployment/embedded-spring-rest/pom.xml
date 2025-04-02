@@ -10,12 +10,14 @@
 
   <properties>
     <version.camunda>7.23.0</version.camunda>
-    <version.spring>6.1.8</version.spring>
+    <version.spring>6.2.5</version.spring>
     <version.resteasy>6.2.3.Final</version.resteasy>
     <version.h2>2.1.214</version.h2>
     <version.slf4j>1.7.32</version.slf4j>
+
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
-    <maven.compiler.release>11</maven.compiler.release>
+    <version.maven-war-plugin>3.3.1</version.maven-war-plugin>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -40,7 +42,7 @@
 
     <dependency>
       <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-spring</artifactId>
+      <artifactId>camunda-engine-spring-6</artifactId>
     </dependency>
 
     <dependency>
@@ -110,6 +112,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${version.maven-compiler-plugin}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${version.maven-war-plugin}</version>
       </plugin>
     </plugins>
   </build>
