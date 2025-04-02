@@ -5,11 +5,11 @@ This example demonstrates how to deploy a simple servlet process application.
 ## How to use it
 
 1. Build it with Maven.
-2. Deploy it to a `camunda-bpm-platform` distro of your choice (Tomcat 9/WildFly 35+).
+2. Deploy it to a `camunda-bpm-platform` distro of your choice (Tomcat 10/WildFly 35+).
 3. Watch out for this console log:
 
 ```bash
-Service Task 'Example ServiceTask' is invoked!
+Service Task Example ServiceTask is invoked!
 ```
 
 ## Java EE API
