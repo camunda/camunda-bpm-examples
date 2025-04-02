@@ -11,7 +11,7 @@
 
   <properties>
     <version.camunda>7.23.0</version.camunda>
-    <version.graal.js>21.1.0</version.graal.js>
+    <version.graal.js>21.3.12</version.graal.js>
     <version.java-ee>7.0</version.java-ee>
     <version.h2>2.1.214</version.h2>
     <version.junit>4.13.2</version.junit>
