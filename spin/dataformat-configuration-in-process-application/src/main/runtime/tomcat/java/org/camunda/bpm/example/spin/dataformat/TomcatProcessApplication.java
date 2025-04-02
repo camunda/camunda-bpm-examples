@@ -18,7 +18,7 @@ package org.camunda.bpm.example.spin.dataformat;
 
 import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.application.impl.JakartaServletProcessApplication;
 
 /**
  * @author Thorben Lindhauer
@@ -26,7 +26,7 @@ import org.camunda.bpm.application.impl.ServletProcessApplication;
  */
 @IgnoreBean
 @ProcessApplication
-public class TomcatProcessApplication extends ServletProcessApplication {
+public class TomcatProcessApplication extends JakartaServletProcessApplication {
   public static TomcatProcessApplication INSTANCE;
 
   // empty implementation

@@ -18,12 +18,12 @@ package org.camunda.bpm.example.spin.dataformat.servlet;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
+import jakarta.servlet.annotation.WebServlet;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.example.spin.dataformat.configuration.Car;
 import org.camunda.bpm.example.spin.dataformat.configuration.Money;
@@ -32,6 +32,7 @@ import org.camunda.bpm.example.spin.dataformat.configuration.Money;
  * @author Thorben Lindhauer
  *
  */
+@WebServlet("/start-process")
 public class StartProcessServlet extends HttpServlet {
 
   private static final long serialVersionUID = 1L;
@@ -40,7 +41,7 @@ public class StartProcessServlet extends HttpServlet {
   protected ProcessInstanceStarterBean starterBean;
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     Car car = new Car();
     car.setPrice(new Money(1000));
