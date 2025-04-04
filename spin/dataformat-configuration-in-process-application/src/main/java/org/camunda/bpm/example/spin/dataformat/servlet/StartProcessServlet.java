@@ -23,7 +23,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import jakarta.servlet.annotation.WebServlet;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.example.spin.dataformat.configuration.Car;
 import org.camunda.bpm.example.spin.dataformat.configuration.Money;
@@ -32,7 +31,6 @@ import org.camunda.bpm.example.spin.dataformat.configuration.Money;
  * @author Thorben Lindhauer
  *
  */
-@WebServlet("/start-process")
 public class StartProcessServlet extends HttpServlet {
 
   private static final long serialVersionUID = 1L;
