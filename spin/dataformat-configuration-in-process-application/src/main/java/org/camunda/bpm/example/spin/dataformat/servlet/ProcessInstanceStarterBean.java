@@ -16,7 +16,7 @@
  */
 package org.camunda.bpm.example.spin.dataformat.servlet;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.camunda.bpm.BpmPlatform;
 import org.camunda.bpm.engine.ProcessEngine;

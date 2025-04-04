@@ -27,8 +27,7 @@ See the [user guide](https://docs.camunda.org/manual/7.23/user-guide/process-eng
 
 # Before Starting
 
-Before starting, make sure to install the Camunda Platform on Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.23/installation/full/jboss/manual/#setup). We will call the root folder $WILDFLY_HOME in the following explanations.
-Note that this example is only compatible with WildFly ≤26. The latest compatible pre-packaged Camunda WildFly distribution is 7.18.x.
+Before starting, make sure to download the [Camunda Platform WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/) and extract it to a folder. We will call this folder `$CAMUNDA_HOME` in the following explanations.
 
 # Configuring the Database
 
@@ -145,12 +144,12 @@ In [pom.xml](pom.xml), the `camunda-engine-cdi` and `camunda-ejb-client` depende
 ```xml
 <dependency>
   <groupId>org.camunda.bpm</groupId>
-  <artifactId>camunda-engine-cdi</artifactId>
+  <artifactId>camunda-engine-cdi-jakarta</artifactId>
 </dependency>
 
 <dependency>
   <groupId>org.camunda.bpm.javaee</groupId>
-  <artifactId>camunda-ejb-client</artifactId>
+  <artifactId>camunda-ejb-client-jakarta</artifactId>
 </dependency>
 ```
 
@@ -351,7 +350,7 @@ The test class [ProcessIntegrationTest](src/test/java/org/camunda/bpm/tutorial/m
 
 Follow the steps to run the test:
 
-* Install the Camunda Platform on a Wildfly ≤26 server, follow the step in the [manual installation guide](https://docs.camunda.org/manual/7.23/installation/full/jboss/manual/#setup) (note that this example is not compatible with WildFly versions after WildFly 26).
+* Download the [Camunda Platform WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/)
 * Replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
   * [standalone.xml](standalone.xml) (two schemas - requires manual schema creation) or 
   * [standalone_test.xml](standalone_test.xml) (two databases - auto schema creation)

@@ -11,8 +11,8 @@
 
   <properties>
     <version.camunda>7.23.0</version.camunda>
-    <version.graal.js>21.1.0</version.graal.js>
-    <version.java-ee>7.0</version.java-ee>
+    <version.graal.js>21.3.12</version.graal.js>
+    <version.jakarta-api>10.0.0</version.jakarta-api>
     <version.h2>2.1.214</version.h2>
     <version.junit>4.13.2</version.junit>
     <version.slf4j>1.7.36</version.slf4j>
@@ -42,9 +42,9 @@
     </dependency>
 
     <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>${version.java-ee}</version>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
+      <version>10.0.0</version>
       <scope>provided</scope>
     </dependency>
 
@@ -98,46 +98,6 @@
 
   <profiles>
     <profile>
-      <!-- Use this for deployment to Oracle WebLogic, IBM Websphere -->
-      <id>weblogic</id>
-      <dependencies>
-        <!-- Jackson JSON data format and the Jackson dependency are included in the application -->
-        <dependency>
-          <groupId>org.camunda.spin</groupId>
-          <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
-        </dependency>
-        
-        <dependency>
-          <groupId>org.camunda.bpm</groupId>
-          <artifactId>camunda-engine-cdi</artifactId>
-        </dependency>
-    
-        <dependency>
-          <groupId>org.camunda.bpm.javaee</groupId>
-          <artifactId>camunda-ejb-client</artifactId>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>2.6</version>
-            <configuration>
-              <webResources>
-                <resource>
-                  <directory>src/main/webapp</directory>
-                </resource>
-                <resource>
-                  <directory>src/main/runtime/weblogic/webapp</directory>
-                </resource>
-              </webResources>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>tomcat</id>
       <dependencies>
         <dependency>
@@ -165,9 +125,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.weld.servlet</groupId>
-            <artifactId>weld-servlet-core</artifactId>
-            <version>2.3.4.Final</version>
+          <groupId>org.jboss.weld.servlet</groupId>
+          <artifactId>weld-servlet-shaded</artifactId>
+          <version>5.1.2.Final</version>
         </dependency>
       </dependencies>
       
@@ -192,6 +152,11 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.3.2</version>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -209,12 +174,12 @@
         
         <dependency>
           <groupId>org.camunda.bpm</groupId>
-          <artifactId>camunda-engine-cdi</artifactId>
+          <artifactId>camunda-engine-cdi-jakarta</artifactId>
         </dependency>
     
         <dependency>
           <groupId>org.camunda.bpm.javaee</groupId>
-          <artifactId>camunda-ejb-client</artifactId>
+          <artifactId>camunda-ejb-client-jakarta</artifactId>
         </dependency>
       </dependencies>
       <build>
@@ -248,12 +213,12 @@
         
         <dependency>
           <groupId>org.camunda.bpm</groupId>
-          <artifactId>camunda-engine-cdi</artifactId>
+          <artifactId>camunda-engine-cdi-jakarta</artifactId>
         </dependency>
     
         <dependency>
           <groupId>org.camunda.bpm.javaee</groupId>
-          <artifactId>camunda-ejb-client</artifactId>
+          <artifactId>camunda-ejb-client-jakarta</artifactId>
         </dependency>
       </dependencies>
       <build>

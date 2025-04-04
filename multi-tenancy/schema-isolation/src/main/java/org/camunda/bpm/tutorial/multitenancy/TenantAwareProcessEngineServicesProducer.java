@@ -16,12 +16,12 @@
  */
 package org.camunda.bpm.tutorial.multitenancy;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.Specializes;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.Specializes;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.camunda.bpm.BpmPlatform;
 import org.camunda.bpm.engine.AuthorizationService;

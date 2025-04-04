@@ -10,7 +10,7 @@ How to Use It?
 2. Checkout the project with Git
 3. Import the project into your IDE
 4. Build it with maven
-5. Deploy the resulting web application to the application server (Note: the example is only compatible with WildFly ≤26)
+5. Deploy the resulting web application to the application server (Note: the example is only compatible with WildFly)
 6. Go to Camunda Tasklist ([http://localhost:8080/camunda/app/tasklist/default/#/](http://localhost:8080/camunda/app/tasklist/default/#/)) and start a process instance of the *Example Process*
 7. Modify the process model ([src/main/resources/exampleProcess.bpmn](src/main/resources/exampleProcess.bpmn)), for example by adding another user task
 8. Build it again with maven
