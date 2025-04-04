@@ -350,7 +350,7 @@ The test class [ProcessIntegrationTest](src/test/java/org/camunda/bpm/tutorial/m
 
 Follow the steps to run the test:
 
-* download the [Camunda Platform WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/)
+* Download the [Camunda Platform WildFly distribution](https://downloads.camunda.cloud/release/camunda-bpm/wildfly/)
 * Replace the `camunda-bpm-wildfly-{version}/server/wildfly-{version}/standalone/configuration/standalone.xml` with
   * [standalone.xml](standalone.xml) (two schemas - requires manual schema creation) or 
   * [standalone_test.xml](standalone_test.xml) (two databases - auto schema creation)
