@@ -3,11 +3,12 @@ Fullstack (ReactJS & Java) "Count Processes" Cockpit Plugin
 
 This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of [Camunda Platform](http://docs.camunda.org).
 
-Built and tested against Camunda Platform version `7.22.0`.
+Built and tested against Camunda Platform version `7.23.0`.
+This example uses Jakarta API. It is compatible with the latest releases of Camunda Tomcat and WildFly distributions.
 
 ![Screenshot](screenshot.png)
 
-> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.22/webapps/cockpit/extend/plugins/) for the basics first.
+> Note: If you need please take a look at the [Cockpit Plug-ins](https://docs.camunda.org/manual/7.23/webapps/cockpit/extend/plugins/) for the basics first.
 
 # Table of contents
 
@@ -37,7 +38,7 @@ Built and tested against Camunda Platform version `7.22.0`.
    1. You can copy `./target/cockpit-sample-plugin-1.0-SNAPSHOT.jar` to the `WEB-INF/lib` folder of the Camunda webapp.
    2. You can set up a maven war overlay for the Camunda webapp.
    
-   The first solution is the simplest: if you dowloaded the tomcat distribution, you can copy the plugin
+   The first solution is the simplest: if you downloaded the tomcat distribution, you can copy the plugin
    jar file to the `/server/apache-tomcat-${tomcat-version}/webapps/camunda/WEB-INF/lib/` folder and
    restart the server.
 
@@ -325,9 +326,9 @@ A root resource for our plug-in may look as follows:
 ```java
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginRootResource;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.sample.SamplePlugin;
 
 @Path("plugin/" + SamplePlugin.ID)
@@ -352,7 +353,7 @@ A sub-resource may extend `org.camunda.bpm.cockpit.plugin.resource.AbstractPlugi
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
 import java.util.List;
-import javax.ws.rs.GET;
+import jakarta.ws.rs.GET;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginResource;
@@ -411,7 +412,7 @@ It is possible to use the tenant check in the sub-resource of the cockpit plugin
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
 import java.util.List;
-import javax.ws.rs.POST;
+import jakarta.ws.rs.GET;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginResource;
@@ -452,7 +453,7 @@ Now we are done with the server-side parts of the plug-in. Next, we will go ahea
 
 
 >This section only provides a short overview of the client-side plug-in mechanism in Cockpit.
->Consider reading about the [Structure of a Frontend Module](https://docs.camunda.org/manual/7.22/webapps/cockpit/extend/plugins/#structure-of-a-frontend-module) if you are interested in more details.
+>Consider reading about the [Structure of a Frontend Module](https://docs.camunda.org/manual/7.23/webapps/cockpit/extend/plugins/#structure-of-a-frontend-module) if you are interested in more details.
 
 
 The client-side part of a Cockpit plug-in consists of an extension to the Cockpit webapp client application. It is served through the plug-in serverside extension as a static plug-in asset.

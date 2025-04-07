@@ -52,7 +52,11 @@ The script task *Extract price* expects a `Car` JSON object in the format of `{"
 ## How to run it
 
 1. Checkout the project with Git
-2. Run the Maven build `mvn clean install -P${profile}`. Dependending on the application server you use, set `${profile}` to `weblogic` (for WebLogic, Websphere), `tomcat`, `jboss` or `wildfly` (only compatible with WildFly ≤26)
+2. Run the Maven build `mvn clean install -P${profile}`. Depending on the application server you use, set `${profile}` to:
+
+   * `tomcat` - compatible with Tomcat 10
+   * `jboss` - compatible with JBoss EAP 8
+   * `wildfly` - compatible with WildFly 33+
 3. Deploy the resulting WAR file to your application server
 4. Perform a HTTP GET request to the url `http://localhost:8080/dataformat-example/start-process` (or `http://localhost:8080/camunda-example-spin-dataformat-configuration-process-application-0.0.1-SNAPSHOT/start-process` if you're using Tomcat) either with a REST client or simply in the address bar of your browser
 5. Go to Cockpit and verify that the process variable named `car` was serialized correctly
@@ -153,7 +157,7 @@ public class ProcessApplicationContextInterceptor {
 
 For this to work on Tomcat (a non-Java-EE server), we have include Weld in the process application. However, note that using CDI is not required for this feature to work. The lowest common denominator is the utility class `ProcessApplicationContext`. It can be used in any context to declare process application context before invoking engine API.
 
-Read the documentation on [Process Application Resource Access](https://docs.camunda.org/manual/7.22/user-guide/process-applications/process-application-resources/) for why it is required to declare process application context.
+Read the documentation on [Process Application Resource Access](https://docs.camunda.org/manual/7.23/user-guide/process-applications/process-application-resources/) for why it is required to declare process application context.
 
 ### Delegation Code
 

@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<beans xmlns="http://java.sun.com/xml/ns/javaee" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:weld="http://jboss.org/schema/weld/beans"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd
-                        http://jboss.org/schema/weld/beans http://jboss.org/schema/weld/beans_1_1.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="https://jakarta.ee/xml/ns/jakartaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                           https://jakarta.ee/xml/ns/jakartaee/beans_4_0.xsd"
+       version="4.0" bean-discovery-mode="all">
   <interceptors>
     <class>org.camunda.bpm.example.spin.dataformat.servlet.ProcessApplicationContextInterceptor</class>
-  </interceptors> 
+  </interceptors>
 </beans>

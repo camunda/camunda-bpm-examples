@@ -29,7 +29,7 @@ import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.ProcessApplication;
 import org.camunda.bpm.application.ProcessApplicationDeploymentInfo;
 import org.camunda.bpm.application.ProcessApplicationInfo;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.application.impl.JakartaServletProcessApplication;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
@@ -38,7 +38,7 @@ import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery;
 
 @ProcessApplication
-public class ExampleProcessApplication extends ServletProcessApplication {
+public class ExampleProcessApplication extends JakartaServletProcessApplication {
 
   private final static Logger LOG = Logger.getLogger(ExampleProcessApplication.class.getName());
 

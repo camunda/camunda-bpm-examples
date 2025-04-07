@@ -8,9 +8,9 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
-    <version.servlet>3.0.1</version.servlet>
-    <maven.compiler.release>11</maven.compiler.release>
+    <version.camunda>7.23.0</version.camunda>
+    <version.servlet>6.1.0</version.servlet>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
@@ -38,12 +38,12 @@
     
     <dependency>
       <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-cdi</artifactId>
+      <artifactId>camunda-engine-cdi-jakarta</artifactId>
     </dependency>
-    
+
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
       <version>${version.servlet}</version>
       <scope>provided</scope>
     </dependency>

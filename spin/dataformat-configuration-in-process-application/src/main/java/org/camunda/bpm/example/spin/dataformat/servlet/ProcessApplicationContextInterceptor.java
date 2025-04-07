@@ -16,10 +16,10 @@
  */
 package org.camunda.bpm.example.spin.dataformat.servlet;
 
-import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
+import jakarta.inject.Inject;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.Interceptor;
+import jakarta.interceptor.InvocationContext;
 
 import org.camunda.bpm.application.ProcessApplicationContext;
 import org.camunda.bpm.application.ProcessApplicationInterface;

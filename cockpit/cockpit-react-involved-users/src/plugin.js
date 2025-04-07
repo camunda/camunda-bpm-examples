@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 
 import UserOperationCount from "./UserOperationCount";
 
@@ -27,14 +27,18 @@ export default {
   pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 9,
   render: (node, { processDefinitionId, api }) => {
-    container = node;
-    ReactDOM.render(
-      <UserOperationCount processDefinitionId={processDefinitionId} camundaApi={api} />,
-      container
+    container = createRoot(node);
+    container.render(
+      <UserOperationCount
+        processDefinitionId={processDefinitionId}
+        camundaApi={api}
+      />
     );
   },
   unmount: () => {
-    ReactDOM.unmountComponentAtNode(container);
+    if (container) {
+      container.unmount();
+    }
   },
   properties: {
     label: "Involved Users"

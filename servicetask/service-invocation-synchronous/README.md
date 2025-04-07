@@ -11,6 +11,10 @@ After having looked through the code, you will understand the behavior of a sync
 * Successful invocation
 * An invocation failure.
 
+## Requirements
+
+* Java 17+
+
 ## Show me the important parts!
 
 The process model is composed of three tasks:

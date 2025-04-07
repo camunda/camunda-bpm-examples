@@ -18,12 +18,12 @@ package org.camunda.bpm.tutorial.multitenancy;
 
 import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.application.impl.JakartaServletProcessApplication;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 
 @ProcessApplication(name="Multi-Tenancy App")
-public class MultiTenancyProcessApplication extends ServletProcessApplication {
+public class MultiTenancyProcessApplication extends JakartaServletProcessApplication {
 
   @PostDeploy
   public void startProcessInstances(ProcessEngine processEngine) {

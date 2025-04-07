@@ -10,10 +10,10 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.camunda>7.22.0</version.camunda>
-    <version.servlet-api>3.0.1</version.servlet-api>
+    <version.camunda>7.23.0</version.camunda>
+    <version.servlet>6.1.0</version.servlet>
     <version.slf4j>1.7.36</version.slf4j>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
     <version.plugin.maven-compiler>3.11.0</version.plugin.maven-compiler>
@@ -39,9 +39,9 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${version.servlet-api}</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>${version.servlet}</version>
       <scope>provided</scope>
     </dependency>
 

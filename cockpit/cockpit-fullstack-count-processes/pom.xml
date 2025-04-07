@@ -9,15 +9,15 @@
 
   <name>Camunda Cockpit Plugin: Sample</name>
   <description>This is a simple plugin that showcases the plugin system of Cockpit, the process monitoring tool of Camunda Platform.</description>
-  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.22/cockpit/cockpit-sample-plugin</url>
+  <url>https://github.com/camunda/camunda-bpm-examples/tree/7.23/cockpit/cockpit-sample-plugin</url>
 
   <properties>
-    <camunda.version>7.22.0</camunda.version>
+    <camunda.version>7.23.0</camunda.version>
 
     <frontend-maven-plugin.version>1.14.0</frontend-maven-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-    <jboss-javaee.version>3.0.3.Final</jboss-javaee.version>
+    <jakarta.ws.rs-api.version>4.0.0</jakarta.ws.rs-api.version>
     <junit.version>4.13.2</junit.version>
     <h2.version>2.3.232</h2.version>
     <slf4j.version>1.7.36</slf4j.version>
@@ -40,11 +40,10 @@
       <version>${camunda.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-6.0</artifactId>
-      <type>pom</type>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <version>${jakarta.ws.rs-api.version}</version>
       <scope>provided</scope>
-      <version>${jboss-javaee.version}</version>
     </dependency>
     <!-- test dependencies -->
     <dependency>

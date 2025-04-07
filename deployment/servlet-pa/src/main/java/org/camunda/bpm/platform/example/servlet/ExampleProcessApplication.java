@@ -16,11 +16,11 @@
  */
 package org.camunda.bpm.platform.example.servlet;
 
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextListener;
 
 import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.application.impl.JakartaServletProcessApplication;
 import org.camunda.bpm.engine.ProcessEngine;
 
 /**
@@ -45,7 +45,7 @@ import org.camunda.bpm.engine.ProcessEngine;
  *
  */
 @ProcessApplication
-public class ExampleProcessApplication extends ServletProcessApplication {
+public class ExampleProcessApplication extends JakartaServletProcessApplication {
 
   /**
    * The {@literal @}PostDeploy method is invoked when the deployment of all BPMN 2.0 processes is complete.

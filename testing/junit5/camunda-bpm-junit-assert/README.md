@@ -27,6 +27,9 @@ Explanation:
 * (2) Configuration file for the process engine.
 * (3) An example BPMN process.
 
+## Prerequisites
+* Java 17/21
+
 ## Running the test with maven
 
 In order to run the testsuite with maven you can use:
@@ -36,7 +39,7 @@ mvn clean test
 ```
 
 ## Further reading
-If you want to read more about [Camunda Platform Assert][assert] or the [Camunda JUnit 5 extension], go to the [testing user guide](https://docs.camunda.org/manual/7.22/user-guide/testing/) in the Camunda docs.
+If you want to read more about [Camunda Platform Assert][assert] or the [Camunda JUnit 5 extension], go to the [testing user guide](https://docs.camunda.org/manual/7.23/user-guide/testing/) in the Camunda docs.
 
 [junit5]: https://github.com/camunda/camunda-bpm-platform/tree/master/test-utils/junit5-extension
 [assert]: https://github.com/camunda/camunda-bpm-platform/tree/master/test-utils/assert

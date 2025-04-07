@@ -8,6 +8,10 @@ The example includes a BPMN 2.0 process which invokes a holiday service, parses 
 
 # Overview
 
+## Requirements
+
+* Java 17+
+
 ## How to run it
 
 1. Checkout the project with Git
