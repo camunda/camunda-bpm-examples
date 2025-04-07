@@ -1,0 +1,38 @@
+name: GHA to run unit test for examples
+on:
+  push:
+    branches:
+      - "feat(test)-sanity-test-for-examples"
+
+jobs:
+  run-unit-test:
+    name: run unit test on examples
+    strategy:
+      matrix:
+        path-to-examples:
+          [
+            ./servicetask/service-invocation-synchronous,
+            ./servicetask/service-invocation-asynchronous,
+            ./servicetask/rest-service,
+            ./scripttask/xslt-scripttask,
+            ./startevent/message-start,
+            ./process-engine-plugin/bpmn-parse-listener,
+            ./process-engine-plugin/command-interceptor-blocking,
+            ./process-engine-plugin/custom-history-level,
+            ./process-engine-plugin/failed-job-retry-profile,
+            ./bpmn-model-api/generate-process-fluent-api,
+            ./bpmn-model-api/parse-bpmn,
+            ./multi-tenancy/tenant-identifier-embedded,
+            ./multi-tenancy/tenant-identifier-shared-definitions,
+            ./spin/dataformat-configuration-global,
+          ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: check out code
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 17
+      - name: run unit tests
+        run: mvn clean verify -B
+        working-directory: ${{matrix.path-to-examples}}
