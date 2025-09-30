@@ -9,7 +9,7 @@
     <version.camunda>7.24.0</version.camunda>
     <version.junit>5.11.4</version.junit>
     <version.h2>2.3.232</version.h2>
-    <version.assertj>3.26.3</version.assertj>
+    <version.assertj>3.27.6</version.assertj>
     <version.logback>1.2.11</version.logback>
 
     <maven.compiler.release>17</maven.compiler.release>
