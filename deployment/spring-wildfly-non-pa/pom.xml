@@ -10,7 +10,7 @@
 
   <properties>
     <camunda.version>7.24.0</camunda.version>
-    <spring.version>6.2.5</spring.version>
+    <spring.version>6.2.11</spring.version>
     <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
 
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>

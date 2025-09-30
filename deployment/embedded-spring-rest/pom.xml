@@ -10,9 +10,9 @@
 
   <properties>
     <version.camunda>7.24.0</version.camunda>
-    <version.spring>6.2.5</version.spring>
-    <version.resteasy>6.2.3.Final</version.resteasy>
-    <version.h2>2.1.214</version.h2>
+    <version.spring>6.2.11</version.spring>
+    <version.resteasy>6.2.14.Final</version.resteasy>
+    <version.h2>2.3.232</version.h2>
     <version.slf4j>1.7.32</version.slf4j>
 
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
@@ -122,12 +122,6 @@
   </build>
 
   <repositories>
-    <!-- spring maven repository -->
-    <repository>
-      <id>springsource-repo</id>
-      <name>SpringSource Repository</name>
-      <url>https://repo.springsource.org/release</url>
-    </repository>
     <!-- camunda maven repository -->
     <repository>
       <id>camunda-bpm-nexus</id>

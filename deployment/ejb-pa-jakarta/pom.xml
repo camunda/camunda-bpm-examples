@@ -9,9 +9,10 @@
 
   <properties>
     <version.camunda>7.24.0</version.camunda>
-    <version.jakarta-ee-specs>10.0.0</version.jakarta-ee-specs>
-    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
-    <maven.compiler.release>11</maven.compiler.release>
+    <version.jakarta-ee-specs>11.0.0</version.jakarta-ee-specs>
+    <version.maven-compiler-plugin>3.14.1</version.maven-compiler-plugin>
+    <version.maven-war-plugin>3.4.0</version.maven-war-plugin>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
@@ -48,8 +49,15 @@
 
   </dependencies>
 
+
+
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${version.maven-war-plugin}</version>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
