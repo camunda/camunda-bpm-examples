@@ -8,7 +8,7 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.camunda>7.23.0</version.camunda>
+    <version.camunda>7.24.0</version.camunda>
     <version.servlet>6.1.0</version.servlet>
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

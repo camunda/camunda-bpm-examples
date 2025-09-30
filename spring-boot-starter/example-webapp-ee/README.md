@@ -24,7 +24,7 @@ You will need:
 ```xml
 ...
   <properties>
-    <camunda.version>7.23.0-ee</camunda.version>
+    <camunda.version>7.24.0-ee</camunda.version>
   </properties>
 
   <dependencyManagement>

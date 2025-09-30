@@ -10,7 +10,7 @@
   <name>Spin - Configuring a Data Format Per Process Application</name>
 
   <properties>
-    <version.camunda>7.23.0</version.camunda>
+    <version.camunda>7.24.0</version.camunda>
     <version.graal.js>21.3.12</version.graal.js>
     <version.jakarta-api>10.0.0</version.jakarta-api>
     <version.h2>2.1.214</version.h2>

@@ -10,7 +10,7 @@
   <name>Service Invocation - REST</name>
 
   <properties>
-    <version.camunda>7.23.0</version.camunda>
+    <version.camunda>7.24.0</version.camunda>
     <version.graal.js>21.3.12</version.graal.js>
     <version.junit>4.13.1</version.junit>
     <version.h2>2.3.232</version.h2>
