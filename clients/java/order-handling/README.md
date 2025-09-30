@@ -12,7 +12,7 @@ In a nutshell you will be guided through the following steps:
 * [Java JDK 11+](https://www.oracle.com/java/technologies/downloads/#java11)
 * [Apache Maven](https://maven.apache.org/download.cgi)
 * [Camunda Modeler](https://camunda.com/download/modeler/)
-* [Camunda Platform Runtime](https://camunda.com/download/)
+* [Camunda Platform Runtime](https://docs.camunda.org/manual/latest/installation/)
 * Camunda External Task Client
 
 First, make sure you have downloaded and installed all the necessary prerequisites, 
