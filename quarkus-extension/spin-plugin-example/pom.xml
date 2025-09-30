@@ -10,7 +10,7 @@
 
   <properties>
     <camunda.version>7.24.0</camunda.version>
-    <quarkus.version>3.20.0</quarkus.version>
+    <quarkus.version>3.27.0</quarkus.version>
     <compiler-plugin.version>3.14.0</compiler-plugin.version>
 
     <maven.compiler.parameters>true</maven.compiler.parameters>
