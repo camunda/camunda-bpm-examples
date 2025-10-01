@@ -648,11 +648,11 @@ function getRoundRectPath(shape, borderRadius) {
     [ 'l', width - borderRadius * 2, 0 ],
     [ 'a', borderRadius, borderRadius, 0, 0, 1, borderRadius, borderRadius ],
     [ 'l', 0, height - borderRadius * 2 ],
-    [ 'a', borderRadius, borderRadius, 0, 0, 1, -2, borderRadius ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, borderRadius ],
     [ 'l', borderRadius * 2 - width, 0 ],
-    [ 'a', borderRadius, borderRadius, 0, 0, 1, -2, -2 ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, -borderRadius ],
     [ 'l', 0, borderRadius * 2 - height ],
-    [ 'a', borderRadius, borderRadius, 0, 0, 1, borderRadius, -2 ],
+    [ 'a', borderRadius, borderRadius, 0, 0, 1, borderRadius, -borderRadius ],
     [ 'z' ]
   ];
 

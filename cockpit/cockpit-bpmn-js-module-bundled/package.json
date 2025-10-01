@@ -24,9 +24,9 @@
   "dependencies": {
     "@rollup/plugin-commonjs": "~28.0.3",
     "@rollup/plugin-node-resolve": "~16.0.1",
-    "bpmn-js": "^18.4.0",
-    "diagram-js": "^15.2.4",
-    "rollup": "^4.37.0",
+    "bpmn-js": "^18.7.0",
+    "diagram-js": "^15.4.0",
+    "rollup": "^4.52.3",
     "tiny-svg": "^4.1.3"
   }
 }
