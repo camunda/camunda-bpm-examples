@@ -21,7 +21,7 @@
     <junit.version>4.13.2</junit.version>
     <h2.version>2.3.232</h2.version>
     <slf4j.version>1.7.36</slf4j.version>
-    <node.version>v18.16.0</node.version>
+    <node.version>v20.14.0</node.version>
     <npmVersion>10.7.0</npmVersion>
 
     <frontend.working.directory>frontend/</frontend.working.directory>
