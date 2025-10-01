@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/runtime": "^7.28.4",
     "react": "~19.0.0",
     "react-dom": "~19.0.0"
   },
@@ -24,6 +25,6 @@
     "@rollup/plugin-replace": "~6.0.2",
     "rollup": "~4.37.0",
     "rollup-plugin-scss": "~4.0.1",
-    "sass": "^1.86.0"
+    "sass": "^1.93.2"
   }
 }
