@@ -12,7 +12,7 @@
   <properties>
     <version.camunda>7.24.0</version.camunda>
     <version.junit>4.13.2</version.junit>
-    <version.assertj>3.26.3</version.assertj>
+    <version.assertj>3.27.6</version.assertj>
 
     <!-- maven -->
     <maven.compiler.release>17</maven.compiler.release>
