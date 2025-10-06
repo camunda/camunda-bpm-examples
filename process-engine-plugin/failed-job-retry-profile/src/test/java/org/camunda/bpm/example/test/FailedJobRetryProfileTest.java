@@ -40,7 +40,8 @@ import org.junit.Test;
 
 public class FailedJobRetryProfileTest {
 
-  protected static final int DEFAULT_RETRIES = 3;
+  protected static final int MAX_CRM_RETRIES = 5;
+  protected static final int MAX_ERP_RETRIES = 7;
 
   @Rule
   public ProcessEngineRule processEngineRule = new ProcessEngineRule();
@@ -75,24 +76,24 @@ public class FailedJobRetryProfileTest {
     assertDueDate(10);
     ServiceTaskOneDelegate.firstAttempt = false;
 
-    // successful execution of the first service task
+    // successful execution of the first service task, returns the number of retires of the second job
     jobRetries = executeJob(processInstanceId);
-    assertEquals(DEFAULT_RETRIES, jobRetries);
+    assertEquals(MAX_CRM_RETRIES, jobRetries);
 
-    // successful execution of the second service task
+    // successful execution of the second service task, returns the number of retires of the third job
     jobRetries = executeJob(processInstanceId);
-    assertEquals(DEFAULT_RETRIES, jobRetries);
+    assertEquals(MAX_ERP_RETRIES, jobRetries);
 
-    // execution the third service task results with failed job
+    // execution the third service task results with failed job, returns the number of remaining retries: ERP_RETRIES - 1
     jobRetries = executeJob(processInstanceId);
     assertEquals(6, jobRetries);
     // 5 minutes offset as the retry conf. is "R7/PT5M"
     assertDueDate(5);
     ServiceTaskTwoDelegate.firstAttempt = false;
 
-    // successful execution of the third service task
+    // successful execution of the third service task, returns the number of retires of the forth job
     jobRetries = executeJob(processInstanceId);
-    assertEquals(DEFAULT_RETRIES, jobRetries);
+    assertEquals(MAX_ERP_RETRIES, jobRetries);
   }
 
   protected int executeJob(String processInstanceId) {

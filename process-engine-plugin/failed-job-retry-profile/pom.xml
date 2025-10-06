@@ -12,7 +12,7 @@
     <version.camunda>7.24.0</version.camunda>
     <version.junit>4.13.2</version.junit>
     <version.h2>2.3.232</version.h2>
-    <version.slf4j>1.7.26</version.slf4j>
+    <version.slf4j>1.7.36</version.slf4j>
     <version.commons-lang>3.17.0</version.commons-lang>
 
     <!-- maven -->
