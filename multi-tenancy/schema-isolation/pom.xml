@@ -179,7 +179,7 @@
     <repository>
       <id>camunda-bpm-nexus</id>
       <name>Camunda Platform Maven Repository</name>
-      <url>https://artifacts.camunda.com/artifactory/public/</url>
+      <url>https://artifacts.camunda.com/artifactory/private/</url>
     </repository>
     <repository>
       <id>jboss-public-repository</id>
