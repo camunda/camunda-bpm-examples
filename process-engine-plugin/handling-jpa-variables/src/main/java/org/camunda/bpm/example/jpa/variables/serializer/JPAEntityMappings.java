@@ -98,7 +98,7 @@ public class JPAEntityMappings {
     } catch (IllegalAccessException iae) {
       throw new ProcessEngineException("Cannot access id method/field for JPA Entity", iae);
     } catch (InvocationTargetException ite) {
-      throw new ProcessEngineException("Exception occured while getting value from id field/method on JPAEntity: " +
+      throw new ProcessEngineException("Exception occurred while getting value from id field/method on JPAEntity: " +
         ite.getCause().getMessage(), ite.getCause());
     }
 
